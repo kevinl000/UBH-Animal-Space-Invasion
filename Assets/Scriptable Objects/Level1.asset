@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e186fe4a113ef4dd3a8474a33194dac1, type: 3}
+  m_Name: Level1
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  maxDifficulty: 0
+  maxTime: 0
+  enemyDataList:
+  - enemy: {fileID: 11400000, guid: 410d03dc6dd1e4525a26828f79be7a38, type: 2}
+    startingBudget: 0
+    endingBudget: 0
+    isLevelBoss: 0
+  money: 0
+  fuel: 0
+  planetMaxHealth: 0
+  planetRotationSpeed: 0
+  planetGravity: 0
+  planetRadius: 0
+  isClockwise: 0
