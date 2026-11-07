@@ -6,6 +6,12 @@
 # This template is maintained from the github/gitignore repository
 # and distributed under Creative Commons Zero v1.0 Universal license.
 
+# Local project notes
+/HANDOVER.md
+/STORY_INTRO.md
+/PLANET_TOWER_ART_BLUEPRINT.md
+/PLANETS_PAGE_PLAN.md
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
