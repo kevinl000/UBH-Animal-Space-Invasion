@@ -10,7 +10,8 @@ public class LevelEnemyEntry
     public float endingBudget;
     public bool isLevelBoss; // true only for this level's halfway boss
 
-    public float SpawnRate { get; set; }
+    public int SpawnedCount { get; set; }//stores the total number of of enemy type that has spawned.
+    public float SpawnProbability { get; set; }
     public float RelativeBudget { get; set; }
     public int RelativeCount { get; set; }
 }
@@ -18,7 +19,8 @@ public class LevelEnemyEntry
 [CreateAssetMenu(fileName = "LevelData", menuName = "Scriptable Objects/LevelData")]
 public class LevelData : ScriptableObject
 {
-    const float EPSILON = 1.0f; // tolerance for time comparisons
+    public int startingDifficulty; // starting difficulty of the level 
+    public int postBossDifficulty; // difficulty of the level after the boss
     public int maxDifficulty; // max difficulty for the level
     public float maxTime; // max time for the level in seconds
 
@@ -50,11 +52,12 @@ public class LevelData : ScriptableObject
 
                 entry.RelativeBudget = 0f;
                 entry.RelativeCount = 0;
-                entry.SpawnRate = 0f;
+                entry.SpawnProbability = 0f;
+                entry.SpawnedCount = 0;
             }
         }
 
-        SetEnemyDataSpawnRate(0f);
+        SetEnemyDataSpawnProbability(0f);
 
         // possible TODO: if LevelData should own the clock, reset it here. If LevelData should own the money/fuel, reset them here.
         // current money: money is the authored starting amount. If gameplay spends it
@@ -82,7 +85,21 @@ public class LevelData : ScriptableObject
 
     public float GetTotalBudget(float time)
     {
-        return (0.1f * maxDifficulty) + (0.9f * maxDifficulty * GetLevelProgression(time));
+        float progression = GetLevelProgression(time);
+
+        // before the half way time, increase the budget at an increasing rate reaching half of max difficulty at half time
+        if (progression <= 0.5f)
+        {
+            float phase1Progression = progression * 2f;
+            float curve = phase1Progression * phase1Progression;
+            return Mathf.Lerp(startingDifficulty, maxDifficulty * 0.5f, curve);
+        }
+        else // after the halfway time, dip the difficulty to postBossDifficulty then increase it at an increasing rate to max difficulty
+        {
+            float phase2Progression = (progression - 0.5f) * 2f;
+            float curve = phase2Progression * phase2Progression;
+            return Mathf.Lerp(postBossDifficulty, maxDifficulty, curve);
+        }
     }
 
     public bool IsBossPhase(float time)
@@ -92,7 +109,9 @@ public class LevelData : ScriptableObject
 
     public bool ShouldSpawnGuaranteedBoss(float previousTime, float time)
     {
-        return (time <= maxTime / 2f + Mathf.Epsilon) && (time >= maxTime / 2f - Mathf.Epsilon);
+        float bossTime = maxTime / 2f;
+        // Returns true exactly on the frame the timer crosses the halfway point
+        return previousTime < bossTime && time >= bossTime;
     }
 
     public EnemyData GetBossEnemyData()
@@ -113,7 +132,7 @@ public class LevelData : ScriptableObject
         return null;
     }
 
-    public void SetEnemyDataSpawnRate(float time)
+    public void SetEnemyDataSpawnProbability(float time)
     {
         if (enemyDataList == null)
         {
@@ -136,15 +155,15 @@ public class LevelData : ScriptableObject
             {
                 entry.RelativeBudget = 0f;
                 entry.RelativeCount = 0;
-                entry.SpawnRate = 0f;
+                entry.SpawnProbability = 0f;
+                entry.SpawnedCount = 0;
                 continue;
             }
 
             int cost = entry.enemy != null ? entry.enemy.cost : 0;
-            entry.RelativeBudget = 1f - ((entry.startingBudget - entry.endingBudget) * progression);
-            entry.RelativeCount = cost > 0
-                ? Mathf.FloorToInt(totalBudget * entry.RelativeBudget / cost)
-                : 0;
+            entry.RelativeBudget = Mathf.Lerp(entry.startingBudget, entry.endingBudget, progression);//linearly interpolates from starting budget to ending budget
+            int targetCount = cost > 0 ? Mathf.FloorToInt(totalBudget * entry.RelativeBudget / cost) : 0;//calculates the targeted amount of a enemies of a type that should be spawned at that time
+            entry.RelativeCount = Mathf.Max(0, targetCount - entry.SpawnedCount); // gets the actuall count of needed enemies to spawn of that type (factoring enemies that have been spawned already)
             totalEnemyCount += entry.RelativeCount;
         }
 
@@ -155,7 +174,7 @@ public class LevelData : ScriptableObject
                 continue;
             }
 
-            entry.SpawnRate = totalEnemyCount > 0
+            entry.SpawnProbability = totalEnemyCount > 0
                 ? (float)entry.RelativeCount / totalEnemyCount
                 : 0f;
         }
