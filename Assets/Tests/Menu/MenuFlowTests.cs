@@ -51,16 +51,15 @@ public class MenuFlowTests
         Assert.AreNotEqual(oldPosition, ufo.rectTransform.anchoredPosition, "The UFO should be animated.");
 
         var victor = GameObject.Find("Victor").GetComponent<Image>();
-        var arm = victor.transform.Find("RightArm").GetComponent<Image>();
+        Assert.IsNull(victor.transform.Find("RightArm"), "Victor should be one complete static sprite.");
         var animator = victor.GetComponent<Animator>();
-        Assert.AreEqual(AnimatorUpdateMode.UnscaledTime, animator.updateMode);
+        Assert.IsNull(animator, "Victor should stay in a still pose.");
         Assert.IsFalse(victor.raycastTarget);
-        Assert.IsFalse(arm.raycastTarget, "The decorative arm must not intercept menu clicks.");
-        var shoulder = arm.rectTransform.anchoredPosition;
-        var initialRotation = arm.rectTransform.localRotation;
         var bodyPosition = victor.rectTransform.anchoredPosition;
         var bodySprite = victor.sprite;
-        var framesSeen = new HashSet<Sprite>();
+        var background = GameObject.Find("Background").GetComponent<Image>();
+        Assert.IsFalse(background.raycastTarget);
+        Assert.AreSame(background.defaultMaterial, background.material, "The background should use the static UI material.");
         float previousTimeScale = Time.timeScale;
         try
         {
@@ -69,15 +68,9 @@ public class MenuFlowTests
             while (Time.realtimeSinceStartup < deadline)
             {
                 yield return null;
-                Assert.IsNotNull(arm.sprite);
-                framesSeen.Add(arm.sprite);
-                Assert.AreEqual(initialRotation, arm.rectTransform.localRotation,
-                    "The wave should change sprite frames, not rotate the arm.");
-                Assert.AreEqual(shoulder, arm.rectTransform.anchoredPosition);
                 Assert.AreEqual(bodyPosition, victor.rectTransform.anchoredPosition);
                 Assert.AreSame(bodySprite, victor.sprite, "Victor's body must remain still.");
             }
-            Assert.AreEqual(4, framesSeen.Count, "All four wave frames should play while gameplay time is paused.");
         }
         finally
         {
@@ -99,12 +92,11 @@ public class MenuFlowTests
         }
 
         Assert.AreEqual(1, Object.FindObjectsByType<EventSystem>().Length);
-        var levelVictor = GameObject.Find("Victor").GetComponent<Animator>();
-        Assert.AreEqual(AnimatorUpdateMode.UnscaledTime, levelVictor.updateMode);
-        var levelArm = levelVictor.transform.Find("RightArm").GetComponent<Image>();
-        var firstLevelFrame = levelArm.sprite;
-        yield return new WaitForSecondsRealtime(0.5f);
-        Assert.AreNotSame(firstLevelFrame, levelArm.sprite, "The destination menu should also play the sprite wave.");
+        var levelVictor = GameObject.Find("Victor");
+        Assert.IsNull(levelVictor.GetComponent<Animator>());
+        var levelBackground = GameObject.Find("Background").GetComponent<Image>();
+        Assert.AreSame(levelBackground.defaultMaterial, levelBackground.material);
+        Assert.IsNull(levelVictor.transform.Find("RightArm"), "The destination menu should use the complete sprite too.");
         foreach (Transform child in levelVictor.transform.parent)
             Assert.AreNotEqual("VictorRightArm", child.name, "The old rotating arm should be removed.");
         Assert.IsFalse(GameObject.Find("LaunchButton").GetComponent<Button>().IsInteractable());

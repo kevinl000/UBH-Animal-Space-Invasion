@@ -1,5 +1,4 @@
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,14 +18,7 @@ public static class MenuPreviewCapture
         Debug.Log("MENU_PREVIEWS_OK");
     }
 
-    public static void CaptureVictorWave()
-    {
-        for (int i = 0; i < 4; i++)
-            CaptureScene("MainMenu", 500, 500, i);
-        Capture();
-    }
-
-    private static void CaptureScene(string sceneName, int width, int height, int? waveFrame = null)
+    private static void CaptureScene(string sceneName, int width, int height)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/" + sceneName + ".unity");
         var camera = Object.FindAnyObjectByType<Camera>();
@@ -41,18 +33,6 @@ public static class MenuPreviewCapture
         canvas.planeDistance = 1;
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
         scaler.scaleFactor = Mathf.Min(width / 1672f, height / 941f);
-        if (waveFrame.HasValue)
-        {
-            scaler.scaleFactor = 1;
-            var frame = GameObject.Find("ArtworkFrame").GetComponent<RectTransform>();
-            frame.localScale = Vector3.one * 2;
-            frame.anchoredPosition = new Vector2(-1466, 595);
-            var victor = GameObject.Find("Victor");
-            victor.GetComponent<Animator>().enabled = false;
-            var frames = AssetDatabase.LoadAllAssetsAtPath("Assets/Art/MainMenu/MainPage-victor-wave.png")
-                .OfType<Sprite>().OrderBy(sprite => sprite.name).ToArray();
-            victor.transform.Find("RightArm").GetComponent<Image>().sprite = frames[waveFrame.Value];
-        }
         canvas.scaleFactor = scaler.scaleFactor;
         Canvas.ForceUpdateCanvases();
 
@@ -65,7 +45,7 @@ public static class MenuPreviewCapture
         pixels.Apply();
         string directory = Path.GetFullPath(".git/menu-work");
         Directory.CreateDirectory(directory);
-        string name = waveFrame.HasValue ? "Victor-frame-" + waveFrame.Value : sceneName + "-" + width + "x" + height;
+        string name = sceneName + "-" + width + "x" + height;
         File.WriteAllBytes(Path.Combine(directory, name + ".png"), pixels.EncodeToPNG());
         RenderTexture.active = previous;
         camera.targetTexture = null;

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEditor.U2D.Sprites;
@@ -17,8 +16,6 @@ public static class MainMenuSetup
     private const string MainScene = "Assets/Scenes/MainMenu.unity";
     private const string LevelsScene = "Assets/Scenes/LevelSelect.unity";
     private const string ArtFolder = "Assets/Art/MainMenu/";
-    private const string WaveClipPath = ArtFolder + "VictorWave.anim";
-    private const string WaveControllerPath = ArtFolder + "VictorWave.controller";
     private static readonly Vector2 ReferenceSize = new Vector2(1672, 941);
     private static readonly Color Cream = new Color32(255, 239, 195, 255);
     private static readonly Color Ink = new Color32(24, 32, 64, 255);
@@ -78,7 +75,6 @@ public static class MainMenuSetup
             };
         }
         ImportSprite(ArtFolder + "MainPage-victor-wave.png", Vector4.zero, waveRects);
-        CreateWaveAnimation();
         ImportSprite("Assets/UI/Kenney/PanelGold.png", new Vector4(4, 4, 4, 4));
     }
 
@@ -115,77 +111,12 @@ public static class MainMenuSetup
         importer.SaveAndReimport();
     }
 
-    private static void CreateWaveAnimation()
-    {
-        // Existing clips remain editable in Unity; setup only creates missing assets.
-        var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(WaveClipPath);
-        if (clip == null)
-        {
-            var frames = AssetDatabase.LoadAllAssetsAtPath(ArtFolder + "MainPage-victor-wave.png")
-                .OfType<Sprite>().OrderBy(sprite => sprite.name).ToArray();
-            clip = new AnimationClip { name = "VictorWave", frameRate = 12 };
-            int[] sequence = { 0, 1, 2, 3, 0 };
-            var keys = new ObjectReferenceKeyframe[sequence.Length];
-            for (int i = 0; i < keys.Length; i++)
-                keys[i] = new ObjectReferenceKeyframe { time = i * 0.45f, value = frames[sequence[i]] };
-            AnimationUtility.SetObjectReferenceCurve(clip,
-                EditorCurveBinding.PPtrCurve("RightArm", typeof(Image), "m_Sprite"), keys);
-            var settings = AnimationUtility.GetAnimationClipSettings(clip);
-            settings.loopTime = true;
-            settings.stopTime = 1.8f;
-            AnimationUtility.SetAnimationClipSettings(clip, settings);
-            AssetDatabase.CreateAsset(clip, WaveClipPath);
-        }
-        if (AssetDatabase.LoadAssetAtPath<AnimatorController>(WaveControllerPath) == null)
-        {
-            var controller = AnimatorController.CreateAnimatorControllerAtPath(WaveControllerPath);
-            var state = controller.layers[0].stateMachine.AddState("Wave");
-            state.motion = clip;
-            controller.layers[0].stateMachine.defaultState = state;
-        }
-    }
-
-    // Migrate only Victor in the saved menus, preserving controls and UFO settings.
-    [MenuItem("Tools/Main Menu/Set Up Victor Sprite Wave")]
-    public static void SetUpVictorSpriteWave()
-    {
-        if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            return;
-        AssetDatabase.Refresh();
-        ImportArt();
-        foreach (string path in new[] { MainScene, LevelsScene })
-        {
-            var scene = EditorSceneManager.OpenScene(path);
-            var frame = GameObject.Find("ArtworkFrame").GetComponent<RectTransform>();
-            var oldArm = frame.Find("VictorRightArm");
-            if (oldArm != null)
-                UnityEngine.Object.DestroyImmediate(oldArm.gameObject);
-            if (frame.Find("Victor") == null)
-                CreateVictor(frame);
-            EditorSceneManager.SaveScene(scene);
-        }
-        EditorSceneManager.OpenScene(MainScene);
-        AssetDatabase.SaveAssets();
-        Debug.Log("VICTOR_SPRITE_WAVE_SETUP_OK");
-    }
-
     private static void CreateVictor(RectTransform frame)
     {
         var body = CreateImage("Victor", frame, LoadSprite(ArtFolder + "MainPage-victor-body.png"),
             new Vector2(733, -297.5f), new Vector2(131.6f, 207.2f));
         body.raycastTarget = false;
         body.transform.SetSiblingIndex(frame.Find("Background").GetSiblingIndex() + 1);
-        var firstFrame = AssetDatabase.LoadAllAssetsAtPath(ArtFolder + "MainPage-victor-wave.png")
-            .OfType<Sprite>().OrderBy(sprite => sprite.name).First();
-        var arm = CreateImage("RightArm", body.transform, firstFrame,
-            new Vector2(-32, 0), new Vector2(84, 84));
-        arm.rectTransform.pivot = new Vector2(0.87f, 0.32f);
-        arm.rectTransform.anchoredPosition = new Vector2(-32, 0);
-        arm.raycastTarget = false;
-        var animator = body.gameObject.AddComponent<Animator>();
-        animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(WaveControllerPath);
-        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
     }
 
     private static void CreateMainPage()
