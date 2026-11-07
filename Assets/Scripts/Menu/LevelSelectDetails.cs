@@ -12,6 +12,7 @@ public class LevelSelectDetails : MonoBehaviour
         [TextArea(2, 4)] public string description;
         public string bossName;
         public Sprite bossSprite;
+        public PlanetPresentation planet;
     }
 
     public Destination[] destinations;
@@ -21,15 +22,19 @@ public class LevelSelectDetails : MonoBehaviour
     public Image bossPreview;
     public Sprite unknownBoss;
     public Button playButton;
+    public int SelectedIndex { get; private set; }
+
+    public string SelectedSceneName => destinations[SelectedIndex].planet != null
+        ? destinations[SelectedIndex].planet.sceneName : null;
 
     public void ShowDestination(int index)
     {
         var destination = destinations[index];
+        SelectedIndex = index;
         landmarkAndLevel.text = destination.landmarkAndLevel;
         description.text = destination.description;
         bossName.text = string.IsNullOrWhiteSpace(destination.bossName) ? "Unknown" : destination.bossName;
         bossPreview.sprite = destination.bossSprite != null ? destination.bossSprite : unknownBoss;
-        // No scene mappings have been agreed yet; selection never launches gameplay.
-        playButton.interactable = false;
+        playButton.interactable = destination.planet != null && !string.IsNullOrEmpty(destination.planet.sceneName);
     }
 }

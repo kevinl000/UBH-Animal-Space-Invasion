@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 020fe949b14c4c6486df28e2b0ae493a, type: 3}
+  m_Name: DavisNova
+  m_EditorClassIdentifier: PlanetaryDefense.Menu::PlanetPresentation
+  displayName: Davis Nova
+  sceneName: DavisNova
+  level: 2
+  landmark: Davis
+  description: A bright sun cradled inside a technological ring.
+  bossName: Mother Skunk
+  visualPrefab: {fileID: 4790782634746517014, guid: 4b59cd1ea3780e74194109fe52b70299, type: 3}

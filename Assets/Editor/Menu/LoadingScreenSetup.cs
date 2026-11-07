@@ -65,7 +65,7 @@ public static class LoadingScreenSetup
         MakeText("Hint", root.transform, "Campus defense is on its way.", new Vector2(0, -148),
             new Vector2(950, 44), 28, Blue);
         MakeText("Footer", root.transform, "PLEASE STAND BY, DEFENDER", new Vector2(0, -360),
-            new Vector2(900, 40), 22, Cream);
+            new Vector2(900, 40), 24, Cream);
 
         var screen = root.AddComponent<SceneLoadingScreen>();
         screen.canvasGroup = root.GetComponent<CanvasGroup>();
@@ -138,7 +138,7 @@ public static class LoadingScreenSetup
         Vector2 size, int fontSize, Color color)
     {
         var text = MakeRect(name, parent, position, size).gameObject.AddComponent<Text>();
-        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelifySans.ttf");
+        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelOperator-Bold.ttf");
         text.text = value;
         text.fontSize = fontSize;
         text.alignment = TextAnchor.MiddleCenter;

@@ -9,6 +9,18 @@ using UnityEngine.UI;
 // Off-screen scene previews for checking layout without opening a visible editor window.
 public static class MenuPreviewCapture
 {
+    public static void CapturePlanets()
+    {
+        foreach (string scene in PlanetPageSetup.SceneNames)
+            CaptureScene(scene, 1672, 941);
+        CaptureScene("UnionPrime", 1280, 720);
+        CaptureScene("UnionPrime", 1280, 960);
+        CaptureScene("UnionPrime", 2560, 1080);
+        CaptureLevelSelect();
+        EditorSceneManager.OpenScene("Assets/Scenes/UnionPrime.unity");
+        Debug.Log("PLANET_PREVIEWS_OK");
+    }
+
     public static void CaptureLevelSelect()
     {
         CaptureScene("LevelSelect", 1672, 941);
@@ -31,6 +43,8 @@ public static class MenuPreviewCapture
     private static void CaptureScene(string sceneName, int width, int height)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/" + sceneName + ".unity");
+        var planetPage = Object.FindAnyObjectByType<PlanetPageController>();
+        if (planetPage != null) planetPage.RefreshPresentation();
         var camera = Object.FindAnyObjectByType<Camera>();
         var canvas = Object.FindAnyObjectByType<Canvas>();
         var scaler = canvas.GetComponent<CanvasScaler>();
