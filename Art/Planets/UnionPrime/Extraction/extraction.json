@@ -1,0 +1,51 @@
+{
+  "source": "Art/Concepts/UnionPrime-design-B-25.png",
+  "source_sha256": "bc491066e3f7022691145955199cd3ce2be42777d396c3a87b81ec818737e185",
+  "source_size": [
+    1254,
+    1254
+  ],
+  "planet_bounds_xyxy_exclusive": [
+    207,
+    70,
+    1047,
+    1043
+  ],
+  "section_bounds_xyxy_exclusive": [
+    442,
+    65,
+    812,
+    317
+  ],
+  "section_origin": [
+    442,
+    65
+  ],
+  "assembly_back_to_front": [
+    "planet-remainder.png",
+    "guild-facade.png",
+    "guild-foundation-visible.png",
+    "north-terrain-visible.png"
+  ],
+  "full_canvas_layers": [
+    "planet-remainder.png"
+  ],
+  "section_layers": [
+    "guild-facade.png",
+    "guild-foundation-visible.png",
+    "north-terrain-visible.png"
+  ],
+  "retained_pixel_count": 619634,
+  "changed_visible_rgb_pixels": 0,
+  "full_reassembly_different_pixels": 0,
+  "section_on_original_backdrop_different_pixels": 0,
+  "reconstructed_pixels": 0,
+  "geometry_corrections_applied": false,
+  "unity_integration": false,
+  "limits": [
+    "Foundation and terrain are visible fragments; hidden surfaces are not yet reconstructed.",
+    "Enclosed navy areas are retained; only connected exterior sky and isolated stars were removed.",
+    "Binary alpha preserves source RGB, including any existing edge blending.",
+    "No resizing or pixel-grid conversion has been applied to exported layers."
+  ]
+}

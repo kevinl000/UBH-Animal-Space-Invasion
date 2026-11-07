@@ -1,0 +1,241 @@
+{
+  "status": "user accepted compact split design; verified offline sweep; not imported into Unity",
+  "source_sha256": {
+    "Art/Towers/Laser/Redesign/Sweep/base-generated.png": "258a3c6bdc0702974618c50306220f80e4b8798682b01500874beb6a41bd8c43",
+    "Art/Towers/Laser/Redesign/Sweep/gun-generated.png": "d9ded8ab883f898df2a8f6bde1018c5a38110c534254dd1106b855cdea7f8f92",
+    "Art/Towers/Laser/Redesign/Sweep/site-mounts.json": "aa030daab1d7a506d752735d3422b73c7109fe19c97811bc2a31922c1e2220da",
+    "Art/Planets/UnionPrime/Composition/planet-assembled.png": "391d560bf1cde14a7ee4083252aca34679b9214984476f00eb7df1a3995ec4b0",
+    "Art/Planets/UnionPrime/Circular/terrain-circular.png": "b9111f71035b2bcc76de428e8e8f00940c6913606fe888518051649e24395584"
+  },
+  "coordinates": "pixel edges from top-left; positive study angles clockwise from local outward",
+  "base": {
+    "size": [
+      70,
+      72
+    ],
+    "source_crop": [
+      249,
+      360,
+      967,
+      1097
+    ],
+    "mount": [
+      34,
+      71
+    ],
+    "hinge": [
+      64,
+      24
+    ]
+  },
+  "barrel": {
+    "size": [
+      24,
+      33
+    ],
+    "source_crop": [
+      259,
+      309,
+      863,
+      1152
+    ],
+    "hinge": [
+      12,
+      28
+    ],
+    "muzzle": [
+      12,
+      3
+    ]
+  },
+  "aim_limits_degrees": [
+    -60,
+    60
+  ],
+  "operator": "fixed to base",
+  "sorting": "base behind weapon; both above terrain in this study",
+  "site_mounts": {
+    "source": "site-mounts.json",
+    "uniform_outward_offset_pixels": 16,
+    "terrain_checks": [
+      {
+        "site": 12,
+        "mount_xy": [
+          627,
+          267
+        ],
+        "original_mount_xy": [
+          627,
+          283
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 1,
+        "mount_xy": [
+          773,
+          296
+        ],
+        "original_mount_xy": [
+          766,
+          311
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 2,
+        "mount_xy": [
+          913,
+          424
+        ],
+        "original_mount_xy": [
+          900,
+          433
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 3,
+        "mount_xy": [
+          961,
+          603
+        ],
+        "original_mount_xy": [
+          945,
+          603
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 4,
+        "mount_xy": [
+          913,
+          774
+        ],
+        "original_mount_xy": [
+          899,
+          766
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 5,
+        "mount_xy": [
+          786,
+          898
+        ],
+        "original_mount_xy": [
+          778,
+          884
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 6,
+        "mount_xy": [
+          626,
+          941
+        ],
+        "original_mount_xy": [
+          626,
+          925
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 7,
+        "mount_xy": [
+          468,
+          898
+        ],
+        "original_mount_xy": [
+          476,
+          884
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 8,
+        "mount_xy": [
+          339,
+          774
+        ],
+        "original_mount_xy": [
+          353,
+          766
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 9,
+        "mount_xy": [
+          290,
+          603
+        ],
+        "original_mount_xy": [
+          306,
+          603
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 10,
+        "mount_xy": [
+          338,
+          421
+        ],
+        "original_mount_xy": [
+          351,
+          430
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      },
+      {
+        "site": 11,
+        "mount_xy": [
+          478,
+          298
+        ],
+        "original_mount_xy": [
+          485,
+          312
+        ],
+        "max_gun_overlap_pixels": 0,
+        "max_muzzle_ray_overlap_pixels": 0
+      }
+    ]
+  },
+  "checks": {
+    "sampled_angles": 241,
+    "angle_step_degrees": 0.5,
+    "alpha_threshold": 128,
+    "allowed_joint_overlap_radius_pixels": 12,
+    "max_opaque_overlap_outside_joint_pixels": 0,
+    "max_muzzle_ray_overlap_with_base_pixels": 0,
+    "minimum_joint_contact_pixels": 115,
+    "neutral_assembled_bounds": [
+      64,
+      100,
+      140,
+      176
+    ]
+  },
+  "limitations": [
+    "Offline raster sampling is not Unity collision or gameplay validation.",
+    "Generated shading and partial alpha remain; final palette/grid cleanup pending.",
+    "Upper facades remain crowded; rear scenery is not a gameplay obstacle.",
+    "Crater mounts adjusted uniformly outward; foreground soil lip still pending.",
+    "Thin firing ray checks do not establish projectile width or gameplay collision behavior."
+  ]
+}

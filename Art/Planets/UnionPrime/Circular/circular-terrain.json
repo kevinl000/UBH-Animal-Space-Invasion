@@ -1,0 +1,61 @@
+{
+  "source": "../Separation/terrain-visible.png",
+  "source_sha256": "579ffc6dccc7a24071e9b4d96d332ebcaa276cd5e8307d6a1d09a27b356bd3a0",
+  "repair_source": "natural-edge-generated.png",
+  "repair_sha256": "1e69634fe51d2d507fa5d096aac26c31c923e4def1d239a0892346fc6c1f4f0c",
+  "canvas_size": [
+    1254,
+    1254
+  ],
+  "center_xy": [
+    627,
+    610
+  ],
+  "radius_x": 365,
+  "radius_y": 365,
+  "pixel_grid": 1,
+  "mask_rule": "(x + 0.5 - 627)^2 + (y + 0.5 - 610)^2 <= 365^2",
+  "body_bounds_xyxy_exclusive": [
+    262,
+    245,
+    992,
+    975
+  ],
+  "body_alpha_matches_circle": true,
+  "body_holes": 0,
+  "fringe_max_distance_beyond_circle": 5,
+  "alpha_values": [
+    0,
+    255
+  ],
+  "preserved_center_radius": 270,
+  "preserved_center_pixels": 229020,
+  "changed_center_pixels": 0,
+  "changed_pixels_total": 195072,
+  "edge_inward_samples": 552,
+  "soil_region_count": 12,
+  "soil_region_pixels": [
+    3003,
+    3036,
+    3066,
+    3202,
+    3615,
+    4488,
+    4551,
+    4755,
+    4856,
+    4866,
+    4896,
+    5147
+  ],
+  "sampling": "Nearest-neighbor peripheral texture; color transition from radius 270 to 315, excluding old grass",
+  "source_edge_radius_min": 354.77777777777777,
+  "source_edge_radius_max": 365.0,
+  "buildings_modified": false,
+  "unity_integration": false,
+  "limits": [
+    "Dirt recesses are retained artwork inside the circle; site sizes are not standardized.",
+    "Perimeter pixels are generated/remapped; only the central 270-pixel radius is exact source artwork.",
+    "Building support alignment against the corrected edge still needs review before Unity integration."
+  ]
+}

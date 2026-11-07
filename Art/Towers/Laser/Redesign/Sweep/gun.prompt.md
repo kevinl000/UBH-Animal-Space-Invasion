@@ -1,0 +1,6 @@
+Use case: precise-object-edit.
+Asset type: isolated rotating gun sprite for the approved compact Laser turret.
+Edit target: the short chunky angled gun on the RIGHT of the reference image.
+Extract/reconstruct ONLY that gun as one complete isolated sprite, rotated to point STRAIGHT UP. Preserve its recognizable short chunky chamfered shape, ivory side casing, dark navy rear/breech and outline, two dark vent slits, and the single flat CYAN rectangular muzzle aperture. Keep the same simple pixel-art style and palette. It must look like the same approved gun upright, NOT the previous thin tube with stacked rings.
+At its bottom/rear, show a compact rounded navy breech; its center will be the rotation hinge. Draw the whole gun including the rear outline, with no cutaway gaps. No protruding handle, no mounting support or foot; the separate base will contain the fixed support. The barrel's axis should align vertically through its rear hinge and muzzle.
+Short powerful proportions, approximately 20 pixels wide by 32 pixels tall worth of detail, not a long cannon. One complete centered upright gun, isolated with generous transparent margin. No rabbit, no base, no seat, no controls, no ground, no beam, no text or diagrams. Match the reference flat side elevation, clean dark outlines, flat few-tone shading and large readable clusters. Actual transparent background.

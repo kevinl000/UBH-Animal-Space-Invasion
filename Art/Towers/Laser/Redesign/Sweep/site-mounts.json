@@ -1,0 +1,142 @@
+{
+  "description": "Original Union Prime mounts from the first fit study. build_sweep.py applies the common outward offset.",
+  "original_fit_manifest_sha256": "bc6337cb97052b0f6b32041ddeb7fb192ad937c52c50f6269d2285ae3dafd0e8",
+  "planet_center_xy": [
+    627,
+    610
+  ],
+  "sites": [
+    {
+      "clock_site": 12,
+      "angle_clockwise_degrees": 359.974,
+      "mount_xy": [
+        627,
+        283
+      ],
+      "mount_radius": 326.5,
+      "soil_pixels": 3202,
+      "scale": 1
+    },
+    {
+      "clock_site": 1,
+      "angle_clockwise_degrees": 24.969,
+      "mount_xy": [
+        766,
+        311
+      ],
+      "mount_radius": 329.771,
+      "soil_pixels": 3066,
+      "scale": 1
+    },
+    {
+      "clock_site": 2,
+      "angle_clockwise_degrees": 57.057,
+      "mount_xy": [
+        900,
+        433
+      ],
+      "mount_radius": 325.447,
+      "soil_pixels": 3615,
+      "scale": 1
+    },
+    {
+      "clock_site": 3,
+      "angle_clockwise_degrees": 88.746,
+      "mount_xy": [
+        945,
+        603
+      ],
+      "mount_radius": 317.714,
+      "soil_pixels": 4856,
+      "scale": 1
+    },
+    {
+      "clock_site": 4,
+      "angle_clockwise_degrees": 119.847,
+      "mount_xy": [
+        899,
+        766
+      ],
+      "mount_radius": 313.559,
+      "soil_pixels": 4896,
+      "scale": 1
+    },
+    {
+      "clock_site": 5,
+      "angle_clockwise_degrees": 151.22,
+      "mount_xy": [
+        778,
+        884
+      ],
+      "mount_radius": 312.776,
+      "soil_pixels": 4866,
+      "scale": 1
+    },
+    {
+      "clock_site": 6,
+      "angle_clockwise_degrees": 180.162,
+      "mount_xy": [
+        626,
+        925
+      ],
+      "mount_radius": 314.647,
+      "soil_pixels": 4755,
+      "scale": 1
+    },
+    {
+      "clock_site": 7,
+      "angle_clockwise_degrees": 208.919,
+      "mount_xy": [
+        476,
+        884
+      ],
+      "mount_radius": 312.989,
+      "soil_pixels": 5147,
+      "scale": 1
+    },
+    {
+      "clock_site": 8,
+      "angle_clockwise_degrees": 240.392,
+      "mount_xy": [
+        353,
+        766
+      ],
+      "mount_radius": 315.149,
+      "soil_pixels": 4551,
+      "scale": 1
+    },
+    {
+      "clock_site": 9,
+      "angle_clockwise_degrees": 271.254,
+      "mount_xy": [
+        306,
+        603
+      ],
+      "mount_radius": 321.567,
+      "soil_pixels": 4488,
+      "scale": 1
+    },
+    {
+      "clock_site": 10,
+      "angle_clockwise_degrees": 303.208,
+      "mount_xy": [
+        351,
+        430
+      ],
+      "mount_radius": 329.388,
+      "soil_pixels": 3036,
+      "scale": 1
+    },
+    {
+      "clock_site": 11,
+      "angle_clockwise_degrees": 334.617,
+      "mount_xy": [
+        485,
+        312
+      ],
+      "mount_radius": 330.119,
+      "soil_pixels": 3003,
+      "scale": 1
+    }
+  ]
+}

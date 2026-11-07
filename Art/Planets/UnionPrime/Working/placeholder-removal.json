@@ -1,0 +1,29 @@
+{
+  "source": "../Extraction/planet-isolated.png",
+  "source_sha256": "65a7972f4f176ba05e3f4ac38c939f90816988ad5995c4ca4d27868e530f519f",
+  "repair_source": "placeholder-removal-generated.png",
+  "repair_source_sha256": "6aa705c2dd17d21aa27ee210850805931646fea9688e3246662cd423aed26cfc",
+  "method": "Built-in imagegen removal; only two masked regions retained, including alpha.",
+  "repair_regions_xyxy_exclusive": [
+    [
+      215,
+      552,
+      300,
+      645
+    ],
+    [
+      955,
+      552,
+      1039,
+      645
+    ]
+  ],
+  "changed_pixels": 13886,
+  "changed_pixels_outside_regions": 0,
+  "guild_reassembly_different_pixels": 0,
+  "sites": 12,
+  "baked_placeholder_blocks": 0,
+  "circle_and_equal_site_corrections_applied": false,
+  "unity_integration": false,
+  "note": "Reconstructed pixels are confined to the requested side-site repairs. Original extraction is retained as fidelity evidence."
+}

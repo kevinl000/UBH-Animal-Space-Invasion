@@ -1,0 +1,271 @@
+{
+  "canvas_size": [
+    1254,
+    1254
+  ],
+  "terrain": {
+    "file": "../Circular/terrain-circular.png",
+    "origin_xy": [
+      0,
+      0
+    ],
+    "sha256": "b9111f71035b2bcc76de428e8e8f00940c6913606fe888518051649e24395584"
+  },
+  "structures": [
+    {
+      "file": "../Separation/../Extraction/guild-facade.png",
+      "sha256": "fe9f2b90ea8328ea928e9c8a9b31c17e80a42a034ddcb9ec680c56ff81d38830",
+      "source_origin_xy": [
+        442,
+        65
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        442,
+        65
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/../Extraction/guild-foundation-visible.png",
+      "sha256": "d33dccb77fc94f573e1a952b37c47793efca181fdf1bb7a0824f13a331d7837f",
+      "source_origin_xy": [
+        442,
+        65
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        442,
+        65
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/market-northwest.png",
+      "sha256": "8f57221fe1cb6407ed6e33b6637866c81055f704e7db46658998515b59cf9c15",
+      "source_origin_xy": [
+        242,
+        187
+      ],
+      "translation_xy": [
+        10,
+        16
+      ],
+      "origin_xy": [
+        252,
+        203
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/market-northeast.png",
+      "sha256": "494b0512fcae25810279bc56c1f4d52934ce41946ce27b3abd553990bdd5a0a2",
+      "source_origin_xy": [
+        797,
+        187
+      ],
+      "translation_xy": [
+        -10,
+        16
+      ],
+      "origin_xy": [
+        787,
+        203
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/stand-west-upper.png",
+      "sha256": "308a66756a8df24aa8f349d4bf39cc6fe73ccc5127035014c9c275b9f2fb174b",
+      "source_origin_xy": [
+        207,
+        360
+      ],
+      "translation_xy": [
+        12,
+        5
+      ],
+      "origin_xy": [
+        219,
+        365
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/stand-east-upper.png",
+      "sha256": "b5aa8c4d999a1d7533d52e93154e332c7f74c15e587f4335244ac741bacfd5c1",
+      "source_origin_xy": [
+        943,
+        360
+      ],
+      "translation_xy": [
+        -12,
+        5
+      ],
+      "origin_xy": [
+        931,
+        365
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/stand-west-lower.png",
+      "sha256": "ff4470d947e760033ff8ae7ecc7a2d72690e80e1846f598c340af878cb9893ea",
+      "source_origin_xy": [
+        207,
+        680
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        207,
+        680
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/stand-east-lower.png",
+      "sha256": "1507f61539e1dc4aaad7b2ce7b36b22e60f08cec7e7f8b49a09756bb5fa74466",
+      "source_origin_xy": [
+        947,
+        680
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        947,
+        680
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/shop-southwest.png",
+      "sha256": "6d5223a30b3f9a1ac734c7181362b2c44aad41c9e59d7b09f854ccaacc983bc8",
+      "source_origin_xy": [
+        232,
+        783
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        232,
+        783
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/shop-southeast.png",
+      "sha256": "20d5e5a256bc5f06c87eaaa1e6455e53db6fcee6b1b3112e644cd3fd53a9e445",
+      "source_origin_xy": [
+        808,
+        783
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        808,
+        783
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/kiosk-southwest.png",
+      "sha256": "e4d32ce393b1d207b5904189bd25cb792b6de678702aa145d3cd8dbfa9972db1",
+      "source_origin_xy": [
+        414,
+        928
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        414,
+        928
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    },
+    {
+      "file": "../Separation/kiosk-southeast.png",
+      "sha256": "119a29b3d186319c89474cb13c1a9e019c2b8058232482ce0e8ea6242df27d2a",
+      "source_origin_xy": [
+        693,
+        928
+      ],
+      "translation_xy": [
+        0,
+        0
+      ],
+      "origin_xy": [
+        693,
+        928
+      ],
+      "rotation_degrees": 0,
+      "scale": 1
+    }
+  ],
+  "guild_support": {
+    "file": "guild-support.png",
+    "origin_xy": [
+      465,
+      253
+    ],
+    "bounds_xyxy_exclusive": [
+      465,
+      253,
+      790,
+      282
+    ],
+    "added_pixels": 976,
+    "repair_source": "guild-support-repair-source.png",
+    "repair_source_origin_xy": [
+      450,
+      240
+    ],
+    "repair_source_sha256": "4af6841210a0b2a5a75db641487b3acf8a2e4b74e8634ac54e90d81c1f963ec3"
+  },
+  "assembly_back_to_front": [
+    "guild_support",
+    "structures in listed order",
+    "terrain"
+  ],
+  "changes_outside_guild_repair_after_alignment": 0,
+  "terrain_pixels_changed": 0,
+  "source_sprites_modified": false,
+  "resampled_source_sprites": false,
+  "transparent_guild_support_gaps": 0,
+  "sites": 12,
+  "tower_placeholders": 0,
+  "unity_integration": false,
+  "limits": [
+    "Composition review artifact; no Unity mounting pivots or display checks yet.",
+    "Crater widths/depths are not standardized.",
+    "Supports complete the current pose, not every hidden surface for arbitrary independent movement.",
+    "Scale-review images are nearest-neighbor offline studies, not Unity captures."
+  ]
+}
