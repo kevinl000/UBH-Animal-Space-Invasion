@@ -32,6 +32,11 @@ public class UnionPrimeVisualTest : MonoBehaviour
     public TowerPresentation laser;
     public FacadeLayer[] facades;
     public CraterSite[] sites;
+    // Prepared sprite layers let other planets retain their reviewed composition.
+    public RectTransform preparedTowerLayer;
+    public Vector2 sourceSize = new Vector2(1254, 1254);
+    public float towerScale = 1.5f;
+    public string siteLabel = "crater";
 
     public int PlacedCount { get; private set; }
     public float AimDegrees { get; private set; }
@@ -47,7 +52,6 @@ public class UnionPrimeVisualTest : MonoBehaviour
     private RectTransform ghostGun;
     private bool hintsReady;
     private const float SourceSize = 1254;
-    private const float TowerScale = 1.5f;
     private const float HitRadius = 60;
 
     private void Awake()
@@ -55,19 +59,26 @@ public class UnionPrimeVisualTest : MonoBehaviour
         page = GetComponentInParent<PlanetPageController>();
         canvas = GetComponentInParent<Canvas>();
         if (silhouette != null) silhouette.SetActive(false);
-        ArtRoot = Rect("Union Prime Art", transform, new Vector2(SourceSize, SourceSize));
-        ArtRoot.localScale = Vector3.one * (640f / SourceSize);
-        Layer("Rear ground", ArtRoot, rearGround, Vector2.zero);
-        foreach (var facade in facades)
-            Layer(facade.sprite.name, ArtRoot, facade.sprite, facade.origin);
-        Layer("Terrain", ArtRoot, terrain, Vector2.zero);
-        towerLayer = Rect("Placed Lasers", ArtRoot, new Vector2(SourceSize, SourceSize));
+        if (preparedTowerLayer != null)
+        {
+            ArtRoot = towerLayer = preparedTowerLayer;
+        }
+        else
+        {
+            ArtRoot = Rect("Union Prime Art", transform, new Vector2(SourceSize, SourceSize));
+            ArtRoot.localScale = Vector3.one * (640f / SourceSize);
+            Layer("Rear ground", ArtRoot, rearGround, Vector2.zero);
+            foreach (var facade in facades)
+                Layer(facade.sprite.name, ArtRoot, facade.sprite, facade.origin);
+            Layer("Terrain", ArtRoot, terrain, Vector2.zero);
+            towerLayer = Rect("Placed Lasers", ArtRoot, new Vector2(SourceSize, SourceSize));
+            Layer("Foreground soil", ArtRoot, foreground, Vector2.zero);
+        }
         placed = new RectTransform[sites.Length];
         guns = new RectTransform[sites.Length];
         ghost = MakeLaser("Placement preview", out ghostGun);
         ghost.gameObject.AddComponent<CanvasGroup>().alpha = 0.5f;
         ghost.gameObject.SetActive(false);
-        Layer("Foreground soil", ArtRoot, foreground, Vector2.zero);
     }
 
     private void Update()
@@ -75,7 +86,7 @@ public class UnionPrimeVisualTest : MonoBehaviour
         if (page == null) return;
         if (!hintsReady)
         {
-            page.planetDescription.text = "Laser: click a crater to build / Right-click to remove\nQ / E: aim    R: reset aim    Free placement";
+            page.planetDescription.text = "Laser: click a " + siteLabel + " to build / Right-click to remove\nQ / E: aim    R: reset aim    Free placement";
             var hint = page.transform.Find("InspectionHint");
             if (hint != null) hint.GetComponent<Text>().text = "LASER VISUAL TEST / FREE";
             foreach (var card in page.cards)
@@ -142,7 +153,7 @@ public class UnionPrimeVisualTest : MonoBehaviour
 
     public Vector2 LocalMount(int index)
     {
-        return new Vector2(sites[index].mount.x - SourceSize / 2, SourceSize / 2 - sites[index].mount.y);
+        return new Vector2(sites[index].mount.x - sourceSize.x / 2, sourceSize.y / 2 - sites[index].mount.y);
     }
 
     public bool IsOccupied(int index)
@@ -188,7 +199,7 @@ public class UnionPrimeVisualTest : MonoBehaviour
     private RectTransform MakeLaser(string title, out RectTransform gun)
     {
         var tower = Rect(title, towerLayer, Vector2.zero);
-        tower.localScale = Vector3.one * TowerScale;
+        tower.localScale = Vector3.one * towerScale;
         var body = SpriteImage("Base and operator", tower, laserBase);
         body.pivot = new Vector2(34f / 70, 1f / 72);
         gun = SpriteImage("Gun", tower, laserGun);

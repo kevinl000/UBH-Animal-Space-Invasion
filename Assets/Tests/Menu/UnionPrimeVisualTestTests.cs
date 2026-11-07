@@ -8,18 +8,28 @@ using UnityEngine.TestTools;
 
 public class UnionPrimeVisualTestTests
 {
+    private static readonly string[] Scenes = { "UnionPrime", "CapenMajor", "DavisNova" };
+
     [UnityTest]
-    public IEnumerator EverySiteAllowsFreeLaserPlacementRemovalAndFreshSceneEntry()
+    public IEnumerator EverySiteAllowsFreeLaserPlacementRemovalAndFreshSceneEntry([ValueSource(nameof(Scenes))] string scene)
     {
-        yield return OpenUnionPrime();
+        yield return OpenPlanet(scene);
         var visual = Object.FindAnyObjectByType<UnionPrimeVisualTest>();
         var page = Object.FindAnyObjectByType<PlanetPageController>();
-        Assert.AreEqual(12, visual.SiteCount);
+        int expectedSites = scene == "CapenMajor" ? 16 : 12;
+        Assert.AreEqual(expectedSites, visual.SiteCount);
         Assert.AreEqual(0, visual.PlacedCount);
         Assert.IsFalse(visual.TryPlace(-1));
-        Assert.IsFalse(visual.TryPlace(12));
+        Assert.IsFalse(visual.TryPlace(expectedSites));
         Assert.IsFalse(visual.RemoveAt(-1));
         string originalCost = visual.laser.cost;
+        if (visual.preparedTowerLayer != null)
+        {
+            var front = visual.transform.Find(scene == "DavisNova" ? "SocketFronts" : "SteelFronts");
+            Assert.Greater(front.GetSiblingIndex(), visual.preparedTowerLayer.GetSiblingIndex(),
+                "Prepared front edges must cover the tower foundations.");
+            Assert.AreEqual(scene == "CapenMajor" ? 1.5f : 2f, visual.towerScale);
+        }
 
         page.SelectTower(page.cards[1]);
         Assert.IsFalse(visual.TryPlace(0), "Other roster cards remain inspectable, not placeable.");
@@ -31,11 +41,18 @@ public class UnionPrimeVisualTestTests
                 Assert.IsTrue(visual.TryPlace(i), "Free placement at site index " + i);
                 Assert.IsFalse(visual.TryPlace(i), "Do not stack duplicates into an occupied crater.");
             }
-            Assert.AreEqual(12, visual.PlacedCount);
+            Assert.AreEqual(expectedSites, visual.PlacedCount);
+            var tower = System.Array.Find(visual.ArtRoot.GetComponentsInChildren<UnityEngine.UI.Image>(),
+                image => image.name == "Base and operator");
+            Assert.IsNotNull(tower);
+            var baseRotation = tower.transform.rotation;
             visual.SetAim(-90);
             Assert.AreEqual(-60, visual.AimDegrees);
             visual.SetAim(90);
             Assert.AreEqual(60, visual.AimDegrees);
+            Assert.AreEqual(baseRotation, tower.transform.rotation, "Aiming must leave the foundation seated.");
+            Assert.Less(Quaternion.Angle(Quaternion.Euler(0, 0, -60),
+                tower.transform.parent.Find("Gun").localRotation), 0.01f);
             visual.SetAim(0);
             page.controls.interactable = false;
             Assert.IsFalse(visual.RemoveAt(0));
@@ -45,16 +62,16 @@ public class UnionPrimeVisualTestTests
         }
         Assert.AreEqual(originalCost, visual.laser.cost, "Testing must not rewrite shared balance/display data.");
         Assert.IsTrue(visual.TryPlace(0));
-        yield return OpenUnionPrime();
+        yield return OpenPlanet(scene);
         Assert.AreEqual(0, Object.FindAnyObjectByType<UnionPrimeVisualTest>().PlacedCount);
-        yield return SceneManager.LoadSceneAsync("CapenMajor");
+        yield return SceneManager.LoadSceneAsync("SilvermanLuna");
         yield return null;
-        Assert.IsNull(Object.FindAnyObjectByType<UnionPrimeVisualTest>(), "Sandbox is Union Prime only.");
+        Assert.IsNull(Object.FindAnyObjectByType<UnionPrimeVisualTest>(), "Other planets remain unchanged.");
         LogAssert.NoUnexpectedReceived();
     }
 
     [UnityTest]
-    public IEnumerator PointerPlacesAtCraterIgnoresPlanetCenterAndRemovesWithRightClick()
+    public IEnumerator PointerPlacesAtCraterIgnoresPlanetCenterAndRemovesWithRightClick([ValueSource(nameof(Scenes))] string scene)
     {
         var background = InputSystem.settings.backgroundBehavior;
         var editorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
@@ -63,7 +80,7 @@ public class UnionPrimeVisualTestTests
         var mouse = InputSystem.AddDevice<Mouse>("UnionPrimeVisualTestMouse");
         try
         {
-            yield return OpenUnionPrime();
+            yield return OpenPlanet(scene);
             var visual = Object.FindAnyObjectByType<UnionPrimeVisualTest>();
             var page = Object.FindAnyObjectByType<PlanetPageController>();
             Canvas.ForceUpdateCanvases();
@@ -94,9 +111,9 @@ public class UnionPrimeVisualTestTests
         LogAssert.NoUnexpectedReceived();
     }
 
-    private static IEnumerator OpenUnionPrime()
+    private static IEnumerator OpenPlanet(string scene)
     {
-        yield return SceneManager.LoadSceneAsync("UnionPrime");
+        yield return SceneManager.LoadSceneAsync(scene);
         yield return null;
         yield return null;
     }

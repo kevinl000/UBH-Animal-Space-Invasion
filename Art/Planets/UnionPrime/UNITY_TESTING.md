@@ -29,7 +29,7 @@ This is an art sandbox: guns do not target or fire at enemies.
 3. Compare 1280x720, 1672x941, 1280x960 and 2560x1080. Check that HUD controls remain
    readable/clickable and placement previews line up with the visible craters.
 4. Return to LevelSelect and re-enter Union Prime: sites should be empty. Other
-   planet pages should retain their original presentation.
+   planet pages remain separate; Capen Major and Davis Nova now offer the same Laser sandbox.
 
 The current [terrain/background polish](README.md) adds rear
 supporting ground, repairs the lower doubled rims and texture joins, and uses
@@ -38,6 +38,13 @@ Laser remain. Review the guild threshold and lower/side craters both empty and
 filled, and judge the revised facade contrast at actual Game view size.
 
 ## Verification status
+
+**Shared placement update, 2026-11-07:** Unity 6000.6.7f1 passed all six
+`UnionPrimeVisualTestTests` cases (two per planet), three existing page-flow tests,
+and a temporary capture check: 10 passed, 0 failed. Results are local at
+`.git/menu-work/planet-visual-tests.xml`. Union Prime retains its original scale,
+mounts and artwork. See Capen Major and Davis Nova's `UNITY_TESTING.md` for the
+new prepared layers. The records below describe earlier revisions.
 
 **Current polish, 2026-11-05:** offline compilation of Managers, Menu, Menu.Tests
 and menu editor scripts passed; only the existing AudioManager warnings remain.
@@ -62,7 +69,7 @@ passed again; no additional Unity run was performed by the agent.
 
 **Automated Play Mode results and a standalone build remain unreported.**
 In **Window > General > Test Runner > PlayMode**,
-run `UnionPrimeVisualTestTests` (two tests) and the existing `PlanetPageTests`.
+run `UnionPrimeVisualTestTests` (six cases) and the existing `PlanetPageTests`.
 The new tests cover placement/removal at all twelve sites, duplicates, selection,
 aim bounds, scene reset, pointer positions and UI input isolation. They compile;
 their runtime results remain pending.

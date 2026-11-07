@@ -1,7 +1,7 @@
 """Import the current Davis Nova layers and update its existing visual prefab.
 
 No scene, shared HUD, gameplay script or existing asset GUID is changed.
-The inactive TowerFitPreview group is a static art check, not a placement system.
+The prepared tower layer uses the same free Laser sandbox as Union Prime.
 """
 import hashlib
 import json
@@ -10,11 +10,15 @@ from pathlib import Path
 import re
 import shutil
 import uuid
+import sys
 
 from PIL import Image
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+sys.path.insert(0, str(ROOT/'Art/Planets'))
+from visual_test_prefab import attach_placement
+
 DEST = ROOT/'Assets/Art/Planets/DavisNova'
 PREFAB = ROOT/'Assets/UI/Planets/DavisNovaVisual.prefab'
 DISPLAY_SIZE = 600
@@ -107,33 +111,23 @@ def main():
     def ids(start):
         return tuple(range(start, start+4))
 
-    site_ids = [PREVIEW_ID+100+i*100 for i in range(12)]
-    parts += node('TowerFitPreview', ids(PREVIEW_ID), ROOT_RECT, (1254, 1254),
-                  scale=DISPLAY_SIZE/1254, child_ids=[i+1 for i in site_ids], active=False)
+    parts += node('PlacedLasers', ids(PREVIEW_ID), ROOT_RECT, (1254, 1254),
+                  scale=DISPLAY_SIZE/1254)
     laser_folder = ROOT/'Assets/Art/Planets/UnionPrime'
     base_path, gun_path = laser_folder/'LaserBase.png', laser_folder/'LaserGun.png'
-    base_size, gun_size = Image.open(base_path).size, Image.open(gun_path).size
-    for site, sid in zip(layout['sites'], site_ids):
-        mx, my = site['mount']
-        parts += node(f'Site{site["site"]:02}', ids(sid), PREVIEW_ID+1,
-                      position=(mx-627, 627-my), angle=-site['angle'], scale=2,
-                      child_ids=[sid+11, sid+21])
-        parts += node('LaserBase', ids(sid+10), sid+1, base_size,
-                      pivot=(34/base_size[0], 1-71/base_size[1]), sprite=guid(base_path))
-        parts += node('AimPivot', ids(sid+20), sid+1, position=(30, 47), child_ids=[sid+31])
-        parts += node('LaserGun', ids(sid+30), sid+21, gun_size,
-                      pivot=(12/gun_size[0], 1-28/gun_size[1]), sprite=guid(gun_path))
     parts += node('SocketFronts', ids(FRONT_ID), ROOT_RECT, (DISPLAY_SIZE, DISPLAY_SIZE),
                   sprite=images['SocketFronts']['guid'])
     prefab_text = '%YAML 1.1\n%TAG !u! tag:unity3d.com,2011:\n'+''.join(parts)
+    prefab_text = attach_placement(prefab_text, 4790782634746517014, PREVIEW_ID+1,
+                                   (1254, 1254), layout['sites'])
     PREFAB.write_text(re.sub(r'[ \t]+$', '', prefab_text, flags=re.M), encoding='utf-8', newline='\n')
     manifest = dict(editor='6000.6.7f1', images=images, visual_prefab=PREFAB.relative_to(ROOT).as_posix(),
                     site_count=12, source_canvas_display_width=DISPLAY_SIZE, tower_scale=2,
                     shared_tower_assets=[base_path.relative_to(ROOT).as_posix(), gun_path.relative_to(ROOT).as_posix()],
-                    tower_preview_enabled_by_default=False, source_layout='socket-layout.json',
-                    limits='Static art preview; no placement/combat. See UNITY_TESTING.md for checks.')
+                    free_laser_placement=True, source_layout='socket-layout.json',
+                    limits='Free Laser placement and aiming; no combat or resource spending. See UNITY_TESTING.md for checks.')
     (HERE/'unity-import.json').write_text(json.dumps(manifest, indent=2)+'\n')
-    print('Prepared Sun, Ring, SocketFronts and twelve optional Laser previews in DavisNovaVisual.prefab.')
+    print('Prepared Sun, Ring, SocketFronts and twelve interactive Laser sites in DavisNovaVisual.prefab.')
 
 
 if __name__ == '__main__':

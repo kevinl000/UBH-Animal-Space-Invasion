@@ -1,175 +1,233 @@
 {
-  "status": "current administration facade assembly; Unity integration pending",
+  "status": "sixteen-socket assembly; facade layout retained for the next pass",
+  "socket_scale_relative_to_previous": 0.75,
+  "site_spacing_degrees": 22.5,
+  "planet_center": [
+    608,
+    695
+  ],
   "reference_diameter": 986,
   "edge_source_origin": [
     1082,
     212
   ],
   "edge_scale": [
-    0.1253731343283582,
-    0.16
+    0.09402985074626866,
+    0.12
   ],
-  "tower_scale": 2.0,
-  "tower_scale_reason": "normalizes roughly 986px Capen diameter to the 730px Union Prime reference at 1.5x",
-  "foundation_inset": 41.150000000000006,
+  "tower_scale": 1.5,
+  "tower_scale_reason": "visual Laser scales with the socket to preserve foundation fit; shared tower artwork unchanged",
+  "foundation_inset": 31.169999999999998,
   "sampled_foundation_columns": 62,
-  "minimum_contour_overlap": 0.7500000000000036,
-  "maximum_contour_overlap": 12.830000000000005,
+  "minimum_contour_overlap": 0.75,
+  "maximum_contour_overlap": 10.169999999999998,
   "sites": [
     {
-      "site": 12,
-      "angle": 0,
+      "site": 1,
+      "angle": 0.0,
       "horizon": [
-        608,
-        183
+        608.0,
+        184.0
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
         608.0,
-        224.15
-      ]
-    },
-    {
-      "site": 1,
-      "angle": 32,
-      "horizon": [
-        879,
-        261
-      ],
-      "foundation_columns_supported_by_edge_and_hull_mask": 62,
-      "mount": [
-        857.1938222768036,
-        295.89717915683696
+        215.17
       ]
     },
     {
       "site": 2,
-      "angle": 58,
+      "angle": 22.5,
       "horizon": [
-        1031,
-        431
+        803.5512339385609,
+        222.8975588867325
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        996.102820843163,
-        452.80617772319636
+        791.6229913517411,
+        251.6948839151093
       ]
     },
     {
       "site": 3,
-      "angle": 83,
+      "angle": 45.0,
       "horizon": [
-        1096,
-        635
+        965.0889244992065,
+        337.91107550079346
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        1055.1567258599596,
-        640.0149234811219
+        943.0484061296219,
+        359.95159387037813
       ]
     },
     {
       "site": 4,
-      "angle": 108,
+      "angle": 67.5,
       "horizon": [
-        1057,
-        841
+        1067.1681276581094,
+        504.80633411455034
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        1017.8640243544544,
-        828.283950681471
+        1038.3708026297325,
+        516.7345767013702
       ]
     },
     {
       "site": 5,
-      "angle": 143,
+      "angle": 90.0,
       "horizon": [
-        880,
-        1056
+        1096.0,
+        695.0
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        855.2353117972932,
-        1023.1361487615538
+        1064.83,
+        695.0
       ]
     },
     {
       "site": 6,
-      "angle": 180,
+      "angle": 112.5,
       "horizon": [
-        608,
-        1155
+        1036.680103085237,
+        872.5651126174016
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        608.0,
-        1113.85
+        1007.8827780568603,
+        860.6368700305818
       ]
     },
     {
       "site": 7,
-      "angle": 217,
+      "angle": 135.0,
       "horizon": [
-        325,
-        1071
+        924.0767311903867,
+        1011.0767311903867
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        349.7646882027068,
-        1038.1361487615538
+        902.036212820802,
+        989.036212820802
       ]
     },
     {
       "site": 8,
-      "angle": 252,
+      "angle": 157.5,
       "horizon": [
-        151,
-        843
+        782.503645158481,
+        1116.2890668251466
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        190.13597564554556,
-        830.2839506814709
+        770.5754025716612,
+        1087.4917417967697
       ]
     },
     {
       "site": 9,
-      "angle": 277,
+      "angle": 180.0,
       "horizon": [
-        114,
-        634
+        608.0,
+        1156.0
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        154.84327414004042,
-        639.0149234811219
+        608.0,
+        1124.83
       ]
     },
     {
       "site": 10,
-      "angle": 302,
+      "angle": 202.5,
       "horizon": [
-        182,
-        429
+        427.7561033560428,
+        1130.1472598128162
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        216.89717915683693,
-        450.80617772319636
+        439.68434594286265,
+        1101.3499347844393
       ]
     },
     {
       "site": 11,
-      "angle": 328,
+      "angle": 225.0,
       "horizon": [
-        337,
-        262
+        279.90245352944197,
+        1023.0975464705582
       ],
       "foundation_columns_supported_by_edge_and_hull_mask": 62,
       "mount": [
-        358.8061777231964,
-        296.89717915683696
+        301.94297189902665,
+        1001.0570281009735
+      ]
+    },
+    {
+      "site": 12,
+      "angle": 247.5,
+      "horizon": [
+        167.30946299211615,
+        877.5399972381476
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        196.10678802049296,
+        865.6117546513278
+      ]
+    },
+    {
+      "site": 13,
+      "angle": 270.0,
+      "horizon": [
+        114.0,
+        695.0000000000001
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        145.17,
+        695.0000000000001
+      ]
+    },
+    {
+      "site": 14,
+      "angle": 292.5,
+      "horizon": [
+        144.2124746793341,
+        502.8929169527248
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        173.0097997077109,
+        514.8211595395446
+      ]
+    },
+    {
+      "site": 15,
+      "angle": 315.0,
+      "horizon": [
+        253.73950262553961,
+        340.7395026255398
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        275.7800209951243,
+        362.78002099512446
+      ]
+    },
+    {
+      "site": 16,
+      "angle": 337.5,
+      "horizon": [
+        412.0660826290741,
+        221.97367935422113
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        423.994325215894,
+        250.77100438259794
       ]
     }
   ],
@@ -194,6 +252,81 @@
       884
     ],
     "strip_width": 1,
+    "shoulder_source_contacts": [
+      [
+        340,
+        269
+      ],
+      [
+        350,
+        267
+      ],
+      [
+        360,
+        259
+      ],
+      [
+        370,
+        253
+      ],
+      [
+        380,
+        249
+      ],
+      [
+        395,
+        244
+      ],
+      [
+        410,
+        242
+      ],
+      [
+        800,
+        242
+      ],
+      [
+        820,
+        247
+      ],
+      [
+        840,
+        253
+      ],
+      [
+        860,
+        264
+      ],
+      [
+        884,
+        277
+      ],
+      [
+        890,
+        280
+      ],
+      [
+        900,
+        291
+      ],
+      [
+        910,
+        297
+      ],
+      [
+        920,
+        303
+      ],
+      [
+        930,
+        312
+      ],
+      [
+        940,
+        324
+      ]
+    ],
+    "shoulder_render_right": 940,
     "strip_overlap": 1,
     "hull_bottom_overlap": 2,
     "composited_hull_alpha_gain": 1.07,

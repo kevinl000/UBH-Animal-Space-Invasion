@@ -20,6 +20,7 @@ ADMIN_SCALE = .30
 ADMIN_ANGLE = 0
 # Circular cap joins the existing shoulders at roughly (340, 261)/(884, 264).
 CAP_LEFT, CAP_RIGHT, CAP_BOTTOM = 340, 884, 340
+CAP_RENDER_RIGHT = 940
 CAP_STEP = 1
 CAP_RADIUS = 512
 ADMIN_BLEND_TOP = 180
@@ -32,18 +33,14 @@ PREVIEW_WIDTH = 1392
 EDGE = HERE/'steel-edge-source-v2.png'
 FLOOR = HERE/'steel-floor-source-v2.png'
 CX, CY, RX, RY = 608, 695, 493, 460
-WIDTH = 168
-SX, SY = WIDTH/1340, .16
+SOCKET_SCALE = .75
+WIDTH = 168*SOCKET_SCALE
+HALF_WIDTH = math.floor(83*SOCKET_SCALE)
+SX, SY = WIDTH/1340, .16*SOCKET_SCALE
 SOURCE_X, SOURCE_Y = 1082, 212
-# Match the reference tower/planet ratio: 1.5 * 986 / 730 ~= 2.03.
-# This is source-canvas normalization, not a gameplay-size decision.
-TOWER_SCALE = 2.0
-SITES = [(12,0),(1,32),(2,58),(3,83),(4,108),(5,143),
-         (6,180),(7,217),(8,252),(9,277),(10,302),(11,328)]
-# Measured opaque perimeter along each local ray; facade-covered top is manual.
-HORIZONS = {12:(608,CY-CAP_RADIUS),1:(879,261),2:(1031,431),3:(1096,635),
-            4:(1057,841),5:(880,1056),6:(608,1155),7:(325,1071),
-            8:(151,843),9:(114,634),10:(182,429),11:(337,262)}
+# Preserve the foundation/socket proportion in the visual placement sandbox.
+TOWER_SCALE = 2.0*SOCKET_SCALE
+SITES = [(i+1, i*22.5) for i in range(16)]
 # Only these facade regions use the redraw; retain the original hull and bay mask.
 FACADE_REGIONS = [
     ('Bus station', '340,0 884,0 884,241 340,241', (330,0,560,260)),
@@ -110,20 +107,33 @@ def build():
         hull_mask.polygon([tuple(map(int,p.split(','))) for p in points.split()],fill=0)
     hull_mask.polygon([tuple(map(int,p.split(','))) for p in OLD_PLAZA_CLEARANCE.split()],fill=0)
     # The original upper hull has a flat station footprint. Refit only this cap.
+    # Its shoulders retain dark fragments of the old station border. Sample
+    # below that border before stretching, using continuous source contours
+    # so abrupt per-column offsets cannot leave vertical streaks in the steel.
+    shoulder_contacts = [(340,269),(350,267),(360,259),(370,253),
+                         (380,249),(395,244),(410,242),
+                         (800,242),(820,247),(840,253),(860,264),(884,277),
+                         (890,280),(900,291),(910,297),(920,303),(930,312),(940,324)]
     cap_columns = []
-    for x in range(CAP_LEFT,CAP_RIGHT,CAP_STEP):
+    for x in range(CAP_LEFT,CAP_RENDER_RIGHT,CAP_STEP):
         middle = x+CAP_STEP/2
         source_top = next(y for y in range(200,CAP_BOTTOM) if hull_alpha.getpixel((int(middle),y))>=128)
-        horizon = cap_horizon(middle)
+        horizon = cap_horizon(middle) if x < CAP_RIGHT else source_top
+        if middle < 410 or middle > 800:
+            for (x0,y0),(x1,y1) in zip(shoulder_contacts,shoulder_contacts[1:]):
+                if x0 <= middle <= x1:
+                    source_top = y0+(y1-y0)*(middle-x0)/(x1-x0)
+                    break
         cap_columns.append((x,source_top,horizon))
-        hull_mask.rectangle((x,0,x+CAP_STEP-1,CAP_BOTTOM-1),fill=0)
-        hull_mask.rectangle((x,math.ceil(horizon),x+CAP_STEP-1,CAP_BOTTOM-1),fill=255)
+        if x < CAP_RIGHT:
+            hull_mask.rectangle((x,0,x+CAP_STEP-1,CAP_BOTTOM-1),fill=0)
+            hull_mask.rectangle((x,math.ceil(horizon),x+CAP_STEP-1,CAP_BOTTOM-1),fill=255)
     with Image.open(FACADES) as facade_image:
         if facade_image.size != body_image.size:
             raise ValueError('Facade redraw must retain the original source canvas size.')
     base = Image.open(LASER/'base-sprite.png').convert('RGBA')
     contour = {}
-    for u in range(-83,84):
+    for u in range(-HALF_WIDTH,HALF_WIDTH+1):
         x = round(SOURCE_X+u/SX)
         ys = [y for y in range(180,550) if edge.getpixel((x,y))[3]>=128]
         contour[u] = (min(ys)-SOURCE_Y)*SY
@@ -247,19 +257,22 @@ def build():
              '</feComponentTransfer></filter>')
     defs += '<g id="flat-hull"><use href="#source" mask="url(#retain-hull)"/></g>'
     defs += ('<mask id="outside-cap"><rect width="1312" height="1199" fill="white"/>'
-             f'<rect x="{CAP_LEFT}" y="0" width="{CAP_RIGHT-CAP_LEFT}" height="{CAP_BOTTOM}" fill="black"/></mask>')
+             f'<rect x="{CAP_LEFT+1}" y="0" width="{CAP_RENDER_RIGHT-CAP_LEFT-2}" height="{CAP_BOTTOM}" fill="black"/></mask>')
     cap_parts = ['<use href="#flat-hull" mask="url(#outside-cap)"/>']
     for x,source_top,horizon in cap_columns:
         scale_y = (CAP_BOTTOM-horizon)/(CAP_BOTTOM-source_top)
         # Overlap strip edges so fractional review scaling cannot expose seams.
-        strip_width = min(CAP_STEP+1,CAP_RIGHT-x)
+        strip_width = min(CAP_STEP+1,CAP_RENDER_RIGHT-x)
         defs += f'<clipPath id="cap-column-{x}"><rect x="{x}" y="0" width="{strip_width}" height="{CAP_BOTTOM+2}"/></clipPath>'
         cap_parts.append(f'<g clip-path="url(#cap-column-{x})"><use href="#flat-hull" '
                          f'transform="translate(0 {CAP_BOTTOM}) scale(1 {scale_y:.6f}) translate(0 {-CAP_BOTTOM})"/></g>')
     # Strip overlap can expose neighboring columns above the intended cap arc.
     cap_outline = ' '.join(f'{x},{cap_horizon(x):.4f}' for x in range(CAP_LEFT,CAP_RIGHT+1))
+    cap_outline += ' '+ ' '.join(f'{x},{horizon:.4f}' for x,_,horizon in cap_columns if x >= CAP_RIGHT)
+    right_horizon = next(y for y in range(200,CAP_BOTTOM) if hull_alpha.getpixel((CAP_RENDER_RIGHT,y))>=128)
+    cap_outline += f' {CAP_RENDER_RIGHT},{right_horizon}'
     defs += (f'<clipPath id="cap-outline"><polygon points="0,0 {CAP_LEFT},0 '
-             f'{cap_outline} {CAP_RIGHT},0 1312,0 1312,1199 0,1199"/></clipPath>')
+             f'{cap_outline} {CAP_RENDER_RIGHT},0 1312,0 1312,1199 0,1199"/></clipPath>')
     defs += '<g id="curved-hull" clip-path="url(#cap-outline)" filter="url(#hull-opacity)">'+''.join(cap_parts)+'</g>'
     defs += ('<g id="repaired-source"><use href="#source" mask="url(#retain-hull)"/>'
              '<use href="#facade-redraw" clip-path="url(#facade-regions)"/></g>')
@@ -272,13 +285,19 @@ def build():
     defs += f'<g id="floor-local" transform="{sprite_transform}"><use href="#floor"/></g>'
     # The front terrain is cut to the actual alpha profile of the generated edge.
     # Rear floor pixels fill the opening; the edge is drawn in front of the tower.
-    opening = [(-83,0),(83,0)]+[(u,contour[u]+2) for u in range(83,-84,-1)]
+    opening = [(-HALF_WIDTH,0),(HALF_WIDTH,0)]+[(u,contour[u]+2) for u in range(HALF_WIDTH,-HALF_WIDTH-1,-1)]
     opening_points = ' '.join(f'{u},{v:.3f}' for u,v in opening)
     defs += f'<polygon id="opening" points="{opening_points}"/>'
     cuts, floors, fronts, towers, rows = [], [], [], [], []
     for site,angle in SITES:
         theta = math.radians(angle)
-        ax,ay = HORIZONS[site]
+        # Follow the unchanged, slightly irregular hull at equal angular steps.
+        radius = next(r for r in range(560,350,-1)
+                      if 0 <= round(CX+r*math.sin(theta)) < hull_alpha.width
+                      and 0 <= round(CY-r*math.cos(theta)) < hull_alpha.height
+                      and hull_alpha.getpixel((round(CX+r*math.sin(theta)),
+                                               round(CY-r*math.cos(theta))))>=128)
+        ax,ay = CX+radius*math.sin(theta), CY-radius*math.cos(theta)
         transform = f'translate({ax:.4f} {ay:.4f}) rotate({angle})'
         cuts.append(f'<use href="#opening" transform="{transform}" fill="black"/>')
         floors.append(f'<use href="#floor-local" transform="{transform}"/>')
@@ -307,7 +326,12 @@ def build():
              '<rect width="1312" height="1199" fill="white"/>'
              +''.join(cuts)+'</mask>')
     defs += ('<g id="terrain" mask="url(#terrain-cut)">'
-             '<use href="#curved-hull"/></g>')
+             '<use href="#curved-hull"/>'
+             # Continue the existing latitude arc with its measured 0.375
+             # tangent at the join; the hull mask sets the rim intersection.
+             '<path d="M 320 268.75 Q 370 293.75 420 312.5" '
+             'fill="none" stroke="#090e10" stroke-width="3" stroke-linecap="round" '
+             'mask="url(#hull-alpha)"/></g>')
     defs += '<g id="rear" mask="url(#hull-alpha)">'+''.join(floors)+'</g>'
     defs += '<g id="fronts" mask="url(#hull-alpha)">'+''.join(fronts)+'</g>'
     defs += '<g id="empty"><use href="#placed-facades"/><use href="#rear"/><use href="#terrain"/><use href="#fronts"/></g>'
@@ -315,20 +339,20 @@ def build():
         defs += (f'<g id="occupied{aim}"><use href="#placed-facades"/><use href="#rear"/><use href="#terrain"/>'
                  +''.join(f'<use href="#tower{site}a{aim}"/>' for site,_ in SITES)
                  +'<use href="#fronts"/></g>')
-    page = label(25,36,'CAPEN / FACADE PROPORTIONS AND SURFACE FIT',25)
-    page += label(25,70,'Flags at 10 o\u2019clock mirror the station at 2 o\u2019clock; admin and lower facades retained.',17)
-    for x,ref,title in [(20,'empty','Empty terrain'),(820,'occupied0','Occupied / same foundation fit at all twelve sites')]:
+    page = label(25,36,'CAPEN MAJOR / 16 EVENLY SPACED SOCKETS',25)
+    page += label(25,70,'22.5-degree spacing; sockets at 75% of their previous size. Body and facades retained.',17)
+    for x,ref,title in [(20,'empty','Empty terrain'),(820,'occupied0','Occupied / same foundation fit at all sixteen sites')]:
         page += label(x,110,title,20)
         page += f'<svg x="{x}" y="130" width="760" height="730" viewBox="{PREVIEW_LEFT} {PREVIEW_TOP} 1330 1400"><use href="#{ref}"/></svg>'
-    page += label(25,905,'Tower scale normalized to the reference planet diameter. This is a visual proposal, not a gameplay-size change.',17)
+    page += label(25,905,'Laser preview scales with the sockets. Facade spacing will be addressed in the next pass.',17)
     (HERE/'page-review.svg').write_text(doc(1600,950,defs,page),encoding='utf-8')
     detail = label(20,28,'TOP-SITE PROFILE / ACTUAL LASER AT THREE AIMING ANGLES',21)
     for i,aim in enumerate((-60,0,60)):
         detail += label(i*512+12,57,f'{aim:+d} degrees / metal terrain edge',15)
-        detail += (f'<svg x="{i*512}" y="70" width="512" height="420" viewBox="480 {HORIZONS[12][1]-147} 256 210">'
+        detail += (f'<svg x="{i*512}" y="70" width="512" height="420" viewBox="480 {rows[0]["horizon"][1]-147} 256 210">'
                    f'<use href="#occupied{aim}"/></svg>')
     (HERE/'top-review.svg').write_text(doc(1536,510,defs,detail),encoding='utf-8')
-    detail = label(20,30,'ALL TWELVE TERRAIN CUTS / LOCALLY UPRIGHT CONTACT VIEWS',22)
+    detail = label(20,30,'ALL SIXTEEN TERRAIN CUTS / LOCALLY UPRIGHT CONTACT VIEWS',22)
     for i,row in enumerate(rows):
         col,line = i%4,i//4
         x,y = col*600,line*265+60
@@ -338,8 +362,8 @@ def build():
             detail += (f'<svg x="{x+j*200}" y="{y+10}" width="195" height="235" viewBox="-120 -180 260 240">'
                        f'<g transform="rotate({-row["angle"]}) translate({-mx} {-my})">'
                        f'<use href="#occupied{aim}"/></g></svg>')
-    (HERE/'contact-review.svg').write_text(doc(2400,860,defs,detail),encoding='utf-8')
-    radial = label(20,30,'ALL TWELVE SITES / ACTUAL RADIAL ORIENTATION / THREE AIMING ANGLES',22)
+    (HERE/'contact-review.svg').write_text(doc(2400,1130,defs,detail),encoding='utf-8')
+    radial = label(20,30,'ALL SIXTEEN SITES / ACTUAL RADIAL ORIENTATION / THREE AIMING ANGLES',22)
     for i,row in enumerate(rows):
         x,y = (i%4)*600,(i//4)*265+60
         mx,my = row['mount']
@@ -347,13 +371,13 @@ def build():
             radial += label(x+j*200+5,y,f'Site {row["site"]} / {aim:+d} deg',12)
             radial += (f'<svg x="{x+j*200}" y="{y+10}" width="195" height="235" viewBox="{mx-160} {my-160} 320 320">'
                        f'<use href="#occupied{aim}"/></svg>')
-    (HERE/'all-sites-aiming.svg').write_text(doc(2400,860,defs,radial),encoding='utf-8')
+    (HERE/'all-sites-aiming.svg').write_text(doc(2400,1130,defs,radial),encoding='utf-8')
     (HERE/'planet-empty.svg').write_text(doc(PREVIEW_WIDTH,1420,defs,'<use href="#empty"/>',False,f'{PREVIEW_LEFT} {PREVIEW_TOP} {PREVIEW_WIDTH} 1420'),encoding='utf-8')
     (HERE/'planet-occupied.svg').write_text(doc(PREVIEW_WIDTH,1420,defs,'<use href="#occupied0"/>',False,f'{PREVIEW_LEFT} {PREVIEW_TOP} {PREVIEW_WIDTH} 1420'),encoding='utf-8')
     reference = ROOT/'Art/Planets/UnionPrime/planet-occupied.png'
     compare_defs = defs+image_def('union-reference',reference)
     compare = label(25,40,'REFERENCE COMPARISON / MATCHED GLOBE WIDTH',27)
-    compare += label(25,78,'The actual Laser has approximately the same on-screen size in both panels.',18)
+    compare += label(25,78,'Capen retains its globe size and uses smaller sockets for sixteen towers; medium-planet resizing is pending.',18)
     compare += label(25,123,'User-selected Union Prime reference',23)
     compare += label(825,123,'Capen terrain-cut proposal',23)
     compare += '<svg x="20" y="150" width="720" height="800" viewBox="122 -10 1011 1123"><use href="#union-reference"/></svg>'
@@ -392,10 +416,12 @@ def build():
         station_review += (f'<svg x="{x}" y="95" width="620" height="620" viewBox="850 210 430 460">'
                            f'<use href="#{ref}"/></svg>')
     (HERE/'station-review.svg').write_text(doc(1300,735,defs,station_review),encoding='utf-8')
-    manifest = {'status':'current administration facade assembly; Unity integration pending',
+    manifest = {'status':'sixteen-socket assembly; facade layout retained for the next pass',
+                'socket_scale_relative_to_previous':SOCKET_SCALE,
+                'site_spacing_degrees':22.5,'planet_center':[CX,CY],
                 'reference_diameter':RX*2,'edge_source_origin':[SOURCE_X,SOURCE_Y],
                 'edge_scale':[SX,SY],'tower_scale':TOWER_SCALE,
-                'tower_scale_reason':'normalizes roughly 986px Capen diameter to the 730px Union Prime reference at 1.5x',
+                'tower_scale_reason':'visual Laser scales with the socket to preserve foundation fit; shared tower artwork unchanged',
                 'foundation_inset':inset,'sampled_foundation_columns':len(feet),
                 'minimum_contour_overlap':min(inset+v-contour[round(u)] for u,v in feet),
                 'maximum_contour_overlap':max(inset+v-contour[round(u)] for u,v in feet),
@@ -404,6 +430,8 @@ def build():
                                  for p in [BODY,FACADES,ADMIN,EDGE,FLOOR,LASER/'base-sprite.png',LASER/'gun-sprite.png']},
                 'facade_regions':{name:points for name,points,_ in FACADE_REGIONS},
                 'admin_ground_curve':{'span':[CAP_LEFT,CAP_RIGHT],'strip_width':CAP_STEP,
+                                      'shoulder_source_contacts':shoulder_contacts,
+                                      'shoulder_render_right':CAP_RENDER_RIGHT,
                                       'strip_overlap':1,'hull_bottom_overlap':2,
                                       'composited_hull_alpha_gain':1.07,
                                       'horizon':'695 - sqrt(512**2 - (x-608)**2)',

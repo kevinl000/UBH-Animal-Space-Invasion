@@ -1,49 +1,47 @@
-# Davis Nova art test
+# Davis Nova visual test
 
-Open `C:/UBHackathon2026` through Unity Hub with **6000.6.7f1**. Let the assets
-import, open `Assets/Scenes/DavisNova.unity`, and press **Play**. No setup menu
-command is needed. The existing scene uses the updated `DavisNovaVisual` prefab.
+Open `C:/UBHackathon2026` through Unity Hub with **6000.6.7f1**. Let assets import,
+open `Assets/Scenes/DavisNova.unity`, and press **Play**. No setup command is needed.
 
-## Empty ring and sun
+The bright pixel sun and technological ring remain separate sprites. Twelve
+interactive sites replace the old inactive `TowerFitPreview` group.
 
-Check the bright round pixel sun inside the ring, transparent space between its edge
-and the inner rim, twelve broad empty seats, and the HUD. Both sprites are
-separate children of `DavisNovaVisual`; the sun is behind the ring.
+## Controls
 
-## Tower fit
+- Select **Laser** (selected initially), then hover over a socket to preview it.
+- **Left-click** the socket to place a free Laser; **right-click** to remove it.
+- Hold **Q / E** to aim all guns, clamped to -60 / +60 degrees. **R** resets aim.
+- Re-enter the scene to clear all placements. Other tower cards remain inspectable.
 
-In Play Mode, find `DavisNovaVisual` in the Hierarchy and enable its inactive
-`TowerFitPreview` child using the checkbox at the top of the Inspector. Twelve
-static Lasers should appear with their foundations behind `SocketFronts`.
+This uses Union Prime's visual sandbox: no combat or resource spending.
 
-- Check the upper, side and upside-down seats for contact or obscured characters.
-- Expand a `SiteXX` and select `AimPivot`. Set its local Z rotation to -60, 0
-  and +60 degrees to inspect the independent gun. Do not rotate `LaserBase`.
-- Disable `TowerFitPreview` to return to the empty-ring view. Play Mode changes
-  are temporary; stop Play Mode to reset them.
-- Review 1280x720, 1672x941, 1280x960 and 2560x1080 for size and HUD clearance.
-- Return to LevelSelect and re-enter Davis Nova. Check for missing sprites and
-  Console errors.
+## Art review
 
-This is a static art test. Clicking a socket does not place a tower; tower cards
-retain the existing information-only behavior. No combat or resource logic was added.
+Check empty and occupied upper, side and upside-down sockets. Foundations should
+sit behind the socket fronts; aiming should rotate only the guns. Check the
+sun/ring transparency, HUD clearance and pointer placement at 1280x720,
+1672x941, 1280x960 and 2560x1080. Return to LevelSelect and re-enter the scene.
 
-## Automated verification
+## Rebuild
 
-The current art passes the rendered contact/transparency checks recorded in
-`Pixel/assembly.json`. Unity preparation is repeatable and preserves asset GUIDs.
+Run `python Art/Planets/DavisNova/prepare_unity.py` from the repository root.
+It preserves sprite GUIDs and prepares the interactive prefab again.
+See `unity-import.json` for source hashes, scale and twelve mounts.
 
-The bright round sun revision passes the rendered checks; its Unity sprite is
-updated with the same GUID, dimensions and import settings. Unity Play Mode has
-not been rerun for this texture-only revision.
+## Verification, 2026-11-07
 
-For the preceding flame-edged sun revision, Unity **6000.6.7f1** imported the
-sprites and prefab successfully. The existing Play Mode test
-`PlanetPageTests.EveryDirectEntryShowsCorrectAvailabilityAndInspectableDetails`
-passed: **1 passed, 0 failed**. That earlier result's local path is
-`.git/menu-work/davis-nova-art-tests-final.xml` and its log is
-`.git/menu-work/davis-nova-art-unity-final.log`.
+Unity **6000.6.7f1** compiled and ran an isolated copy of the current Assets,
+Packages and ProjectSettings: **10 passed, 0 failed**. This includes six placement
+and pointer tests across Union Prime, Capen Major and Davis Nova, three existing
+planet-page navigation/inspection tests, and one temporary render-capture check.
+Placement tests cover all twelve sites, duplicate rejection, selection, removal,
+aim bounds, fixed foundations, UI blocking and fresh scene entry.
 
-The automated scene-entry check covers the existing HUD and planet pages; it
-does not replace the manual art, aiming and resolution checks above. No
-standalone build or interactive Game-view review has been performed.
+Local results: `.git/menu-work/planet-visual-tests.xml` and
+`.git/menu-work/planet-visual-tests.log`. Both importers also passed repeatability,
+source-hash, import-setting and prefab-reference checks.
+
+Rendered empty/occupied and +/-60-degree views were reviewed, with occupied
+captures at 1672x941, 1280x720, 1280x960 and 2560x1080. They are local in
+`.git/menu-work/planet-visual-captures/`. No standalone build or interactive human
+Game-view review is claimed. Use the controls above for the team's visual review.

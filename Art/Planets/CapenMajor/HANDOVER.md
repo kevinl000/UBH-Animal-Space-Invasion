@@ -1,6 +1,24 @@
 ﻿# Capen Major: current artwork and handover
 
-Updated 2026-11-06 on `planets-page`.
+Updated 2026-11-07 on `planets-page`.
+
+The current assembly has sixteen sockets at 22.5-degree intervals, numbered
+clockwise from the top. Sockets use the existing floor/rim artwork at 75% of
+their previous size; the visual-test Laser follows at 1.5x source scale.
+The body size, all source PNGs, and all five facade transforms are preserved.
+Facade layout is deferred to the next pass. This supersedes the twelve-site
+placement and reference-size normalization in the production history below.
+
+The subsequent shoulder repair removes the stretched old-station border on
+both sides of the upper cap. Preserve the continuous source-contact guides and
+right shoulder extension to x=940 in `build_review.py`; reverting to the first
+opaque source row brings back the black fragments. Socket positions are unchanged.
+
+The assembly is exported into eight Unity sprite layers, with free
+Laser placement at all sixteen sites. Open the
+existing Capen Major scene and press Play. See [Unity testing](UNITY_TESTING.md)
+for controls, verification and rebuild instructions. The production notes below
+record the original artwork decisions; `unity-import.json` records the runtime export.
 
 Use [the current occupied composition](planet-occupied.png) and
 [empty/occupied review](page-review.png) for continued work. The latest refinement
@@ -15,7 +33,7 @@ is buried behind the hull rather than stretched into visible wedges.
 One-pixel strips replace the earlier faint four-pixel bands. The station has subsequently
 been positioned at 2 o'clock and its lower facade curved to seat both bottom corners
 against the hull; see [station contact closeups](station-review.png).
-Runtime preparation is still pending.
+Runtime preparation is complete; see `UNITY_TESTING.md`.
 See [administration empty/occupied closeups](admin-review.png) and the earlier
 [facade before/after](facade-review.png).
 
@@ -71,7 +89,7 @@ Adapt material and identity without inventing site counts, scales or mechanics.
 ## Decisions to preserve
 
 - Spherical segmented metal body, quiet center and no orange body markings.
-- Twelve shallow radial recesses; smooth steel edges and restrained shading.
+- Sixteen shallow radial recesses, spaced 22.5 degrees apart; smooth steel edges and restrained shading.
 - Enlarged administration at twelve o'clock: flat stepped roof, office windows,
   peach/slate palette and a central `ADMIN` sign.
 - Ground contact must curve with the planet. Preserve the curved hull cap and
@@ -95,24 +113,18 @@ Adapt material and identity without inventing site counts, scales or mechanics.
 
 ## Verification and next implementation work
 
-The rebuild passes 744 foundation contact samples across twelve sites. The
-retained reviews show three aiming poses per site. Its 2.0x source-canvas Laser
-normalizes Capen's roughly 986px globe against Union Prime's roughly 730px globe
-at 1.5x; this is not a gameplay-size decision.
+The sixteen-socket rebuild passes 992 foundation contact samples (62 per site).
+The reviews show -60, 0 and +60 degree aiming poses at all sixteen sites.
+Sockets are 126 source pixels wide; the closest adjacent mounts leave over
+38 source pixels beyond that width. Mount angles are exactly 22.5 degrees apart,
+with radii measured against the existing hull alpha around `(608, 695)`.
 
-Original source hashes and eleven tower mounts are preserved. The 12 o'clock
-recess and preview tower rise 54 pixels with the spherical cap: horizon `(608, 183)`,
-foundation mount `(608, 224.15)`. Their relative seating and scale are unchanged.
-Facade placements intentionally changed. All eleven SVG/PNG previews
-were refreshed; empty/occupied compositions, current junctions and three aiming
-poses were inspected. Full-planet previews use a 1392-by-1420 canvas with viewBox
-`-80 -100 1392 1420`, adding top and left margin while preserving assembly coordinates.
-Foundation checks exclude facades from the supporting hull mask; the rendered
-curved hull also passed all 744 samples. No full aiming/projectile-clearance
-sweep, future-tower fit, final HUD-scale test or Unity Play Mode verification
-is claimed.
+Original source hashes, facade placements/curves, body diameter, and display
+canvas are preserved. Full-planet previews retain the 1392-by-1420 canvas and
+viewBox `-80 -100 1392 1420`. See `UNITY_TESTING.md` for runtime verification.
+Full aiming/projectile-clearance sweeps and future-tower fitting remain untested.
+Facade layout and medium-planet resizing are separate follow-up tasks.
 
-When implementation is requested, establish the actual HUD scale and independent
-runtime sprite/mask layers, including facade separation where animation needs it;
-then integrate and verify the current design in Unity. No Assets, scenes, prefabs,
-managers or gameplay were changed by this cleanup.
+The Unity export uses separate sprites for each facade, rear floor, terrain and
+steel fronts, preserving these masks and curves. The visual prefab now provides
+free Laser placement; the earlier artwork cleanup did not change gameplay.

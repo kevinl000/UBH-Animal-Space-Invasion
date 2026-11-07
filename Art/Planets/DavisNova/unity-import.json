@@ -28,7 +28,7 @@
     "Assets/Art/Planets/UnionPrime/LaserBase.png",
     "Assets/Art/Planets/UnionPrime/LaserGun.png"
   ],
-  "tower_preview_enabled_by_default": false,
+  "free_laser_placement": true,
   "source_layout": "socket-layout.json",
-  "limits": "Static art preview; no placement/combat. See UNITY_TESTING.md for checks."
+  "limits": "Free Laser placement and aiming; no combat or resource spending. See UNITY_TESTING.md for checks."
 }

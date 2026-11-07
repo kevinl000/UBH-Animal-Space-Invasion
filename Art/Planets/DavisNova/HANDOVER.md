@@ -55,11 +55,12 @@ pivots and no generated physics outlines. The existing
 object IDs. It displays the art at 600 UI units before the existing HUD scale.
 Unity UI Images are used because that is the established planet-page renderer.
 
-The prefab's optional `TowerFitPreview` group is disabled by default. Enabling it
-shows twelve static Lasers, using the already imported shared tower sprites.
-Each `SiteXX/AimPivot` exposes the weapon angle for inspector checks. This is an
-art preview, with no placement controls, enemies, combat, fuel or economy.
-No shared manager, HUD, gameplay code, scene or project setting is part of this change.
+The prefab now uses Union Prime's free Laser placement component. `PlacedLasers`
+replaces the inactive static `TowerFitPreview`: left-click a socket to place,
+right-click to remove, Q/E to aim and R to reset. Only the guns rotate. The shared
+component accepts a prepared tower layer and per-planet source size/scale; Union
+Prime retains its existing defaults. No combat, resource spending, manager,
+scene or project-setting changes are included. See `UNITY_TESTING.md`.
 
 ## Rebuild
 

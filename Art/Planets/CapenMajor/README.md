@@ -4,11 +4,28 @@ This is the art-production workspace for the current Capen Major artwork.
 Start here when editing or using it as a reference for another planet.
 The smooth steel crater edges retain the approved broad, shallow recess shape.
 
+Current socket pass (2026-11-07): **16 positions at 22.5-degree intervals**,
+starting at the top. Existing sockets are scaled to 75%; the placement-test
+Laser scales with them (1.5x source scale). The planet body size and all facade
+artwork/transforms are unchanged. Facade spacing is the next pass. Earlier
+twelve-site fit and matched-tower-size notes below are production history.
+
+The upper shoulder joins now sample clean steel below the old station's dark
+border before curving the cap. Continuous source-contact guides remove stretched
+black fragments and vertical streaks. The right-hand repair continues to source
+x=940 along the existing hull silhouette; overlapping strip boundaries close
+the join. `admin_ground_curve` records these guides. Source PNGs, all sixteen
+socket mounts, body display size and facade transforms remain unchanged.
+The upper-left latitude seam continues from the 10 o'clock shoulder into the
+existing panel-line junction as a terrain-layer SVG path beneath the sockets.
+Its shallow arc matches the existing line's tangent at the join; the hull mask
+sets its rim intersection instead of forcing a steep bend to a fixed endpoint.
+
 | Location | Purpose |
 | --- | --- |
 | This directory | Five current source sprites, exact generation prompts, assembly script, measured placements and review compositions. |
 | [HANDOVER.md](HANDOVER.md) | Design decisions, future-planet references and remaining implementation work. |
-| `Assets/` | The current artwork has not been exported to Unity; existing Capen scene/prefab placeholders are not this assembly. |
+| `Assets/Art/Planets/CapenMajor/` | Eight exported sprite layers used by the existing Capen visual prefab. See [Unity testing](UNITY_TESTING.md) for free Laser placement and verification. |
 
 ## Current reviews
 
@@ -17,13 +34,13 @@ The smooth steel crater edges retain the approved broad, shallow recess shape.
 - [Facade pixel-art repair: before and after](facade-review.png).
 - [Current facade/recess junctions](junction-review.png).
 - [Empty and occupied composition](page-review.png).
-- [All twelve radial sites at -60, 0 and +60 degrees](all-sites-aiming.png).
+- [All sixteen radial sites at -60, 0 and +60 degrees](all-sites-aiming.png).
 - [Locally upright foundation closeups](contact-review.png).
 - [Top-site contact detail](top-review.png).
 - [Union Prime comparison at matched globe width](reference-comparison.png).
 - Transparent full compositions: [empty](planet-empty.png), [occupied](planet-occupied.png).
 
-The PNG compositions are previews, not runtime layers. Their self-contained SVG
+The PNG compositions are previews; `prepare_unity.py` exports separate runtime layers from the existing SVG assembly. Their self-contained SVG
 assemblies retain bitmap artwork, masks and placement transforms. No separate
 prototype pipeline remains.
 
@@ -47,15 +64,15 @@ provenance and are not needed to rebuild. Continue edits from these current sour
 `build_review.py` measures the front edge's alpha contour and cuts matching
 openings in the body. Back to front: five independently placed facades, rear floor,
 cut body, separate Laser base/operator and gun, then the low steel front edge. The hull alpha clips
-the floor and edge to the surface, excluding facades. One profile serves all twelve
+the floor and edge to the surface, excluding facades. One profile serves all sixteen
 radial orientations. [assembly.json](assembly.json) records mounts, contact
 samples and source hashes.
 
 The only external artwork dependencies are the shared Laser base/gun in
 `Art/Towers/Laser/Redesign/Sweep/` and the occupied Union Prime reference in
-`Art/Planets/UnionPrime/`. The 2.0x Laser source scale normalizes Capen's roughly
-986px globe against Union Prime's roughly 730px globe at 1.5x. It is not a gameplay
-size or balance decision.
+`Art/Planets/UnionPrime/`. The 1.5x Laser source scale preserves foundation fit
+inside the smaller sockets. Capen's roughly 986px body retains its existing
+display size; medium-planet resizing is a separate task.
 
 ## Future planet design references
 
@@ -114,10 +131,10 @@ spherical cap as described below; the other eleven placements are unchanged.
 The four repaired junctions were visually checked in empty and occupied views;
 all 744 foundation contact samples pass against the hull mask.
 
-Runtime layer/mask export remains pending; facade separation currently uses SVG
-clips. No full aiming/projectile-clearance sweep, future-tower fitting, final HUD-scale review,
-Unity Play Mode check or standalone build was run. No Unity assets, metadata,
-scenes, prefabs, managers or gameplay were changed.
+Runtime layers and a free Laser placement test are now prepared; see
+[Unity testing](UNITY_TESTING.md) for current verification. The production history
+below predates that export. Full projectile-clearance sweeps, future-tower fitting
+and a standalone build remain outside this visual test.
 
 The former `TerrainCut` wrapper, obsolete iteration folders and rough steel
 edge/floor v1 sources were removed in the earlier cleanup. Git history retains
