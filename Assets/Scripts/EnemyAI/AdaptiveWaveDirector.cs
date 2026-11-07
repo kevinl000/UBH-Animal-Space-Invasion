@@ -8,6 +8,8 @@
 //   3. Picks the spawn angle (60% weakest direction, 40% random).
 //   4. Rolls shiny / orbiting.
 //   5. Produces a one-line "intent" for the HUD.
+//   6. Learns online (EnemyLearner, Thompson sampling) which enemy types actually
+//      hurt this player, and shifts picks toward them on top of the rules.
 //
 // Pure C#: no UnityEngine dependency.
 
@@ -43,23 +45,49 @@ namespace EnemyAI
         /// <summary>Short line for the HUD, e.g. "The flock noticed you have no radar." Empty when not adapting.</summary>
         public string CurrentIntent { get; private set; }
 
+        /// <summary>The online learning layer. Report spawns, damage and deaths to it (via RollModifiers / ReportDamage / ReportGone).</summary>
+        public EnemyLearner Learner { get; private set; }
+
+        /// <summary>Set false to turn the learning layer off (rules only).</summary>
+        public bool UseLearning = true;
+
         private readonly Random rng;
         private readonly Dictionary<EnemyKind, float> multipliers = new Dictionary<EnemyKind, float>();
         private float lastEvaluationTime = float.NegativeInfinity;
+        private bool adaptationActive;
 
-        public AdaptiveWaveDirector(int? seed = null, WaveDirectorSettings settings = null)
+        public AdaptiveWaveDirector(int? seed = null, WaveDirectorSettings settings = null, EnemyLearnerSettings learnerSettings = null)
         {
             rng = seed.HasValue ? new Random(seed.Value) : new Random();
             Settings = settings ?? new WaveDirectorSettings();
+            Learner = new EnemyLearner(rng, learnerSettings);
             CurrentIntent = "";
         }
 
-        /// <summary>Call when a level starts.</summary>
-        public void Reset()
+        /// <summary>
+        /// Call when a level starts. By default the learner keeps what it learned about
+        /// this player across levels; pass true to forget it.
+        /// </summary>
+        public void Reset(bool forgetLearning = false)
         {
             multipliers.Clear();
             lastEvaluationTime = float.NegativeInfinity;
+            adaptationActive = false;
             CurrentIntent = "";
+            Learner.ClearOpenTickets();
+            if (forgetLearning) Learner.ResetAll();
+        }
+
+        /// <summary>Call whenever an enemy deals damage. ticket = SpawnModifiers.Ticket.</summary>
+        public void ReportDamage(int ticket, float amount)
+        {
+            Learner.ReportDamage(ticket, amount);
+        }
+
+        /// <summary>Call once when an enemy dies or despawns. ticket = SpawnModifiers.Ticket.</summary>
+        public void ReportGone(int ticket)
+        {
+            Learner.ReportGone(ticket);
         }
 
         // ------------------------------------------------------------------
@@ -74,10 +102,14 @@ namespace EnemyAI
         {
             if (levelProgress < Settings.AdaptationStartProgress)
             {
+                // Still collecting results for the learner, but not acting on them yet.
                 multipliers.Clear();
+                adaptationActive = false;
                 CurrentIntent = "";
                 return;
             }
+
+            adaptationActive = true;
 
             if (elapsedTime - lastEvaluationTime < Settings.ReevaluateIntervalSec)
             {
@@ -86,6 +118,19 @@ namespace EnemyAI
 
             lastEvaluationTime = elapsedTime;
             Evaluate(snapshot);
+
+            if (UseLearning)
+            {
+                Learner.Decay();
+
+                // A confident learned insight beats a rule-based one on the HUD.
+                EnemyKind best;
+                float bestMean;
+                if (Learner.TryGetBestLearned(out best, out bestMean))
+                {
+                    CurrentIntent = "They've learned " + EnemyLearner.DisplayName(best) + " hurt you the most.";
+                }
+            }
         }
 
         /// <summary>Current multiplier for an enemy type (1 = no change).</summary>
@@ -230,6 +275,7 @@ namespace EnemyAI
                 Candidate c = candidates[i];
                 if (c == null || c.BaseProbability <= 0f || c.Cost > remainingBudget) continue;
                 float w = c.BaseProbability * GetMultiplier(c.Kind);
+                if (UseLearning && adaptationActive) w *= Learner.SampleFactor(c.Kind); // Thompson sample
                 weights[i] = w;
                 total += w;
             }
@@ -311,10 +357,19 @@ namespace EnemyAI
         // 4. Shiny / orbit
         // ------------------------------------------------------------------
 
+        /// <summary>Rolls shiny / orbit / angle and registers the spawn with the learner (see SpawnModifiers.Ticket).</summary>
         public SpawnModifiers RollModifiers(EnemyKind kind, DefenseSnapshot snapshot)
+        {
+            int cost;
+            if (!EnemyCatalog.DefaultWeight.TryGetValue(kind, out cost)) cost = 10;
+            return RollModifiers(kind, cost, snapshot);
+        }
+
+        public SpawnModifiers RollModifiers(EnemyKind kind, int cost, DefenseSnapshot snapshot)
         {
             bool boss = EnemyCatalog.IsBoss(kind);
             var mods = new SpawnModifiers();
+            mods.Ticket = boss ? 0 : Learner.Register(kind, cost); // bosses are not learned
             mods.IsShiny = rng.NextDouble() < (boss ? Settings.BossShinyChance : Settings.ShinyChance);
 
             if (EnemyCatalog.IsDeer(kind)) mods.Orbits = true;

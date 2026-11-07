@@ -72,6 +72,8 @@ namespace EnemyAI
         public bool IsShiny;    // double HP, double drops
         public bool Orbits;     // orbit the planet instead of stopping
         public float SpawnAngleDeg;
+        /// <summary>Keep this on the spawned enemy and pass it to ReportDamage / ReportGone. 0 = not tracked (bosses).</summary>
+        public int Ticket;
     }
 
     public static class EnemyCatalog

@@ -7,6 +7,7 @@ Adaptive layer on top of `LevelData`. LevelData still decides the budget curve a
 |---|---|
 | `EnemyAITypes.cs` | Enums (`EnemyKind`, `TowerKind`), `DefenseSnapshot`, tower/enemy catalogs, suggested enemy weights |
 | `AdaptiveWaveDirector.cs` | The AI itself. Pure C#, no UnityEngine |
+| `EnemyLearner.cs` | Online learning layer (Thompson sampling). Pure C# |
 | `WaveDirectorBridge.cs` | MonoBehaviour that connects the AI to `LevelData` |
 
 ## Setup (Unity side)
@@ -50,6 +51,13 @@ Bridge options in the Inspector:
 **Note:** LevelData fixes how many of each enemy spawn in total, so the AI currently only changes the *order* and *position*. To let it shift the actual mix, multiply one line in `SetEnemyDataSpawnProbability`:
 `entry.RelativeBudget = Mathf.Lerp(...) * bridge.Director.GetMultiplier(kind);`
 
+**For learning**, keep `mods.Ticket` on the spawned enemy and report back:
+```csharp
+bridge.ReportDamage(ticket, amount);   // whenever that enemy damages a tower or the planet
+bridge.ReportGone(ticket);             // once, when it dies or despawns
+```
+Without these two calls the AI still works, it just won't learn.
+
 `snapshot` is a `DefenseSnapshot`: every tower's `Kind`, world `AngleDeg` on the planet, `Hp`, `IsAlive`, plus `FuelPerSecond`. Building it once per tick is enough.
 
 ## What the AI does
@@ -59,6 +67,9 @@ Bridge options in the Inspector:
   - 40%+ of attackers are AoE → more deer
   - half the towers within 30° of another → more skunks
   - fuel per second < 0 → more high-HP enemies
+- **Online learning (multi-armed bandit, Thompson sampling)**: each enemy type keeps a Beta belief of how well it does against this player. Every enemy that leaves play is scored `damage / (damage + cost)`. Picks sample from these beliefs, so enemy types that hurt the player show up more, while untested types still get tried. Old results fade every 15s so the AI re-adapts when the player changes their defense. Learned factor is clamped to 0.5x–2x. When confident, the HUD says e.g. *"They've learned skunks hurt you the most."*
+  - In a simulation against a player weak to skunks, skunk share rose from ~36% (rules only) to ~54% with learning, and the AI figured it out within about 60s.
+  - `useLearning` on the bridge turns it off for comparison. `keepLearningAcrossLevels` makes it remember the player between levels.
 - **Spawn angle**: 60% at the least-covered direction (assumes towers face outward with their FOV), 40% random.
 - **Shiny** 5% (bosses 1%). **Orbit** 50% for geese and skunks, deer always.
 - Set `seed` on the bridge to make a run reproducible when debugging.

@@ -16,6 +16,11 @@
 //   }
 //   intentLabel.text = bridge.Intent;                     // HUD line
 //
+// Learning (so the AI finds out which enemies hurt THIS player):
+//   store mods.Ticket on the spawned enemy, then
+//   bridge.ReportDamage(ticket, amount);   // whenever that enemy damages a tower or the planet
+//   bridge.ReportGone(ticket);             // once, when it dies or despawns
+//
 // PickEntry() increments entry.SpawnedCount for you (turn off with autoCountSpawns).
 
 using System;
@@ -37,6 +42,12 @@ public class WaveDirectorBridge : MonoBehaviour
     [Tooltip("If true, PickEntry() does entry.SpawnedCount++ on the picked entry. " +
              "Set false only if the spawner already increments it.")]
     public bool autoCountSpawns = true;
+
+    [Tooltip("Online learning on top of the rules. Turn off to compare rules-only behavior.")]
+    public bool useLearning = true;
+
+    [Tooltip("If true, the AI keeps what it learned about the player when a new level starts.")]
+    public bool keepLearningAcrossLevels = true;
 
     private AdaptiveWaveDirector director;
     private readonly List<AdaptiveWaveDirector.Candidate> candidates = new List<AdaptiveWaveDirector.Candidate>();
@@ -60,14 +71,27 @@ public class WaveDirectorBridge : MonoBehaviour
     public void BeginLevel()
     {
         if (director == null) Awake();
-        director.Reset();
+        director.Reset(!keepLearningAcrossLevels);
         kindCache.Clear();
     }
 
     public void Tick(float elapsedTime, DefenseSnapshot snapshot)
     {
         if (level == null) return;
+        director.UseLearning = useLearning;
         director.Update(elapsedTime, level.GetLevelProgression(elapsedTime), snapshot);
+    }
+
+    /// <summary>Call whenever an enemy deals damage. ticket = SpawnModifiers.Ticket from RollModifiers.</summary>
+    public void ReportDamage(int ticket, float amount)
+    {
+        if (director != null && ticket != 0) director.ReportDamage(ticket, amount);
+    }
+
+    /// <summary>Call once when an enemy dies or despawns.</summary>
+    public void ReportGone(int ticket)
+    {
+        if (director != null && ticket != 0) director.ReportGone(ticket);
     }
 
     /// <summary>
@@ -103,8 +127,8 @@ public class WaveDirectorBridge : MonoBehaviour
 
     public SpawnModifiers RollModifiers(LevelEnemyEntry entry, DefenseSnapshot snapshot)
     {
-        EnemyKind kind = entry != null && entry.enemy != null ? KindOf(entry.enemy) : EnemyKind.BasicGoose1;
-        return director.RollModifiers(kind, snapshot);
+        if (entry == null || entry.enemy == null) return director.RollModifiers(EnemyKind.BasicGoose1, snapshot);
+        return director.RollModifiers(KindOf(entry.enemy), Mathf.Max(1, entry.enemy.cost), snapshot);
     }
 
     /// <summary>True once, 5 seconds before the halfway boss.</summary>
