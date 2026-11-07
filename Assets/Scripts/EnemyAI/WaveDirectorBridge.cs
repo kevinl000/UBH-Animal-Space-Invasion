@@ -5,11 +5,14 @@
 //   e.g. an asset named "Basic Goose 1" or "BasicGoose1" -> EnemyKind.BasicGoose1
 // Unknown names are logged once and treated as BasicGoose1 (no adaptive bonus).
 //
+// The AI decides the whole enemy mix. LevelData only sets the COST budget:
+// the total cost of spawned enemies never goes above level.GetTotalBudget(time).
+//
 // Usage from the spawner:
 //   bridge.BeginLevel();                                  // level start (after level.Init())
-//   bridge.Tick(elapsedTime, snapshot);                   // every frame or spawn tick
-//   level.SetEnemyDataSpawnProbability(elapsedTime);      // team's existing call
-//   LevelEnemyEntry entry = bridge.PickEntry();           // instead of rolling SpawnProbability yourself
+//   every spawn tick (e.g. every 0.5s; one enemy per call):
+//   bridge.Tick(elapsedTime, snapshot);
+//   LevelEnemyEntry entry = bridge.PickEntry(elapsedTime); // null = nothing affordable right now, try next tick
 //   if (entry != null) {
 //       SpawnModifiers mods = bridge.RollModifiers(entry, snapshot);
 //       // spawn entry.enemy at mods.SpawnAngleDeg, apply mods.IsShiny / mods.Orbits
@@ -21,7 +24,8 @@
 //   bridge.ReportDamage(ticket, amount);   // whenever that enemy damages a tower or the planet
 //   bridge.ReportGone(ticket);             // once, when it dies or despawns
 //
-// PickEntry() increments entry.SpawnedCount for you (turn off with autoCountSpawns).
+// PickEntry() records the spawn in LevelData (SpawnedCount and SpentBudget) for you
+// (turn off with autoCountSpawns, then call level.RecordSpawn(entry) yourself).
 
 using System;
 using System.Collections.Generic;
@@ -39,9 +43,13 @@ public class WaveDirectorBridge : MonoBehaviour
              "Set false if bosses should also come from the normal roster after the halfway point.")]
     public bool excludeLevelBossFromRoster = true;
 
-    [Tooltip("If true, PickEntry() does entry.SpawnedCount++ on the picked entry. " +
-             "Set false only if the spawner already increments it.")]
+    [Tooltip("If true, PickEntry() calls level.RecordSpawn(entry), which spends the enemy's cost from the budget. " +
+             "Set false only if the spawner calls RecordSpawn itself.")]
     public bool autoCountSpawns = true;
+
+    [Tooltip("The AI picks the next enemy first and waits until the budget can afford it, so expensive enemies " +
+             "are not starved by cheap ones. If it still can't afford it after this many seconds, it picks again.")]
+    public float maxWaitForPendingSec = 10f;
 
     [Tooltip("Online learning on top of the rules. Turn off to compare rules-only behavior.")]
     public bool useLearning = true;
@@ -52,6 +60,14 @@ public class WaveDirectorBridge : MonoBehaviour
     private AdaptiveWaveDirector director;
     private readonly List<AdaptiveWaveDirector.Candidate> candidates = new List<AdaptiveWaveDirector.Candidate>();
     private readonly Dictionary<EnemyData, EnemyKind> kindCache = new Dictionary<EnemyData, EnemyKind>();
+    private LevelEnemyEntry pending;   // the enemy the AI has decided to send next
+    private float pendingSince;
+
+    /// <summary>The enemy the AI is saving budget for (null if none). Handy for a debug label.</summary>
+    public LevelEnemyEntry Pending
+    {
+        get { return pending; }
+    }
 
     public string Intent
     {
@@ -73,6 +89,7 @@ public class WaveDirectorBridge : MonoBehaviour
         if (director == null) Awake();
         director.Reset(!keepLearningAcrossLevels);
         kindCache.Clear();
+        pending = null;
     }
 
     public void Tick(float elapsedTime, DefenseSnapshot snapshot)
@@ -95,12 +112,43 @@ public class WaveDirectorBridge : MonoBehaviour
     }
 
     /// <summary>
-    /// Picks the next enemy using LevelData's SpawnProbability x adaptive multipliers.
-    /// Returns null when no entry has spawns left (LevelData's counts are all used up).
+    /// Returns the enemy to spawn now, or null (try again next tick).
+    /// The AI decides the mix (designer shares x rules x learning). It picks the next enemy first,
+    /// then waits until level.GetRemainingBudget(elapsedTime) can afford its cost, so the total
+    /// cost of spawned enemies never exceeds the level's budget curve.
     /// </summary>
-    public LevelEnemyEntry PickEntry()
+    public LevelEnemyEntry PickEntry(float elapsedTime)
     {
         if (level == null || level.enemyDataList == null) return null;
+
+        // Re-decide if we've been saving up for too long (e.g. the budget curve dipped after the boss).
+        if (pending != null && elapsedTime - pendingSince > maxWaitForPendingSec)
+        {
+            pending = null;
+        }
+
+        if (pending == null)
+        {
+            pending = DecideNext(elapsedTime);
+            pendingSince = elapsedTime;
+            if (pending == null) return null;
+        }
+
+        if (!level.CanAfford(pending, elapsedTime)) return null; // keep saving
+
+        LevelEnemyEntry result = pending;
+        pending = null;
+        if (autoCountSpawns) level.RecordSpawn(result);
+        return result;
+    }
+
+    private LevelEnemyEntry DecideNext(float elapsedTime)
+    {
+        level.SetEnemyDataSpawnProbability(elapsedTime); // base probabilities from the designer's shares
+
+        // Anything that can ever fit in the level's budget is allowed.
+        float ceiling = Mathf.Max(level.maxDifficulty, level.GetTotalBudget(elapsedTime)) - level.SpentBudget;
+        if (ceiling <= 0f) return null;
 
         candidates.Clear();
         foreach (LevelEnemyEntry entry in level.enemyDataList)
@@ -110,19 +158,15 @@ public class WaveDirectorBridge : MonoBehaviour
 
             var c = new AdaptiveWaveDirector.Candidate();
             c.Kind = KindOf(entry.enemy);
-            c.BaseProbability = entry.SpawnProbability;
-            c.Cost = entry.enemy.cost;
+            c.Cost = Mathf.Max(1, entry.enemy.cost);
+            // Designer shares are shares of COST, so the chance of picking one enemy is share / cost.
+            c.BaseProbability = entry.SpawnProbability / c.Cost;
             c.Tag = entry;
             candidates.Add(c);
         }
 
-        // LevelData's budget is cumulative (SpawnedCount), so no extra budget limit here.
-        AdaptiveWaveDirector.Candidate picked = director.PickEnemy(candidates, float.MaxValue);
-        if (picked == null) return null;
-
-        var result = (LevelEnemyEntry)picked.Tag;
-        if (autoCountSpawns) result.SpawnedCount++;
-        return result;
+        AdaptiveWaveDirector.Candidate picked = director.PickEnemy(candidates, ceiling);
+        return picked != null ? (LevelEnemyEntry)picked.Tag : null;
     }
 
     public SpawnModifiers RollModifiers(LevelEnemyEntry entry, DefenseSnapshot snapshot)

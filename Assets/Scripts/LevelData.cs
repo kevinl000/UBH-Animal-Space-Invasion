@@ -6,20 +6,20 @@ public class LevelEnemyEntry
 {
     public EnemyData enemy; // shared enemy type for this roster slot
     public List<BaseEnemyData> enemyInstances; // list of enemies for specific level instance
-    public float startingBudget;
-    public float endingBudget;
+    public float startingBudget; // designer's starting share for this enemy (used as the AI's prior)
+    public float endingBudget;   // designer's ending share for this enemy (used as the AI's prior)
     public bool isLevelBoss; // true only for this level's halfway boss
 
     public int SpawnedCount { get; set; }//stores the total number of of enemy type that has spawned.
-    public float SpawnProbability { get; set; }
-    public float RelativeBudget { get; set; }
-    public int RelativeCount { get; set; }
+    public float SpawnProbability { get; set; } // base (prior) probability from the designer's shares; the enemy AI adjusts it
+    public float RelativeBudget { get; set; }   // designer's share at the current time (Lerp of starting/ending budget)
+    public int RelativeCount { get; set; }      // no longer used for spawning decisions (kept for compatibility)
 }
 
 [CreateAssetMenu(fileName = "LevelData", menuName = "Scriptable Objects/LevelData")]
 public class LevelData : ScriptableObject
 {
-    public int startingDifficulty; // starting difficulty of the level 
+    public int startingDifficulty; // starting difficulty of the level
     public int postBossDifficulty; // difficulty of the level after the boss
     public int maxDifficulty; // max difficulty for the level
     public float maxTime; // max time for the level in seconds
@@ -37,9 +37,14 @@ public class LevelData : ScriptableObject
 
     public float PlanetHealth { get; set; }
 
+    // Total cost of all normal enemies spawned so far this level.
+    // The enemy AI decides WHICH enemies to spawn, but SpentBudget can never go above GetTotalBudget(time).
+    public float SpentBudget { get; private set; }
+
     public void Init()
     {
         PlanetHealth = planetMaxHealth;
+        SpentBudget = 0f;
 
         if (enemyDataList != null)
         {
@@ -83,6 +88,7 @@ public class LevelData : ScriptableObject
         return Mathf.Clamp01(time / maxTime);
     }
 
+    // Total cost allowed to have been spawned by this time (cumulative).
     public float GetTotalBudget(float time)
     {
         float progression = GetLevelProgression(time);
@@ -99,6 +105,39 @@ public class LevelData : ScriptableObject
             float phase2Progression = (progression - 0.5f) * 2f;
             float curve = phase2Progression * phase2Progression;
             return Mathf.Lerp(postBossDifficulty, maxDifficulty, curve);
+        }
+    }
+
+    // How much cost is still available right now. Can be <= 0 (e.g. right after the post-boss dip):
+    // then nothing spawns until the curve catches up.
+    public float GetRemainingBudget(float time)
+    {
+        return GetTotalBudget(time) - SpentBudget;
+    }
+
+    // True if this entry is allowed to spawn right now within the cost budget.
+    public bool CanAfford(LevelEnemyEntry entry, float time)
+    {
+        if (entry == null || entry.enemy == null)
+        {
+            return false;
+        }
+
+        return entry.enemy.cost <= GetRemainingBudget(time);
+    }
+
+    // Call once for every normal enemy that actually spawns.
+    public void RecordSpawn(LevelEnemyEntry entry)
+    {
+        if (entry == null || entry.enemy == null)
+        {
+            return;
+        }
+
+        entry.SpawnedCount++;
+        if (!entry.isLevelBoss)
+        {
+            SpentBudget += entry.enemy.cost;
         }
     }
 
@@ -132,6 +171,10 @@ public class LevelData : ScriptableObject
         return null;
     }
 
+    // Computes each enemy's BASE probability from the designer's shares (startingBudget -> endingBudget).
+    // This is only the starting point: the enemy AI multiplies it by what it has learned and
+    // picks the enemy, as long as the enemy's cost fits in GetRemainingBudget(time).
+    // The halfway boss is never included here; spawn it with ShouldSpawnGuaranteedBoss.
     public void SetEnemyDataSpawnProbability(float time)
     {
         if (enemyDataList == null)
@@ -139,10 +182,8 @@ public class LevelData : ScriptableObject
             return;
         }
 
-        bool includeLevelBoss = IsBossPhase(time);
         float progression = GetLevelProgression(time);
-        float totalBudget = GetTotalBudget(time);
-        int totalEnemyCount = 0;
+        float totalShare = 0f;
 
         foreach (LevelEnemyEntry entry in enemyDataList)
         {
@@ -151,20 +192,29 @@ public class LevelData : ScriptableObject
                 continue;
             }
 
-            if (entry.isLevelBoss && !includeLevelBoss)
+            entry.RelativeCount = 0;
+
+            if (entry.isLevelBoss || entry.enemy == null)
             {
                 entry.RelativeBudget = 0f;
-                entry.RelativeCount = 0;
-                entry.SpawnProbability = 0f;
-                entry.SpawnedCount = 0;
                 continue;
             }
 
-            int cost = entry.enemy != null ? entry.enemy.cost : 0;
-            entry.RelativeBudget = Mathf.Lerp(entry.startingBudget, entry.endingBudget, progression);//linearly interpolates from starting budget to ending budget
-            int targetCount = cost > 0 ? Mathf.FloorToInt(totalBudget * entry.RelativeBudget / cost) : 0;//calculates the targeted amount of a enemies of a type that should be spawned at that time
-            entry.RelativeCount = Mathf.Max(0, targetCount - entry.SpawnedCount); // gets the actuall count of needed enemies to spawn of that type (factoring enemies that have been spawned already)
-            totalEnemyCount += entry.RelativeCount;
+            entry.RelativeBudget = Mathf.Max(0f, Mathf.Lerp(entry.startingBudget, entry.endingBudget, progression));//linearly interpolates from starting budget to ending budget
+            totalShare += entry.RelativeBudget;
+        }
+
+        // If no shares were authored, treat every normal enemy in the roster equally.
+        int normalCount = 0;
+        if (totalShare <= 0f)
+        {
+            foreach (LevelEnemyEntry entry in enemyDataList)
+            {
+                if (entry != null && !entry.isLevelBoss && entry.enemy != null)
+                {
+                    normalCount++;
+                }
+            }
         }
 
         foreach (LevelEnemyEntry entry in enemyDataList)
@@ -174,9 +224,18 @@ public class LevelData : ScriptableObject
                 continue;
             }
 
-            entry.SpawnProbability = totalEnemyCount > 0
-                ? (float)entry.RelativeCount / totalEnemyCount
-                : 0f;
+            if (entry.isLevelBoss || entry.enemy == null)
+            {
+                entry.SpawnProbability = 0f;
+            }
+            else if (totalShare > 0f)
+            {
+                entry.SpawnProbability = entry.RelativeBudget / totalShare; // an enemy with share 0 is disabled for this level
+            }
+            else
+            {
+                entry.SpawnProbability = normalCount > 0 ? 1f / normalCount : 0f;
+            }
         }
     }
 

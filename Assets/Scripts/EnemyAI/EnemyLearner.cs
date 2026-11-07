@@ -1,6 +1,8 @@
 // Enemy AI - online learning layer (Thompson sampling, multi-armed bandit).
 //
-// Each enemy type is an "arm". Every time an enemy of that type leaves play
+// Each enemy FAMILY is an "arm" (geese, stealth geese, skunks, deer). A level only spawns a
+// few dozen enemies, so learning per family instead of per type gets enough data to matter.
+// Every time an enemy of that family leaves play
 // (killed or despawned), we score how well it did:
 //     reward = damage / (damage + cost)        -> 0 if it did no damage, close to 1 if it did a lot for its cost
 // and update a Beta(alpha, beta) belief for that type.
@@ -19,13 +21,13 @@ namespace EnemyAI
 {
     public class EnemyLearnerSettings
     {
-        public float PriorAlpha = 2f;          // Beta(2,2): mean 0.5, "we don't know yet"
-        public float PriorBeta = 2f;
-        public float MinFactor = 0.5f;         // learned factor is clamped to [0.5, 2]
-        public float MaxFactor = 2f;
-        public float DecayPerStep = 0.9f;      // how much evidence is kept each Decay() call
-        public int MinSamplesForIntent = 4;    // results needed before the HUD claims it "learned"
-        public float IntentLeadMargin = 0.12f; // best type must beat the average by this much
+        public float PriorAlpha = 1f;          // Beta(1,1): mean 0.5, "we don't know yet" (light prior, learns fast)
+        public float PriorBeta = 1f;
+        public float MinFactor = 0.33f;        // learned factor is clamped to [0.33, 3]; the cost budget still limits balance
+        public float MaxFactor = 3f;
+        public float DecayPerStep = 0.95f;     // how much evidence is kept each Decay() call (every 15s)
+        public int MinSamplesForIntent = 3;    // results needed before the HUD claims it "learned"
+        public float IntentLeadMargin = 0.12f; // best family must beat the average by this much
     }
 
     public class EnemyLearner
@@ -47,7 +49,30 @@ namespace EnemyAI
         public EnemyLearnerSettings Settings { get; private set; }
 
         private readonly Random rng;
-        private readonly Dictionary<EnemyKind, Arm> arms = new Dictionary<EnemyKind, Arm>();
+        private enum Family { Goose, StealthGoose, Skunk, Deer, Other }
+
+        private static Family FamilyOf(EnemyKind k)
+        {
+            if (k == EnemyKind.StealthGoose) return Family.StealthGoose;
+            if (EnemyCatalog.IsGoose(k)) return Family.Goose;
+            if (EnemyCatalog.IsSkunk(k)) return Family.Skunk;
+            if (EnemyCatalog.IsDeer(k)) return Family.Deer;
+            return Family.Other;
+        }
+
+        private static string FamilyName(Family f)
+        {
+            switch (f)
+            {
+                case Family.Goose: return "geese";
+                case Family.StealthGoose: return "stealth geese";
+                case Family.Skunk: return "skunks";
+                case Family.Deer: return "deer";
+                default: return "bosses";
+            }
+        }
+
+        private readonly Dictionary<Family, Arm> arms = new Dictionary<Family, Arm>();
         private readonly Dictionary<int, Ticket> open = new Dictionary<int, Ticket>();
         private int nextTicket = 1;
 
@@ -141,33 +166,34 @@ namespace EnemyAI
             return a.Alpha / (a.Alpha + a.Beta);
         }
 
+        /// <summary>Number of results learned for this enemy's family.</summary>
         public int SampleCount(EnemyKind kind)
         {
             Arm a;
-            return arms.TryGetValue(kind, out a) ? a.Samples : 0;
+            return arms.TryGetValue(FamilyOf(kind), out a) ? a.Samples : 0;
         }
 
         /// <summary>
-        /// The type the AI has learned works best against this player, if it is confident.
+        /// The family the AI has learned works best against this player (e.g. "skunks"), if it is confident.
         /// Returns false when there is not enough evidence yet.
         /// </summary>
-        public bool TryGetBestLearned(out EnemyKind best, out float bestMean)
+        public bool TryGetBestLearned(out string bestName, out float bestMean)
         {
-            best = EnemyKind.BasicGoose1;
+            bestName = "";
             bestMean = 0f;
             float sum = 0f;
             int count = 0;
 
-            foreach (KeyValuePair<EnemyKind, Arm> kv in arms)
+            foreach (KeyValuePair<Family, Arm> kv in arms)
             {
-                if (kv.Value.Samples < Settings.MinSamplesForIntent) continue;
+                if (kv.Key == Family.Other || kv.Value.Samples < Settings.MinSamplesForIntent) continue;
                 float m = kv.Value.Alpha / (kv.Value.Alpha + kv.Value.Beta);
                 sum += m;
                 count++;
                 if (m > bestMean)
                 {
                     bestMean = m;
-                    best = kv.Key;
+                    bestName = FamilyName(kv.Key);
                 }
             }
 
@@ -180,13 +206,14 @@ namespace EnemyAI
 
         private Arm GetArm(EnemyKind kind)
         {
+            Family f = FamilyOf(kind);
             Arm a;
-            if (!arms.TryGetValue(kind, out a))
+            if (!arms.TryGetValue(f, out a))
             {
                 a = new Arm();
                 a.Alpha = Settings.PriorAlpha;
                 a.Beta = Settings.PriorBeta;
-                arms[kind] = a;
+                arms[f] = a;
             }
             return a;
         }
@@ -233,12 +260,5 @@ namespace EnemyAI
             return Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Cos(2.0 * Math.PI * u2);
         }
 
-        public static string DisplayName(EnemyKind kind)
-        {
-            if (EnemyCatalog.IsGoose(kind)) return kind == EnemyKind.StealthGoose ? "stealth geese" : (EnemyCatalog.IsShielded(kind) ? "shielded geese" : "geese");
-            if (EnemyCatalog.IsSkunk(kind)) return EnemyCatalog.IsShielded(kind) ? "shielded skunks" : "skunks";
-            if (EnemyCatalog.IsDeer(kind)) return EnemyCatalog.IsShielded(kind) ? "shielded deer" : "deer";
-            return kind.ToString();
-        }
     }
 }

@@ -124,11 +124,11 @@ namespace EnemyAI
                 Learner.Decay();
 
                 // A confident learned insight beats a rule-based one on the HUD.
-                EnemyKind best;
+                string best;
                 float bestMean;
                 if (Learner.TryGetBestLearned(out best, out bestMean))
                 {
-                    CurrentIntent = "They've learned " + EnemyLearner.DisplayName(best) + " hurt you the most.";
+                    CurrentIntent = "They've learned " + best + " hurt you the most.";
                 }
             }
         }
