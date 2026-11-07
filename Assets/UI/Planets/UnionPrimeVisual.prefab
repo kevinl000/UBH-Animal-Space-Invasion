@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7136061047531963944}
+  - component: {fileID: 746212930054721001}
   m_Layer: 0
   m_Name: UnionPrimeVisual
   m_TagString: Untagged
@@ -111,3 +112,87 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &746212930054721001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809327136469136354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ecce2bdd7e4e23acfe81ad388fbfac, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: PlanetaryDefense.Menu::UnionPrimeVisualTest
+  silhouette: {fileID: 8885571135369800694}
+  rearGround: {fileID: 21300000, guid: 528303e394ff4eda829be57088b96143, type: 3}
+  terrain: {fileID: 21300000, guid: c6e3f58322444ea58713318b623345d5, type: 3}
+  foreground: {fileID: 21300000, guid: 6e99a20223f04f4caf7a7b5b3c6855b4, type: 3}
+  laserBase: {fileID: 21300000, guid: 0c8924ea89a048feb58dd1d402d014e6, type: 3}
+  laserGun: {fileID: 21300000, guid: 847ed1acf4a94fa9b34f694e2f4fa78c, type: 3}
+  laserPortrait: {fileID: 21300000, guid: 9238f1ac9e7146a8802f48e35aa02593, type: 3}
+  laser: {fileID: 11400000, guid: 2b4cd92d87b1e3a48acc6589d3da6738, type: 2}
+  facades:
+  - sprite: {fileID: 21300000, guid: f4053407118847ee86f8b68d54bae43e, type: 3}
+    origin: {x: 465, y: 253}
+  - sprite: {fileID: 21300000, guid: cb232247bbe641ed9cd857f2f3f92642, type: 3}
+    origin: {x: 442, y: 65}
+  - sprite: {fileID: 21300000, guid: 41ff20d9ba994dbba36a0098b79d0a7c, type: 3}
+    origin: {x: 442, y: 65}
+  - sprite: {fileID: 21300000, guid: 809ba6d744024c3d9ff054c72bc8258f, type: 3}
+    origin: {x: 252, y: 203}
+  - sprite: {fileID: 21300000, guid: 58a7d6fb310943059a6831e64a075941, type: 3}
+    origin: {x: 787, y: 203}
+  - sprite: {fileID: 21300000, guid: 05a9cdd316344b1181af90e2f8cf872d, type: 3}
+    origin: {x: 219, y: 365}
+  - sprite: {fileID: 21300000, guid: d1dce9a03ce24ccbb42c6fbc927a5cbf, type: 3}
+    origin: {x: 931, y: 365}
+  - sprite: {fileID: 21300000, guid: 42cbacba7d3d415d9f3fd6bf4376ba74, type: 3}
+    origin: {x: 207, y: 680}
+  - sprite: {fileID: 21300000, guid: 43c6e8a0fdca4393aa69e33a8dc5a3db, type: 3}
+    origin: {x: 947, y: 680}
+  - sprite: {fileID: 21300000, guid: e663c0bb09dc41f6bae35bcd904b9877, type: 3}
+    origin: {x: 232, y: 783}
+  - sprite: {fileID: 21300000, guid: deff2c42b55a4068988246f53864866a, type: 3}
+    origin: {x: 808, y: 783}
+  - sprite: {fileID: 21300000, guid: 0d9c854577aa4383a0732ae939160850, type: 3}
+    origin: {x: 414, y: 928}
+  - sprite: {fileID: 21300000, guid: ce807f00c1014d8f923aa8a51c2a2771, type: 3}
+    origin: {x: 693, y: 928}
+  sites:
+  - number: 12
+    mount: {x: 627, y: 283}
+    clockwiseAngle: 0
+  - number: 1
+    mount: {x: 764, y: 315}
+    clockwiseAngle: 24.969
+  - number: 2
+    mount: {x: 901, y: 433}
+    clockwiseAngle: 57.057
+  - number: 3
+    mount: {x: 948, y: 603}
+    clockwiseAngle: 88.746
+  - number: 4
+    mount: {x: 904, y: 769}
+    clockwiseAngle: 119.847
+  - number: 5
+    mount: {x: 781, y: 889}
+    clockwiseAngle: 151.22
+  - number: 6
+    mount: {x: 626, y: 930}
+    clockwiseAngle: 180.162
+  - number: 7
+    mount: {x: 474, y: 886}
+    clockwiseAngle: 208.919
+  - number: 8
+    mount: {x: 349, y: 768}
+    clockwiseAngle: 240.392
+  - number: 9
+    mount: {x: 305, y: 603}
+    clockwiseAngle: 271.254
+  - number: 10
+    mount: {x: 354, y: 431}
+    clockwiseAngle: 303.208
+  - number: 11
+    mount: {x: 487, y: 315}
+    clockwiseAngle: 334.617

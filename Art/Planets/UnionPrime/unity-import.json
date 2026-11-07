@@ -1,0 +1,86 @@
+{
+  "editor": "6000.6.7f1",
+  "images": {
+    "Assets/Art/Planets/UnionPrime/RearGround.png": {
+      "source": "Art/Planets/UnionPrime/rear-ground.png",
+      "sha256": "5b201e118c9442d67e042d51681416662f2e85f8bbdf7b2fad64bec7fd0acd4d"
+    },
+    "Assets/Art/Planets/UnionPrime/Terrain.png": {
+      "source": "Art/Planets/UnionPrime/terrain.png",
+      "sha256": "b5b9db4a39f6ceb24171821e5c1add8e1c109b5b1be5e4255e56812ac9be1be3"
+    },
+    "Assets/Art/Planets/UnionPrime/Foreground.png": {
+      "source": "Art/Planets/UnionPrime/foreground.png",
+      "sha256": "e35727f08cc3ddde40ed146164cbe38a1e32f3ae82afb717b66904c3f38c0a09"
+    },
+    "Assets/Art/Planets/UnionPrime/LaserBase.png": {
+      "source": "Art/Towers/Laser/Redesign/Sweep/base-sprite.png",
+      "sha256": "b9386b246ff8f65146c3d746b592612bcc5b76a95ccb145fe0428e84d35320f3"
+    },
+    "Assets/Art/Planets/UnionPrime/LaserGun.png": {
+      "source": "Art/Towers/Laser/Redesign/Sweep/gun-sprite.png",
+      "sha256": "13e720e5d2b9ba6f9bb3990829ecfd9beff41620e60c4bf5a2440aa22e2e3312"
+    },
+    "Assets/Art/Planets/UnionPrime/LaserPortrait.png": {
+      "source": "Art/Planets/UnionPrime/laser-portrait.png",
+      "sha256": "c97439a63c51ec0d02513bd1fda5373e559c90befa2cb4258b68d0d07d65823a"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade0.png": {
+      "source": "Art/Planets/UnionPrime/Facades/guild-support.png",
+      "sha256": "7e40b17d0056fdc477b2a5c2714a61891a95aec79665bc27cf1c27862871bdd6"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade1.png": {
+      "source": "Art/Planets/UnionPrime/Facades/guild-facade.png",
+      "sha256": "9ec095cd6d37ec8ce9a5cc4bde40e327572fa5815a5d219afadeb1122256d87d"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade2.png": {
+      "source": "Art/Planets/UnionPrime/Facades/guild-foundation-visible.png",
+      "sha256": "77e54c218f12d9c37c4a81843366131ee6d3d8a8e8d3b41b5dbbfb9600f195d8"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade3.png": {
+      "source": "Art/Planets/UnionPrime/Facades/market-northwest.png",
+      "sha256": "8ec244be2b9464163cec6baee424049e41a17899d8e4a69e592ffdfd6bd1a2cc"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade4.png": {
+      "source": "Art/Planets/UnionPrime/Facades/market-northeast.png",
+      "sha256": "8246a7e1b771b8af5276d19079387018d75d2f939ad309a55cbf57abdd654598"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade5.png": {
+      "source": "Art/Planets/UnionPrime/Facades/stand-west-upper.png",
+      "sha256": "7124b0b00170999576935983c9f0e248ba377e907c5cb03e11c9518fb0a93c2d"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade6.png": {
+      "source": "Art/Planets/UnionPrime/Facades/stand-east-upper.png",
+      "sha256": "51f748c893c815b6b511dc150cc57c1ef810f09d88755c80832f45b999bd1e5e"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade7.png": {
+      "source": "Art/Planets/UnionPrime/Facades/stand-west-lower.png",
+      "sha256": "fd6f109d173c73da135a30e529b48d9496ec8a11ec57cb773678dcdb0ea7e4e1"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade8.png": {
+      "source": "Art/Planets/UnionPrime/Facades/stand-east-lower.png",
+      "sha256": "c073ea034f965c35cf1f714fbfd84eba459d2e02e3bca455887f074ca05f2f88"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade9.png": {
+      "source": "Art/Planets/UnionPrime/Facades/shop-southwest.png",
+      "sha256": "65bf4552fa455b8de3711b9cd14fccd3591fbff2d8aac024f67e9ea2164c68d6"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade10.png": {
+      "source": "Art/Planets/UnionPrime/Facades/shop-southeast.png",
+      "sha256": "02ec534b54b63b8c5763969459fb1e3cc1682db0fcbb8ac345d436328d007a21"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade11.png": {
+      "source": "Art/Planets/UnionPrime/Facades/kiosk-southwest.png",
+      "sha256": "e52dfc1a05104f9d45b7b8f53cd41cf5683b775c8d07b4696609a36860e9702f"
+    },
+    "Assets/Art/Planets/UnionPrime/Facade12.png": {
+      "source": "Art/Planets/UnionPrime/Facades/kiosk-southeast.png",
+      "sha256": "c36aef3bde3b6908be0a44d5d1024beb4389192e669c4fcde0ecfdc133fac2d4"
+    }
+  },
+  "visual_prefab": "Assets/UI/Planets/UnionPrimeVisual.prefab",
+  "site_count": 12,
+  "tower_scale": 1.5,
+  "source_canvas_display_width": 640,
+  "limits": "Terrain and facade polish candidate; Unity visual review pending; no combat/economy"
+}

@@ -1,0 +1,223 @@
+{
+  "source": "facades-generated.png",
+  "source_sha256": "d591f140e4cca0d6c31e4c5f2d19fde422096d397393716b4261a357281c4a45",
+  "ground_mask_source": "Art/Planets/UnionPrime/ContactRepair/terrain-generated.png",
+  "ground_mask_sha256": "11790cc066cc1c2450a7c8eba9043050580764eca561d76d8a0fa758e09329d6",
+  "layers": [
+    {
+      "file": "guild-support.png",
+      "origin_xy": [
+        465,
+        253
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/guild-support.png",
+      "mask_source_sha256": "27faa885aa1430e9807e4eb0f20a7f78b7eb92919cb50ad784c55ee8ea96b333",
+      "transparent_edge_pixels_excluded": 43
+    },
+    {
+      "file": "guild-facade.png",
+      "origin_xy": [
+        442,
+        65
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/guild-facade.png",
+      "mask_source_sha256": "a9e9d350e065cb30e9b1c606a928daeec903caa63a03590965c6817fede3d6a0",
+      "transparent_edge_pixels_excluded": 152
+    },
+    {
+      "file": "guild-foundation-visible.png",
+      "origin_xy": [
+        442,
+        65
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/guild-foundation-visible.png",
+      "mask_source_sha256": "65b50b0dc16a54482c997faf5d56fb15437a993cd26a6b29f7c38cf17de4adb9",
+      "transparent_edge_pixels_excluded": 257
+    },
+    {
+      "file": "market-northwest.png",
+      "origin_xy": [
+        252,
+        203
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/market-northwest.png",
+      "mask_source_sha256": "b74287675659b87b02e2d1ec454f9554b700cd8a9c179640c746d6a53a71b7b2",
+      "transparent_edge_pixels_excluded": 69
+    },
+    {
+      "file": "market-northeast.png",
+      "origin_xy": [
+        787,
+        203
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/market-northeast.png",
+      "mask_source_sha256": "26ebe2528b12a62f84b60d64d3490a0696df0b4a3632f003777cd7558615e48a",
+      "transparent_edge_pixels_excluded": 83
+    },
+    {
+      "file": "stand-west-upper.png",
+      "origin_xy": [
+        219,
+        365
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/stand-west-upper.png",
+      "mask_source_sha256": "7626f1e7c81dfd40316ecfe7fbfdff26e71139c965ff2c67b41ea15ac472a102",
+      "transparent_edge_pixels_excluded": 25
+    },
+    {
+      "file": "stand-east-upper.png",
+      "origin_xy": [
+        931,
+        365
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/stand-east-upper.png",
+      "mask_source_sha256": "ac56090ad456a99dfcd509b1d9b1e795611d2947e7f597f4083b15e7fe360f96",
+      "transparent_edge_pixels_excluded": 20
+    },
+    {
+      "file": "stand-west-lower.png",
+      "origin_xy": [
+        207,
+        680
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/stand-west-lower.png",
+      "mask_source_sha256": "98a84f4ef6691ee876b496681e51b40d8b433fda05e5347564144be24c88febb",
+      "transparent_edge_pixels_excluded": 18
+    },
+    {
+      "file": "stand-east-lower.png",
+      "origin_xy": [
+        947,
+        680
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/stand-east-lower.png",
+      "mask_source_sha256": "4132275242e164444ddc6f673e9f0005ce76b96b274907378386ed658073a254",
+      "transparent_edge_pixels_excluded": 555,
+      "replacement_source": "Bakery/bakery-generated.png",
+      "replacement_sha256": "e779d5d9c830c96c7d7ca774a96b4bb2355bb00ecc977ca972ed66cafabc0c5d",
+      "replacement_sampling": "nearest; original dimensions and mask"
+    },
+    {
+      "file": "shop-southwest.png",
+      "origin_xy": [
+        232,
+        783
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/shop-southwest.png",
+      "mask_source_sha256": "60d22faf915fc59b5461b351acba584a457a6eade30b2f9823905d8ea5a5a84d",
+      "transparent_edge_pixels_excluded": 393,
+      "replacement_source": "Orientation/orientation-generated.png",
+      "replacement_sha256": "d2c6336bcb7384added0120b1285f2ba14f1a893794796c4940b44ba3bce97c3",
+      "replacement_sampling": "native crop; original dimensions and mask",
+      "replacement_region_xyxy": [
+        350,
+        890,
+        447,
+        983
+      ],
+      "replacement_polygon_xy": [
+        [
+          350,
+          932
+        ],
+        [
+          386,
+          890
+        ],
+        [
+          447,
+          912
+        ],
+        [
+          447,
+          983
+        ],
+        [
+          350,
+          983
+        ]
+      ]
+    },
+    {
+      "file": "shop-southeast.png",
+      "origin_xy": [
+        808,
+        783
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/shop-southeast.png",
+      "mask_source_sha256": "1aa2fb9409205ec288a7eb3f21160135dcba6f7d903ecc6495926d91f525bbbc",
+      "transparent_edge_pixels_excluded": 441,
+      "replacement_source": "Orientation/orientation-generated.png",
+      "replacement_sha256": "d2c6336bcb7384added0120b1285f2ba14f1a893794796c4940b44ba3bce97c3",
+      "replacement_sampling": "native crop; original dimensions and mask",
+      "replacement_region_xyxy": [
+        808,
+        890,
+        905,
+        983
+      ],
+      "replacement_polygon_xy": [
+        [
+          808,
+          912
+        ],
+        [
+          868,
+          890
+        ],
+        [
+          905,
+          932
+        ],
+        [
+          905,
+          983
+        ],
+        [
+          808,
+          983
+        ]
+      ]
+    },
+    {
+      "file": "kiosk-southwest.png",
+      "origin_xy": [
+        414,
+        928
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/kiosk-southwest.png",
+      "mask_source_sha256": "408dfaf599ea55908c794f36f168e625e15aa51bc46b56437f238f22bfcae612",
+      "transparent_edge_pixels_excluded": 7,
+      "replacement_source": "Orientation/orientation-generated.png",
+      "replacement_sha256": "d2c6336bcb7384added0120b1285f2ba14f1a893794796c4940b44ba3bce97c3",
+      "replacement_sampling": "native crop; original dimensions and mask",
+      "replacement_region_xyxy": [
+        414,
+        928,
+        562,
+        1043
+      ]
+    },
+    {
+      "file": "kiosk-southeast.png",
+      "origin_xy": [
+        693,
+        928
+      ],
+      "mask_source": "Art/Planets/UnionPrime/Sources/FacadeMasks/kiosk-southeast.png",
+      "mask_source_sha256": "dff0d0838d199e3d217bf850186e0ed668ed239f7490df790b51c0e728c962cd",
+      "transparent_edge_pixels_excluded": 1,
+      "replacement_source": "Orientation/orientation-generated.png",
+      "replacement_sha256": "d2c6336bcb7384added0120b1285f2ba14f1a893794796c4940b44ba3bce97c3",
+      "replacement_sampling": "native crop; original dimensions and mask",
+      "replacement_region_xyxy": [
+        693,
+        928,
+        841,
+        1043
+      ]
+    }
+  ],
+  "source_masks_and_origins_preserved": true,
+  "alpha_rule": "Original mask intersected with generated alpha; guild excludes repaired ground interior with two-pixel contact overlap; no silhouette expansion"
+}
