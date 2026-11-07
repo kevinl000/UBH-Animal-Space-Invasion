@@ -92,28 +92,136 @@ public class MenuFlowTests
         }
 
         Assert.AreEqual(1, Object.FindObjectsByType<EventSystem>().Length);
-        var levelVictor = GameObject.Find("Victor");
-        Assert.IsNull(levelVictor.GetComponent<Animator>());
-        var levelBackground = GameObject.Find("Background").GetComponent<Image>();
-        Assert.AreSame(levelBackground.defaultMaterial, levelBackground.material);
-        Assert.IsNull(levelVictor.transform.Find("RightArm"), "The destination menu should use the complete sprite too.");
-        foreach (Transform child in levelVictor.transform.parent)
-            Assert.AreNotEqual("VictorRightArm", child.name, "The old rotating arm should be removed.");
-        Assert.IsFalse(GameObject.Find("LaunchButton").GetComponent<Button>().IsInteractable());
-        var destination = GameObject.Find("Destination3").GetComponent<Button>();
-        ClickAtCenter(destination);
-        Assert.AreEqual("Davis", GameObject.Find("SelectedDestination").GetComponent<Text>().text);
+        Assert.IsNull(GameObject.Find("Victor"));
+        Assert.IsNull(GameObject.Find("CanadaGooseUfo"));
+        Assert.IsNull(GameObject.Find("LaunchButton"));
+        string[] names = { "Union Prime", "Capen Major", "C3", "Davis Nova", "Silverman Luna", "Ellicott Prime", "Lockwood Terra", "Commons Minor", "Baird's Reach" };
+        var confirmed = GameObject.Find("SelectedDestination").GetComponent<Text>();
+        AssertConfirmedPlanet(0);
+        for (int i = 0; i < names.Length; i++)
+        {
+            var destination = GameObject.Find("Destination" + i).GetComponent<Button>();
+            Assert.AreEqual(names[i], destination.transform.Find("Name").GetComponent<Text>().text);
+            Assert.AreEqual(i == 0 ? "TUTORIAL" : "LEVEL " + i,
+                destination.transform.Find("Number").GetComponent<Text>().text);
+            var planet = destination.transform.Find("Planet").GetComponent<Image>();
+            Assert.AreEqual(i == 1 || i == 5 ? 92 : 80, planet.rectTransform.rect.width);
+            Assert.IsFalse(planet.raycastTarget);
+            ClickAtCenter(destination);
+            Assert.AreEqual(names[i], confirmed.text);
+            Assert.AreEqual(destination.gameObject, EventSystem.current.currentSelectedGameObject);
+            Assert.Greater(destination.targetGraphic.canvasRenderer.GetColor().a, 0,
+                "The focused planet needs visible selection brackets.");
+            Assert.Greater(destination.targetGraphic.color.a, 0);
+            AssertConfirmedPlanet(i);
+            var next = GameObject.Find("Destination" + (i + 1) % names.Length);
+            ExecuteEvents.Execute(next, new PointerEventData(EventSystem.current), ExecuteEvents.pointerEnterHandler);
+            AssertConfirmedPlanet(i);
+            Assert.AreEqual(names[i], confirmed.text, "Hovering another planet must preserve confirmation.");
+        }
         var page = Object.FindAnyObjectByType<MenuPageController>();
         Assert.Greater(page.confirmSound.samples, 0, "The confirmation sound must contain decoded audio.");
 
         var back = GameObject.Find("BackButton").GetComponent<Button>();
         ClickAtCenter(back);
-        // An extra click during the sound delay must not initiate another scene transition.
+        page.SelectDestination(names[0]);
+        Assert.AreEqual(names[8], confirmed.text, "Selection changes must be ignored during navigation.");
+        AssertConfirmedPlanet(8);
+        // An extra click during loading must not initiate another scene transition.
         ClickAtCenter(back);
         yield return WaitForScene("MainMenu");
         Assert.AreEqual(1, Object.FindObjectsByType<MenuPageController>().Length);
         Assert.AreEqual("NewGameButton", EventSystem.current.currentSelectedGameObject.name);
         LogAssert.NoUnexpectedReceived();
+    }
+
+    [UnityTest]
+    public IEnumerator LevelSelectDirectEntrySupportsKeyboardSelectionAndEscape()
+    {
+        yield return SceneManager.LoadSceneAsync("LevelSelect");
+        yield return null;
+        yield return null;
+        Assert.AreEqual("Destination0", EventSystem.current.currentSelectedGameObject.name);
+        AssertConfirmedPlanet(0);
+        var confirmed = GameObject.Find("SelectedDestination").GetComponent<Text>();
+        ClickAtCenter(GameObject.Find("PlayButton").GetComponent<Button>());
+        Assert.AreEqual("LevelSelect", SceneManager.GetActiveScene().name);
+        Assert.IsFalse(SceneLoadingScreen.IsLoading, "Unwired Play must not launch a scene.");
+        Assert.AreEqual("Destination0", EventSystem.current.currentSelectedGameObject.name);
+        var keyboard = InputSystem.AddDevice<Keyboard>("LevelSelectTestKeyboard");
+        try
+        {
+            for (int i = 1; i <= 9; i++)
+            {
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
+                yield return null;
+                yield return null;
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                yield return null;
+                Assert.AreEqual(i == 9 ? "BackButton" : "Destination" + i,
+                    EventSystem.current.currentSelectedGameObject.name);
+                Assert.AreEqual("Union Prime", confirmed.text, "Focus alone must not confirm a destination.");
+                AssertConfirmedPlanet(0);
+            }
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
+            yield return null;
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return null;
+            Assert.AreEqual("Destination0", EventSystem.current.currentSelectedGameObject.name);
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
+            yield return null;
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.Enter));
+            yield return null;
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return null;
+            Assert.AreEqual("Capen Major", confirmed.text);
+            AssertConfirmedPlanet(1);
+            Assert.AreEqual(GameManager.GameState.Menu, GameManager.Instance.CurrentState);
+            Assert.IsFalse(SceneLoadingScreen.IsLoading);
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.Escape));
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return WaitForScene("MainMenu");
+        }
+        finally
+        {
+            InputSystem.RemoveDevice(keyboard);
+        }
+        LogAssert.NoUnexpectedReceived();
+    }
+
+    private static void AssertConfirmedPlanet(int selectedIndex)
+    {
+        var page = Object.FindAnyObjectByType<MenuPageController>();
+        var details = page.destinationDetails;
+        Assert.IsNotNull(details);
+        string[] landmarks = { "Student Union", "Capen", "C3", "Davis", "Silverman", "Ellicott", "Lockwood", "Commons", "Baird Point" };
+        Assert.AreEqual(landmarks[selectedIndex] + (selectedIndex == 0 ? " / Tutorial" : " / Level " + selectedIndex),
+            details.landmarkAndLevel.text);
+        Assert.IsNotEmpty(details.description.text);
+        Assert.AreEqual(details.destinations[selectedIndex].description, details.description.text,
+            "The details must follow confirmed selection, not focus.");
+        Assert.LessOrEqual(details.description.preferredHeight, details.description.rectTransform.rect.height,
+            "Every draft description must fit without truncation.");
+        Assert.AreEqual("Unknown", details.bossName.text);
+        Assert.AreSame(details.unknownBoss, details.bossPreview.sprite);
+        Assert.IsFalse(details.bossPreview.raycastTarget);
+        Assert.IsFalse(details.playButton.IsInteractable());
+        Assert.AreEqual(0, details.playButton.onClick.GetPersistentEventCount());
+        for (int i = 0; i < 9; i++)
+        {
+            var destination = GameObject.Find("Destination" + i);
+            var halo = destination.transform.Find("SelectionHalo").GetComponent<Image>();
+            Assert.AreEqual(i == selectedIndex, halo.enabled, "Exactly the confirmed planet should illuminate.");
+            Assert.IsFalse(halo.raycastTarget, "The halo must not intercept planet clicks.");
+            Assert.AreEqual(i == selectedIndex ? page.selectedLabelColor : page.destinationLabelColor,
+                destination.transform.Find("Name").GetComponent<Text>().color);
+        }
     }
 
     private static void ClickAtCenter(Button button)

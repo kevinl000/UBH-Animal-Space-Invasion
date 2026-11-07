@@ -9,6 +9,16 @@ using UnityEngine.UI;
 // Off-screen scene previews for checking layout without opening a visible editor window.
 public static class MenuPreviewCapture
 {
+    public static void CaptureLevelSelect()
+    {
+        CaptureScene("LevelSelect", 1672, 941);
+        CaptureScene("LevelSelect", 1280, 720);
+        CaptureScene("LevelSelect", 1280, 960);
+        CaptureScene("LevelSelect", 2560, 1080);
+        EditorSceneManager.OpenScene("Assets/Scenes/LevelSelect.unity");
+        Debug.Log("LEVEL_SELECT_PREVIEWS_OK");
+    }
+
     public static void Capture()
     {
         CaptureScene("MainMenu", 1672, 941);
