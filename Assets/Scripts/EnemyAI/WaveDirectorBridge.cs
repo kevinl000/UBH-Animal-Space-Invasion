@@ -54,6 +54,9 @@ public class WaveDirectorBridge : MonoBehaviour
     [Tooltip("Online learning on top of the rules. Turn off to compare rules-only behavior.")]
     public bool useLearning = true;
 
+    [Tooltip("Hand-written counter rules (e.g. no radar -> more stealth geese). Turn off to compare learning-only behavior.")]
+    public bool useRules = true;
+
     [Tooltip("If true, the AI keeps what it learned about the player when a new level starts.")]
     public bool keepLearningAcrossLevels = true;
 
@@ -90,12 +93,14 @@ public class WaveDirectorBridge : MonoBehaviour
         director.Reset(!keepLearningAcrossLevels);
         kindCache.Clear();
         pending = null;
+        ValidateLevel();
     }
 
     public void Tick(float elapsedTime, DefenseSnapshot snapshot)
     {
         if (level == null) return;
         director.UseLearning = useLearning;
+        director.UseRules = useRules;
         director.Update(elapsedTime, level.GetLevelProgression(elapsedTime), snapshot);
     }
 
@@ -158,7 +163,7 @@ public class WaveDirectorBridge : MonoBehaviour
 
             var c = new AdaptiveWaveDirector.Candidate();
             c.Kind = KindOf(entry.enemy);
-            c.Cost = Mathf.Max(1, entry.enemy.cost);
+            c.Cost = LevelData.EffectiveCost(entry.enemy);
             // Designer shares are shares of COST, so the chance of picking one enemy is share / cost.
             c.BaseProbability = entry.SpawnProbability / c.Cost;
             c.Tag = entry;
@@ -172,7 +177,7 @@ public class WaveDirectorBridge : MonoBehaviour
     public SpawnModifiers RollModifiers(LevelEnemyEntry entry, DefenseSnapshot snapshot)
     {
         if (entry == null || entry.enemy == null) return director.RollModifiers(EnemyKind.BasicGoose1, snapshot);
-        return director.RollModifiers(KindOf(entry.enemy), Mathf.Max(1, entry.enemy.cost), snapshot);
+        return director.RollModifiers(KindOf(entry.enemy), LevelData.EffectiveCost(entry.enemy), snapshot);
     }
 
     /// <summary>True once, 5 seconds before the halfway boss.</summary>
@@ -180,6 +185,43 @@ public class WaveDirectorBridge : MonoBehaviour
     {
         if (level == null) return false;
         return director.ShouldShowBossWarning(previousTime, time, level.maxTime / 2f);
+    }
+
+    /// <summary>Warns once per level about settings that would make spawning silently break.</summary>
+    private void ValidateLevel()
+    {
+        if (level == null)
+        {
+            Debug.LogWarning("[WaveDirector] No LevelData assigned.");
+            return;
+        }
+
+        string n = level.name;
+        if (level.maxTime <= 0f)
+            Debug.LogWarning("[WaveDirector] " + n + ": maxTime is " + level.maxTime + ". Set the level length in seconds.");
+        if (level.maxDifficulty <= 0 && level.startingDifficulty <= 0)
+            Debug.LogWarning("[WaveDirector] " + n + ": difficulty is 0, so no enemies can spawn. Set startingDifficulty / maxDifficulty.");
+        if (level.postBossDifficulty < level.maxDifficulty * 0.5f)
+            Debug.LogWarning("[WaveDirector] " + n + ": postBossDifficulty (" + level.postBossDifficulty + ") is below maxDifficulty/2 (" + (level.maxDifficulty * 0.5f) +
+                             "). Because the budget is cumulative, NO enemies will spawn after the boss until the curve climbs back past what was already spent.");
+
+        if (level.enemyDataList == null || level.enemyDataList.Count == 0)
+        {
+            Debug.LogWarning("[WaveDirector] " + n + ": enemy roster is empty.");
+            return;
+        }
+
+        foreach (LevelEnemyEntry e in level.enemyDataList)
+        {
+            if (e == null || e.enemy == null)
+            {
+                Debug.LogWarning("[WaveDirector] " + n + ": a roster entry has no EnemyData assigned.");
+                continue;
+            }
+            if (e.enemy.cost <= 0)
+                Debug.LogWarning("[WaveDirector] " + n + ": '" + e.enemy.name + "' has cost " + e.enemy.cost + ". Treated as 1; set a real cost (see README).");
+            KindOf(e.enemy); // logs a warning if the name doesn't match an enemy kind
+        }
     }
 
     /// <summary>Resolves EnemyKind from the EnemyData asset name.</summary>

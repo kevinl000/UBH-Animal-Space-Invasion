@@ -23,9 +23,10 @@ namespace EnemyAI
     {
         public float PriorAlpha = 1f;          // Beta(1,1): mean 0.5, "we don't know yet" (light prior, learns fast)
         public float PriorBeta = 1f;
-        public float MinFactor = 0.33f;        // learned factor is clamped to [0.33, 3]; the cost budget still limits balance
-        public float MaxFactor = 3f;
-        public float DecayPerStep = 0.95f;     // how much evidence is kept each Decay() call (every 15s)
+        public float MinFactor = 0.33f;        // learned factor is clamped to [0.33, 2]; the cost budget still limits balance
+        public float MaxFactor = 2f;           // (factor = sampled rate / prior mean 0.5, so it can't go above 2 anyway)
+        public float DecayPerStep = 0.85f;     // evidence kept each Decay() call (every 15s). Tuned in simulation: 0.85 follows a strategy change
+                                               // almost fully within ~60-90s with no measurable loss vs 0.95 in the steady case
         public int MinSamplesForIntent = 3;    // results needed before the HUD claims it "learned"
         public float IntentLeadMargin = 0.12f; // best family must beat the average by this much
     }

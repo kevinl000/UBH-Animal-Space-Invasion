@@ -85,7 +85,18 @@ public class LevelData : ScriptableObject
 
     public float GetLevelProgression(float time)
     {
+        if (maxTime <= 0f)
+        {
+            return 0f; // maxTime not set yet: avoid 0/0 = NaN
+        }
+
         return Mathf.Clamp01(time / maxTime);
+    }
+
+    // Cost used for budgeting. A cost of 0 or less would let an enemy spawn for free every tick, so it counts as 1.
+    public static int EffectiveCost(EnemyData enemy)
+    {
+        return enemy != null ? Mathf.Max(1, enemy.cost) : 1;
     }
 
     // Total cost allowed to have been spawned by this time (cumulative).
@@ -123,7 +134,7 @@ public class LevelData : ScriptableObject
             return false;
         }
 
-        return entry.enemy.cost <= GetRemainingBudget(time);
+        return EffectiveCost(entry.enemy) <= GetRemainingBudget(time);
     }
 
     // Call once for every normal enemy that actually spawns.
@@ -137,7 +148,7 @@ public class LevelData : ScriptableObject
         entry.SpawnedCount++;
         if (!entry.isLevelBoss)
         {
-            SpentBudget += entry.enemy.cost;
+            SpentBudget += EffectiveCost(entry.enemy);
         }
     }
 

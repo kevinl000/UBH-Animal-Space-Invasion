@@ -51,6 +51,9 @@ namespace EnemyAI
         /// <summary>Set false to turn the learning layer off (rules only).</summary>
         public bool UseLearning = true;
 
+        /// <summary>Set false to turn the rule layer off (learning only).</summary>
+        public bool UseRules = true;
+
         private readonly Random rng;
         private readonly Dictionary<EnemyKind, float> multipliers = new Dictionary<EnemyKind, float>();
         private float lastEvaluationTime = float.NegativeInfinity;
@@ -117,7 +120,15 @@ namespace EnemyAI
             }
 
             lastEvaluationTime = elapsedTime;
-            Evaluate(snapshot);
+            if (UseRules)
+            {
+                Evaluate(snapshot);
+            }
+            else
+            {
+                multipliers.Clear();
+                CurrentIntent = "";
+            }
 
             if (UseLearning)
             {

@@ -1,0 +1,65 @@
+=== Test 1: baselines (player weak to deer, AoE-heavy defense so the rules point to deer), N=200
+| Variant | Deer share of cost (%) | Damage per cost | % of oracle | Gap closed vs random (%) | Budget violations |
+|---|---|---|---|---|---|
+| Random | 15.8 ± 1.2 | 0.488 ± 0.022 | 24.4 ± 1.1 | 0.0 | 0/200 |
+| DesignerOnly | 13.8 ± 1.1 | 0.450 ± 0.021 | 22.5 ± 1.0 | -2.5 | 0/200 |
+| RulesOnly | 18.7 ± 1.2 | 0.541 ± 0.024 | 27.1 ± 1.2 | 3.5 | 0/200 |
+| LearningOnly | 23.5 ± 1.3 | 0.620 ± 0.026 | 31.0 ± 1.3 | 8.7 | 0/200 |
+| RulesPlusLearning | 32.9 ± 1.5 | 0.793 ± 0.028 | 39.7 ± 1.4 | 20.2 | 0/200 |
+| Oracle | 100.0 ± 0.0 | 1.998 ± 0.020 | 100.0 ± 1.0 | 100.0 | 0/200 |
+
+=== Test 2: weakness switches skunk -> deer at t=90s (360s level, boss at 180s, neutral defense, rules+learning), N=200
+    'flip' = learner believes deer > skunks. One 'wave' = one 15s re-evaluation step.
+| Decay per 15s | Flip after switch (s) | Never | Deer share 0-30s after | 30-60s | 60-90s | Reference: deer weak from start, same 60-90s window | Baseline test dmg/cost (% oracle) |
+|---|---|---|---|---|---|---|---|
+| 0.95 | 16 ± 1 (median 14) | 0/200 | 8.2 ± 2.1% | 17.7 ± 2.5% | 19.7 ± 2.2% | 25.3 ± 2.3% | 40.6 ± 1.4% |
+| 0.85 | 13 ± 1 (median 13) | 0/200 | 9.0 ± 2.0% | 16.8 ± 2.4% | 22.7 ± 2.3% | 23.3 ± 2.2% | 39.7 ± 1.4% |
+| 0.7 | 11 ± 1 (median 11) | 0/200 | 8.8 ± 2.1% | 16.0 ± 2.3% | 20.6 ± 2.2% | 21.2 ± 2.3% | 36.5 ± 1.3% |
+
+=== Test 5: rules are wrong (no radar -> rules boost stealth geese), real weakness = deer, N=200
+| Variant | Deer share (%) | Stealth share (%) | Damage per cost |
+|---|---|---|---|
+| RulesOnly | 13.7 ± 1.1 | 13.8 ± 0.6 | 0.449 ± 0.020 |
+| RulesPlusLearning | 22.7 ± 1.3 | 13.8 ± 0.5 | 0.602 ± 0.025 |
+Time from adaptation start (36s) until learner ranks deer above stealth: 59 ± 6s, median 41s; never: 2/200
+
+=== Test 6: no weakness (every family deals 0.7x cost), neutral defense, N=200
+| Variant | Normalized entropy of family mix (1 = perfectly even) | Largest family share (%) |
+|---|---|---|
+| DesignerOnly | 0.854 ± 0.010 | 43.6 ± 0.7 |
+| RulesPlusLearning | 0.868 ± 0.010 | 42.4 ± 0.8 |
+
+=== Test 3: integration with the team's real assets
+--- Level1.asset exactly as it is in the repo
+    maxTime=0 difficulty 0/0/0, roster: EasyEnemy(cost 0) share 0->0
+    result: 0 spawns in 60s (), NaN seen: False, spent 0 / budget at end 0, intent: ''
+--- Level1 with level settings filled, enemy still cost 0 (placeholder)
+    maxTime=120 difficulty 20/100/200, roster: EasyEnemy(cost 0) share 1->1
+    result: 184 spawns in 120s (EasyEnemy x184), NaN seen: False, spent 184 / budget at end 200, intent: ''
+--- All 3 placeholder enemies with costs 3/8/20 (names still don't match)
+    maxTime=120 difficulty 20/100/200, roster: MediumEnemt(cost 8) share 1->1, HardEnemy(cost 20) share 1->1, EasyEnemy(cost 3) share 1->1
+    result: 27 spawns in 120s (HardEnemy x4, EasyEnemy x13, MediumEnemt x10), NaN seen: False, spent 199 / budget at end 200, intent: ''
+
+=== Test 4: edge cases
+PASS budget below the cheapest enemy (budget 2, cheapest 3) -> 0 spawns, spent 0/2
+PASS budget 0 -> 0 spawns, spent 0/0
+PASS single enemy type -> 40 spawns, spent 200/200
+PASS enemy more expensive than the whole level (cost 500, budget 200) + one cheap enemy -> 66 spawns, spent 198/200
+PASS empty roster -> 0 spawns, spent 0/100
+PASS null roster -> 0 spawns, spent 0/100
+PASS roster entry with no EnemyData -> 33 spawns, spent 99/100
+PASS negative shares -> 12 spawns, spent 96/100
+PASS negative cost -> 61 spawns, spent 96/100
+PASS no towers -> 36 spawns, spent 199/200
+PASS null snapshot -> 36 spawns, spent 199/200
+PASS snapshot with null towers list and null entries -> 33 spawns, spent 99/100 / 33 spawns, spent 99/100
+PASS all 360 degrees covered (no weak direction) -> 48 spawns, spent 199/200
+PASS FOV wraps 359 -> 0 degrees -> coverage at 1/300/58/62 deg = 1/1/1/0, distance(359,1)=2
+PASS angles outside 0-360 (-30, 720) -> coverage at 330 (expected 2: -30 is 330, 720 is 0 and 0 also sees 330) = 2, chosen angle 151.1074
+PASS PickEnemy with all-zero probabilities returns null -> null
+PASS PickEnemy with NaN probability -> deer picked 200/200
+PASS learner after 10,000 decays with no data (no NaN, still samples) -> factor 1.781204
+PASS learner with 100,000 results on one family -> factor 1.96157 (cap 2), mean 0.9803393
+PASS tick with time going backwards / huge time -> ok, spent 25
+Edge cases: 20 passed, 0 failed
+

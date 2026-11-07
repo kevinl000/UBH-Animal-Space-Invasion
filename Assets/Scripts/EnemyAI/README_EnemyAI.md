@@ -70,21 +70,29 @@ It picks the next enemy **first** and waits until the budget can afford it, so e
   - 40%+ of attackers are AoE → more deer
   - half the towers within 30° of another → more skunks
   - fuel per second < 0 → more high-HP enemies
-- **Online learning (multi-armed bandit, Thompson sampling)**: learns per family (geese, stealth geese, skunks, deer). Every enemy that leaves play is scored `damage / (damage + cost)` and updates a Beta belief. Picks sample from these beliefs, so families that hurt the player show up more, while others still get tried. Old results fade every 15s so it re-adapts when the player changes their defense. Learned factor 0.33x–3x (safe, because the cost budget still caps difficulty).
+- **Online learning (multi-armed bandit, Thompson sampling)**: learns per family (geese, stealth geese, skunks, deer). Every enemy that leaves play is scored `damage / (damage + cost)` and updates a Beta belief. Picks sample from these beliefs, so families that hurt the player show up more, while others still get tried. Old results fade every 15s (keep 85%) so it re-adapts when the player changes their defense. Learned factor 0.33x–2x (safe, because the cost budget still caps difficulty).
 - **Spawn angle**: 60% at the least-covered direction (assumes towers face outward with their FOV), 40% random.
 - **Shiny** 5% (bosses 1%). **Orbit** 50% for geese and skunks, deer always.
 
-### Simulation (player weak to deer, 20 runs)
-| | Deer share of spent cost |
-|---|---|
-| Rules only | 13% |
-| Learning, level 1 | 23% |
-| Learning, level 2 (kept learning) | 30% |
+### Simulation (player weak to deer, 200 runs, mean ± 95% CI)
+| | Deer share of spent cost | Damage per cost (% of oracle) |
+|---|---|---|
+| Random | 15.8 ± 1.2% | 24.4 ± 1.1% |
+| Rules only | 18.7 ± 1.2% | 27.1 ± 1.2% |
+| Learning only | 23.5 ± 1.3% | 31.0 ± 1.3% |
+| **Rules + learning** | **32.9 ± 1.5%** | **39.7 ± 1.4%** |
+| Oracle (always sends deer) | 100% | 100% |
 
-Cost budget exceeded: 0 of 40 runs.
+Cost budget exceeded: 0 times. Full results and how to rerun them: `Tools/EnemyAISim/`.
+
+## Console warnings to look out for
+At `BeginLevel()` the bridge warns about: `maxTime` 0, difficulty 0, an enemy with cost 0 or less (treated as 1), an enemy name it can't match, an empty roster, and `postBossDifficulty` below `maxDifficulty / 2` (see below).
+
+**Post-boss pause:** the budget is cumulative, so if `postBossDifficulty` is lower than what was already spent before the boss (about `maxDifficulty / 2`), **nothing spawns** after the boss until the curve climbs back. With `postBossDifficulty = 0.3 × maxDifficulty`, that pause is about half of the second half of the level. If you want a short breather, set `postBossDifficulty` just above `maxDifficulty / 2`.
 
 ## Bridge options (Inspector)
 - `useLearning`: turn off to compare against rules only.
+- `useRules`: turn off to compare against learning only.
 - `keepLearningAcrossLevels`: remember the player between levels.
 - `excludeLevelBossFromRoster` (default on): `PickEntry()` never returns the level boss.
 - `autoCountSpawns` (default on): turn off only if the spawner calls `level.RecordSpawn(entry)` itself.
