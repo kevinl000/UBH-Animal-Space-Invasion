@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: dcfce95d2e411f8488cc6921f50867f5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2379042818985934835
+    second: MainPage-victor-wave_0
+  - first:
+      213: 5447570950709970863
+    second: MainPage-victor-wave_1
+  - first:
+      213: -2559704718376184085
+    second: MainPage-victor-wave_2
+  - first:
+      213: -6314721292820938191
+    second: MainPage-victor-wave_3
+  - first:
+      213: -3583184071781921424
+    second: MainPage-victor-wave_4
+  - first:
+      213: 6549234673118473067
+    second: MainPage-victor-wave_5
+  - first:
+      213: 35390774194239288
+    second: MainPage-victor-wave_6
+  - first:
+      213: -1965591702263176803
+    second: MainPage-victor-wave_7
+  - first:
+      213: -3013865007068005039
+    second: MainPage-victor-wave_8
+  - first:
+      213: 4237457476288207247
+    second: MainPage-victor-wave_9
+  - first:
+      213: -7387204580709376669
+    second: MainPage-victor-wave_10
+  - first:
+      213: -3970075660191769414
+    second: MainPage-victor-wave_11
+  - first:
+      213: -2075574090500891667
+    second: MainPage-victor-wave_12
+  - first:
+      213: 8737050812140725083
+    second: MainPage-victor-wave_13
+  - first:
+      213: 451738839712930944
+    second: MainPage-victor-wave_14
+  - first:
+      213: 1402426494750827028
+    second: MainPage-victor-wave_15
+  - first:
+      213: -173775176998543337
+    second: MainPage-victor-wave_16
+  - first:
+      213: -3207025542910157377
+    second: MainPage-victor-wave_17
+  - first:
+      213: -2240619408050828493
+    second: MainPage-victor-wave_18
+  - first:
+      213: -1001921523802997140
+    second: MainPage-victor-wave_19
+  - first:
+      213: 976328719199449652
+    second: MainPage-victor-wave_20
+  - first:
+      213: 746520166945659294
+    second: MainPage-victor-wave_21
+  - first:
+      213: -5677194755123274061
+    second: MainPage-victor-wave_22
+  - first:
+      213: -7726447515337829470
+    second: MainPage-victor-wave_23
+  - first:
+      213: 6112339399845534879
+    second: MainPage-victor-wave_24
+  - first:
+      213: -1379581653979745209
+    second: MainPage-victor-wave_25
+  - first:
+      213: 4822224077678123803
+    second: MainPage-victor-wave_26
+  - first:
+      213: 1152004824194120575
+    second: MainPage-victor-wave_27
+  - first:
+      213: -6401412951557127297
+    second: MainPage-victor-wave_28
+  - first:
+      213: 8566547085664035484
+    second: MainPage-victor-wave_29
+  - first:
+      213: 7478064002761554031
+    second: MainPage-victor-wave_30
+  - first:
+      213: -8341494938879428280
+    second: MainPage-victor-wave_31
+  - first:
+      213: 8750705965696552680
+    second: MainPage-victor-wave_32
+  - first:
+      213: 6514344695659578496
+    second: MainPage-victor-wave_33
+  - first:
+      213: 3632727706668015836
+    second: MainPage-victor-wave_34
+  - first:
+      213: -3413315472791925545
+    second: MainPage-victor-wave_35
+  - first:
+      213: 213732038122686836
+    second: MainPage-victor-wave_36
+  - first:
+      213: -2655679294901999975
+    second: MainPage-victor-wave_37
+  - first:
+      213: -9120474715776168068
+    second: MainPage-victor-wave_38
+  - first:
+      213: -1854878204017522511
+    second: MainPage-victor-wave_39
+  - first:
+      213: 8671658783040737812
+    second: MainPage-victor-wave_40
+  - first:
+      213: -6001712591489127533
+    second: MainPage-victor-wave_41
+  - first:
+      213: -5309141123744192888
+    second: MainPage-victor-wave_42
+  - first:
+      213: 8511817135279793566
+    second: MainPage-victor-wave_43
+  - first:
+      213: -7214739227607278811
+    second: MainPage-victor-wave_44
+  - first:
+      213: 4132327303437882003
+    second: MainPage-victor-wave_45
+  - first:
+      213: 9081321104411404570
+    second: MainPage-victor-wave_46
+  - first:
+      213: 6394620381247209474
+    second: MainPage-victor-wave_47
+  - first:
+      213: -8677632298675593370
+    second: MainPage-victor-wave_48
+  - first:
+      213: 3381632364101497785
+    second: MainPage-victor-wave_49
+  - first:
+      213: 8227903639620325211
+    second: MainPage-victor-wave_50
+  - first:
+      213: -5815909754493495330
+    second: MainPage-victor-wave_51
+  - first:
+      213: -4219417592493433427
+    second: MainPage-victor-wave_52
+  - first:
+      213: 5046728059439131517
+    second: MainPage-victor-wave_53
+  - first:
+      213: -6512876569057106976
+    second: MainPage-victor-wave_54
+  - first:
+      213: -7154948153192801264
+    second: MainPage-victor-wave_55
+  - first:
+      213: 1480980055008235423
+    second: MainPage-victor-wave_56
+  - first:
+      213: -7462464459352201454
+    second: MainPage-victor-wave_57
+  - first:
+      213: 2415298866375441974
+    second: MainPage-victor-wave_58
+  - first:
+      213: -7179389864032910253
+    second: MainPage-victor-wave_59
+  - first:
+      213: 3066818177525965918
+    second: MainPage-victor-wave_60
+  - first:
+      213: -3549328445007489349
+    second: MainPage-victor-wave_61
+  - first:
+      213: 1170677960104900971
+    second: MainPage-victor-wave_62
+  - first:
+      213: 8916013992067218999
+    second: MainPage-victor-wave_63
+  - first:
+      213: 8049468939942942080
+    second: MainPage-victor-wave_64
+  - first:
+      213: 5402649710401954345
+    second: MainPage-victor-wave_65
+  - first:
+      213: 1074105070518556574
+    second: MainPage-victor-wave_66
+  - first:
+      213: -6289597289193927163
+    second: MainPage-victor-wave_67
+  - first:
+      213: 7622415954149970636
+    second: MainPage-victor-wave_68
+  - first:
+      213: 4065845636173347507
+    second: MainPage-victor-wave_69
+  - first:
+      213: -3525469296262084797
+    second: MainPage-victor-wave_70
+  - first:
+      213: 6040934618877500677
+    second: MainPage-victor-wave_71
+  - first:
+      213: 3659433211011524815
+    second: MainPage-victor-wave_72
+  - first:
+      213: -6732906350489124134
+    second: MainPage-victor-wave_73
+  - first:
+      213: -4238654915455087021
+    second: MainPage-victor-wave_74
+  - first:
+      213: -8580277682158219884
+    second: MainPage-victor-wave_75
+  - first:
+      213: 5871606676581095559
+    second: MainPage-victor-wave_76
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: VictorWave0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 627
+        width: 627
+        height: 627
+      alignment: 9
+      pivot: {x: 0.87, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 330dc970db3e40f3a45f05c7ba6dce55
+      internalID: -2011511965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictorWave1
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 627
+        width: 627
+        height: 627
+      alignment: 9
+      pivot: {x: 0.87, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 498667b66c9a4534af176bd82349410c
+      internalID: -283806958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictorWave2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 627
+        height: 627
+      alignment: 9
+      pivot: {x: 0.87, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e03a6083a8424c58a5c9252ff0094094
+      internalID: -1925985711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictorWave3
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 0
+        width: 627
+        height: 627
+      alignment: 9
+      pivot: {x: 0.87, y: 0.32}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50dd36b4daf74130b1c97eb9a290cffa
+      internalID: -928832367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 81d0904edb99ebe4db7faf38390fbf1a
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      VictorWave0: -2011511965
+      VictorWave1: -283806958
+      VictorWave2: -1925985711
+      VictorWave3: -928832367
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

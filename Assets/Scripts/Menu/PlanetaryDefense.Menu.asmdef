@@ -1,0 +1,4 @@
+{
+    "name": "PlanetaryDefense.Menu",
+    "references": ["Unity.InputSystem", "Unity.ugui"]
+}
