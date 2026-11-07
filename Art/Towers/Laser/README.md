@@ -4,10 +4,10 @@
 removal of unused designs. The current files are in
 [Redesign/Sweep/](Redesign/Sweep/README.md).
 
-Latest continuation: the user selected **150%** and accepted the
-[top-crater prototype](../../Planets/UnionPrime/CraterPrototype/README.md).
-Superseded size/seating experiments were removed at the user's request;
-the approved sources, aiming studies and crater rebuild remain available.
+The user selected **150%** for the accepted
+[Union Prime terrain and tower fit](../../Planets/UnionPrime/README.md).
+Obsolete planet prototypes were removed; current mounts and foreground contact
+come from that pipeline. The retained Sweep sprites supply the tower mechanism.
 
 - [Animated sweep](Redesign/Sweep/sweep.gif).
 - [Separate base/operator](Redesign/Sweep/base-sprite.png) and

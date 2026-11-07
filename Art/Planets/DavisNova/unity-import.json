@@ -1,0 +1,34 @@
+{
+  "editor": "6000.6.7f1",
+  "images": {
+    "Sun": {
+      "path": "Assets/Art/Planets/DavisNova/Sun.png",
+      "guid": "a6332977c1734d9ca3d680b4a6909a9d",
+      "source": "Art/Planets/DavisNova/Pixel/sun.png",
+      "sha256": "331b5c7ecbb8d5a7092635ddb9f0aeffacfc49c3c15e1b9a02ae7b146acb8caf"
+    },
+    "Ring": {
+      "path": "Assets/Art/Planets/DavisNova/Ring.png",
+      "guid": "3d8655a3c7e348ee9e9fc71516ab900a",
+      "source": "Art/Planets/DavisNova/Pixel/ring-background.png",
+      "sha256": "95307955f0422c8e6f1f233e760fb0414c49f76ba6d11d7af937d49ef753fa84"
+    },
+    "SocketFronts": {
+      "path": "Assets/Art/Planets/DavisNova/SocketFronts.png",
+      "guid": "5010b8078c6e49a991f59d87d7223d36",
+      "source": "Art/Planets/DavisNova/Pixel/socket-fronts.png",
+      "sha256": "54e23f9b4596863b87cd20686e919dca8d495813f3dfd1715ee636550ffe701d"
+    }
+  },
+  "visual_prefab": "Assets/UI/Planets/DavisNovaVisual.prefab",
+  "site_count": 12,
+  "source_canvas_display_width": 600,
+  "tower_scale": 2,
+  "shared_tower_assets": [
+    "Assets/Art/Planets/UnionPrime/LaserBase.png",
+    "Assets/Art/Planets/UnionPrime/LaserGun.png"
+  ],
+  "tower_preview_enabled_by_default": false,
+  "source_layout": "socket-layout.json",
+  "limits": "Static art preview; no placement/combat. See UNITY_TESTING.md for checks."
+}

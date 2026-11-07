@@ -1,9 +1,25 @@
-# Union Prime: accepted artwork
+# Union Prime: art sources and previews
 
-This directory contains the accepted planet, separate layers, facade sources,
-measured mounts and rebuild tools. Unity uses the
-corresponding files in `Assets/Art/Planets/UnionPrime` and the existing
-`Assets/UI/Planets/UnionPrimeVisual.prefab`.
+This is the art-production workspace for the accepted Union Prime artwork.
+Edit and rebuild artwork here, then export it to Unity.
+
+| Location | Purpose |
+| --- | --- |
+| `Art/Planets/UnionPrime/` (this folder) | Source images, prompts, masks, layouts, rebuild scripts and review compositions. |
+| [Assets/Art/Planets/UnionPrime/](../../../Assets/Art/Planets/UnionPrime/README.md) | Nineteen exported game sprites with Unity import settings and stable GUIDs. |
+| [UnionPrimeVisual.prefab](../../../Assets/UI/Planets/UnionPrimeVisual.prefab) | Assembles the game sprites and measured tower mounts. |
+
+The matching PNGs in the two art folders are intentional source/export copies.
+Unity uses the copies under `Assets`; the top-level `Art` folder stays outside
+Unity's asset import pipeline. Full compositions such as `planet-empty.png`,
+`planet-occupied.png` and the review sheets are previews; the game assembles
+separate layers instead.
+
+Make artwork changes through the source workflow below. Direct pixel edits to
+the exported game sprites will be overwritten by `prepare_unity.py`. Keep Unity
+import settings in their existing `.meta` files and preserve those files when
+moving sprites. [unity-import.json](unity-import.json) records the exact
+source-to-export mapping and SHA-256 hashes.
 
 ## User-selected crater references
 

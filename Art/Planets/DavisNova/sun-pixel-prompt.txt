@@ -1,0 +1,9 @@
+Use case: precise-object-edit.
+Edit the supplied Davis Nova pixel-art sun. The user rejects the protruding outer flames and says the orange surface reads as a planet rather than a sun.
+
+Make TWO changes:
+1. Remove ALL projecting flames, spikes, detached tongues, corona lobes and the thick dark orange/brown outline. The final silhouette must be a clean round disk with a crisp pixel-stepped circular edge and a narrow luminous yellow-gold rim. Nothing projects outside the round disk. No new halo, rays or corona.
+2. Make the entire disk substantially brighter and self-luminous. Most of its area should be hot pale yellow, lemon yellow and warm yellow-white, with broad subtle golden-yellow convection cells providing structure. Concentrate the brightest cream-white areas broadly through the center, not in a glossy highlight on one side. Use only small restrained amber accents at the rim or cell boundaries, no dark orange/brown land-like patches. No shadowed hemisphere, terminator or reflective lighting. This must immediately read as an incandescent star, not an orange rocky planet or a shiny ball.
+
+Keep the deliberate chunky pixel-art treatment, hard pixel clusters, simplified broad surface structure and discrete shading bands. No soft gradients, photographic textures, noise, thin tangled white veins or blur. Preserve the size and center of the original round BODY after removing its flames: roughly 760-pixel diameter centered at (627,627) on a 1254x1254 canvas. Do not enlarge the disk to fill the former flame footprint. Preserve generous transparent margins.
+Output one transparent RGBA sprite, a bright circular star only. No ring, characters, text, background or checkerboard.

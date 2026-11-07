@@ -53,8 +53,8 @@ def turn(im, clockwise):
 
 
 def main():
-    planet_path = ROOT / "Art/Planets/UnionPrime/Composition/planet-assembled.png"
-    terrain_path = ROOT / "Art/Planets/UnionPrime/Circular/terrain-circular.png"
+    planet_path = ROOT / "Art/Planets/UnionPrime/planet-empty.png"
+    terrain_path = ROOT / "Art/Planets/UnionPrime/terrain.png"
     inputs = [HERE / "base-generated.png", HERE / "gun-generated.png",
               HERE / "site-mounts.json", planet_path, terrain_path]
     hashes = {path.relative_to(ROOT).as_posix(): digest(path) for path in inputs}

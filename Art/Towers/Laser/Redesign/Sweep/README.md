@@ -9,8 +9,12 @@ mount coordinates and rebuild script are retained here.
 **Update, 2026-11-05:** the user selected **150%** from the completed
 scale and seating studies (removed during the requested cleanup). This directory remains
 the unchanged 100% source assembly/reference. The user subsequently authorized
-the top-crater prototype, now ready for review in `Art/Planets/UnionPrime/CraterPrototype/`.
-Final seating and all-site application are not yet approved.
+the top-crater prototype, followed by the now-accepted `Art/Planets/UnionPrime/`.
+The old planet prototype directories were removed on 2026-11-06. Current seating
+comes from `TerrainPolish/polish.json`; the planet paths in `build_sweep.py` now
+read the retained final terrain. Its 100%/outward-offset study is historical,
+not the current 150% planet fit. `rotation-study.json` retains historical input
+hashes for provenance; it is not a dependency list for the current planet rebuild.
 
 **Previous handover fit issue:** the user says the tower looks too small and does not
 sit convincingly in the crater. The design/mechanism is accepted; its current
