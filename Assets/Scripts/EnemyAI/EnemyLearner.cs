@@ -1,0 +1,265 @@
+// Enemy AI - online learning layer (Thompson sampling, multi-armed bandit).
+//
+// Each enemy FAMILY is an "arm" (geese, stealth geese, skunks, deer). A level only spawns a
+// few dozen enemies, so learning per family instead of per type gets enough data to matter.
+// Every time an enemy of that family leaves play
+// (killed or despawned), we score how well it did:
+//     reward = damage / (damage + cost)        -> 0 if it did no damage, close to 1 if it did a lot for its cost
+// and update a Beta(alpha, beta) belief for that type.
+//
+// When picking the next enemy, we SAMPLE a success rate from each type's belief.
+// Types that hurt this player get picked more; types we know little about still
+// get tried sometimes (exploration). Old results slowly fade (decay), so the AI
+// re-adapts when the player changes their defense.
+//
+// Pure C#: no UnityEngine dependency.
+
+using System;
+using System.Collections.Generic;
+
+namespace EnemyAI
+{
+    public class EnemyLearnerSettings
+    {
+        public float PriorAlpha = 1f;          // Beta(1,1): mean 0.5, "we don't know yet" (light prior, learns fast)
+        public float PriorBeta = 1f;
+        public float MinFactor = 0.33f;        // learned factor is clamped to [0.33, 2]; the cost budget still limits balance
+        public float MaxFactor = 2f;           // (factor = sampled rate / prior mean 0.5, so it can't go above 2 anyway)
+        public float DecayPerStep = 0.85f;     // evidence kept each Decay() call (every 15s). Tuned in simulation: 0.85 follows a strategy change
+                                               // almost fully within ~60-90s with no measurable loss vs 0.95 in the steady case
+        public int MinSamplesForIntent = 3;    // results needed before the HUD claims it "learned"
+        public float IntentLeadMargin = 0.12f; // best family must beat the average by this much
+    }
+
+    public class EnemyLearner
+    {
+        private class Arm
+        {
+            public float Alpha;
+            public float Beta;
+            public int Samples;
+        }
+
+        private class Ticket
+        {
+            public EnemyKind Kind;
+            public int Cost;
+            public float Damage;
+        }
+
+        public EnemyLearnerSettings Settings { get; private set; }
+
+        private readonly Random rng;
+        private enum Family { Goose, StealthGoose, Skunk, Deer, Other }
+
+        private static Family FamilyOf(EnemyKind k)
+        {
+            if (k == EnemyKind.StealthGoose) return Family.StealthGoose;
+            if (EnemyCatalog.IsGoose(k)) return Family.Goose;
+            if (EnemyCatalog.IsSkunk(k)) return Family.Skunk;
+            if (EnemyCatalog.IsDeer(k)) return Family.Deer;
+            return Family.Other;
+        }
+
+        private static string FamilyName(Family f)
+        {
+            switch (f)
+            {
+                case Family.Goose: return "geese";
+                case Family.StealthGoose: return "stealth geese";
+                case Family.Skunk: return "skunks";
+                case Family.Deer: return "deer";
+                default: return "bosses";
+            }
+        }
+
+        private readonly Dictionary<Family, Arm> arms = new Dictionary<Family, Arm>();
+        private readonly Dictionary<int, Ticket> open = new Dictionary<int, Ticket>();
+        private int nextTicket = 1;
+
+        public EnemyLearner(Random rng, EnemyLearnerSettings settings = null)
+        {
+            this.rng = rng;
+            Settings = settings ?? new EnemyLearnerSettings();
+        }
+
+        /// <summary>Forget everything (e.g. new player / new run).</summary>
+        public void ResetAll()
+        {
+            arms.Clear();
+            open.Clear();
+        }
+
+        /// <summary>Drop tickets of enemies that are still alive (call at level end).</summary>
+        public void ClearOpenTickets()
+        {
+            open.Clear();
+        }
+
+        // ------------------------------------------------------------------
+        // Reporting from the game
+        // ------------------------------------------------------------------
+
+        /// <summary>Call when an enemy spawns. Keep the returned ticket on the enemy.</summary>
+        public int Register(EnemyKind kind, int cost)
+        {
+            int id = nextTicket++;
+            var t = new Ticket();
+            t.Kind = kind;
+            t.Cost = Math.Max(1, cost);
+            open[id] = t;
+            return id;
+        }
+
+        /// <summary>Call whenever that enemy deals damage (to a tower or the planet).</summary>
+        public void ReportDamage(int ticket, float amount)
+        {
+            Ticket t;
+            if (amount > 0f && open.TryGetValue(ticket, out t)) t.Damage += amount;
+        }
+
+        /// <summary>Call once when that enemy dies or despawns. This is when learning happens.</summary>
+        public void ReportGone(int ticket)
+        {
+            Ticket t;
+            if (!open.TryGetValue(ticket, out t)) return;
+            open.Remove(ticket);
+
+            float reward = t.Damage / (t.Damage + t.Cost);
+            Arm a = GetArm(t.Kind);
+            a.Alpha += reward;
+            a.Beta += 1f - reward;
+            a.Samples++;
+        }
+
+        /// <summary>Fade old evidence toward the prior so the AI keeps adapting. Call periodically.</summary>
+        public void Decay()
+        {
+            float k = Settings.DecayPerStep;
+            foreach (Arm a in arms.Values)
+            {
+                a.Alpha = Settings.PriorAlpha + (a.Alpha - Settings.PriorAlpha) * k;
+                a.Beta = Settings.PriorBeta + (a.Beta - Settings.PriorBeta) * k;
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // Used by the director
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// Thompson sample: draw a success rate from this type's belief and turn it
+        /// into a probability multiplier (prior mean -> 1x), clamped to [MinFactor, MaxFactor].
+        /// </summary>
+        public float SampleFactor(EnemyKind kind)
+        {
+            Arm a = GetArm(kind);
+            double theta = SampleBeta(a.Alpha, a.Beta);
+            double priorMean = Settings.PriorAlpha / (Settings.PriorAlpha + Settings.PriorBeta);
+            double f = theta / priorMean;
+            return (float)Math.Max(Settings.MinFactor, Math.Min(Settings.MaxFactor, f));
+        }
+
+        /// <summary>Current estimated success rate (for debugging / HUD).</summary>
+        public float MeanReward(EnemyKind kind)
+        {
+            Arm a = GetArm(kind);
+            return a.Alpha / (a.Alpha + a.Beta);
+        }
+
+        /// <summary>Number of results learned for this enemy's family.</summary>
+        public int SampleCount(EnemyKind kind)
+        {
+            Arm a;
+            return arms.TryGetValue(FamilyOf(kind), out a) ? a.Samples : 0;
+        }
+
+        /// <summary>
+        /// The family the AI has learned works best against this player (e.g. "skunks"), if it is confident.
+        /// Returns false when there is not enough evidence yet.
+        /// </summary>
+        public bool TryGetBestLearned(out string bestName, out float bestMean)
+        {
+            bestName = "";
+            bestMean = 0f;
+            float sum = 0f;
+            int count = 0;
+
+            foreach (KeyValuePair<Family, Arm> kv in arms)
+            {
+                if (kv.Key == Family.Other || kv.Value.Samples < Settings.MinSamplesForIntent) continue;
+                float m = kv.Value.Alpha / (kv.Value.Alpha + kv.Value.Beta);
+                sum += m;
+                count++;
+                if (m > bestMean)
+                {
+                    bestMean = m;
+                    bestName = FamilyName(kv.Key);
+                }
+            }
+
+            if (count < 2) return false;
+            float avg = sum / count;
+            return bestMean - avg >= Settings.IntentLeadMargin;
+        }
+
+        // ------------------------------------------------------------------
+
+        private Arm GetArm(EnemyKind kind)
+        {
+            Family f = FamilyOf(kind);
+            Arm a;
+            if (!arms.TryGetValue(f, out a))
+            {
+                a = new Arm();
+                a.Alpha = Settings.PriorAlpha;
+                a.Beta = Settings.PriorBeta;
+                arms[f] = a;
+            }
+            return a;
+        }
+
+        // Beta(a, b) = X / (X + Y), X ~ Gamma(a), Y ~ Gamma(b)
+        private double SampleBeta(double a, double b)
+        {
+            double x = SampleGamma(a);
+            double y = SampleGamma(b);
+            return x / (x + y);
+        }
+
+        // Marsaglia-Tsang gamma sampler
+        private double SampleGamma(double shape)
+        {
+            if (shape < 1.0)
+            {
+                double u = rng.NextDouble();
+                return SampleGamma(shape + 1.0) * Math.Pow(u, 1.0 / shape);
+            }
+
+            double d = shape - 1.0 / 3.0;
+            double c = 1.0 / Math.Sqrt(9.0 * d);
+            while (true)
+            {
+                double x, v;
+                do
+                {
+                    x = SampleNormal();
+                    v = 1.0 + c * x;
+                } while (v <= 0.0);
+
+                v = v * v * v;
+                double u = rng.NextDouble();
+                if (u < 1.0 - 0.0331 * x * x * x * x) return d * v;
+                if (Math.Log(u) < 0.5 * x * x + d * (1.0 - v + Math.Log(v))) return d * v;
+            }
+        }
+
+        private double SampleNormal()
+        {
+            double u1 = 1.0 - rng.NextDouble();
+            double u2 = rng.NextDouble();
+            return Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Cos(2.0 * Math.PI * u2);
+        }
+
+    }
+}
