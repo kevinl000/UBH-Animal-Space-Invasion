@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -6,7 +5,6 @@ using UnityEngine.UI;
 
 public class MenuPageController : MonoBehaviour
 {
-    public AudioSource audioSource;
     public AudioClip confirmSound;
     public AudioClip backSound;
     public Button firstButton;
@@ -30,12 +28,12 @@ public class MenuPageController : MonoBehaviour
 
     public void OpenLevelsPage()
     {
-        Navigate("LevelSelect", confirmSound);
+        Navigate(true, confirmSound);
     }
 
     public void OpenMainPage()
     {
-        Navigate("MainMenu", backSound);
+        Navigate(false, backSound);
     }
 
     public void SelectDestination(string destination)
@@ -44,39 +42,39 @@ public class MenuPageController : MonoBehaviour
             return;
 
         selectedDestination.text = destination;
-        audioSource.PlayOneShot(confirmSound, 0.65f);
+        AudioManager.Instance.PlaySFX(confirmSound, 0.65f);
     }
 
-    private void Navigate(string sceneName, AudioClip sound)
+    private void Navigate(bool openLevelSelect, AudioClip sound)
     {
         if (changingScene || SceneLoadingScreen.IsLoading)
             return;
 
-        if (!Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            Debug.LogError("Menu scene is missing from the build: " + sceneName, this);
+        if (openLevelSelect)
+            GameManager.Instance.GoToLevelSelect();
+        else
+            GameManager.Instance.GoToMainMenu();
+
+        if (!SceneController.Instance.IsLoading)
             return;
-        }
 
         changingScene = true;
         controls.interactable = false;
-        StartCoroutine(ChangeScene(sceneName, sound));
+        AudioManager.Instance.PlaySFX(sound);
     }
 
-    private IEnumerator ChangeScene(string sceneName, AudioClip sound)
+    private void OnEnable()
     {
-        // Keep this scene alive briefly so its confirmation sound can be heard.
-        if (sound != null)
-        {
-            audioSource.PlayOneShot(sound);
-            yield return new WaitForSecondsRealtime(Mathf.Min(sound.length, 0.3f));
-        }
+        SceneController.OnLoadComplete += RestoreControls;
+    }
 
-        if (SceneLoadingScreen.Load(sceneName))
-            while (SceneLoadingScreen.IsLoading)
-                yield return null;
+    private void OnDisable()
+    {
+        SceneController.OnLoadComplete -= RestoreControls;
+    }
 
-        // Reached only if loading failed and this menu is still alive.
+    private void RestoreControls()
+    {
         changingScene = false;
         controls.interactable = true;
     }

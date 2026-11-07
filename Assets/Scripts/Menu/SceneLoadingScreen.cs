@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneLoadingScreen : MonoBehaviour
@@ -14,86 +13,90 @@ public class SceneLoadingScreen : MonoBehaviour
 
     private static SceneLoadingScreen instance;
     private int displayedPercent = -1;
+    private float targetProgress;
+    private float shownProgress;
     private EventSystem blockedEventSystem;
     private bool previousNavigationEvents;
 
-    public static bool IsLoading => instance != null;
+    public static bool IsLoading => instance != null
+        || (SceneController.Instance != null && SceneController.Instance.IsLoading);
 
-    // Use this entry point for menu, gameplay, retry, and return-to-menu transitions.
+    // Compatibility entry point; SceneController owns every scene load.
     public static bool Load(string sceneName)
     {
         if (IsLoading)
             return false;
 
-        if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            Debug.LogError("Scene is missing from the build: " + sceneName);
-            return false;
-        }
-
-        var prefab = Resources.Load<SceneLoadingScreen>("SceneLoadingScreen");
-        if (prefab == null)
-        {
-            Debug.LogError("The SceneLoadingScreen prefab is missing from Resources.");
-            return false;
-        }
-
-        instance = Instantiate(prefab);
-        DontDestroyOnLoad(instance.gameObject);
-        instance.StartCoroutine(instance.ChangeScene(sceneName));
-        return true;
+        return SceneController.Instance.TryLoadScene(sceneName);
     }
 
-    private IEnumerator ChangeScene(string sceneName)
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void RegisterLoadingEvents()
     {
-        SetProgress(0);
+        SceneController.OnLoadBegin -= Show;
+        SceneController.OnLoadProgress -= UpdateProgress;
+        SceneController.OnLoadComplete -= Complete;
+        SceneController.OnLoadBegin += Show;
+        SceneController.OnLoadProgress += UpdateProgress;
+        SceneController.OnLoadComplete += Complete;
+    }
+
+    private static void Show()
+    {
+        if (instance == null)
+        {
+            var prefab = Resources.Load<SceneLoadingScreen>("SceneLoadingScreen");
+            if (prefab == null)
+            {
+                Debug.LogError("The SceneLoadingScreen prefab is missing from Resources.");
+                return;
+            }
+
+            instance = Instantiate(prefab);
+            DontDestroyOnLoad(instance.gameObject);
+        }
+
+        // A new manager request can arrive while the previous overlay is fading.
+        instance.StopAllCoroutines();
+        instance.canvasGroup.alpha = 1;
+        instance.targetProgress = 0;
+        instance.shownProgress = 0;
+        instance.status.text = "LOADING...";
+        instance.SetProgress(0);
+        instance.BlockNavigation();
+    }
+
+    private static void UpdateProgress(float progress)
+    {
+        if (instance == null)
+            return;
+
+        instance.targetProgress = progress;
+        if (progress >= 1f)
+        {
+            instance.shownProgress = 1f;
+            instance.SetProgress(1f);
+            instance.status.text = "READY!";
+        }
+        else if (progress >= 0.95f)
+            instance.status.text = "ARRIVING...";
+    }
+
+    private static void Complete()
+    {
+        if (instance != null)
+            instance.StartCoroutine(instance.FadeOut());
+    }
+
+    private void Update()
+    {
+        shownProgress = Mathf.MoveTowards(shownProgress, targetProgress, Time.unscaledDeltaTime * 3);
+        SetProgress(shownProgress);
         BlockNavigation();
-        // Submit the overlay before scene deserialization can occupy the main thread.
-        yield return null;
-        yield return null;
+    }
 
-        AsyncOperation operation;
-        try
-        {
-            operation = SceneManager.LoadSceneAsync(sceneName);
-        }
-        catch (System.Exception exception)
-        {
-            Debug.LogException(exception, this);
-            Destroy(gameObject);
-            yield break;
-        }
-
-        if (operation == null)
-        {
-            Destroy(gameObject);
-            yield break;
-        }
-
-        operation.allowSceneActivation = false;
-        float visibleTime = 0;
-        float shownProgress = 0;
-        while (operation.progress < 0.9f || visibleTime < 0.45f || shownProgress < 0.95f)
-        {
-            visibleTime += Time.unscaledDeltaTime;
-            // Unity stops at 0.9 until activation; reserve the final 5% for that step.
-            float target = Mathf.Clamp01(operation.progress / 0.9f) * 0.95f;
-            shownProgress = Mathf.MoveTowards(shownProgress, target, Time.unscaledDeltaTime * 3);
-            SetProgress(shownProgress);
-            BlockNavigation();
-            yield return null;
-        }
-
-        status.text = "ARRIVING...";
-        operation.allowSceneActivation = true;
-        while (!operation.isDone)
-        {
-            BlockNavigation();
-            yield return null;
-        }
-
-        SetProgress(1);
-        status.text = "READY!";
+    private IEnumerator FadeOut()
+    {
         BlockNavigation();
         yield return null;
         for (float elapsed = 0; elapsed < 0.15f; elapsed += Time.unscaledDeltaTime)

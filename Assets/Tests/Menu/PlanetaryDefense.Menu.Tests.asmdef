@@ -1,6 +1,6 @@
 {
     "name": "PlanetaryDefense.Menu.Tests",
-    "references": ["PlanetaryDefense.Menu", "Unity.ugui", "Unity.InputSystem"],
+    "references": ["PlanetaryDefense.Menu", "PlanetaryDefense.Managers", "Unity.ugui", "Unity.InputSystem"],
     "optionalUnityReferences": ["TestAssemblies"],
     "defineConstraints": ["UNITY_INCLUDE_TESTS"]
 }

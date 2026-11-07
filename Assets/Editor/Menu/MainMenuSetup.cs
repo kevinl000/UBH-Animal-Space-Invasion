@@ -287,10 +287,6 @@ public static class MainMenuSetup
         content = CreateRect("Controls", frame, Vector2.zero, ReferenceSize);
         var controller = content.gameObject.AddComponent<MenuPageController>();
         controller.controls = content.gameObject.AddComponent<CanvasGroup>();
-        controller.audioSource = content.gameObject.AddComponent<AudioSource>();
-        controller.audioSource.playOnAwake = false;
-        controller.audioSource.spatialBlend = 0;
-        controller.audioSource.volume = 0.38f;
         controller.confirmSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/Menu/confirmation_001.ogg");
         controller.backSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/Menu/back_001.ogg");
 
@@ -317,7 +313,6 @@ public static class MainMenuSetup
         button.colors = colors;
         CreateText("Label", image.transform, label, new Vector2(0, 2), size - new Vector2(24, 12), fontSize, Ink);
         var feedback = image.gameObject.AddComponent<MenuButtonFeedback>();
-        feedback.audioSource = page.audioSource;
         feedback.selectSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/Menu/tick_001.ogg");
         return button;
     }
