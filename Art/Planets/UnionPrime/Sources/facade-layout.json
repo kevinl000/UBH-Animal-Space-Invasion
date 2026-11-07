@@ -1,0 +1,99 @@
+{
+  "canvas_size": [
+    1254,
+    1254
+  ],
+  "layers": [
+    {
+      "file": "FacadeMasks/guild-support.png",
+      "origin_xy": [
+        465,
+        253
+      ]
+    },
+    {
+      "file": "FacadeMasks/guild-facade.png",
+      "origin_xy": [
+        442,
+        65
+      ]
+    },
+    {
+      "file": "FacadeMasks/guild-foundation-visible.png",
+      "origin_xy": [
+        442,
+        65
+      ]
+    },
+    {
+      "file": "FacadeMasks/market-northwest.png",
+      "origin_xy": [
+        252,
+        203
+      ]
+    },
+    {
+      "file": "FacadeMasks/market-northeast.png",
+      "origin_xy": [
+        787,
+        203
+      ]
+    },
+    {
+      "file": "FacadeMasks/stand-west-upper.png",
+      "origin_xy": [
+        219,
+        365
+      ]
+    },
+    {
+      "file": "FacadeMasks/stand-east-upper.png",
+      "origin_xy": [
+        931,
+        365
+      ]
+    },
+    {
+      "file": "FacadeMasks/stand-west-lower.png",
+      "origin_xy": [
+        207,
+        680
+      ]
+    },
+    {
+      "file": "FacadeMasks/stand-east-lower.png",
+      "origin_xy": [
+        947,
+        680
+      ]
+    },
+    {
+      "file": "FacadeMasks/shop-southwest.png",
+      "origin_xy": [
+        232,
+        783
+      ]
+    },
+    {
+      "file": "FacadeMasks/shop-southeast.png",
+      "origin_xy": [
+        808,
+        783
+      ]
+    },
+    {
+      "file": "FacadeMasks/kiosk-southwest.png",
+      "origin_xy": [
+        414,
+        928
+      ]
+    },
+    {
+      "file": "FacadeMasks/kiosk-southeast.png",
+      "origin_xy": [
+        693,
+        928
+      ]
+    }
+  ]
+}

@@ -42,6 +42,18 @@ public class MenuPageController : MonoBehaviour
         Navigate(false, backSound);
     }
 
+    public void LaunchSelectedPlanet()
+    {
+        if (changingScene || SceneLoadingScreen.IsLoading || destinationDetails == null
+            || string.IsNullOrEmpty(destinationDetails.SelectedSceneName)) return;
+
+        GameManager.Instance.StartLevel(destinationDetails.SelectedSceneName);
+        if (!SceneController.Instance.IsLoading) return;
+        changingScene = true;
+        controls.interactable = false;
+        AudioManager.Instance.PlaySFX(confirmSound);
+    }
+
     public void SelectDestination(string destination)
     {
         if (changingScene || SceneLoadingScreen.IsLoading || selectedDestination == null)

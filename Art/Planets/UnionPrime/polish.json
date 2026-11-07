@@ -1,0 +1,519 @@
+{
+  "source_sha256": {
+    "Art/Planets/UnionPrime/terrain-generated.png": "f9658bb3d6da87529d48bf77ede6ab0f75dd1506d1764b399ef46295d1abe1cf",
+    "Art/Planets/UnionPrime/Sources/site-layout.json": "9eea4fabb477251c3762f20d58e216f1888ff4cf7ff518e7cf9b3d9345e83803",
+    "Art/Towers/Laser/Redesign/Sweep/base-sprite.png": "b9386b246ff8f65146c3d746b592612bcc5b76a95ccb145fe0428e84d35320f3",
+    "Art/Towers/Laser/Redesign/Sweep/gun-sprite.png": "13e720e5d2b9ba6f9bb3990829ecfd9beff41620e60c4bf5a2440aa22e2e3312",
+    "Art/Planets/UnionPrime/ContactRepair/terrain-generated.png": "11790cc066cc1c2450a7c8eba9043050580764eca561d76d8a0fa758e09329d6",
+    "Art/Planets/UnionPrime/Facades/facades.json": "8db5bbe169edddb64eac75986e5cc3f335b425c61bcc78ea876381db7e4e5903",
+    "Art/Planets/UnionPrime/Facades/guild-support.png": "7e40b17d0056fdc477b2a5c2714a61891a95aec79665bc27cf1c27862871bdd6",
+    "Art/Planets/UnionPrime/Facades/guild-facade.png": "9ec095cd6d37ec8ce9a5cc4bde40e327572fa5815a5d219afadeb1122256d87d",
+    "Art/Planets/UnionPrime/Facades/guild-foundation-visible.png": "77e54c218f12d9c37c4a81843366131ee6d3d8a8e8d3b41b5dbbfb9600f195d8",
+    "Art/Planets/UnionPrime/Facades/market-northwest.png": "8ec244be2b9464163cec6baee424049e41a17899d8e4a69e592ffdfd6bd1a2cc",
+    "Art/Planets/UnionPrime/Facades/market-northeast.png": "8246a7e1b771b8af5276d19079387018d75d2f939ad309a55cbf57abdd654598",
+    "Art/Planets/UnionPrime/Facades/stand-west-upper.png": "7124b0b00170999576935983c9f0e248ba377e907c5cb03e11c9518fb0a93c2d",
+    "Art/Planets/UnionPrime/Facades/stand-east-upper.png": "51f748c893c815b6b511dc150cc57c1ef810f09d88755c80832f45b999bd1e5e",
+    "Art/Planets/UnionPrime/Facades/stand-west-lower.png": "fd6f109d173c73da135a30e529b48d9496ec8a11ec57cb773678dcdb0ea7e4e1",
+    "Art/Planets/UnionPrime/Facades/stand-east-lower.png": "c073ea034f965c35cf1f714fbfd84eba459d2e02e3bca455887f074ca05f2f88",
+    "Art/Planets/UnionPrime/Facades/shop-southwest.png": "65bf4552fa455b8de3711b9cd14fccd3591fbff2d8aac024f67e9ea2164c68d6",
+    "Art/Planets/UnionPrime/Facades/shop-southeast.png": "02ec534b54b63b8c5763969459fb1e3cc1682db0fcbb8ac345d436328d007a21",
+    "Art/Planets/UnionPrime/Facades/kiosk-southwest.png": "e52dfc1a05104f9d45b7b8f53cd41cf5683b775c8d07b4696609a36860e9702f",
+    "Art/Planets/UnionPrime/Facades/kiosk-southeast.png": "c36aef3bde3b6908be0a44d5d1024beb4389192e669c4fcde0ecfdc133fac2d4"
+  },
+  "site_placements": [
+    {
+      "clock_site": 12,
+      "angle_clockwise_degrees": 359.974,
+      "mount_radius": 326.5,
+      "soil_pixels": 3202,
+      "scale": 1,
+      "study_angle": 0,
+      "study_mount": [
+        627,
+        283
+      ],
+      "original_mount": [
+        627,
+        283
+      ],
+      "crater_mount": [
+        627,
+        280
+      ],
+      "seating_inset": 3
+    },
+    {
+      "clock_site": 1,
+      "angle_clockwise_degrees": 24.969,
+      "mount_radius": 329.771,
+      "soil_pixels": 3066,
+      "scale": 1,
+      "study_angle": 24.969,
+      "study_mount": [
+        764,
+        315
+      ],
+      "original_mount": [
+        766,
+        311
+      ],
+      "crater_mount": [
+        766,
+        311
+      ],
+      "seating_inset": 4
+    },
+    {
+      "clock_site": 2,
+      "angle_clockwise_degrees": 57.057,
+      "mount_radius": 325.447,
+      "soil_pixels": 3615,
+      "scale": 1,
+      "study_angle": 57.057,
+      "study_mount": [
+        901,
+        433
+      ],
+      "original_mount": [
+        900,
+        433
+      ],
+      "crater_mount": [
+        904,
+        431
+      ],
+      "seating_inset": 4
+    },
+    {
+      "clock_site": 3,
+      "angle_clockwise_degrees": 88.746,
+      "mount_radius": 317.714,
+      "soil_pixels": 4856,
+      "scale": 1,
+      "study_angle": 88.746,
+      "study_mount": [
+        948,
+        603
+      ],
+      "original_mount": [
+        945,
+        603
+      ],
+      "crater_mount": [
+        957,
+        603
+      ],
+      "seating_inset": 9
+    },
+    {
+      "clock_site": 4,
+      "angle_clockwise_degrees": 119.847,
+      "mount_radius": 313.559,
+      "soil_pixels": 4896,
+      "scale": 1,
+      "study_angle": 119.847,
+      "study_mount": [
+        904,
+        769
+      ],
+      "original_mount": [
+        899,
+        766
+      ],
+      "crater_mount": [
+        913,
+        774
+      ],
+      "seating_inset": 10
+    },
+    {
+      "clock_site": 5,
+      "angle_clockwise_degrees": 151.22,
+      "mount_radius": 312.776,
+      "soil_pixels": 4866,
+      "scale": 1,
+      "study_angle": 151.22,
+      "study_mount": [
+        781,
+        889
+      ],
+      "original_mount": [
+        778,
+        884
+      ],
+      "crater_mount": [
+        786,
+        899
+      ],
+      "seating_inset": 11
+    },
+    {
+      "clock_site": 6,
+      "angle_clockwise_degrees": 180.162,
+      "mount_radius": 314.647,
+      "soil_pixels": 4755,
+      "scale": 1,
+      "study_angle": 180.162,
+      "study_mount": [
+        626,
+        930
+      ],
+      "original_mount": [
+        626,
+        925
+      ],
+      "crater_mount": [
+        626,
+        940
+      ],
+      "seating_inset": 10
+    },
+    {
+      "clock_site": 7,
+      "angle_clockwise_degrees": 208.919,
+      "mount_radius": 312.989,
+      "soil_pixels": 5147,
+      "scale": 1,
+      "study_angle": 208.919,
+      "study_mount": [
+        474,
+        886
+      ],
+      "original_mount": [
+        476,
+        884
+      ],
+      "crater_mount": [
+        467,
+        899
+      ],
+      "seating_inset": 15
+    },
+    {
+      "clock_site": 8,
+      "angle_clockwise_degrees": 240.392,
+      "mount_radius": 315.149,
+      "soil_pixels": 4551,
+      "scale": 1,
+      "study_angle": 240.392,
+      "study_mount": [
+        349,
+        768
+      ],
+      "original_mount": [
+        353,
+        766
+      ],
+      "crater_mount": [
+        340,
+        773
+      ],
+      "seating_inset": 10
+    },
+    {
+      "clock_site": 9,
+      "angle_clockwise_degrees": 271.254,
+      "mount_radius": 321.567,
+      "soil_pixels": 4488,
+      "scale": 1,
+      "study_angle": 271.254,
+      "study_mount": [
+        305,
+        603
+      ],
+      "original_mount": [
+        306,
+        603
+      ],
+      "crater_mount": [
+        297,
+        603
+      ],
+      "seating_inset": 8
+    },
+    {
+      "clock_site": 10,
+      "angle_clockwise_degrees": 303.208,
+      "mount_radius": 329.388,
+      "soil_pixels": 3036,
+      "scale": 1,
+      "study_angle": 303.208,
+      "study_mount": [
+        354,
+        431
+      ],
+      "original_mount": [
+        351,
+        430
+      ],
+      "crater_mount": [
+        351,
+        429
+      ],
+      "seating_inset": 3
+    },
+    {
+      "clock_site": 11,
+      "angle_clockwise_degrees": 334.617,
+      "mount_radius": 330.119,
+      "soil_pixels": 3003,
+      "scale": 1,
+      "study_angle": 334.617,
+      "study_mount": [
+        487,
+        315
+      ],
+      "original_mount": [
+        485,
+        312
+      ],
+      "crater_mount": [
+        486,
+        312
+      ],
+      "seating_inset": 3
+    }
+  ],
+  "tower_scale": 1.5,
+  "crater_reference_radius": 330,
+  "seating_contacts": [
+    {
+      "site": 12,
+      "inset_source_pixels": 3,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 1,
+      "inset_source_pixels": 4,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 2,
+      "inset_source_pixels": 4,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 3,
+      "inset_source_pixels": 9,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 4,
+      "inset_source_pixels": 10,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 5,
+      "inset_source_pixels": 11,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 6,
+      "inset_source_pixels": 10,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 7,
+      "inset_source_pixels": 15,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 8,
+      "inset_source_pixels": 10,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 9,
+      "inset_source_pixels": 8,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 10,
+      "inset_source_pixels": 3,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    },
+    {
+      "site": 11,
+      "inset_source_pixels": 3,
+      "foundation_columns": 96,
+      "minimum_lip_overlap": 3,
+      "world_contact_columns": 96
+    }
+  ],
+  "layer_order": [
+    "rear ground",
+    "facades",
+    "terrain",
+    "Laser base",
+    "Laser gun",
+    "foreground"
+  ],
+  "site_angle_combinations": 2892,
+  "checks": [
+    {
+      "site": 12,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 794
+    },
+    {
+      "site": 1,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 962
+    },
+    {
+      "site": 2,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 904
+    },
+    {
+      "site": 3,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 906
+    },
+    {
+      "site": 4,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 928
+    },
+    {
+      "site": 5,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 713
+    },
+    {
+      "site": 6,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 870
+    },
+    {
+      "site": 7,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 934
+    },
+    {
+      "site": 8,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 948
+    },
+    {
+      "site": 9,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 949
+    },
+    {
+      "site": 10,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 983
+    },
+    {
+      "site": 11,
+      "max_gun_terrain_pixels": 0,
+      "max_ray_terrain_pixels": 0,
+      "max_gun_foreground_pixels": 0,
+      "hidden_base_pixels": 857
+    }
+  ],
+  "facade_contacts": [
+    {
+      "file": "guild-support.png",
+      "rear_ground_contact_pixels": 41
+    },
+    {
+      "file": "guild-facade.png",
+      "rear_ground_contact_pixels": 0
+    },
+    {
+      "file": "guild-foundation-visible.png",
+      "rear_ground_contact_pixels": 445
+    },
+    {
+      "file": "market-northwest.png",
+      "rear_ground_contact_pixels": 1232
+    },
+    {
+      "file": "market-northeast.png",
+      "rear_ground_contact_pixels": 896
+    },
+    {
+      "file": "stand-west-upper.png",
+      "rear_ground_contact_pixels": 540
+    },
+    {
+      "file": "stand-east-upper.png",
+      "rear_ground_contact_pixels": 492
+    },
+    {
+      "file": "stand-west-lower.png",
+      "rear_ground_contact_pixels": 391
+    },
+    {
+      "file": "stand-east-lower.png",
+      "rear_ground_contact_pixels": 365
+    },
+    {
+      "file": "shop-southwest.png",
+      "rear_ground_contact_pixels": 1348
+    },
+    {
+      "file": "shop-southeast.png",
+      "rear_ground_contact_pixels": 1368
+    },
+    {
+      "file": "kiosk-southwest.png",
+      "rear_ground_contact_pixels": 606
+    },
+    {
+      "file": "kiosk-southeast.png",
+      "rear_ground_contact_pixels": 620
+    }
+  ],
+  "limits": [
+    "Offline raster clearance, not Unity verification or projectile width",
+    "Rear ground and facades are decorative and excluded from clearance",
+    "Accepted Union Prime artwork; offline checks do not replace Unity validation"
+  ]
+}

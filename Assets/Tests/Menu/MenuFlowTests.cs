@@ -95,7 +95,7 @@ public class MenuFlowTests
         Assert.IsNull(GameObject.Find("Victor"));
         Assert.IsNull(GameObject.Find("CanadaGooseUfo"));
         Assert.IsNull(GameObject.Find("LaunchButton"));
-        string[] names = { "Union Prime", "Capen Major", "C3", "Davis Nova", "Silverman Luna", "Ellicott Prime", "Lockwood Terra", "Commons Minor", "Baird's Reach" };
+        string[] names = { "Union Prime", "Capen Major", "Davis Nova", "Silverman Luna", "C3", "Commons Minor", "Baird Reach" };
         var confirmed = GameObject.Find("SelectedDestination").GetComponent<Text>();
         AssertConfirmedPlanet(0);
         for (int i = 0; i < names.Length; i++)
@@ -105,7 +105,7 @@ public class MenuFlowTests
             Assert.AreEqual(i == 0 ? "TUTORIAL" : "LEVEL " + i,
                 destination.transform.Find("Number").GetComponent<Text>().text);
             var planet = destination.transform.Find("Planet").GetComponent<Image>();
-            Assert.AreEqual(i == 1 || i == 5 ? 92 : 80, planet.rectTransform.rect.width);
+            Assert.AreEqual(i == 1 ? 92 : 80, planet.rectTransform.rect.width);
             Assert.IsFalse(planet.raycastTarget);
             ClickAtCenter(destination);
             Assert.AreEqual(names[i], confirmed.text);
@@ -125,8 +125,8 @@ public class MenuFlowTests
         var back = GameObject.Find("BackButton").GetComponent<Button>();
         ClickAtCenter(back);
         page.SelectDestination(names[0]);
-        Assert.AreEqual(names[8], confirmed.text, "Selection changes must be ignored during navigation.");
-        AssertConfirmedPlanet(8);
+        Assert.AreEqual(names[6], confirmed.text, "Selection changes must be ignored during navigation.");
+        AssertConfirmedPlanet(6);
         // An extra click during loading must not initiate another scene transition.
         ClickAtCenter(back);
         yield return WaitForScene("MainMenu");
@@ -144,21 +144,18 @@ public class MenuFlowTests
         Assert.AreEqual("Destination0", EventSystem.current.currentSelectedGameObject.name);
         AssertConfirmedPlanet(0);
         var confirmed = GameObject.Find("SelectedDestination").GetComponent<Text>();
-        ClickAtCenter(GameObject.Find("PlayButton").GetComponent<Button>());
-        Assert.AreEqual("LevelSelect", SceneManager.GetActiveScene().name);
-        Assert.IsFalse(SceneLoadingScreen.IsLoading, "Unwired Play must not launch a scene.");
-        Assert.AreEqual("Destination0", EventSystem.current.currentSelectedGameObject.name);
+        Assert.IsTrue(GameObject.Find("PlayButton").GetComponent<Button>().IsInteractable());
         var keyboard = InputSystem.AddDevice<Keyboard>("LevelSelectTestKeyboard");
         try
         {
-            for (int i = 1; i <= 9; i++)
+            for (int i = 1; i <= 8; i++)
             {
                 InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.RightArrow));
                 yield return null;
                 yield return null;
                 InputSystem.QueueStateEvent(keyboard, new KeyboardState());
                 yield return null;
-                Assert.AreEqual(i == 9 ? "BackButton" : "Destination" + i,
+                Assert.AreEqual(i == 8 ? "BackButton" : i == 7 ? "PlayButton" : "Destination" + i,
                     EventSystem.current.currentSelectedGameObject.name);
                 Assert.AreEqual("Union Prime", confirmed.text, "Focus alone must not confirm a destination.");
                 AssertConfirmedPlanet(0);
@@ -200,7 +197,7 @@ public class MenuFlowTests
         var page = Object.FindAnyObjectByType<MenuPageController>();
         var details = page.destinationDetails;
         Assert.IsNotNull(details);
-        string[] landmarks = { "Student Union", "Capen", "C3", "Davis", "Silverman", "Ellicott", "Lockwood", "Commons", "Baird Point" };
+        string[] landmarks = { "Student Union", "Capen", "Davis", "Silverman", "C3", "Commons", "Baird Point" };
         Assert.AreEqual(landmarks[selectedIndex] + (selectedIndex == 0 ? " / Tutorial" : " / Level " + selectedIndex),
             details.landmarkAndLevel.text);
         Assert.IsNotEmpty(details.description.text);
@@ -208,12 +205,12 @@ public class MenuFlowTests
             "The details must follow confirmed selection, not focus.");
         Assert.LessOrEqual(details.description.preferredHeight, details.description.rectTransform.rect.height,
             "Every draft description must fit without truncation.");
-        Assert.AreEqual("Unknown", details.bossName.text);
+        Assert.AreEqual(details.destinations[selectedIndex].planet.bossName, details.bossName.text);
         Assert.AreSame(details.unknownBoss, details.bossPreview.sprite);
         Assert.IsFalse(details.bossPreview.raycastTarget);
-        Assert.IsFalse(details.playButton.IsInteractable());
-        Assert.AreEqual(0, details.playButton.onClick.GetPersistentEventCount());
-        for (int i = 0; i < 9; i++)
+        Assert.IsTrue(details.playButton.IsInteractable());
+        Assert.AreEqual(1, details.playButton.onClick.GetPersistentEventCount());
+        for (int i = 0; i < 7; i++)
         {
             var destination = GameObject.Find("Destination" + i);
             var halo = destination.transform.Find("SelectionHalo").GetComponent<Image>();

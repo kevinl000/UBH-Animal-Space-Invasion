@@ -43,11 +43,12 @@
 | 5 | Animal Ship | 25 | 1 | 5 | 5 | 0 | N/A | No attack. Upon death, spawn 2 Healthy Skunks, 2 Healthy Goose, 5 Shielded Goose. |
 | 6 | Endangered Deer | 60 | 1 | 25 | 25 | 5 | Single | Will spawn shielded deer every n seconds, as long as a shielded deer is alive, the Endangered Deer cannot take damage. Shoots horns| 
 
-# Planet Description
+# Planet Description  
+- Sizes: Small is 6, Small-medium is 8, Medium is 12, Big is 16.
 - Tutorial Union Prime: Market/Guild Planet, Will come with pre-built defenses. Size: medium. rotation speed: normal, rotation direction: clockwise
-- Capen Major: Transportation Hub. Not actually a planet but manmade celestial object. Size medium rotation speed: normal, rotation direction: clockwise
-- Davis Nova: something like nidaviler. Sun in the middle of a ring. The ring is technologically themed. Towers will lifespan and will explode. Size medium. Roation speed: normal. Rotation direction: clockwise
-- Silverman Luna: Planet will have a moon that the player can buy. The moon will orbit the planet and rotate. The main planet will rotate clockwise. speed: normal.
-- C3: Made up of three smaller planets that revolve around the center and rotates.
-- Commons Minor: Super small planet. Feature should have a clock tower in the background. Size: small
-- Baird Reach: Desolate planet, Dead fauna/flora, ruins, 3 huge pillars penetrating the whole planet obstructing vision and tower placements. Towers will deactivate after some time, and player needs to sell that tower to replace it with a new one: Size: small-medium
+- Capen Major: Transportation Hub. Not actually a planet but manmade celestial object. Size: big. rotation speed: normal, rotation direction: clockwise
+- Davis Nova: something like nidaviler. Sun in the middle of a ring. The ring is technologically themed. Towers will lifespan and will explode. Size: medium. Roation speed: normal. Rotation direction: clockwise
+- Silverman Luna: Planet will have a moon withonly 4 slots that the player can buy. The moon will orbit the planet and rotate. The main planet will rotate clockwise, and have the medium size. speed: normal.
+- C3: Made up of three smaller planets that revolve around the center and rotates. Small planet x 3, so it will have 18 slots in total.
+- Commons Minor: Super small planet. Feature should have a clock tower in the background. Size: small-medium (8 slots)
+- Baird Reach: Desolate planet, Dead fauna/flora, ruins, 3 huge pillars penetrating the whole planet obstructing vision and tower placements. Towers will deactivate after some time, and player needs to sell that tower to replace it with a new one: Size: medium but only with 8 slots.

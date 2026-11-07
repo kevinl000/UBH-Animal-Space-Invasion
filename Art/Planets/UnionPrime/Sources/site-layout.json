@@ -1,0 +1,196 @@
+{
+  "site_placements": [
+    {
+      "clock_site": 12,
+      "angle_clockwise_degrees": 359.974,
+      "mount_radius": 326.5,
+      "soil_pixels": 3202,
+      "scale": 1,
+      "study_angle": 0,
+      "study_mount": [
+        627,
+        280
+      ],
+      "original_mount": [
+        627,
+        283
+      ]
+    },
+    {
+      "clock_site": 1,
+      "angle_clockwise_degrees": 24.969,
+      "mount_radius": 329.771,
+      "soil_pixels": 3066,
+      "scale": 1,
+      "study_angle": 24.969,
+      "study_mount": [
+        766,
+        311
+      ],
+      "original_mount": [
+        766,
+        311
+      ]
+    },
+    {
+      "clock_site": 2,
+      "angle_clockwise_degrees": 57.057,
+      "mount_radius": 325.447,
+      "soil_pixels": 3615,
+      "scale": 1,
+      "study_angle": 57.057,
+      "study_mount": [
+        904,
+        431
+      ],
+      "original_mount": [
+        900,
+        433
+      ]
+    },
+    {
+      "clock_site": 3,
+      "angle_clockwise_degrees": 88.746,
+      "mount_radius": 317.714,
+      "soil_pixels": 4856,
+      "scale": 1,
+      "study_angle": 88.746,
+      "study_mount": [
+        957,
+        603
+      ],
+      "original_mount": [
+        945,
+        603
+      ]
+    },
+    {
+      "clock_site": 4,
+      "angle_clockwise_degrees": 119.847,
+      "mount_radius": 313.559,
+      "soil_pixels": 4896,
+      "scale": 1,
+      "study_angle": 119.847,
+      "study_mount": [
+        913,
+        774
+      ],
+      "original_mount": [
+        899,
+        766
+      ]
+    },
+    {
+      "clock_site": 5,
+      "angle_clockwise_degrees": 151.22,
+      "mount_radius": 312.776,
+      "soil_pixels": 4866,
+      "scale": 1,
+      "study_angle": 151.22,
+      "study_mount": [
+        786,
+        899
+      ],
+      "original_mount": [
+        778,
+        884
+      ]
+    },
+    {
+      "clock_site": 6,
+      "angle_clockwise_degrees": 180.162,
+      "mount_radius": 314.647,
+      "soil_pixels": 4755,
+      "scale": 1,
+      "study_angle": 180.162,
+      "study_mount": [
+        626,
+        940
+      ],
+      "original_mount": [
+        626,
+        925
+      ]
+    },
+    {
+      "clock_site": 7,
+      "angle_clockwise_degrees": 208.919,
+      "mount_radius": 312.989,
+      "soil_pixels": 5147,
+      "scale": 1,
+      "study_angle": 208.919,
+      "study_mount": [
+        467,
+        899
+      ],
+      "original_mount": [
+        476,
+        884
+      ]
+    },
+    {
+      "clock_site": 8,
+      "angle_clockwise_degrees": 240.392,
+      "mount_radius": 315.149,
+      "soil_pixels": 4551,
+      "scale": 1,
+      "study_angle": 240.392,
+      "study_mount": [
+        340,
+        773
+      ],
+      "original_mount": [
+        353,
+        766
+      ]
+    },
+    {
+      "clock_site": 9,
+      "angle_clockwise_degrees": 271.254,
+      "mount_radius": 321.567,
+      "soil_pixels": 4488,
+      "scale": 1,
+      "study_angle": 271.254,
+      "study_mount": [
+        297,
+        603
+      ],
+      "original_mount": [
+        306,
+        603
+      ]
+    },
+    {
+      "clock_site": 10,
+      "angle_clockwise_degrees": 303.208,
+      "mount_radius": 329.388,
+      "soil_pixels": 3036,
+      "scale": 1,
+      "study_angle": 303.208,
+      "study_mount": [
+        351,
+        429
+      ],
+      "original_mount": [
+        351,
+        430
+      ]
+    },
+    {
+      "clock_site": 11,
+      "angle_clockwise_degrees": 334.617,
+      "mount_radius": 330.119,
+      "soil_pixels": 3003,
+      "scale": 1,
+      "study_angle": 334.617,
+      "study_mount": [
+        486,
+        312
+      ],
+      "original_mount": [
+        485,
+        312
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "editor": "6000.6.7f1",
+  "images": {
+    "Administration": {
+      "path": "Assets/Art/Planets/CapenMajor/Administration.png",
+      "guid": "940ba34d62f74eb3a47d7492de2ea808",
+      "sha256": "f6b26e52b67681fa3473b0399ac0520dd93efb4e917cdd587f2d3ace86c625b2"
+    },
+    "BusStation": {
+      "path": "Assets/Art/Planets/CapenMajor/BusStation.png",
+      "guid": "ed2286c344be48e5b39384248f96c06b",
+      "sha256": "c3df68636eb839174b7c5aac67af73c3745e22e9ca1a7c0e555e5e8fe95182dd"
+    },
+    "FlagPlaza": {
+      "path": "Assets/Art/Planets/CapenMajor/FlagPlaza.png",
+      "guid": "d86182dc25e14d509dd7903db3cb1d4e",
+      "sha256": "3e05f6df48e928558167c1be72161b289b7af4d780303253a94ec018ed849d23"
+    },
+    "TransitShelter": {
+      "path": "Assets/Art/Planets/CapenMajor/TransitShelter.png",
+      "guid": "1301cc39f3f7422ebf5cb72ed4581741",
+      "sha256": "a7ba3654b75804ebebe6c289ef3ba28363062465acde73abc87f231db23042f8"
+    },
+    "CargoDepot": {
+      "path": "Assets/Art/Planets/CapenMajor/CargoDepot.png",
+      "guid": "c2804e95cf5b49f7a89188e3c51e7a79",
+      "sha256": "d9b31e83434a10ddc52e9542a6a6b8cd7ce79563658c71f9cc6b413bcd43c815"
+    },
+    "RearFloor": {
+      "path": "Assets/Art/Planets/CapenMajor/RearFloor.png",
+      "guid": "beda239046fc45ea9787b308ea131ea2",
+      "sha256": "279d5cd1ee195d386b932ea351beeaecba515939f197a352840d72dadb005f58"
+    },
+    "Terrain": {
+      "path": "Assets/Art/Planets/CapenMajor/Terrain.png",
+      "guid": "ebe0a399aa394741a9170be93fc2a79f",
+      "sha256": "d5b3de79745eb03e14bcc135871b608625067e961459c8badcdd5e0fef18b483"
+    },
+    "SteelFronts": {
+      "path": "Assets/Art/Planets/CapenMajor/SteelFronts.png",
+      "guid": "ed245fdf89464d959a45f4c517fa1520",
+      "sha256": "b86fb82befe9c7ba98237cc6ea3ec8ab782f0685cd05cc881b0a340c4693ffee"
+    }
+  },
+  "source": "planet-empty.svg",
+  "source_sha256": "d8ff274a40100ce0221cd3cbcfd219e6ef4b73944ca48521021c7ed6268fe7f8",
+  "source_view_box": [
+    -80,
+    -100,
+    1392,
+    1420
+  ],
+  "source_canvas_size": [
+    1392,
+    1420
+  ],
+  "display_width": 600,
+  "site_count": 16,
+  "tower_scale": 1.5,
+  "maximum_visible_channel_difference_from_approved_preview": 3,
+  "free_laser_placement": true,
+  "visual_prefab": "Assets/UI/Planets/CapenMajorVisual.prefab"
+}

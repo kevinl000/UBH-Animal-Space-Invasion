@@ -123,9 +123,9 @@ public static class MainMenuSetup
         continueButton.interactable = false;
         continueButton.GetComponentInChildren<Text>().color = new Color32(82, 88, 112, 255);
         CreateText("NoSaveHint", content, "No saved game yet", new Vector2(0, -151),
-            new Vector2(450, 34), 23, new Color32(174, 191, 222, 255));
+            new Vector2(450, 34), 25, new Color32(174, 191, 222, 255));
         CreateText("Footer", content, "UB HACKATHON 2026", new Vector2(0, -432),
-            new Vector2(500, 30), 22, Cream);
+            new Vector2(500, 30), 24, Cream);
         page.firstButton = newGame;
         EditorSceneManager.SaveScene(scene, MainScene);
     }
@@ -239,7 +239,7 @@ public static class MainMenuSetup
     {
         var rect = CreateRect(name, parent, position, size);
         var text = rect.gameObject.AddComponent<Text>();
-        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelifySans.ttf");
+        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelOperator-Bold.ttf");
         text.text = value;
         text.fontSize = fontSize;
         text.alignment = TextAnchor.MiddleCenter;

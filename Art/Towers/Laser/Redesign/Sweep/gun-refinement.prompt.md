@@ -1,0 +1,3 @@
+Use case: precise-object-edit.
+Edit target: the isolated upright gun.
+Correct the asset edges and style ONLY: remove ALL surrounding purple haze, glow, shadow, blur and translucent halo. Empty background pixels must be fully transparent. All solid gun parts need opaque, crisp, dark navy outlines with hard square pixel steps, matching a low-resolution pixel-art sprite. Simplify gradients into 2-3 flat shades. Keep the ivory casing, two navy vents, cyan rectangular muzzle and rounded navy rear. Slightly shorten the middle ivory casing so the complete weapon is chunky, only about 1.6 times as tall as wide. Do not make a thin barrel. Keep single upright isolated weapon, vertical firing axis, no other parts or labels. Actual transparent background, no glow anywhere.

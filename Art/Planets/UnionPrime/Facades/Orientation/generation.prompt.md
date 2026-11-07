@@ -1,0 +1,12 @@
+Use case: precise-object-edit.
+Edit target: the supplied 1254x1254 transparent circular-planet pixel-art image.
+Fix ONLY the four building sprites on the LOWER arc between 4 and 8 o'clock. Preserve all other pixels, buildings, planet, craters, size, framing and transparency.
+
+CRITICAL GEOMETRY: gravity pulls toward planet center (627,610). Therefore objects at the bottom must look UPSIDE DOWN to the screen viewer. Local UP points radially DOWN and away from the center. The lower roof edges already lie on the outward edge, and should stay there. Correct the wrongly screen-upright small details.
+
+At the bread stall around 6:45 (bounds x414..562 y928..1043), the basket's BASE and the sack's flat BASE must face the planet, toward upper-right. The baguette tips and the sack's tied NECK must point outward, toward LOWER-LEFT. The bread and sack are rotated approximately 160 degrees from normal screen-upright. Keep the stall frame and terracotta roof exact.
+At the books stall around 5:15 (bounds x693..841 y928..1043), the shelf supporting the standing books is on the INNER/UPPER-LEFT side, with book tops pointing DOWN-RIGHT. Books, book jackets and small display objects must be upside-down and tilted with this stall. Preserve frame/roof.
+At the lower-left shop around 7:30 (bounds x232..447 y783..983), rotate the display/sign details to face down-left like the shop, and especially replace the tiny SCREEN-UPRIGHT produce crate at its lower-right corner with the same crate following the radial ground: its solid wooden BASE lies nearest the planet (upper-right), its open rim and green vegetables protrude outward (lower-left). The crate must look upside-down and diagonal to the viewer. Keep shop silhouette and blue/cream canvas.
+At the lower-right shop around 4:30 (bounds x808..1023 y783..983), the analogous small crate at lower-left must have its solid BASE toward the planet (upper-left) and vegetables/open rim pointing outward DOWN-RIGHT. Its display/sign details likewise orient down-right. Keep shop silhouette and blue/cream canvas.
+
+This is an orientation correction, not a redesign. Keep identical merchandise, original terracotta roofs, wood frames, locations, size, small pixel scale and restrained colors. Do not keep the crates, bread basket or sack screen-upright. Do not turn the entire planet or move these stalls. Preserve every original silhouette so the corrected art fits existing sprite masks. No extra objects, text, towers or characters. True transparent background, same 1254x1254 output.

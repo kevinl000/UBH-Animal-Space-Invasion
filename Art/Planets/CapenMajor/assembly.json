@@ -1,0 +1,1541 @@
+{
+  "status": "sixteen-socket assembly; facade layout retained for the next pass",
+  "socket_scale_relative_to_previous": 0.75,
+  "site_spacing_degrees": 22.5,
+  "planet_center": [
+    608,
+    695
+  ],
+  "reference_diameter": 986,
+  "edge_source_origin": [
+    1082,
+    212
+  ],
+  "edge_scale": [
+    0.09402985074626866,
+    0.12
+  ],
+  "tower_scale": 1.5,
+  "tower_scale_reason": "visual Laser scales with the socket to preserve foundation fit; shared tower artwork unchanged",
+  "foundation_inset": 31.169999999999998,
+  "sampled_foundation_columns": 62,
+  "minimum_contour_overlap": 0.75,
+  "maximum_contour_overlap": 10.169999999999998,
+  "sites": [
+    {
+      "site": 1,
+      "angle": 0.0,
+      "horizon": [
+        608.0,
+        184.0
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        608.0,
+        215.17
+      ]
+    },
+    {
+      "site": 2,
+      "angle": 22.5,
+      "horizon": [
+        803.5512339385609,
+        222.8975588867325
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        791.6229913517411,
+        251.6948839151093
+      ]
+    },
+    {
+      "site": 3,
+      "angle": 45.0,
+      "horizon": [
+        965.0889244992065,
+        337.91107550079346
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        943.0484061296219,
+        359.95159387037813
+      ]
+    },
+    {
+      "site": 4,
+      "angle": 67.5,
+      "horizon": [
+        1067.1681276581094,
+        504.80633411455034
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        1038.3708026297325,
+        516.7345767013702
+      ]
+    },
+    {
+      "site": 5,
+      "angle": 90.0,
+      "horizon": [
+        1096.0,
+        695.0
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        1064.83,
+        695.0
+      ]
+    },
+    {
+      "site": 6,
+      "angle": 112.5,
+      "horizon": [
+        1036.680103085237,
+        872.5651126174016
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        1007.8827780568603,
+        860.6368700305818
+      ]
+    },
+    {
+      "site": 7,
+      "angle": 135.0,
+      "horizon": [
+        924.0767311903867,
+        1011.0767311903867
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        902.036212820802,
+        989.036212820802
+      ]
+    },
+    {
+      "site": 8,
+      "angle": 157.5,
+      "horizon": [
+        782.503645158481,
+        1116.2890668251466
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        770.5754025716612,
+        1087.4917417967697
+      ]
+    },
+    {
+      "site": 9,
+      "angle": 180.0,
+      "horizon": [
+        608.0,
+        1156.0
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        608.0,
+        1124.83
+      ]
+    },
+    {
+      "site": 10,
+      "angle": 202.5,
+      "horizon": [
+        427.7561033560428,
+        1130.1472598128162
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        439.68434594286265,
+        1101.3499347844393
+      ]
+    },
+    {
+      "site": 11,
+      "angle": 225.0,
+      "horizon": [
+        279.90245352944197,
+        1023.0975464705582
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        301.94297189902665,
+        1001.0570281009735
+      ]
+    },
+    {
+      "site": 12,
+      "angle": 247.5,
+      "horizon": [
+        167.30946299211615,
+        877.5399972381476
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        196.10678802049296,
+        865.6117546513278
+      ]
+    },
+    {
+      "site": 13,
+      "angle": 270.0,
+      "horizon": [
+        114.0,
+        695.0000000000001
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        145.17,
+        695.0000000000001
+      ]
+    },
+    {
+      "site": 14,
+      "angle": 292.5,
+      "horizon": [
+        144.2124746793341,
+        502.8929169527248
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        173.0097997077109,
+        514.8211595395446
+      ]
+    },
+    {
+      "site": 15,
+      "angle": 315.0,
+      "horizon": [
+        253.73950262553961,
+        340.7395026255398
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        275.7800209951243,
+        362.78002099512446
+      ]
+    },
+    {
+      "site": 16,
+      "angle": 337.5,
+      "horizon": [
+        412.0660826290741,
+        221.97367935422113
+      ],
+      "foundation_columns_supported_by_edge_and_hull_mask": 62,
+      "mount": [
+        423.994325215894,
+        250.77100438259794
+      ]
+    }
+  ],
+  "source_sha256": {
+    "Art/Planets/CapenMajor/body-clean-source-v1.png": "445be198013438b1082b99113bebbd9c07e4e98258efad6c83b5fc69ab4cb594",
+    "Art/Planets/CapenMajor/facades-pixel-source-v1.png": "39a78da83bc1e8fc35ac1cd2ac77824f6f54022fa091047ddcbfbc87ae28214c",
+    "Art/Planets/CapenMajor/admin-facade-source-v1.png": "086c105fe57c5bddf37b024ab336b77813ee82d3db3e5abf7b682d0ed3976148",
+    "Art/Planets/CapenMajor/steel-edge-source-v2.png": "c2a9bc308df3b7d7f1515b2aff242254701d64ef40ca85f965b21cee4bd48ea0",
+    "Art/Planets/CapenMajor/steel-floor-source-v2.png": "6f68ed19d8395cfc4fd9db03ca8a41b6fbee5c75801d0b235ab182f08ab29a54",
+    "Art/Towers/Laser/Redesign/Sweep/base-sprite.png": "b9386b246ff8f65146c3d746b592612bcc5b76a95ccb145fe0428e84d35320f3",
+    "Art/Towers/Laser/Redesign/Sweep/gun-sprite.png": "13e720e5d2b9ba6f9bb3990829ecfd9beff41620e60c4bf5a2440aa22e2e3312"
+  },
+  "facade_regions": {
+    "Bus station": "340,0 884,0 884,241 340,241",
+    "Flag plaza": "80,110 340,110 340,266 315,280 280,306 250,334 226,359 196,398 80,398",
+    "Transit shelter": "185,900 206,935 235,973 275,1019 318,1058 318,1140 85,1140 85,900",
+    "Cargo depot": "1045,861 1155,861 1155,1145 885,1145 885,1052 930,1007 972,964 1011,916"
+  },
+  "admin_ground_curve": {
+    "span": [
+      340,
+      884
+    ],
+    "strip_width": 1,
+    "shoulder_source_contacts": [
+      [
+        340,
+        269
+      ],
+      [
+        350,
+        267
+      ],
+      [
+        360,
+        259
+      ],
+      [
+        370,
+        253
+      ],
+      [
+        380,
+        249
+      ],
+      [
+        395,
+        244
+      ],
+      [
+        410,
+        242
+      ],
+      [
+        800,
+        242
+      ],
+      [
+        820,
+        247
+      ],
+      [
+        840,
+        253
+      ],
+      [
+        860,
+        264
+      ],
+      [
+        884,
+        277
+      ],
+      [
+        890,
+        280
+      ],
+      [
+        900,
+        291
+      ],
+      [
+        910,
+        297
+      ],
+      [
+        920,
+        303
+      ],
+      [
+        930,
+        312
+      ],
+      [
+        940,
+        324
+      ]
+    ],
+    "shoulder_render_right": 940,
+    "strip_overlap": 1,
+    "hull_bottom_overlap": 2,
+    "composited_hull_alpha_gain": 1.07,
+    "horizon": "695 - sqrt(512**2 - (x-608)**2)",
+    "left_join": {
+      "x": 340,
+      "y": 268,
+      "blend_width": 50
+    },
+    "hull_blend_bottom": 340,
+    "facade_blend_top": 180,
+    "foundation_source_contact_y": 930,
+    "foundation_overlap": 5
+  },
+  "facade_placements": [
+    {
+      "name": "Bus station",
+      "origin": [
+        608,
+        240
+      ],
+      "source_angle": 0,
+      "anchor": [
+        1044,
+        443
+      ],
+      "angle": 60,
+      "scale": 0.7
+    },
+    {
+      "name": "Flag plaza",
+      "origin": [
+        250,
+        330
+      ],
+      "source_angle": 328,
+      "anchor": [
+        182.4,
+        449
+      ],
+      "angle": 300,
+      "scale": 1.0
+    },
+    {
+      "name": "Transit shelter",
+      "origin": [
+        250,
+        990
+      ],
+      "source_angle": 225,
+      "anchor": [
+        250,
+        990
+      ],
+      "angle": 225,
+      "scale": 1.0
+    },
+    {
+      "name": "Cargo depot",
+      "origin": [
+        1000,
+        965
+      ],
+      "source_angle": 135,
+      "anchor": [
+        1000,
+        965
+      ],
+      "angle": 135,
+      "scale": 1.0
+    }
+  ],
+  "old_plaza_hull_clearance": "80,110 340,110 340,268 330,275 320,282 310,290 300,298 290,306 280,315 270,324 260,333 250,344 240,355 230,367 220,379 210,393 200,408 190,423 180,438 80,438",
+  "flag_ground_curve": {
+    "space": "upright flags, relative to anchor",
+    "facade_blend_top": -35,
+    "strip_width": 1,
+    "strip_overlap": 1,
+    "minimum_colored_base_overlap": 4,
+    "contact_samples": [
+      [
+        -73,
+        -1
+      ],
+      [
+        -72,
+        -1
+      ],
+      [
+        -71,
+        -1
+      ],
+      [
+        -70,
+        -1
+      ],
+      [
+        -69,
+        -1
+      ],
+      [
+        -68,
+        -1
+      ],
+      [
+        -67,
+        -2
+      ],
+      [
+        -66,
+        -2
+      ],
+      [
+        -65,
+        -2
+      ],
+      [
+        -64,
+        -2
+      ],
+      [
+        -63,
+        -2
+      ],
+      [
+        -62,
+        -2
+      ],
+      [
+        -61,
+        -2
+      ],
+      [
+        -60,
+        -2
+      ],
+      [
+        -59,
+        -3
+      ],
+      [
+        -58,
+        -3
+      ],
+      [
+        -57,
+        -3
+      ],
+      [
+        -56,
+        -3
+      ],
+      [
+        -55,
+        -3
+      ],
+      [
+        -54,
+        -3
+      ],
+      [
+        -53,
+        -3
+      ],
+      [
+        -52,
+        -3
+      ],
+      [
+        -51,
+        -3
+      ],
+      [
+        -50,
+        -3
+      ],
+      [
+        -49,
+        -4
+      ],
+      [
+        -48,
+        -4
+      ],
+      [
+        -47,
+        -4
+      ],
+      [
+        -46,
+        -4
+      ],
+      [
+        -45,
+        -4
+      ],
+      [
+        -44,
+        -4
+      ],
+      [
+        -43,
+        -4
+      ],
+      [
+        -42,
+        -5
+      ],
+      [
+        -41,
+        -5
+      ],
+      [
+        -40,
+        -5
+      ],
+      [
+        -39,
+        -5
+      ],
+      [
+        -37,
+        -5
+      ],
+      [
+        -36,
+        -5
+      ],
+      [
+        -35,
+        -5
+      ],
+      [
+        -34,
+        -5
+      ],
+      [
+        -33,
+        -5
+      ],
+      [
+        -32,
+        -5
+      ],
+      [
+        -31,
+        -5
+      ],
+      [
+        -30,
+        -5
+      ],
+      [
+        -29,
+        -5
+      ],
+      [
+        -28,
+        -5
+      ],
+      [
+        -27,
+        -5
+      ],
+      [
+        -26,
+        -6
+      ],
+      [
+        -25,
+        -6
+      ],
+      [
+        -24,
+        -6
+      ],
+      [
+        -23,
+        -6
+      ],
+      [
+        -22,
+        -6
+      ],
+      [
+        -21,
+        -6
+      ],
+      [
+        -20,
+        -6
+      ],
+      [
+        -19,
+        -6
+      ],
+      [
+        -18,
+        -6
+      ],
+      [
+        -17,
+        -6
+      ],
+      [
+        -16,
+        -6
+      ],
+      [
+        -15,
+        -6
+      ],
+      [
+        -14,
+        -6
+      ],
+      [
+        -13,
+        -6
+      ],
+      [
+        -12,
+        -6
+      ],
+      [
+        -11,
+        -6
+      ],
+      [
+        -10,
+        -6
+      ],
+      [
+        -9,
+        -6
+      ],
+      [
+        -8,
+        -7
+      ],
+      [
+        -7,
+        -7
+      ],
+      [
+        -6,
+        -7
+      ],
+      [
+        -5,
+        -7
+      ],
+      [
+        -4,
+        -7
+      ],
+      [
+        -3,
+        -7
+      ],
+      [
+        -2,
+        -7
+      ],
+      [
+        -1,
+        -7
+      ],
+      [
+        0,
+        -7
+      ],
+      [
+        1,
+        -7
+      ],
+      [
+        2,
+        -7
+      ],
+      [
+        3,
+        -7
+      ],
+      [
+        4,
+        -6
+      ],
+      [
+        5,
+        -4
+      ],
+      [
+        6,
+        -3
+      ],
+      [
+        7,
+        -3
+      ],
+      [
+        8,
+        -2
+      ],
+      [
+        9,
+        -2
+      ],
+      [
+        10,
+        -2
+      ],
+      [
+        11,
+        -2
+      ],
+      [
+        12,
+        -2
+      ],
+      [
+        13,
+        -2
+      ],
+      [
+        14,
+        -2
+      ],
+      [
+        15,
+        -2
+      ],
+      [
+        17,
+        -2
+      ],
+      [
+        18,
+        -2
+      ],
+      [
+        19,
+        -2
+      ],
+      [
+        20,
+        -2
+      ],
+      [
+        21,
+        -2
+      ],
+      [
+        22,
+        -1
+      ],
+      [
+        23,
+        -1
+      ],
+      [
+        24,
+        -1
+      ],
+      [
+        25,
+        -1
+      ],
+      [
+        26,
+        -1
+      ],
+      [
+        27,
+        -1
+      ],
+      [
+        28,
+        -1
+      ],
+      [
+        29,
+        -1
+      ],
+      [
+        30,
+        -1
+      ],
+      [
+        31,
+        -1
+      ],
+      [
+        32,
+        -1
+      ],
+      [
+        33,
+        -1
+      ],
+      [
+        34,
+        -1
+      ],
+      [
+        35,
+        -1
+      ],
+      [
+        36,
+        -1
+      ],
+      [
+        37,
+        -1
+      ],
+      [
+        38,
+        -1
+      ],
+      [
+        39,
+        -1
+      ],
+      [
+        40,
+        0
+      ],
+      [
+        41,
+        0
+      ],
+      [
+        42,
+        0
+      ],
+      [
+        43,
+        0
+      ],
+      [
+        44,
+        0
+      ],
+      [
+        45,
+        0
+      ],
+      [
+        46,
+        0
+      ],
+      [
+        47,
+        0
+      ],
+      [
+        48,
+        0
+      ],
+      [
+        49,
+        0
+      ],
+      [
+        50,
+        0
+      ],
+      [
+        51,
+        1
+      ],
+      [
+        52,
+        1
+      ],
+      [
+        53,
+        1
+      ],
+      [
+        54,
+        1
+      ],
+      [
+        55,
+        1
+      ],
+      [
+        56,
+        1
+      ],
+      [
+        57,
+        1
+      ],
+      [
+        58,
+        1
+      ],
+      [
+        59,
+        1
+      ],
+      [
+        60,
+        1
+      ],
+      [
+        61,
+        1
+      ],
+      [
+        62,
+        1
+      ],
+      [
+        63,
+        1
+      ],
+      [
+        64,
+        1
+      ],
+      [
+        65,
+        2
+      ],
+      [
+        66,
+        2
+      ],
+      [
+        67,
+        2
+      ],
+      [
+        68,
+        2
+      ],
+      [
+        69,
+        2
+      ],
+      [
+        70,
+        2
+      ],
+      [
+        71,
+        2
+      ],
+      [
+        72,
+        2
+      ],
+      [
+        73,
+        2
+      ],
+      [
+        74,
+        2
+      ],
+      [
+        75,
+        3
+      ],
+      [
+        76,
+        3
+      ],
+      [
+        77,
+        3
+      ],
+      [
+        78,
+        2
+      ],
+      [
+        79,
+        3
+      ],
+      [
+        80,
+        3
+      ],
+      [
+        81,
+        3
+      ],
+      [
+        84,
+        3
+      ],
+      [
+        85,
+        4
+      ],
+      [
+        86,
+        4
+      ],
+      [
+        87,
+        4
+      ],
+      [
+        88,
+        5
+      ],
+      [
+        89,
+        5
+      ],
+      [
+        90,
+        5
+      ],
+      [
+        91,
+        5
+      ],
+      [
+        92,
+        5
+      ],
+      [
+        93,
+        5
+      ],
+      [
+        94,
+        6
+      ],
+      [
+        95,
+        6
+      ],
+      [
+        96,
+        6
+      ],
+      [
+        97,
+        6
+      ],
+      [
+        100,
+        6
+      ],
+      [
+        101,
+        6
+      ],
+      [
+        102,
+        7
+      ],
+      [
+        103,
+        7
+      ],
+      [
+        104,
+        7
+      ],
+      [
+        105,
+        7
+      ],
+      [
+        106,
+        7
+      ],
+      [
+        114,
+        9
+      ]
+    ]
+  },
+  "station_ground_curve": {
+    "space": "upright scaled station, relative to anchor",
+    "facade_blend_top": -70,
+    "strip_width": 1,
+    "strip_overlap": 1,
+    "minimum_hull_overlap": 4,
+    "contact_samples": [
+      [
+        -190,
+        35
+      ],
+      [
+        -186,
+        34
+      ],
+      [
+        -182,
+        33
+      ],
+      [
+        -178,
+        32
+      ],
+      [
+        -174,
+        30
+      ],
+      [
+        -170,
+        29
+      ],
+      [
+        -166,
+        28
+      ],
+      [
+        -162,
+        27
+      ],
+      [
+        -158,
+        26
+      ],
+      [
+        -154,
+        25
+      ],
+      [
+        -150,
+        24
+      ],
+      [
+        -146,
+        23
+      ],
+      [
+        -142,
+        22
+      ],
+      [
+        -138,
+        21
+      ],
+      [
+        -134,
+        20
+      ],
+      [
+        -130,
+        19
+      ],
+      [
+        -126,
+        19
+      ],
+      [
+        -122,
+        18
+      ],
+      [
+        -118,
+        17
+      ],
+      [
+        -114,
+        17
+      ],
+      [
+        -110,
+        16
+      ],
+      [
+        -106,
+        15
+      ],
+      [
+        -102,
+        14
+      ],
+      [
+        -98,
+        14
+      ],
+      [
+        -94,
+        14
+      ],
+      [
+        -90,
+        14
+      ],
+      [
+        -86,
+        13
+      ],
+      [
+        -82,
+        12
+      ],
+      [
+        -78,
+        12
+      ],
+      [
+        -74,
+        12
+      ],
+      [
+        -70,
+        11
+      ],
+      [
+        -66,
+        11
+      ],
+      [
+        -62,
+        11
+      ],
+      [
+        -58,
+        10
+      ],
+      [
+        -54,
+        10
+      ],
+      [
+        -50,
+        10
+      ],
+      [
+        -46,
+        10
+      ],
+      [
+        -42,
+        10
+      ],
+      [
+        -38,
+        10
+      ],
+      [
+        -34,
+        10
+      ],
+      [
+        -30,
+        10
+      ],
+      [
+        -26,
+        9
+      ],
+      [
+        -22,
+        10
+      ],
+      [
+        -18,
+        9
+      ],
+      [
+        -14,
+        9
+      ],
+      [
+        -10,
+        9
+      ],
+      [
+        -6,
+        9
+      ],
+      [
+        -2,
+        9
+      ],
+      [
+        2,
+        10
+      ],
+      [
+        6,
+        10
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        14,
+        10
+      ],
+      [
+        18,
+        11
+      ],
+      [
+        22,
+        11
+      ],
+      [
+        26,
+        11
+      ],
+      [
+        30,
+        11
+      ],
+      [
+        34,
+        12
+      ],
+      [
+        38,
+        12
+      ],
+      [
+        42,
+        13
+      ],
+      [
+        46,
+        13
+      ],
+      [
+        50,
+        13
+      ],
+      [
+        54,
+        14
+      ],
+      [
+        58,
+        15
+      ],
+      [
+        62,
+        15
+      ],
+      [
+        66,
+        15
+      ],
+      [
+        70,
+        17
+      ],
+      [
+        74,
+        17
+      ],
+      [
+        78,
+        18
+      ],
+      [
+        82,
+        18
+      ],
+      [
+        86,
+        19
+      ],
+      [
+        90,
+        20
+      ],
+      [
+        94,
+        21
+      ],
+      [
+        98,
+        22
+      ],
+      [
+        102,
+        22
+      ],
+      [
+        106,
+        24
+      ],
+      [
+        110,
+        24
+      ],
+      [
+        114,
+        25
+      ],
+      [
+        118,
+        26
+      ],
+      [
+        122,
+        28
+      ],
+      [
+        126,
+        29
+      ],
+      [
+        130,
+        30
+      ],
+      [
+        134,
+        32
+      ],
+      [
+        138,
+        33
+      ],
+      [
+        142,
+        34
+      ],
+      [
+        146,
+        35
+      ],
+      [
+        150,
+        36
+      ],
+      [
+        154,
+        39
+      ],
+      [
+        158,
+        40
+      ],
+      [
+        162,
+        41
+      ],
+      [
+        166,
+        43
+      ],
+      [
+        170,
+        44
+      ],
+      [
+        174,
+        47
+      ],
+      [
+        178,
+        48
+      ],
+      [
+        182,
+        50
+      ],
+      [
+        186,
+        52
+      ],
+      [
+        190,
+        54
+      ],
+      [
+        193,
+        55
+      ]
+    ]
+  },
+  "facade_distribution": "source-fit layout with intentional gaps, not equal angular spacing",
+  "full_preview_view_box": [
+    -80,
+    -100,
+    1392,
+    1420
+  ],
+  "additional_facades": [
+    {
+      "name": "Campus administration",
+      "source": "admin-facade-source-v1.png",
+      "source_origin": [
+        793,
+        946
+      ],
+      "anchor": [
+        608,
+        192
+      ],
+      "angle": 0,
+      "scale": 0.3,
+      "layer": "behind hull and recess floors; excluded from supporting hull mask"
+    }
+  ],
+  "limits": [
+    "SVG sprite assembly, not Unity import",
+    "no generated tower art",
+    "only three aiming poses visually reviewed; no full collision sweep",
+    "measured horizon anchors and source transforms are provisional",
+    "source PNG pixels unchanged; renderer handles masks and transforms",
+    "rear floor is distinct generated material, not a lighting filter"
+  ]
+}

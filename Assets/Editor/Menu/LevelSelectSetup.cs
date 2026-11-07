@@ -8,12 +8,79 @@ public static class LevelSelectSetup
 {
     private const string ScenePath = "Assets/Scenes/LevelSelect.unity";
     private static readonly Vector2 ReferenceSize = new Vector2(1672, 941);
-    private static readonly string[] Names =
+    private static readonly string[] Names = PlanetPageSetup.Names;
+    private static readonly float[] PlanetHeights = { 8, 60, 40, -20, -12, 28, 0 };
+    private static readonly int[] ArtworkIndices = { 0, 1, 3, 4, 2, 7, 8 };
+
+    [MenuItem("Tools/Level Select/Update Seven Planet Destinations")]
+    public static void UpdatePlanetRoster()
     {
-        "Union Prime", "Capen Major", "C3", "Davis Nova", "Silverman Luna",
-        "Ellicott Prime", "Lockwood Terra", "Commons Minor", "Baird's Reach"
-    };
-    private static readonly float[] PlanetHeights = { 8, 60, -12, 40, -20, 52, -8, 28, 0 };
+        if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        var scene = EditorSceneManager.OpenScene(ScenePath);
+        var page = Object.FindAnyObjectByType<MenuPageController>();
+        if (page.destinationLabels.Length == 9)
+        {
+            var old = new Transform[9];
+            for (int i = 0; i < old.Length; i++) old[i] = page.transform.Find("Destination" + i);
+            Object.DestroyImmediate(old[5].gameObject);
+            Object.DestroyImmediate(old[6].gameObject);
+            for (int i = 0; i < Names.Length; i++) old[ArtworkIndices[i]].name = "Destination" + i;
+        }
+        // Replace data before refreshing the reordered selection.
+        ConfigureDestinations(page);
+        SetUpPlanetSelection(page);
+        for (int i = 0; i < Names.Length; i++)
+            page.transform.Find("Destination" + i + "/Number").GetComponent<Text>().text = i == 0 ? "TUTORIAL" : "LEVEL " + i;
+        page.transform.Find("LevelsSubtitle").GetComponent<Text>().text = "Seven destinations. One campus to defend.";
+        ApplyPageSpacing(page);
+        ConfigureNavigation(page);
+        EditorSceneManager.SaveScene(scene);
+        AssetDatabase.SaveAssets();
+    }
+
+    private static void ConfigureDestinations(MenuPageController page)
+    {
+        var details = page.destinationDetails;
+        details.destinations = new LevelSelectDetails.Destination[Names.Length];
+        for (int i = 0; i < Names.Length; i++)
+        {
+            var planet = AssetDatabase.LoadAssetAtPath<PlanetPresentation>(PlanetPageSetup.Folder + PlanetPageSetup.SceneNames[i] + ".asset");
+            if (planet == null) throw new System.InvalidOperationException("Create the planet presentation assets first via Tools/Planet Pages.");
+            details.destinations[i] = new LevelSelectDetails.Destination
+            {
+                planet = planet,
+                landmarkAndLevel = planet.landmark + " / " + planet.LevelLabel,
+                description = planet.description,
+                bossName = planet.bossName
+            };
+        }
+        details.bossName.rectTransform.sizeDelta = new Vector2(280, 60);
+        details.bossName.fontSize = 22;
+        var availability = details.transform.Find("PlayAvailability").GetComponent<Text>();
+        availability.text = "Explore defenses";
+        var play = details.playButton;
+        while (play.onClick.GetPersistentEventCount() > 0) UnityEventTools.RemovePersistentListener(play.onClick, 0);
+        UnityEventTools.AddPersistentListener(play.onClick, page.LaunchSelectedPlanet);
+        if (play.GetComponent<MenuButtonFeedback>() == null) AddFeedback(play);
+    }
+
+    private static void ConfigureNavigation(MenuPageController page)
+    {
+        var buttons = new Button[Names.Length + 2];
+        for (int i = 0; i < Names.Length; i++) buttons[i] = page.transform.Find("Destination" + i).GetComponent<Button>();
+        buttons[Names.Length] = page.destinationDetails.playButton;
+        buttons[Names.Length + 1] = page.transform.Find("BackButton").GetComponent<Button>();
+        for (int i = 0; i < buttons.Length; i++)
+            buttons[i].navigation = new Navigation
+            {
+                mode = Navigation.Mode.Explicit,
+                selectOnLeft = buttons[(i + buttons.Length - 1) % buttons.Length],
+                selectOnRight = buttons[(i + 1) % buttons.Length],
+                selectOnUp = i >= Names.Length ? buttons[0] : buttons[(i + buttons.Length - 1) % buttons.Length],
+                selectOnDown = i >= Names.Length ? buttons[0] : buttons[Names.Length]
+            };
+        page.firstButton = buttons[0];
+    }
 
     [MenuItem("Tools/Level Select/Align Sun and Orbits")]
     public static void AlignSunAndOrbits()
@@ -61,7 +128,7 @@ public static class LevelSelectSetup
         controls.Find("LevelsSubtitle").GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 292);
         for (int i = 0; i < Names.Length; i++)
             controls.Find("Destination" + i).GetComponent<RectTransform>().anchoredPosition =
-                new Vector2(-600 + i * 164, PlanetHeights[i] + 96);
+                new Vector2(-570 + i * 210, PlanetHeights[i] + 96);
 
         var panel = page.destinationDetails.GetComponent<RectTransform>();
         panel.anchoredPosition = new Vector2(0, -216);
@@ -88,6 +155,7 @@ public static class LevelSelectSetup
         if (page.destinationDetails != null) return;
         LevelSelectArt.GenerateDetailsArt();
         SetUpDetailsPanel(page);
+        ConfigureNavigation(page);
         EditorSceneManager.SaveScene(scene);
         AssetDatabase.SaveAssets();
         Debug.Log("LEVEL_SELECT_DETAILS_OK");
@@ -106,14 +174,14 @@ public static class LevelSelectSetup
         name.rectTransform.anchoredPosition = new Vector2(-340, 76);
         name.rectTransform.sizeDelta = new Vector2(748, 48);
         name.alignment = TextAnchor.MiddleLeft;
-        details.landmarkAndLevel = Text("LandmarkAndLevel", panel.transform, "", new Vector2(-340, 32), new Vector2(748, 32), 20, LevelSelectArt.Blue);
+        details.landmarkAndLevel = Text("LandmarkAndLevel", panel.transform, "", new Vector2(-340, 32), new Vector2(748, 32), 22, LevelSelectArt.Blue);
         details.landmarkAndLevel.alignment = TextAnchor.MiddleLeft;
-        details.description = Text("Description", panel.transform, "", new Vector2(-340, -38), new Vector2(748, 88), 24, LevelSelectArt.Cream);
+        details.description = Text("Description", panel.transform, "", new Vector2(-340, -38), new Vector2(748, 88), 26, LevelSelectArt.Cream);
         details.description.alignment = TextAnchor.UpperLeft;
 
         var divider = Image("Divider", panel.transform, null, new Vector2(88, 0), new Vector2(4, 168));
         divider.color = new Color32(42, 61, 86, 255);
-        Text("BossCaption", panel.transform, "BOSS", new Vector2(240, 78), new Vector2(200, 28), 18, LevelSelectArt.Blue);
+        Text("BossCaption", panel.transform, "BOSS", new Vector2(240, 78), new Vector2(200, 28), 20, LevelSelectArt.Blue);
         details.bossPreview = Image("BossPreview", panel.transform, "UnknownBoss", new Vector2(240, 0), new Vector2(96, 96));
         details.bossPreview.preserveAspect = true;
         details.unknownBoss = details.bossPreview.sprite;
@@ -132,29 +200,9 @@ public static class LevelSelectSetup
         details.playButton.colors = colors;
         details.playButton.navigation = new Navigation { mode = Navigation.Mode.None };
         details.playButton.interactable = false;
-        Text("PlayAvailability", panel.transform, "Coming soon", new Vector2(560, -54), new Vector2(264, 40), 20, LevelSelectArt.Blue);
+        Text("PlayAvailability", panel.transform, "Coming soon", new Vector2(560, -54), new Vector2(264, 40), 22, LevelSelectArt.Blue);
 
-        string[] landmarks = { "Student Union", "Capen", "C3", "Davis", "Silverman", "Ellicott", "Lockwood", "Commons", "Baird Point" };
-        // Draft flavor only: no difficulty, enemy, or resource promises.
-        string[] descriptions =
-        {
-            "Every campus voyage begins somewhere. Find your bearings at the heart of this little star system.",
-            "A familiar campus landmark, reimagined on a grander orbit. Welcome to Capen among the stars.",
-            "A short name with a cosmic address. C3 brings a familiar corner of campus into the constellation.",
-            "A new light in a familiar sky. Davis takes its place among the worlds of the campus constellation.",
-            "Silver light falls across a quiet world. This is Silverman, a little farther from home.",
-            "A grand world with a familiar name. Ellicott stretches across the horizon of the campus sky.",
-            "A small world with room for big ideas. Lockwood finds a new home beneath unfamiliar stars.",
-            "A little meeting place in a very big universe. Familiar paths converge on Commons Minor.",
-            "The campus horizon opens into deep space. Baird's Reach looks out toward the stars beyond."
-        };
-        details.destinations = new LevelSelectDetails.Destination[Names.Length];
-        for (int i = 0; i < Names.Length; i++)
-            details.destinations[i] = new LevelSelectDetails.Destination
-            {
-                landmarkAndLevel = landmarks[i] + (i == 0 ? " / Tutorial" : " / Level " + i),
-                description = descriptions[i]
-            };
+        ConfigureDestinations(page);
 
         var back = page.transform.Find("BackButton").GetComponent<RectTransform>();
         back.anchoredPosition = new Vector2(-648, -432);
@@ -188,7 +236,7 @@ public static class LevelSelectSetup
             label.text = Names[i];
             UnityEventTools.RegisterStringPersistentListener(button.onClick, 0, page.SelectDestination, Names[i]);
             var existingHalo = button.transform.Find("SelectionHalo");
-            bool large = i == 1 || i == 5;
+            bool large = i == 1;
             int diameter = large ? 124 : 112;
             var halo = existingHalo != null ? existingHalo.GetComponent<Image>() :
                 Image("SelectionHalo", button.transform, large ? "SelectionHaloLarge" : "SelectionHalo",
@@ -233,22 +281,22 @@ public static class LevelSelectSetup
         page.confirmSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/Menu/confirmation_001.ogg");
         page.backSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/Menu/back_001.ogg");
 
-        Text("Eyebrow", controls, "CAMPUS CONSTELLATION", new Vector2(0, 352), new Vector2(900, 36), 22, LevelSelectArt.Blue);
+        Text("Eyebrow", controls, "CAMPUS CONSTELLATION", new Vector2(0, 352), new Vector2(900, 36), 24, LevelSelectArt.Blue);
         Text("LevelsTitle", controls, "CHOOSE YOUR PLANET", new Vector2(0, 288), new Vector2(1200, 92), 64, LevelSelectArt.Cream);
-        Text("LevelsSubtitle", controls, "Nine destinations. One campus to defend.", new Vector2(0, 220), new Vector2(1000, 44), 26, LevelSelectArt.Blue);
+        Text("LevelsSubtitle", controls, "Seven destinations. One campus to defend.", new Vector2(0, 220), new Vector2(1000, 44), 28, LevelSelectArt.Blue);
 
-        var buttons = new Button[10];
+        var buttons = new Button[Names.Length + 1];
         for (int i = 0; i < Names.Length; i++)
         {
-            var hit = Image("Destination" + i, controls, null, new Vector2(-600 + i * 164, PlanetHeights[i]), new Vector2(152, 196));
+            var hit = Image("Destination" + i, controls, null, new Vector2(-570 + i * 210, PlanetHeights[i]), new Vector2(152, 196));
             hit.color = Color.clear;
             hit.raycastTarget = true;
-            int diameter = i == 1 || i == 5 ? 92 : 80;
-            Image("Planet", hit.transform, "Planet" + i, new Vector2(0, 24), new Vector2(diameter, diameter));
+            int diameter = i == 1 ? 92 : 80;
+            Image("Planet", hit.transform, "Planet" + ArtworkIndices[i], new Vector2(0, 24), new Vector2(diameter, diameter));
             var focus = Image("Focus", hit.transform, "Focus", new Vector2(0, 24), new Vector2(120, 120));
-            Text("Name", hit.transform, Names[i], new Vector2(0, -58), new Vector2(156, 58), 24, LevelSelectArt.Cream);
+            Text("Name", hit.transform, Names[i], new Vector2(0, -58), new Vector2(184, 30), 24, LevelSelectArt.Cream);
             Text("Number", hit.transform, i == 0 ? "TUTORIAL" : "LEVEL " + i,
-                new Vector2(0, -100), new Vector2(152, 30), 18, LevelSelectArt.Blue);
+                new Vector2(0, -88), new Vector2(152, 30), 20, LevelSelectArt.Blue);
             var button = hit.gameObject.AddComponent<Button>();
             button.targetGraphic = focus;
             var colors = button.colors;
@@ -279,7 +327,7 @@ public static class LevelSelectSetup
         back.colors = backColors;
         AddFeedback(back);
         UnityEventTools.AddPersistentListener(back.onClick, page.OpenMainPage);
-        buttons[9] = back;
+        buttons[Names.Length] = back;
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].navigation = new Navigation
@@ -287,13 +335,14 @@ public static class LevelSelectSetup
                 mode = Navigation.Mode.Explicit,
                 selectOnLeft = buttons[(i + buttons.Length - 1) % buttons.Length],
                 selectOnRight = buttons[(i + 1) % buttons.Length],
-                selectOnUp = i == 9 ? buttons[0] : buttons[(i + buttons.Length - 1) % buttons.Length],
-                selectOnDown = i == 9 ? buttons[0] : back
+                selectOnUp = i == Names.Length ? buttons[0] : buttons[(i + buttons.Length - 1) % buttons.Length],
+                selectOnDown = i == Names.Length ? buttons[0] : back
             };
         }
         page.firstButton = buttons[0];
         SetUpPlanetSelection(page);
         SetUpDetailsPanel(page);
+        ConfigureNavigation(page);
         EditorSceneManager.SaveScene(scene);
         AssetDatabase.SaveAssets();
         Debug.Log("LEVEL_SELECT_SETUP_OK");
@@ -316,7 +365,7 @@ public static class LevelSelectSetup
     private static Text Text(string name, Transform parent, string value, Vector2 position, Vector2 size, int fontSize, Color color)
     {
         var text = Rect(name, parent, position, size).gameObject.AddComponent<Text>();
-        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelifySans.ttf");
+        text.font = AssetDatabase.LoadAssetAtPath<Font>("Assets/UI/Fonts/PixelOperator-Bold.ttf");
         text.text = value;
         text.fontSize = fontSize;
         text.alignment = TextAnchor.MiddleCenter;
