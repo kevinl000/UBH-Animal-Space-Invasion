@@ -61,20 +61,6 @@ public static class MainMenuSetup
             rect = new Rect(1450, 47, 188, 296),
             alignment = SpriteAlignment.Center, pivot = new Vector2(0.5f, 0.5f)
         });
-        var waveRects = new SpriteRect[4];
-        string[] ids = { "330dc970db3e40f3a45f05c7ba6dce55", "498667b66c9a4534af176bd82349410c",
-            "e03a6083a8424c58a5c9252ff0094094", "50dd36b4daf74130b1c97eb9a290cffa" };
-        for (int i = 0; i < waveRects.Length; i++)
-        {
-            waveRects[i] = new SpriteRect
-            {
-                name = "VictorWave" + i, spriteID = new GUID(ids[i]),
-                rect = new Rect(i % 2 * 627, (1 - i / 2) * 627, 627, 627),
-                alignment = SpriteAlignment.Custom,
-                pivot = new Vector2(0.87f, 0.32f)
-            };
-        }
-        ImportSprite(ArtFolder + "MainPage-victor-wave.png", Vector4.zero, waveRects);
         ImportSprite("Assets/UI/Kenney/PanelGold.png", new Vector4(4, 4, 4, 4));
     }
 
