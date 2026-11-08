@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tesla Coil electrician rabbit — aiming review</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 28px 16px; background: #111722; color: #ece6d6; font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 720px; margin: auto; }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  p { color: #b9c3cf; margin: 0 0 16px; }
+  .viewport { width: 100%; aspect-ratio: 620 / 520; overflow: hidden; border: 1px solid #465164; border-radius: 12px; background: #263142; }
+  #scene { position: relative; width: 620px; height: 520px; transform-origin: top left; }
+  .origin { position: absolute; left: 190px; top: 470px; }
+  .sprite { position: absolute; image-rendering: pixelated; user-select: none; pointer-events: none; }
+  #pivot { position: absolute; transform-origin: 0 0; }
+  .marker { display: none; position: absolute; width: 8px; height: 8px; margin: -4px; border: 2px solid #36dfe4; border-radius: 50%; pointer-events: none; }
+  .show-markers .marker { display: block; }
+  #ray { display: none; position: absolute; width: 1px; height: 140px; background: #36dfe499; transform: translateY(-140px); }
+  .show-markers #ray { display: block; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; }
+  input[type=range] { width: min(100%, 340px); accent-color: #36dfe4; }
+  button { background: #39455b; color: #fff0d5; border: 1px solid #6d7d96; border-radius: 6px; padding: 7px 13px; cursor: pointer; font: inherit; }
+  button:hover { background: #4c5c76; }
+  output { min-width: 56px; font-variant-numeric: tabular-nums; }
+  label { cursor: pointer; }
+  small { display: block; color: #a8b4c6; margin-top: 18px; }
+</style>
+<main>
+  <h1>Tesla Coil electrician rabbit</h1>
+  <p>The rabbit and base stay fixed. Only the coil emitter and its emission tip turn through the 120° aiming arc.</p>
+  <div class="viewport"><div id="scene"><div class="origin">
+    <img id="base" class="sprite" src="base-source-v1.png" alt="Stationary electrician rabbit with copper/cyan goggles, teal jacket and support-mounted screen">
+    <div id="pivot"><img id="cannon" class="sprite" src="emitter-source-v1.png" alt="Rotating copper Tesla coil emitter with cyan electrode"><span class="marker"></span><span id="muzzle" class="marker"></span><span id="ray"></span></div>
+  </div></div></div>
+  <div class="controls"><label for="angle">Aim</label><input id="angle" type="range" min="-60" max="60" step="0.5" value="0"><output id="degrees" for="angle">0°</output><button id="play" type="button">Play sweep</button></div>
+  <div class="controls"><button type="button" data-angle="-60">−60°</button><button type="button" data-angle="0">Neutral</button><button type="button" data-angle="60">+60°</button><label><input id="markers" type="checkbox"> Show pivot and emission line</label></div>
+  <p style="margin-top:18px">Attack intent: a localized electric burst damages every enemy in its affected area. The 120° arc is the aiming sweep; burst radius, discharge effects and firing are not implemented here.</p>
+  <small>Local art review using the exact source sprites and Unity assembly coordinates. The sweep is a preview, not gameplay targeting. Planet seating, adjacent towers, projectile width and final camera scale need the team's Unity review.</small>
+</main>
+<script>
+const base = { width:1254, height:1254, ppu:1500, mount:[582,1204], socket:[1091.5,478] };
+const cannon = { width:1254, height:1254, ppu:2200, hinge:[626.5,1064], muzzle:[626.5,88] };
+const density = 370;
+const baseImage = document.querySelector('#base');
+const gunImage = document.querySelector('#cannon');
+const pivot = document.querySelector('#pivot');
+const scene = document.querySelector('#scene');
+const slider = document.querySelector('#angle');
+const play = document.querySelector('#play');
+let playing = false;
+let startTime = 0;
+function placeImage(image, info, anchor) {
+  image.style.width = info.width / info.ppu * density + 'px';
+  image.style.height = info.height / info.ppu * density + 'px';
+  image.style.left = -anchor[0] / info.ppu * density + 'px';
+  image.style.top = -anchor[1] / info.ppu * density + 'px';
+}
+placeImage(baseImage, base, base.mount);
+placeImage(gunImage, cannon, cannon.hinge);
+pivot.style.left = (base.socket[0] - base.mount[0]) / base.ppu * density + 'px';
+pivot.style.top = (base.socket[1] - base.mount[1]) / base.ppu * density + 'px';
+for (const marker of [document.querySelector('#muzzle'), document.querySelector('#ray')]) {
+  marker.style.left = (cannon.muzzle[0] - cannon.hinge[0]) / cannon.ppu * density + 'px';
+  marker.style.top = (cannon.muzzle[1] - cannon.hinge[1]) / cannon.ppu * density + 'px';
+}
+function setAngle(value) {
+  const angle = Math.max(-60, Math.min(60, Number(value)));
+  pivot.style.transform = `rotate(${-angle}deg)`;
+  slider.value = angle;
+  document.querySelector('#degrees').value = `${angle.toFixed(1)}°`;
+}
+function stop() { playing = false; play.textContent = 'Play sweep'; }
+slider.addEventListener('input', () => { stop(); setAngle(slider.value); });
+document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => { stop(); setAngle(button.dataset.angle); }));
+document.querySelector('#markers').addEventListener('change', event => scene.classList.toggle('show-markers', event.target.checked));
+play.addEventListener('click', () => {
+  if (playing) { stop(); return; }
+  playing = true; startTime = performance.now(); play.textContent = 'Pause sweep'; requestAnimationFrame(animate);
+});
+function animate(time) {
+  if (!playing) return;
+  setAngle(60 * Math.sin((time - startTime) / 1500));
+  requestAnimationFrame(animate);
+}
+new ResizeObserver(entries => { scene.style.transform = `scale(${entries[0].contentRect.width / 620})`; }).observe(document.querySelector('.viewport'));
+setAngle(new URLSearchParams(location.search).get('angle') ?? 0);
+</script>
+</html>

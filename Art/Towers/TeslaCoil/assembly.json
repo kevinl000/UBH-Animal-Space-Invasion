@@ -1,0 +1,93 @@
+{
+  "base": {
+    "source": "base-source-v1.png",
+    "runtime": "Assets/Art/Towers/TeslaCoil/TeslaCoilBase.png",
+    "pixels_per_unit": 1500,
+    "ground_mount_top_left_pixels": [
+      582,
+      1204
+    ],
+    "socket_top_left_pixels": [
+      1091.5,
+      478
+    ],
+    "operator_screen_bounds_top_left_pixels": [
+      745,
+      555,
+      955,
+      780
+    ],
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "d0c1eb3dee7f58bd8e914451a58a8f27d4c4bf2dc8307700fd75c0bd76749a19",
+    "guid": "6d366f4454c448f3ae266b3013afaf97"
+  },
+  "weapon": {
+    "source": "emitter-source-v1.png",
+    "runtime": "Assets/Art/Towers/TeslaCoil/TeslaCoilEmitter.png",
+    "pixels_per_unit": 2200,
+    "hinge_top_left_pixels": [
+      626.5,
+      1064
+    ],
+    "muzzle_top_left_pixels": [
+      626.5,
+      88
+    ],
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "499f66f1192c7c869b2463a5397853fab89b9cb4a89b7b7de6f9d048625e1ada",
+    "guid": "8db024c6c96f48208e490169c0e00ab2"
+  },
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "joint_exclusion_radius_world_units": 0.12,
+  "generation_mode": "built-in image_gen; reference-guided new v1 base and emitter; selected PNG bytes preserved in runtime",
+  "attack_intent": {
+    "aim_sweep_degrees_total": 120,
+    "damage": 2,
+    "behavior": "Localized electric burst damages every eligible enemy inside its affected area; not the entire aiming sector and not a capped chain.",
+    "radius": null,
+    "gameplay_implemented_by_these_assets": false,
+    "effect_art_included": false
+  },
+  "cannon_local_position": [
+    0.3396666666666667,
+    0.484
+  ],
+  "muzzle_local_position": [
+    0.0,
+    0.44363636363636366
+  ],
+  "prefab": "Assets/Prefabs/Towers/TeslaCoilTowerVisual.prefab",
+  "prefab_guid": "754bbb7679ee4e418ec18ad1d51b3639",
+  "verification": {
+    "angles": 241,
+    "angle_step_degrees": 0.5,
+    "weapon_sample_stride_source_pixels": 4,
+    "alpha_threshold": 128,
+    "joint_exclusion_radius_world_units": 0.12,
+    "max_protected_overlap_samples": 0,
+    "min_joint_contact_samples": 5611,
+    "max_muzzle_ray_base_samples": 0,
+    "ray_length_world_units": 2,
+    "limitations": [
+      "Sampled raster geometry, not a continuous collision proof.",
+      "Only the joint and upper support are excluded; the operator screen is always protected.",
+      "A clear centerline does not establish arbitrary projectile-width clearance.",
+      "Planet seating, neighbors and final camera readability remain unverified.",
+      "No Unity validation or tests run."
+    ],
+    "native_prefab_and_import_references": "passed",
+    "new_asset_guid_uniqueness": "passed",
+    "preview_local_image_references": "passed",
+    "preview_javascript_syntax": "passed node --check; browser rendering not exercised"
+  }
+}
