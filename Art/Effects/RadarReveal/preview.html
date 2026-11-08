@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar scan and reveal</title>
+<style>
+body{margin:0;background:#111725;color:#e7efe9;font:16px system-ui}main{max-width:960px;margin:24px auto;padding:0 16px}
+h1{font-size:25px}p{color:#bdccd4;line-height:1.5}canvas{display:block;width:100%;height:auto;background:#182034;image-rendering:pixelated;border:1px solid #344756;border-radius:10px}
+button{background:#214b4a;color:#d9fff1;border:1px solid #428f82;padding:10px 16px;border-radius:6px;margin:10px 8px 10px 0;cursor:pointer}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}input{accent-color:#57cfac}small{color:#9eb3bf}a{color:#a7ead5}#error{color:#f8bc9f}
+</style>
+<main>
+<h1>Radar scan and reveal</h1>
+<p>A brief mint scan arc leaves the fixed dish. A four-corner marker flashes on a newly revealed enemy, then clears while the enemy stays visible.</p>
+<canvas id="view" width="960" height="680" aria-label="Interactive Radar scan and permanent reveal demonstration"></canvas>
+<div class="controls"><button id="scan">Scan now</button><button id="reset">Reset demo stealth</button><label><input type="checkbox" id="repeat"> Repeat scans</label></div>
+<div class="controls"><label for="interval">Preview interval</label><input id="interval" type="range" min="1" max="5" step="0.25" value="2.5"><output id="intervalValue">2.5 s</output></div>
+<p><small>The interval control is for this preview only; gameplay timing is still undecided. Once revealed, the enemy stays visible until you reset the demo. Later scans show only the dish pulse.</small></p>
+<p><a href="../../Towers/Radar/preview.html">Tower idle preview</a> · <a href="README.md">Setup notes</a> · <a href="effect-review.png">Frame review</a></p>
+<p id="error" role="status"></p>
+</main>
+<script>
+const tower=new Image(),consoleSheet=new Image(),effects=new Image(),enemy=new Image();
+tower.src='../../Towers/Radar/tower-source-v1.png';consoleSheet.src='../../Towers/Radar/status-sheet-source-v1.png';
+effects.src='radar-reveal-sheet-source-v1.png';enemy.src='../../Enemies/BasicGoose1/basic-goose-1-source-v1.png';
+const images=[tower,consoleSheet,effects,enemy],ctx=document.querySelector('#view').getContext('2d');
+const repeat=document.querySelector('#repeat'),interval=document.querySelector('#interval');
+const scanAnchors=[[223.5,404.5],[206.5,417.5],[200,430]],markerAnchors=[[218,209.5],[209,209],[201.5,209.5]];
+const screenCenters=[220,209.5,198],scale=360,ppu=700;
+let pulseAt=-Infinity,markerAt=-Infinity,revealed=false,lastScan=-Infinity;
+function scan(now){pulseAt=now;lastScan=now;if(!revealed){revealed=true;markerAt=now;}}
+document.querySelector('#scan').onclick=()=>scan(performance.now());
+document.querySelector('#reset').onclick=()=>{revealed=false;pulseAt=markerAt=-Infinity;lastScan=performance.now();};
+repeat.onchange=()=>{lastScan=performance.now();};
+interval.oninput=()=>{document.querySelector('#intervalValue').textContent=`${Number(interval.value)} s`;};
+for(const img of images)img.onerror=()=>{document.querySelector('#error').textContent='A source image could not load. Keep this page in Art/Effects/RadarReveal beside its source sheet.';};
+function effect(row,index,anchor,x,y,multiplier=1){
+  const h=row===0?500:418,r=scale/ppu*multiplier;
+  ctx.drawImage(effects,index*418,row*418,418,h,x-anchor[0]*r,y-anchor[1]*r,418*r,h*r);
+}
+function draw(now){
+  if(images.every(img=>img.complete&&img.naturalWidth)){
+    if(repeat.checked&&now-lastScan>=Number(interval.value)*1000)scan(now);
+    ctx.clearRect(0,0,960,680);ctx.imageSmoothingEnabled=false;
+    const towerRatio=scale/1400,tx=500-878*towerRatio,ty=360-154*towerRatio;
+    ctx.drawImage(tower,tx,ty,1254*towerRatio,1254*towerRatio);
+    const s=[0,1,2,1,0][[300,500,700,900,1200].findIndex(limit=>now%1200<limit)],cr=scale/2300;
+    ctx.drawImage(consoleSheet,s*418,0,418,418,tx+638*towerRatio-screenCenters[s]*cr,ty+746*towerRatio-297*cr,418*cr,418*cr);
+    ctx.globalAlpha=revealed?1:0.12;
+    const er=scale/2500;ctx.drawImage(enemy,500-626*er,115-652.5*er,1254*er,1254*er);ctx.globalAlpha=1;
+    const scanAge=now-pulseAt,markerAge=now-markerAt;
+    if(scanAge>=0&&scanAge<360){const i=Math.floor(scanAge/120);effect(0,i,scanAnchors[i],500,360);}
+    if(markerAge>=0&&markerAge<240){const i=Math.floor(markerAge/80);effect(1,i,markerAnchors[i],500,115,1.75);}
+    ctx.font='17px system-ui';ctx.fillStyle='#a7ead5';ctx.fillText(revealed?'Revealed: stays visible':'Demo stealth: faint guide',675,115);
+    ctx.fillStyle='#bdccd4';ctx.font='15px system-ui';ctx.fillText('Fixed dish',690,386);ctx.fillText('90° outward pulse',690,410);ctx.fillText('Scan: 0.36 s · marker: 0.24 s',45,645);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</html>

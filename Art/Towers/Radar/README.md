@@ -2,6 +2,8 @@
 
 Approved direction (2026-11-08): a fixed upward-facing dish with a cream rabbit in a teal communications vest and headset. A separate console indicator pulses; the dish, mast, rabbit and foundation remain stationary. No coverage-sector overlay is included.
 
+The separate [scan/reveal effects](../../Effects/RadarReveal/README.md) now supply a one-shot 90-degree mint arc and a brief marker for newly revealed enemies. Open their [interactive preview](../../Effects/RadarReveal/preview.html) to review both effects and experiment with a preview-only interval. Enemies stay revealed; the gameplay interval and hookup remain undecided/unimplemented.
+
 Open [preview.html](preview.html) locally to play/pause the console loop or select a frame. [idle-preview.gif](idle-preview.gif) is the assembled animation; [console-review.png](console-review.png) compares its three states. The preview also shows the full canvas at 96 pixels for a rough readability review. Actual camera scale remains unverified.
 
 ## Unity assets
@@ -49,6 +51,6 @@ Built-in `image_gen` generated both sources with real alpha transparency. [tower
 
 From the repository root, run `python Art/Towers/Radar/verify_assets.py` with Pillow installed for inexpensive offline checks and to rebuild the assembled PNG/GIF previews. It checks source/runtime hashes, alpha, slice gutters/pivots, all three indicators' containment within the screen, native clip sequence/loop settings, absence of Transform keys/events/gameplay components, prefab internal references, imports, sprite file IDs and new GUID uniqueness. The previews use source crops, rigid placement and nearest-neighbor scaling; they do not modify source or runtime artwork. Browser JavaScript syntax was also checked offline. No Unity launch or Unity tests were performed.
 
-Current `RadarTower.Fire()` checks distance against `data.fov` and does not enforce an angular sector. `BaseTowerData.Tick()` also skips `Fire()` when attack type is `None`; this matters when configuring a non-damaging detector. Those scripts and all gameplay data remain unchanged. Future gameplay hookup must implement the intended angular/distance rules and drive actual reveals; the visual animation itself reveals no enemies. Gamma Radar, coverage overlays, enemy reveal effects and gameplay launch wiring are separate work.
+Current `RadarTower.Fire()` checks distance against `data.fov` and does not enforce an angular sector. `BaseTowerData.Tick()` also skips `Fire()` when attack type is `None`; this matters when configuring a non-damaging detector. Those scripts and all gameplay data remain unchanged. Future gameplay hookup must implement the intended angular/distance rules and drive actual reveals; the visual animation itself reveals no enemies. The separate scan/reveal effect assets are now prepared; interval scheduling, Gamma Radar, coverage overlays and gameplay launch wiring remain separate work.
 
 Manual review for the team: open the visual prefab in Unity 6000.6.7f1, confirm Sprite imports/materials and the console loop, then inspect camera readability, terrain seating/occlusion and neighboring tower clearance at the intended planet scale. Confirm the dish stays fixed and the entire assembly follows the parent planet. After separately scoped gameplay hookup, verify the 90-degree sector and disabled-state behavior.

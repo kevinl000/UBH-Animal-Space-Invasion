@@ -1,0 +1,244 @@
+{
+  "source": "radar-reveal-sheet-source-v1.png",
+  "runtime": "Assets/Art/Effects/RadarReveal/RadarRevealSheet.png",
+  "sha256": "3569f130d0e53b5970e764f25cba46d316b332d32f9f47a0949151c459b8ef97",
+  "size": [
+    1254,
+    1254
+  ],
+  "guid": "5b0b5b68bb6949208a1acb0d3fe16c69",
+  "pixels_per_unit": 700,
+  "bounds_alpha_threshold": 16,
+  "frames": [
+    {
+      "name": "RadarScan01",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        754,
+        418,
+        500
+      ],
+      "pivot": [
+        0.534688995215311,
+        0.19099999999999995
+      ],
+      "anchor_top_left_pixels": [
+        223.5,
+        404.5
+      ],
+      "visible_bounds_in_slice": [
+        131,
+        250,
+        316,
+        312
+      ],
+      "kind": "scan"
+    },
+    {
+      "name": "RadarScan02",
+      "file_id": 21300002,
+      "rect": [
+        418,
+        754,
+        418,
+        500
+      ],
+      "pivot": [
+        0.49401913875598086,
+        0.16500000000000004
+      ],
+      "anchor_top_left_pixels": [
+        206.5,
+        417.5
+      ],
+      "visible_bounds_in_slice": [
+        60,
+        179,
+        353,
+        271
+      ],
+      "kind": "scan"
+    },
+    {
+      "name": "RadarScan03",
+      "file_id": 21300004,
+      "rect": [
+        836,
+        754,
+        418,
+        500
+      ],
+      "pivot": [
+        0.4784688995215311,
+        0.14
+      ],
+      "anchor_top_left_pixels": [
+        200.0,
+        430.0
+      ],
+      "visible_bounds_in_slice": [
+        9,
+        118,
+        391,
+        239
+      ],
+      "kind": "scan"
+    },
+    {
+      "name": "RadarReveal01",
+      "file_id": 21300006,
+      "rect": [
+        0,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5215311004784688,
+        0.49880382775119614
+      ],
+      "anchor_top_left_pixels": [
+        218.0,
+        209.5
+      ],
+      "visible_bounds_in_slice": [
+        76,
+        115,
+        360,
+        304
+      ],
+      "kind": "marker"
+    },
+    {
+      "name": "RadarReveal02",
+      "file_id": 21300008,
+      "rect": [
+        418,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "anchor_top_left_pixels": [
+        209.0,
+        209.0
+      ],
+      "visible_bounds_in_slice": [
+        59,
+        109,
+        359,
+        309
+      ],
+      "kind": "marker"
+    },
+    {
+      "name": "RadarReveal03",
+      "file_id": 21300010,
+      "rect": [
+        836,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4820574162679426,
+        0.49880382775119614
+      ],
+      "anchor_top_left_pixels": [
+        201.5,
+        209.5
+      ],
+      "visible_bounds_in_slice": [
+        60,
+        116,
+        343,
+        303
+      ],
+      "kind": "marker"
+    }
+  ],
+  "effects": {
+    "RadarScanPulse": {
+      "frame_indices": [
+        0,
+        1,
+        2
+      ],
+      "key_times_seconds": [
+        0,
+        0.12,
+        0.24,
+        0.36
+      ],
+      "duration_seconds": 0.36,
+      "loop": false,
+      "prefab_scale": 1,
+      "clip": {
+        "path": "Assets/Animations/Effects/RadarReveal/RadarScanPulse.anim",
+        "guid": "8abb2c777af44dae9d22ca77c3152198"
+      },
+      "controller": {
+        "path": "Assets/Animations/Effects/RadarReveal/RadarScanPulse.controller",
+        "guid": "51fb667eeabd48009a0e1076bb3e58b9"
+      },
+      "prefab": {
+        "path": "Assets/Prefabs/Effects/RadarScanPulseVisual.prefab",
+        "guid": "19caa74f9f6341d3a845d4f266818922"
+      }
+    },
+    "RadarRevealMarker": {
+      "frame_indices": [
+        3,
+        4,
+        5
+      ],
+      "key_times_seconds": [
+        0,
+        0.08,
+        0.16,
+        0.24
+      ],
+      "duration_seconds": 0.24,
+      "loop": false,
+      "prefab_scale": 1.75,
+      "clip": {
+        "path": "Assets/Animations/Effects/RadarReveal/RadarRevealMarker.anim",
+        "guid": "708fcf85e25744f5a6628973c6c0bed8"
+      },
+      "controller": {
+        "path": "Assets/Animations/Effects/RadarReveal/RadarRevealMarker.controller",
+        "guid": "57682f69a8134946b4b3c79a189e863d"
+      },
+      "prefab": {
+        "path": "Assets/Prefabs/Effects/RadarRevealMarkerVisual.prefab",
+        "guid": "b2ce8d4c0252425180b3580b941920d0"
+      }
+    }
+  },
+  "scan_axis": "+Y",
+  "intended_sector_degrees": 90,
+  "scan_interval_seconds": null,
+  "reveal_behavior": "Permanent; only the marker fades",
+  "emission": {
+    "tower_source": "Art/Towers/Radar/tower-source-v1.png",
+    "tower_ground_mount": [
+      611,
+      1171
+    ],
+    "tower_pixels_per_unit": 1400,
+    "receiver_tip_top_left_pixels": [
+      878,
+      154
+    ],
+    "local_position": [
+      0.19071428571428573,
+      0.7264285714285714,
+      0
+    ]
+  },
+  "gameplay_implemented": false
+}
