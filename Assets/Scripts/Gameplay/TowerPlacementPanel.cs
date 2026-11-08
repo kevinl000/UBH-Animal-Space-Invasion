@@ -63,7 +63,7 @@ internal sealed class TowerPlacementPanel
         Hide();
     }
 
-    public void Refresh(TowerData tower)
+    public void Refresh(TowerData tower, int worldSlot = -1, bool worldMoon = false)
     {
         if (tower == null) { Hide(); return; }
         if (selected != tower)
@@ -75,13 +75,15 @@ internal sealed class TowerPlacementPanel
         panel.gameObject.SetActive(true);
         for (int i = 0; i < planetButtons.Length; i++) planetButtons[i].interactable = defense.TowerIn(i) == null;
         for (int i = 0; i < moonButtons.Length; i++) moonButtons[i].interactable = moon.TowerIn(i) == null;
-        if (hoveredSlot < 0) { preview.Hide(); return; }
-        bool occupied = hoveredMoon ? moon.TowerIn(hoveredSlot) != null : defense.TowerIn(hoveredSlot) != null;
+        int slot = worldSlot >= 0 ? worldSlot : hoveredSlot;
+        bool onMoon = worldSlot >= 0 ? worldMoon : hoveredMoon;
+        if (slot < 0) { preview.Hide(); return; }
+        bool occupied = onMoon ? moon.TowerIn(slot) != null : defense.TowerIn(slot) != null;
         if (occupied) { preview.Hide(); return; }
-        Vector3 position = hoveredMoon
-            ? (Vector3)(moon.Center + (Vector2)PlanetMath.ToLocal(moon.SlotAngle(hoveredSlot), moon.towerDistance, moon.MoonRadius))
-            : defense.SlotPosition(hoveredSlot);
-        float rotation = hoveredMoon ? moon.SlotAngle(hoveredSlot) - 90f : defense.SlotRotation(hoveredSlot);
+        Vector3 position = onMoon
+            ? (Vector3)(moon.Center + (Vector2)PlanetMath.ToLocal(moon.SlotAngle(slot), moon.towerDistance, moon.MoonRadius))
+            : defense.SlotPosition(slot);
+        float rotation = onMoon ? moon.SlotAngle(slot) - 90f : defense.SlotRotation(slot);
         bool affordable = defense.levelManager == null || defense.levelManager.CanAfford(tower.cost);
         preview.Show(tower, position, rotation, affordable);
     }
@@ -184,6 +186,7 @@ internal sealed class TowerPlacementPreview
     private Transform root;
     private TowerData tower;
     private SpriteRenderer[] renderers;
+    private Color[] colors;
 
     public TowerPlacementPreview(Transform parent) { this.parent = parent; }
 
@@ -197,11 +200,13 @@ internal sealed class TowerPlacementPreview
             root = CopySprites(selected.prefab.transform, parent);
             root.name = "Tower placement ghost";
             renderers = root.GetComponentsInChildren<SpriteRenderer>(true);
+            colors = new Color[renderers.Length];
+            for (int i = 0; i < renderers.Length; i++) colors[i] = renderers[i].color;
         }
         root.gameObject.SetActive(true);
         root.SetPositionAndRotation(position, Quaternion.Euler(0f, 0f, rotation));
-        Color tint = affordable ? new Color(0.45f, 0.9f, 1f, 0.5f) : new Color(1f, 0.4f, 0.3f, 0.5f);
-        foreach (SpriteRenderer renderer in renderers) renderer.color = tint;
+        Color tint = affordable ? new Color(0.75f, 1f, 1f, 0.65f) : new Color(1f, 0.5f, 0.4f, 0.65f);
+        for (int i = 0; i < renderers.Length; i++) renderers[i].color = colors[i] * tint;
     }
 
     public void Hide() { if (root != null) root.gameObject.SetActive(false); }
@@ -219,11 +224,17 @@ internal sealed class TowerPlacementPreview
         {
             var renderer = copy.gameObject.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite.sprite;
+            renderer.color = sprite.color;
             renderer.sharedMaterial = sprite.sharedMaterial;
             renderer.flipX = sprite.flipX;
             renderer.flipY = sprite.flipY;
             renderer.sortingLayerID = sprite.sortingLayerID;
-            renderer.sortingOrder = sprite.sortingOrder + 120;
+            // Seat behind the same socket rims as a real tower, retaining the part order.
+            renderer.sortingOrder = sprite.sortingOrder;
+            renderer.drawMode = sprite.drawMode;
+            renderer.size = sprite.size;
+            renderer.spriteSortPoint = sprite.spriteSortPoint;
+            renderer.maskInteraction = sprite.maskInteraction;
             renderer.enabled = sprite.enabled;
         }
         foreach (Transform child in source) CopySprites(child, copy);

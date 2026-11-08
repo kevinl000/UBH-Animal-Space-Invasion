@@ -5,10 +5,14 @@ through the existing destination selector. Press Play, choose a tower, click a
 socket to build, and press **Start Wave 1**. Keys 1Ã¢â‚¬â€œ4 select the tutorial towers;
 right-click a socket to sell during setup or a break. Escape opens/closes pause.
 The pixel-style quick build bar spans the bottom of the screen in one row,
-including moon sockets (M1, M2, ...). Hover a number to preview the selected
-tower at its rotating socket; cyan means affordable and red means insufficient
+including moon sockets (M1, M2, ...). Hover an empty socket on the planet/moon
+or a Quick Build number to preview the selected tower at its rotating socket;
+cyan means affordable and red means insufficient
 money. Occupied sockets cannot build and show no ghost. Keyboard focus also
 previews a socket. The bar observes the same phase permissions as clicking the planet.
+Both hover paths share click placement's socket lookup and use one sprite-only
+ghost. Its sprite transforms, colors, alpha and draw order come from the actual
+tower prefab, so the foreground socket rim occludes it just like a placed tower.
 
 Mouse wheel over the battle zooms in/out; two fingers spread/pinch to zoom.
 Planet, towers, enemies, projectiles, effects and placement ghosts share the
@@ -180,7 +184,10 @@ contacts, Animator playback, viewport readability or live UI interaction.
    combat behavior. Check clicking/building at both limits, resizing the Game
    view while zoomed, and boss entrance/return at each limit. The roster wheel
    must scroll only the roster; pause/results/controls must block zoom.
-   Hover first/last/rotating sockets, change towers while hovering, build once,
+   Hover first/last/rotating sockets both directly and through Quick Build;
+   compare ghost seating and orientation with the tower after clicking.
+   Move between the two hover paths, off the planet, and over occupied sockets.
+   Change towers while hovering, build once,
    and check the ghost disappears on exit, pause, entrance and results. Repeat
    with moon sockets in Silverman Luna. Check foreground seating, aiming extremes, material/sorting,
    font readability, mouse/keyboard focus, small effects and repeated pooled
