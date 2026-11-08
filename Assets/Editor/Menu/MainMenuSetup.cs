@@ -111,8 +111,8 @@ public static class MainMenuSetup
         var page = CreatePage(false, out RectTransform content);
         CreateText("Eyebrow", content, "A LITTLE CAMPUS. A BIG GOOSE PROBLEM.",
             new Vector2(0, 285), new Vector2(1000, 48), 29, new Color32(176, 200, 244, 255));
-        var title = CreateText("GameTitle", content, "GAME OF MASCOT",
-            new Vector2(0, 195), new Vector2(1120, 155), 112, Cream);
+        var title = CreateText("GameTitle", content, "ANIMAL SPACE INVASION",
+            new Vector2(0, 195), new Vector2(1120, 155), 80, Cream);
         AddShadow(title, new Vector2(5, -6));
 
         var newGame = CreateButton("NewGameButton", content, "NEW GAME", new Vector2(0, 20),
