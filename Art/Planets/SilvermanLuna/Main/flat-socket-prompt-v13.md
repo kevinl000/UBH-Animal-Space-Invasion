@@ -1,0 +1,11 @@
+# Flat-center socket correction, 2026-11-08
+
+Built-in imagegen edit with a transparent background. Target: v11 main planet.
+Shape reference: `../../CommonsMinor/commons-source-v6.png` (user's latest example).
+V12 was discarded because it retained raised tray borders. V13 supersedes v11.
+Saved output: `main-flat-sockets-source-v13.png`.
+
+Precise targeted shape correction to INPUT1, the library-and-ocean planet. INPUT2 is the user's exact geometry example. Retain INPUT1's entire fine pixel-art style and content, palette, twelve socket positions, globe, library and trees.
+INPUT1 currently has twelve DEEP CURVED CRESCENT edge recesses. Reshape these twelve only. Each should look like INPUT2's bottom and side recesses: a SHALLOW WIDE NOTCH with a very LONG STRAIGHT CENTRAL SEATING LINE, short gently rounded ends, and a thin pale border seamlessly flush with the existing ground. Center 70% of each rim must be geometrically straight and parallel to the local tangent, not bowed. Flatten the mouth silhouette as well so the slate strip has roughly constant depth across this middle. Socket width180-195px, depth35-40px, straight clear middle120-135px at1254 canvas. Thin ivory rim 5-8px, no raised parapet, thick masonry wall, oval pool, pill-shaped enclosed tray, box, capstone, added platform or balcony. Floor remains slate, adjoining terrain remains grass/warm stone.
+For the bottommost socket, copy INPUT2 BOTTOMMOST socket exactly in silhouette/proportions: flat central top seating line with short curved corners descending to meet an open flat bottom mouth into exterior transparency. Make it a shallow chamfered-rectangle-like notch rather than a semicircular bite. At left and right use the same notch rotated90degrees. At diagonals rotate this SAME master shape with the planet. Twelve total locations every30degrees; not eight.
+Keep upper three library forecourts with same broad straight middle and short smooth corners but no alteration to architecture. No towers, moon, labels, extra objects, UI, background or checkerboard. Real transparent background. Keep original square1254x1254 composition. Change only the twelve socket curves and immediately adjoining land; preserve original fine pixel detail.

@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C3 buffet worlds — art motion preview</title><style>
+*{box-sizing:border-box}body{margin:0;background:#111725;color:#f5ecd8;font:16px system-ui}
+main{max-width:1100px;margin:auto;padding:20px}h1{font-size:22px;margin:0 0 8px}p{color:#b9c6db}
+canvas{display:block;width:100%;height:auto;background:#171f32;border-radius:12px;image-rendering:pixelated}
+.controls{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:16px 0}button,input{accent-color:#dfb370}
+button{padding:8px 16px;background:#34455e;color:white;border:0;border-radius:6px}label{display:flex;align-items:center;gap:8px}
+</style><main><h1>C3 / three buffet worlds / 18 fitted sockets</h1>
+<p>Grill, salad bar, bakery. Centers are 16.4% closer than the first Unity version, with space around occupied sockets. Motion settings are for presentation.</p>
+<div class="controls"><button id="pause">Pause</button><label><input id="occupied" type="checkbox" checked>Show existing Laser towers</label>
+<label>Orbit <input id="orbit" type="range" min="-12" max="12" value="4"><output id="orbitValue">4°/s</output></label>
+<label>Spin <input id="spin" type="range" min="-30" max="30" value="10"><output id="spinValue">10°/s</output></label>
+<button id="reset">Reset</button></div><canvas id="view" width="1800" height="1800" aria-label="Three independently spinning six-socket planets orbiting a shared empty center"></canvas>
+<p>Art review only. Separate terrain, towers, and socket-front layers are exported beside this file. Source PNGs and prompts are preserved one directory above.</p></main>
+<script>
+const themes=['grill','salad','bakery'], frames={}, canvas=document.getElementById('view'), ctx=canvas.getContext('2d');
+const pause=document.getElementById('pause'), occupied=document.getElementById('occupied'), orbit=document.getElementById('orbit'), spin=document.getElementById('spin');
+const orbitRadius=376.2;
+let running=true, orbitAngle=0, spinAngle=0, previous;
+async function load(){await Promise.all(themes.flatMap(theme=>['empty','occupied'].map(kind=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{frames[theme+'-'+kind]=im;resolve()};im.onerror=reject;im.src=theme+'-'+kind+'.png'}))));canvas.dataset.ready='true';requestAnimationFrame(draw)}
+function draw(now){const dt=previous===undefined?0:Math.min((now-previous)/1000,.1);previous=now;if(running){orbitAngle+=dt*Number(orbit.value)*Math.PI/180;spinAngle+=dt*Number(spin.value)*Math.PI/180}
+ctx.clearRect(0,0,1800,1800);ctx.imageSmoothingEnabled=false;ctx.strokeStyle='#33425b';ctx.lineWidth=2;ctx.setLineDash([8,15]);ctx.beginPath();ctx.arc(900,900,orbitRadius,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+themes.forEach((theme,i)=>{const a=-Math.PI/2+i*Math.PI*2/3+orbitAngle;ctx.save();ctx.translate(900+orbitRadius*Math.cos(a),900+orbitRadius*Math.sin(a));ctx.rotate(spinAngle);ctx.scale(.4,.4);ctx.drawImage(frames[theme+'-'+(occupied.checked?'occupied':'empty')],-761,-766);ctx.restore()});requestAnimationFrame(draw)}
+pause.onclick=()=>{running=!running;pause.textContent=running?'Pause':'Resume'};
+document.getElementById('reset').onclick=()=>{orbitAngle=spinAngle=0};
+orbit.oninput=()=>document.getElementById('orbitValue').textContent=orbit.value+'°/s';spin.oninput=()=>document.getElementById('spinValue').textContent=spin.value+'°/s';
+load().catch(()=>{ctx.fillStyle='white';ctx.font='28px sans-serif';ctx.fillText('Unable to load adjacent preview PNGs.',100,100)});
+</script></html>

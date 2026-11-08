@@ -1,4 +1,0 @@
-{
-    "name": "PlanetaryDefense.Menu",
-    "references": ["PlanetaryDefense.Managers", "Unity.InputSystem", "Unity.ugui"]
-}

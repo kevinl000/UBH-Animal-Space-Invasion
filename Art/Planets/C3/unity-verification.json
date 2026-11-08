@@ -1,0 +1,79 @@
+{
+  "editor": "6000.6.7f1",
+  "date": "2026-11-08",
+  "result": "Offline spacing verification passed; previous Play Mode results apply to the 215.311-unit layout.",
+  "passed": 12,
+  "failed": 0,
+  "test_results": ".git/menu-work/c3-unity/playmode-results.xml",
+  "test_log": ".git/menu-work/c3-unity/playmode.log",
+  "captures": ".git/menu-work/c3-unity/captures/",
+  "tests": [
+    {
+      "name": "C3RenderCapture.CaptureApprovedBuffetWorldsInUnity",
+      "result": "Passed"
+    },
+    {
+      "name": "C3VisualTests.EighteenSocketsKeepIndependentPlacementLayersAndAim",
+      "result": "Passed"
+    },
+    {
+      "name": "C3VisualTests.OrbitAndSpinCarryTowersTogetherAndKeepClearance",
+      "result": "Passed"
+    },
+    {
+      "name": "C3VisualTests.PointerPlacesAllEighteenMovingSocketsAndRemovesAtMinimumZoom",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageTests.EveryDirectEntryShowsCorrectAvailabilityAndInspectableDetails",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"UnionPrime\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"CapenMajor\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"DavisNova\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"SilvermanLuna\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"C3\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"CommonsMinor\")",
+      "result": "Passed"
+    },
+    {
+      "name": "PlanetPageZoomTests.EveryPageZoomsTogetherAndLeavesStarsAndHudFixed(\"BairdReach\")",
+      "result": "Passed"
+    }
+  ],
+  "export_hashes_match": true,
+  "importer_idempotent": true,
+  "foundation_contacts_supported": 1116,
+  "conservative_occupied_gap_canvas_units": 29.608251083713515,
+  "limitations": [
+    "Presentation/free Laser placement only; no combat integration.",
+    "No standalone build or continuous gun collision sweep.",
+    "Capture helper retained outside Assets under .git/menu-work/c3-unity/RenderCapture.cs."
+  ],
+  "previous_playmode_run": {
+    "result": "Passed",
+    "passed": 12,
+    "failed": 0,
+    "date": "2026-11-08",
+    "orbit_radius": 215.311004784689
+  },
+  "current_orbit_radius": 180,
+  "playmode_rerun_after_spacing_change": false,
+  "playmode_rerun_limit": "User Unity Editor is open; editor was left undisturbed."
+}

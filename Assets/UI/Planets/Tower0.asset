@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3dc3eb094564ab6af427ec763ba7a27, type: 3}
   m_Name: Tower0
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerPresentation
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerPresentation
   displayName: Laser
   unlockLevel: 0
   portrait: {fileID: 21300000, guid: 043da3e1d1237594ca453df41ee010d7, type: 3}

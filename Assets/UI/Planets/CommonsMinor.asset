@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 020fe949b14c4c6486df28e2b0ae493a, type: 3}
   m_Name: CommonsMinor
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::PlanetPresentation
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::PlanetPresentation
   displayName: Commons Minor
   sceneName: CommonsMinor
   level: 5

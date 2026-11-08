@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6d61f9c07b934a4b9413e652a87a283, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Managers::PersistentSystemsController
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::PersistentSystemsController
 --- !u!114 &2745911703319651572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 018013ff072e1f6488f39143f4a83c02, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Managers::GameManager
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::GameManager
 --- !u!114 &709659108773120119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e66c58df9615a74a8d2ff1a3525ace1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Managers::SceneController
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::SceneController
 --- !u!114 &8029082828993446486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aae87d006044cd44e8cb3ff3436e4aa5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Managers::AudioManager
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::AudioManager
   musicSource: {fileID: 5077541398576250057}
   sfxSource: {fileID: 419472057914319875}
 --- !u!82 &5077541398576250057

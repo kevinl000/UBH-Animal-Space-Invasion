@@ -1,0 +1,26 @@
+{
+  "images": {
+    "Terrain": {
+      "guid": "0603b2a1ec3643e18d578f00b6338cfe",
+      "path": "Assets/Art/Planets/CommonsMinor/Terrain.png",
+      "source": "Art/Planets/CommonsMinor/FittedSites/terrain-background.png",
+      "sha256": "8c47189b3a8a871342496c5db02c7a2c1d75fbf6a5413c790c0bec987c062893"
+    },
+    "SocketFronts": {
+      "guid": "fab407931a1949c2bd30ca6d76dd3e53",
+      "path": "Assets/Art/Planets/CommonsMinor/SocketFronts.png",
+      "source": "Art/Planets/CommonsMinor/FittedSites/socket-fronts.png",
+      "sha256": "467208312fd2fabc1d2bdbdd31164693fc1a48ba31f1cfba6e3b3c45fb95bca2"
+    }
+  },
+  "visual_prefab": "Assets/UI/Planets/CommonsMinorVisual.prefab",
+  "source_size": [
+    1254,
+    1254
+  ],
+  "canvas_display_width": 428.57142857142856,
+  "tower_scale": 1.75,
+  "site_count": 8,
+  "free_laser_placement": true,
+  "limits": "Visual sandbox only; no combat, economy, or gameplay scene changes."
+}

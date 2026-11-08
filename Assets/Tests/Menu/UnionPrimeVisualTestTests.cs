@@ -66,7 +66,10 @@ public class UnionPrimeVisualTestTests
         Assert.AreEqual(0, Object.FindAnyObjectByType<UnionPrimeVisualTest>().PlacedCount);
         yield return SceneManager.LoadSceneAsync("SilvermanLuna");
         yield return null;
-        Assert.IsNull(Object.FindAnyObjectByType<UnionPrimeVisualTest>(), "Other planets remain unchanged.");
+        var silverman = Object.FindObjectsByType<UnionPrimeVisualTest>(FindObjectsSortMode.None);
+        Assert.AreEqual(2, silverman.Length, "Silverman keeps its main planet and moon independent.");
+        Assert.IsTrue(System.Array.Exists(silverman, item => item.SiteCount == 12));
+        Assert.IsTrue(System.Array.Exists(silverman, item => item.SiteCount == 4));
         LogAssert.NoUnexpectedReceived();
     }
 

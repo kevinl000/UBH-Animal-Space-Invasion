@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e69ed4ac4e4fcd4780b8972efea2210, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::SceneLoadingScreen
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::SceneLoadingScreen
   canvasGroup: {fileID: 2821397094317511972}
   progressFill: {fileID: 2669415065384076886}
   percentage: {fileID: 4736134005883001888}

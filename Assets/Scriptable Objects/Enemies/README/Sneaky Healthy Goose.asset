@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766fa307f1f474baabe35d759b026354, type: 3}
+  m_Name: Sneaky Healthy Goose
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::EnemyData
+  cost: 40
+  isBoss: 1
+  maxHealth: 35
+  damage: 2
+  attackType: 0
+  moneyDrop: 10
+  fuelDrop: 10
+  hasShield: 0
+  isStealth: 0
+  movement: 2
+  orbitSpeed: 1
+  moveSpeed: 0.5
+  stopDistance: 1.8
+  orbitDistance: 1.6
+  orbitDegreesPerSecond: 15
+  attackInterval: 2
+  aoeSpreadDegrees: 30
+  prefab: {fileID: 0}
+  projectilePrefab: {fileID: 0}
