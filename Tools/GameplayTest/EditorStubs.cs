@@ -5,19 +5,6 @@ using System.Collections.Generic;
 
 namespace UnityEngine
 {
-    public enum RenderMode { ScreenSpaceOverlay, ScreenSpaceCamera, WorldSpace }
-    public class Canvas : MonoBehaviour { public RenderMode renderMode; public Camera worldCamera; public float planeDistance; public int sortingOrder; public bool isRootCanvas; }
-    public class Sprite : Object { }
-    public struct Bounds { public Vector3 size; }
-    public class SpriteRenderer : Component { public Sprite sprite; public int sortingOrder; public Color color; public Bounds bounds; }
-    public struct Color
-    {
-        public float r, g, b, a;
-        public Color(float r, float g, float b, float a = 1f) { this.r = r; this.g = g; this.b = b; this.a = a; }
-        public static Color white { get { return new Color(1, 1, 1); } }
-        public static Color Lerp(Color x, Color y, float t) { return x; }
-        public static Color operator *(Color x, Color y) { return x; }
-    }
     public enum TextureFormat { RGBA32 }
     public class Texture2D : Object
     {
@@ -26,6 +13,16 @@ namespace UnityEngine
         public void Apply() { }
         public byte[] EncodeToPNG() { return new byte[0]; }
     }
+}
+
+namespace UnityEngine.UI
+{
+    public class Image : MonoBehaviour { public Sprite sprite; public Color color; public RectTransform rectTransform; }
+}
+
+namespace UnityEngine
+{
+    public class RectTransform : Transform { public Vector2 anchorMin, anchorMax; }
 }
 
 namespace UnityEngine.SceneManagement

@@ -13,7 +13,7 @@ How a level scene is put together so towers, enemies, the enemy AI and the Level
 2. **Tools > Gameplay > 2. Add Gameplay To Open Level Scene** (once per level scene, with the scene open).
    - Adds a `Gameplay` object with `PoolManager`, `LevelPlanetDefense`, `WaveDirectorBridge`, `EnemySpawner` and `TowerPlacementInput`, all wired to the scene's `LevelManager`.
    - If the LevelManager has no LevelData, it creates one named after the scene. Only empty fields are filled in: README roster by level, the level's boss, time, money, fuel, HP and rotation.
-   - Switches the root canvas to **Screen Space - Camera**. With Screen Space - Overlay, the sprites end up hidden behind the UI.
+   - Keeps the HUD canvas on **Screen Space - Overlay**, so the text stays sharp and the menus draw above the enemies. It hides the HUD's plain full-screen `Background` image and has the camera clear to the same colour, so the sprites show between the background and the planet / HUD. The planets are UI, so `UiSpace` converts their pixel positions into the camera's world.
    - Saves the scene.
 
 ## Playing
@@ -22,11 +22,19 @@ How a level scene is put together so towers, enemies, the enemy AI and the Level
 - **Right click** a tower: sell it for half its cost.
 - Enemies come from the enemy AI. When the time is up and every enemy is gone, `GameManager.LevelComplete()` is called. If the planet's HP reaches 0, `GameOver()` is called.
 
+## Planet rules (added by menu 2 in those scenes)
+- **Davis Nova: `TowerLifespan`.** Every tower lives `lifespanSeconds` (40). It flashes red for the last `warningSeconds` (5), then explodes: `explosionDamage` (3) to enemies within `explosionRadius` (1.2 world units), a pooled `Tower Explosion` effect, and the tower is destroyed (`TowerEvents.TowerDestroyed`). A tower without fuel stops ageing.
+- **Silverman Luna: `MoonOrbit`.** The `Moon` art gets a kinematic Rigidbody2D and orbits the planet at its authored distance (`orbitDegreesPerSecond` 8) while spinning (`spinDegreesPerSecond` -20). It has 4 slots: click the moon to build there. Moon towers ride the moon, shoot like any tower, use fuel, and count in the enemy AI's view of the defense.
+
 ## Scripts
 | Script | Job |
 |---|---|
 | `LevelPlanetDefense` | `IPlanetDefense` for real levels. Enemies hit the tower in the slot below them, or the planet (`LevelManager.ReceiveDamage`). Towers ride their slots as the planet turns (Rigidbody2D in FixedUpdate). Handles `TryPlaceTower` / `SellTower` and level complete. |
-| `TowerPlacementInput` | Mouse and keyboard building and selling. Reads the HUD's selected card. Turns off the art sandbox's free test lasers. |
+| `TowerPlacementInput` | Mouse and keyboard building and selling. Reads the HUD's selected card. Turns off the art sandbox's free test lasers. Clicks on the moon go to the moon. |
+| `TowerLifespan` | Davis Nova: towers explode at the end of their lifespan. |
+| `MoonOrbit` | Silverman Luna: the orbiting, spinning moon with 4 tower slots. |
+| `UiSpace` | Converts a UI object's position / size on an overlay canvas (screen pixels) into the camera's world. |
+| `PooledEffect` | A one-shot visual from the PoolManager that returns itself after `lifetime`. |
 
 ## Fixes made while combining
 - Building a tower **spent** money instead of adding it, and towers could be built without enough money.

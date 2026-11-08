@@ -410,6 +410,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4840449394304612868, guid: 120cddbfef5f94a4495bca5aefa07055, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5589410406593893800, guid: 120cddbfef5f94a4495bca5aefa07055, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -680,6 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerPlacementInput
   defense: {fileID: 824873367}
+  moon: {fileID: 0}
   towers:
   - {fileID: 11400000, guid: 2b5c374f02eb0e74fa40bca910d75430, type: 2}
   - {fileID: 11400000, guid: c2d7e4c58c466c944bae49ae1de52d8e, type: 2}
@@ -753,6 +758,7 @@ MonoBehaviour:
   levelManager: {fileID: 1335984477073465474}
   planet: {fileID: 0}
   spawner: {fileID: 824873365}
+  moon: {fileID: 0}
   slots: 12
   slot0Angle: 90
   radius: 0
@@ -1130,7 +1136,7 @@ Canvas:
   m_GameObject: {fileID: 1667676981}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1695506653}
   m_PlaneDistance: 50
   m_PixelPerfect: 0

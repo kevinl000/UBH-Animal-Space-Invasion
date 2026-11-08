@@ -19,14 +19,17 @@ using Object = UnityEngine.Object;
 ///
 /// Tools > Gameplay > 2. Add Gameplay To Open Level Scene
 ///   Adds PoolManager, LevelPlanetDefense, WaveDirectorBridge, EnemySpawner and TowerPlacementInput to the open
-///   level scene, wires them to its LevelManager, gives it a LevelData if it has none, and switches the canvas to
-///   Screen Space - Camera so the enemy / tower sprites draw in front of the UI.
+///   level scene, wires them to its LevelManager and gives it a LevelData if it has none. The HUD canvas stays
+///   Screen Space - Overlay (sharp text, menus above the action); its plain full-screen Background image is hidden and
+///   the camera clears to the same colour, so the enemy / tower sprites show between the background and the planet / HUD.
 /// </summary>
 public static class GameplaySetup
 {
     const string EnemyPrefabs = "Assets/Prefabs/Gameplay/Enemies";
     const string TowerPrefabs = "Assets/Prefabs/Gameplay/Towers";
     const string ProjectilePrefabs = "Assets/Prefabs/Gameplay/Projectiles";
+    const string EffectPrefabs = "Assets/Prefabs/Gameplay/Effects";
+    const string ExplosionPath = EffectPrefabs + "/Tower Explosion.prefab";
     const string TowerDataFolder = "Assets/Scriptable Objects/Towers/README";
     const string EnemyDataFolder = "Assets/Scriptable Objects/Enemies/README";
     const string LevelDataFolder = "Assets/Scriptable Objects/Levels";
@@ -118,7 +121,7 @@ public static class GameplaySetup
     {
         EnemyDataGenerator.Generate(); // make sure the 19 README EnemyData assets exist
         Sprite placeholder = PlaceholderSprite();
-        foreach (string f in new[] { EnemyPrefabs, TowerPrefabs, ProjectilePrefabs, TowerDataFolder }) Directory.CreateDirectory(f);
+        foreach (string f in new[] { EnemyPrefabs, TowerPrefabs, ProjectilePrefabs, EffectPrefabs, TowerDataFolder }) Directory.CreateDirectory(f);
         AssetDatabase.Refresh(); // let Unity see the new folders before saving into them
 
         int made = 0, kept = 0;
@@ -137,6 +140,14 @@ public static class GameplaySetup
             if (enemySide) enemyShots[kv.Key] = go.GetComponent<EnemyProjectile>();
             else towerShots[kv.Key] = go.GetComponent<TowerProjectile>();
         }
+
+        // Davis Nova tower explosion (pooled effect)
+        if (!File.Exists(ExplosionPath))
+        {
+            Build(ExplosionPath, "Tower Explosion", typeof(PooledEffect), null, Color.white, new Color(1f, 0.55f, 0.15f, 0.85f), 1.2f, placeholder, null);
+            made++;
+        }
+        else kept++;
 
         // enemies
         var data = new Dictionary<string, EnemyData>();
@@ -375,16 +386,30 @@ public static class GameplaySetup
         FillLevelData(data, level);
         so.ApplyModifiedProperties();
 
-        // canvas: sprites can't draw in front of a Screen Space - Overlay canvas
+        // Canvas: keep the HUD on Screen Space - Overlay (an earlier version of this menu switched it to Camera,
+        // which blurred the text and drew enemies over the tower menu: put it back).
+        // Sprites are drawn by the camera *under* an overlay canvas, so hide the HUD's opaque full-screen
+        // "Background" image and let the camera clear to the same colour instead.
         Camera cam = Camera.main;
         foreach (var canvas in Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None))
         {
-            if (!canvas.isRootCanvas || canvas.renderMode != RenderMode.ScreenSpaceOverlay || cam == null) continue;
-            Undo.RecordObject(canvas, "Canvas to camera");
-            canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.worldCamera = cam;
-            canvas.planeDistance = 50f;
-            canvas.sortingOrder = 0;
+            if (!canvas.isRootCanvas || canvas.renderMode != RenderMode.ScreenSpaceCamera) continue;
+            Undo.RecordObject(canvas, "Canvas back to overlay");
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+        foreach (var img in Object.FindObjectsByType<UnityEngine.UI.Image>(FindObjectsSortMode.None))
+        {
+            if (img.gameObject.name != "Background" || img.sprite != null) continue;
+            RectTransform rt = img.rectTransform;
+            if (rt.anchorMin != Vector2.zero || rt.anchorMax != Vector2.one) continue; // only the full-screen plain one
+            Undo.RecordObject(img, "Hide HUD background");
+            img.enabled = false;
+            if (cam != null)
+            {
+                Undo.RecordObject(cam, "Camera background");
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                cam.backgroundColor = img.color;
+            }
         }
 
         // gameplay objects
@@ -417,11 +442,47 @@ public static class GameplaySetup
         input.cam = cam;
         foreach (var c in new Component[] { pool, defense, bridge, spawner, input }) EditorUtility.SetDirty(c);
 
+        // planet rules from the README
+        string extra = "";
+        if (scene.name == "DavisNova")
+        {
+            if (!File.Exists(ExplosionPath)) BuildAll();
+            var life = GetOrAdd<TowerLifespan>(root);
+            if (life.explosionEffect == null)
+            {
+                var fx = AssetDatabase.LoadAssetAtPath<GameObject>(ExplosionPath);
+                if (fx != null) life.explosionEffect = fx.GetComponent<PooledEffect>();
+            }
+            EditorUtility.SetDirty(life);
+            extra = " + TowerLifespan (towers explode after " + life.lifespanSeconds + "s)";
+        }
+        if (scene.name == "SilvermanLuna")
+        {
+            var moon = GetOrAdd<MoonOrbit>(root);
+            moon.planet = defense;
+            if (moon.moon == null) moon.moon = FindMoon(lm);
+            defense.moon = moon;
+            input.moon = moon;
+            EditorUtility.SetDirty(moon);
+            extra = moon.moon != null ? " + MoonOrbit (moon '" + moon.moon.name + "', 4 slots)" : " + MoonOrbit (NO MOON FOUND: drag the moon object into MoonOrbit.moon)";
+        }
+
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
         AssetDatabase.SaveAssets();
         Debug.Log("[GameplaySetup] '" + scene.name + "' (level " + level + "): added Gameplay (PoolManager, LevelPlanetDefense with " + defense.slots
-            + " slots, WaveDirectorBridge, EnemySpawner, TowerPlacementInput), LevelData '" + data.name + "', canvas set to Screen Space - Camera. Saved the scene. Press Play.");
+            + " slots, WaveDirectorBridge, EnemySpawner, TowerPlacementInput" + extra + "), LevelData '" + data.name + "', HUD canvas on Overlay with its background hidden. Saved the scene. Press Play.");
+    }
+
+    /// <summary>The scene's moon: an object named "Moon" with a CircleCollider2D that isn't the planet's body.</summary>
+    static Transform FindMoon(LevelManager lm)
+    {
+        foreach (var c in Object.FindObjectsByType<CircleCollider2D>(FindObjectsSortMode.None))
+        {
+            if (lm.planetBody != null && c.gameObject == lm.planetBody.gameObject) continue;
+            if (c.gameObject.name.IndexOf("moon", StringComparison.OrdinalIgnoreCase) >= 0) return c.transform;
+        }
+        return null;
     }
 
     static T GetOrAdd<T>(GameObject go) where T : Component

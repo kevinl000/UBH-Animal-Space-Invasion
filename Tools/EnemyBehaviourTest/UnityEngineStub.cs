@@ -33,7 +33,9 @@ namespace UnityEngine
                 mb.transform = new Transform { parent = parent, owner = mb };
                 mb.components = new Dictionary<Type, Component>(); // the clone gets its own Rigidbody2D / Collider2D
                 mb.inactive = false;
+                var prefabArt = ((MonoBehaviour)(object)original).art;
                 CopyListsDeep(clone); // fresh copies of runtime lists the prefab may hold
+                foreach (var a in prefabArt) mb.art.Add(new SpriteRenderer { owner = mb, color = a.color });
                 MonoBehaviour.Call(mb, "Awake");
                 MonoBehaviour.Call(mb, "OnEnable");
             }
@@ -108,7 +110,34 @@ namespace UnityEngine
         public Transform transform { get { return owner != null ? owner.transform : null; } }
         public T GetComponent<T>() where T : Component, new() { return owner != null ? owner.GetComponent<T>() : null; }
         public T GetComponentInParent<T>() where T : class { return owner as T; }
+        public GameObject gameObject { get { return new GameObject { owner = owner }; } }
     }
+
+    public class Sprite : Object { }
+    public struct Bounds { public Vector3 size; }
+    public struct Color
+    {
+        public float r, g, b, a;
+        public Color(float r, float g, float b, float a = 1f) { this.r = r; this.g = g; this.b = b; this.a = a; }
+        public static Color white { get { return new Color(1, 1, 1); } }
+        public static Color Lerp(Color x, Color y, float t)
+        {
+            t = t < 0 ? 0 : t > 1 ? 1 : t;
+            return new Color(x.r + (y.r - x.r) * t, x.g + (y.g - x.g) * t, x.b + (y.b - x.b) * t, x.a + (y.a - x.a) * t);
+        }
+        public static Color operator *(Color x, Color y) { return new Color(x.r * y.r, x.g * y.g, x.b * y.b, x.a * y.a); }
+    }
+    /// <summary>Stub: a behaviour's art. Tests attach them with MonoBehaviour.AddArt.</summary>
+    public class SpriteRenderer : Component { public Sprite sprite; public int sortingOrder; public Color color = Color.white; public Bounds bounds; }
+
+    public enum CameraClearFlags { Skybox = 1, SolidColor = 2, Depth = 3, Nothing = 4 }
+    public enum RenderMode { ScreenSpaceOverlay, ScreenSpaceCamera, WorldSpace }
+    public class Canvas : MonoBehaviour
+    {
+        public RenderMode renderMode; public Camera worldCamera; public float planeDistance; public int sortingOrder; public bool isRootCanvas = true;
+        public Canvas rootCanvas { get { return this; } }
+    }
+    public static class Screen { public static int width = 1920, height = 1080; }
 
     public enum FindObjectsSortMode { None, InstanceID }
     public enum RigidbodyType2D { Dynamic, Kinematic, Static }
@@ -175,9 +204,21 @@ namespace UnityEngine
             {
                 if (typeof(T) != typeof(Rigidbody2D) && typeof(T) != typeof(Collider2D)) return null;
                 c = new T { owner = this };
+                var rb = c as Rigidbody2D;
+                if (rb != null) { rb.position = transform.freePosition; rb.rotation = transform.eulerAngles.z; } // a new body starts at the transform's pose
                 components[key] = c;
             }
             return c as T;
+        }
+
+        internal List<SpriteRenderer> art = new List<SpriteRenderer>();
+        /// <summary>Test helper: give this object a sprite renderer (its art).</summary>
+        public SpriteRenderer AddArt() { var r = new SpriteRenderer { owner = this }; art.Add(r); return r; }
+        public new T[] GetComponentsInChildren<T>() where T : class
+        {
+            var list = new List<T>();
+            foreach (var r in art) if (r is T) list.Add(r as T);
+            return list.ToArray();
         }
 
         /// <summary>Test helper: give this object a circle collider (replaces the default one).</summary>
@@ -285,7 +326,7 @@ namespace UnityEngine
         internal MonoBehaviour owner;
         public Vector3 lossyScale = new Vector3(1, 1, 1);
         public Vector3 localScale = new Vector3(1, 1, 1);
-        private Vector3 freePosition;
+        internal Vector3 freePosition;
         private float freeRotation;
 
         Rigidbody2D Body { get { Component c; return owner != null && owner.components.TryGetValue(typeof(Rigidbody2D), out c) ? (Rigidbody2D)c : null; } }
@@ -308,7 +349,11 @@ namespace UnityEngine
         public Vector3 InverseTransformPoint(Vector3 p) { var o = position; return new Vector3(p.x - o.x, p.y - o.y, p.z); }
         public void SetParent(Transform p, bool worldPositionStays) { parent = p; }
         public T GetComponent<T>() where T : Component, new() { return owner != null ? owner.GetComponent<T>() : null; }
+        public GameObject gameObject { get { return owner != null ? owner.gameObject : null; } }
+        public string name { get { return owner != null ? owner.name : ""; } }
+        public T GetComponentInParent<T>() where T : class { return owner as T; }
         public T[] GetComponents<T>() where T : Component, new() { var c = GetComponent<T>(); return c != null ? new[] { c } : new T[0]; }
+        public T[] GetComponentsInChildren<T>() where T : class { return owner != null ? owner.GetComponentsInChildren<T>() : new T[0]; }
     }
 
     public struct Vector2
@@ -324,6 +369,11 @@ namespace UnityEngine
         public static Vector2 operator -(Vector2 a, Vector2 b) { return new Vector2(a.x - b.x, a.y - b.y); }
         public static Vector2 operator *(Vector2 a, float f) { return new Vector2(a.x * f, a.y * f); }
         public static float Distance(Vector2 a, Vector2 b) { return (a - b).magnitude; }
+        public static Vector2 one { get { return new Vector2(1, 1); } }
+        public static bool operator ==(Vector2 a, Vector2 b) { return a.x == b.x && a.y == b.y; }
+        public static bool operator !=(Vector2 a, Vector2 b) { return !(a == b); }
+        public override bool Equals(object o) { return o is Vector2 && (Vector2)o == this; }
+        public override int GetHashCode() { return x.GetHashCode() ^ y.GetHashCode(); }
         public static float Angle(Vector2 a, Vector2 b)
         {
             float d = a.magnitude * b.magnitude; if (d < 1e-6f) return 0f;
@@ -379,7 +429,14 @@ namespace UnityEngine
     public class Camera : MonoBehaviour
     {
         public static Camera main;
-        public Vector3 ScreenToWorldPoint(Vector3 p) { return new Vector3(p.x, p.y, 0); }
+        public bool orthographic = true;
+        public float orthographicSize = 5f;
+        public Color backgroundColor;
+        public CameraClearFlags clearFlags;
+        // orthographic camera at the origin: screen centre = world (0,0), Screen.height pixels = 2 * orthographicSize units
+        float Ppu { get { return Screen.height / (2f * orthographicSize); } }
+        public Vector3 ScreenToWorldPoint(Vector3 p) { return new Vector3((p.x - Screen.width / 2f) / Ppu, (p.y - Screen.height / 2f) / Ppu, 0); }
+        public Vector3 WorldToScreenPoint(Vector3 p) { return new Vector3(p.x * Ppu + Screen.width / 2f, p.y * Ppu + Screen.height / 2f, 0); }
     }
 
     public static class Time { public static float deltaTime; public static float fixedDeltaTime = 0.02f; public static float timeScale = 1f; }

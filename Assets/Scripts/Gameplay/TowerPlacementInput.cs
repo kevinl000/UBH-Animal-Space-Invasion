@@ -13,6 +13,8 @@ using UnityEngine.UI;
 public class TowerPlacementInput : MonoBehaviour
 {
     public LevelPlanetDefense defense;
+    [Tooltip("Silverman Luna's moon. Empty = found automatically if there is one.")]
+    public MoonOrbit moon;
     [Tooltip("Every TowerData that can be built, in hotkey order (1 = first). Names must match the HUD cards (e.g. 'Laser').")]
     public TowerData[] towers = new TowerData[0];
     [Tooltip("Optional: the HUD's tower list. Empty = found automatically.")]
@@ -35,6 +37,7 @@ public class TowerPlacementInput : MonoBehaviour
     {
         if (defense == null) defense = FindAnyObjectByType<LevelPlanetDefense>();
         if (hud == null) hud = FindAnyObjectByType<PlanetPageController>();
+        if (moon == null) moon = FindAnyObjectByType<MoonOrbit>();
         if (cam == null) cam = Camera.main;
         if (towers.Length > 0) Selected = towers[0];
     }
@@ -61,6 +64,19 @@ public class TowerPlacementInput : MonoBehaviour
         if (OverButton(screen)) return; // clicks on HUD buttons are for the HUD
 
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z));
+
+        // the moon first (it's smaller and sits over the planet's space)
+        int moonSlot;
+        if (moon != null && moon.TryGetSlotAt(world, out moonSlot))
+        {
+            if (right) { Show(moon.SellTower(moonSlot) ? "Sold." : "No tower there to sell."); return; }
+            if (Selected == null) { Show("Pick a tower first."); return; }
+            string why;
+            if (moon.TryPlaceTower(Selected, moonSlot, out why)) Show("Built " + Selected.name + " on the moon.");
+            else Show(why);
+            return;
+        }
+
         Vector2 local = defense.Root.InverseTransformPoint(world);
         float dist = local.magnitude / Mathf.Max(0.0001f, defense.Radius);
         if (dist < minClickRadius || dist > maxClickRadius) return;

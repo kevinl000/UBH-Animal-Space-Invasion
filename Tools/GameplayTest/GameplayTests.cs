@@ -6,6 +6,8 @@ using UnityEngine;
 using EnemyAI;
 
 class PlanetObject : MonoBehaviour { }
+/// <summary>A planet that is UI on a Screen Space - Overlay canvas: its world space is screen pixels.</summary>
+class OverlayPlanet : Canvas { }
 
 static class GameplayTests
 {
@@ -127,8 +129,8 @@ static class GameplayTests
         Vector2 outward = laser.transform.up;
         float facing = Vector2.Angle(outward, p1);
         Check("Building a tower spends its cost; it sits on the planet, faces outward and turns with the planet",
-            laser != null && moneyAfterBuild == 9 && Math.Abs(r0 - 2f) < 0.05f && turned > 40f && turned < 80f && facing < 1f && laser.IsSpawned,
-            "money 10 -> " + moneyAfterBuild + " (Laser $1), distance from centre " + r0.ToString("F2") + " (radius 2), turned " + turned.ToString("F0") + " deg in 2s at 30 deg/s, facing error " + facing.ToString("F1") + " deg");
+            laser != null && moneyAfterBuild == 9 && Math.Abs(r0 - 2.2f) < 0.05f && turned > 40f && turned < 80f && facing < 1f && laser.IsSpawned,
+            "money 10 -> " + moneyAfterBuild + " (Laser $1), distance from centre " + r0.ToString("F2") + " (radius 2, towers at 1.1 radii), turned " + turned.ToString("F0") + " deg in 2s at 30 deg/s, facing error " + facing.ToString("F1") + " deg");
 
         // 2. not enough money / occupied slot
         NewWorld(money: 1);
@@ -218,7 +220,93 @@ static class GameplayTests
         Check("Ballistica deals 20% of the enemy's max HP per hit", big.Health < 4f && Math.Abs(hits - Math.Round(hits)) < 0.01f,
             "HP 4 -> " + big.Health.ToString("F2") + " = " + Math.Round(hits) + " hits of 0.8");
 
-        // 11. full level through the spawner and the AI with towers; level complete after time up
+        // 11. Davis Nova: towers have a lifespan, flash, then explode (damaging nearby enemies) and are destroyed
+        NewWorld(money: 20);
+        var boom = new PooledEffect { lifetime = 0.5f };
+        var life = new TowerLifespan { lifespanSeconds = 3f, warningSeconds = 1f, explosionRadius = 2f, explosionDamage = 3f, explosionEffect = boom };
+        MonoBehaviour.Register(life);
+        T["Bank"].prefab.AddArt();
+        var bank = Place("Bank", 0);
+        int bankId = bank.SpawnId;
+        var victim = SpawnEnemy("Basic Goose 3", 90f, 2.0f); // close in: stops 1.6 units above the tower
+        var far = SpawnEnemy("Basic Goose 3", 270f);     // other side of the planet
+        int destroyed = 0; Action<BaseTowerData> onDestroyed = t => destroyed++;
+        TowerEvents.TowerDestroyed += onDestroyed;
+        Run(2.5f);
+        var artNow = bank.GetComponentsInChildren<SpriteRenderer>();
+        bool flashing = artNow.Length > 0 && (artNow[0].color.g < 0.99f || artNow[0].color.b < 0.99f);
+        float leftBefore = life.TimeLeft(bank);
+        Run(0.7f);
+        TowerEvents.TowerDestroyed -= onDestroyed;
+        bool gone = defense.TowerIn(0) == null && (!bank.IsAlive || bank.SpawnId != bankId);
+        int effects = MonoBehaviour.ActiveCount<PooledEffect>();
+        Run(1f);
+        Check("Davis Nova: a tower flashes near the end of its lifespan, explodes (hurts nearby enemies) and is destroyed",
+            flashing && gone && destroyed == 1 && Math.Abs(victim.Health - 1f) < 0.01f && far.Health == 4f && effects == 1 && MonoBehaviour.ActiveCount<PooledEffect>() == 0,
+            "flashing red in the last second: " + flashing + " (" + leftBefore.ToString("F1") + "s left), destroyed: " + gone + " (TowerDestroyed x" + destroyed + "), nearby goose HP 4 -> " + victim.Health
+            + ", far goose HP " + far.Health + ", pooled explosion shown then returned: " + (effects == 1 && MonoBehaviour.ActiveCount<PooledEffect>() == 0));
+
+        // 12. Silverman Luna: the moon orbits and spins; its 4 slots carry towers; they count for the AI
+        NewWorld(money: 20);
+        var moonObj = new PlanetObject();
+        moonObj.transform.position = new Vector3(3f, 0f, 0f); // authored 1.5 planet radii to the right
+        MonoBehaviour.Register(moonObj);
+        moonObj.AddCircle(0.5f, false);
+        var moon = new MoonOrbit { planet = defense, moon = moonObj.transform, orbitDegreesPerSecond = 30f, spinDegreesPerSecond = -45f };
+        MonoBehaviour.Register(moon);
+        defense.moon = moon;
+        Run(0.1f);
+        string moonWhy;
+        bool builtOnMoon = moon.TryPlaceTower(T["Laser"], 0, out moonWhy);
+        var moonTower = moon.TowerIn(0);
+        Vector2 mp0 = moonObj.GetComponent<Rigidbody2D>().position;
+        Run(2f);
+        Vector2 mp1 = moonObj.GetComponent<Rigidbody2D>().position;
+        float orbitTurn = Vector2.Angle(mp0, mp1);
+        float towerToMoon = Vector2.Distance(moonTower.Body.position, moon.Center);
+        int slotsFull = 0; string w;
+        for (int i = 1; i < 4; i++) if (moon.TryPlaceTower(T["Laser"], i, out w)) slotsFull++;
+        bool fifth = moon.SlotCount == 4;
+        int aiSees = defense.BuildSnapshot().Towers.Count;
+        Check("Silverman Luna: the moon orbits at its authored distance and spins; towers ride its 4 slots and count for the AI",
+            builtOnMoon && Math.Abs(mp1.magnitude - 3f) < 0.02f && orbitTurn > 50f && orbitTurn < 70f && Math.Abs(towerToMoon - 0.5f) < 0.02f && Math.Abs(moon.SpinDegrees - (360f - 45f * 2.1f)) < 4f
+            && slotsFull == 3 && fifth && aiSees == 4 && lm.TotalMoney == 16,
+            "built on moon: " + builtOnMoon + (moonWhy != null ? " (" + moonWhy + ")" : "") + ", orbit radius " + mp1.magnitude.ToString("F2") + " (authored 3.00), turned " + orbitTurn.ToString("F0")
+            + " deg in 2s at 30/s, spin " + moon.SpinDegrees.ToString("F0") + ", tower " + towerToMoon.ToString("F2") + " from the moon centre (moon radius 0.5), 4 slots filled, AI sees " + aiSees + " towers, money 20 -> " + lm.TotalMoney);
+
+        // 13. the planet and moon are UI on an overlay canvas (pixels); enemies/towers are in the camera's world
+        NewWorld(money: 20);
+        var cam = new Camera { orthographicSize = 5f };   // 1080 px high -> 108 px per world unit, screen centre = (0,0)
+        MonoBehaviour.Register(cam);
+        Camera.main = cam;
+        var uiPlanet = new OverlayPlanet { renderMode = RenderMode.ScreenSpaceOverlay };
+        uiPlanet.transform.position = new Vector3(960f + 216f, 540f, 0f); // 2 world units right of centre
+        MonoBehaviour.Register(uiPlanet);
+        uiPlanet.AddCircle(216f, false);                                // 216 px = 2 world units
+        var uiDefense = new LevelPlanetDefense { levelManager = lm, slots = 12, planet = uiPlanet.transform };
+        MonoBehaviour.Register(uiDefense);
+        var uiMoonObj = new OverlayPlanet { renderMode = RenderMode.ScreenSpaceOverlay };
+        uiMoonObj.transform.position = new Vector3(960f + 216f + 432f, 540f, 0f); // 2 planet radii right of the planet
+        MonoBehaviour.Register(uiMoonObj);
+        uiMoonObj.AddCircle(54f, false);                                   // 0.5 world units
+        var uiMoon = new MoonOrbit { planet = uiDefense, moon = uiMoonObj.transform, orbitDegreesPerSecond = 0f, spinDegreesPerSecond = 0f };
+        MonoBehaviour.Register(uiMoon);
+        Run(0.1f);
+        string uiWhy, uiWhy2;
+        bool uiPlaced = uiDefense.TryPlaceTower(T["Laser"], 0, out uiWhy);
+        bool uiMoonPlaced = uiMoon.TryPlaceTower(T["Laser"], 0, out uiWhy2);
+        Run(0.1f);
+        Vector2 top = uiDefense.TowerIn(0).Body.position;
+        Vector2 moonTop = uiMoon.TowerIn(0).Body.position;
+        bool moonIsTrigger = uiMoonObj.GetComponent<Collider2D>().isTrigger;
+        Camera.main = null;
+        Check("Overlay-canvas planet: UI pixels are converted to the camera's world for towers (and the moon's towers)",
+            uiPlaced && uiMoonPlaced && Math.Abs(uiDefense.Radius - 2f) < 0.01f && Vector2.Distance(uiDefense.Root.position, new Vector2(2f, 0f)) < 0.01f
+            && Vector2.Distance(top, new Vector2(2f, 2.2f)) < 0.02f && Vector2.Distance(moonTop, new Vector2(6f, 0.5f)) < 0.02f && moonIsTrigger,
+            "planet radius " + uiDefense.Radius.ToString("F2") + " world (216 px), centre " + ((Vector2)uiDefense.Root.position).x.ToString("F2") + "," + ((Vector2)uiDefense.Root.position).y.ToString("F2")
+            + ", top tower at " + top.x.ToString("F2") + "," + top.y.ToString("F2") + " (expect 2,2.2), moon tower at " + moonTop.x.ToString("F2") + "," + moonTop.y.ToString("F2") + " (expect 6,0.5), moon collider is a trigger: " + moonIsTrigger);
+
+        // 14. full level through the spawner and the AI with towers; level complete after time up
         NewWorld(money: 60, fuel: 600);
         foreach (var n in new[] { "Basic Goose 1", "Basic Goose 3", "Shielded Goose", "Stealth Goose", "Basic Skunk 1" })
             level.enemyDataList.Add(new LevelEnemyEntry { enemy = E[n], startingBudget = 1, endingBudget = 1 });

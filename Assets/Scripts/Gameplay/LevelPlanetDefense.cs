@@ -18,6 +18,8 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
     [Tooltip("The planet object that rotates (LevelManager.planetBody). Empty = take it from the LevelManager.")]
     public Transform planet;
     public EnemySpawner spawner;
+    [Tooltip("Silverman Luna: the moon's towers also count for the AI and fuel. Empty = found automatically if there is one.")]
+    public MoonOrbit moon;
 
     [Header("Slots")]
     [Tooltip("README: small 6, small-medium 8, medium 12, big 16.")]
@@ -26,8 +28,8 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
     public float slot0Angle = 90f;
     [Tooltip("Planet radius in world units. 0 = from the planet's CircleCollider2D.")]
     public float radius;
-    [Tooltip("Where towers sit, in planet radii from the centre (1 = on the surface).")]
-    public float towerDistance = 1.0f;
+    [Tooltip("Where towers sit, in planet radii from the centre (1 = on the surface). A bit outside so the planet art doesn't cover them.")]
+    public float towerDistance = 1.1f;
 
     public float RotationDegrees { get; private set; }
     public float FuelPerSecond { get; private set; }
@@ -35,6 +37,9 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
 
     public Transform Root { get { return transform; } }
     public float Radius { get { return radius; } }
+    /// <summary>The planet's centre and radius in the planet's own space (screen pixels on an overlay canvas). The moon orbits in this space.</summary>
+    public Vector3 PlanetCenterUI { get; private set; }
+    public float PlanetRadiusUI { get; private set; }
 
     private struct Slot
     {
@@ -54,6 +59,7 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
         if (levelManager == null) levelManager = FindAnyObjectByType<LevelManager>();
         if (planet == null && levelManager != null && levelManager.planetBody != null) planet = levelManager.planetBody.transform;
         if (spawner == null) spawner = FindAnyObjectByType<EnemySpawner>();
+        if (moon == null) moon = FindAnyObjectByType<MoonOrbit>();
         slotTowers = new Slot[Mathf.Max(1, slots)];
         hull = new PlanetHull(this);
         autoRadius = radius <= 0f;
@@ -77,7 +83,8 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
         if (c != null)
         {
             Vector3 s = planet.lossyScale;
-            return c.radius * Mathf.Max(Mathf.Abs(s.x), Mathf.Abs(s.y));
+            PlanetRadiusUI = c.radius * Mathf.Max(Mathf.Abs(s.x), Mathf.Abs(s.y));
+            return PlanetRadiusUI * UiSpace.Scale(planet); // UI pixels -> gameplay world units
         }
         if (!warnedRadius) Debug.LogWarning("[LevelPlanetDefense] Couldn't measure the planet radius (no CircleCollider2D on the planet). Set 'radius' by hand.");
         warnedRadius = true;
@@ -104,7 +111,8 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
         if (planet == null) return;
         CircleCollider2D c = PlanetCollider();
         Vector3 p = c != null ? planet.TransformPoint(c.offset) : planet.position; // some planets' circles are offset from the art's pivot
-        transform.position = new Vector3(p.x, p.y, 0f);
+        PlanetCenterUI = p;
+        transform.position = UiSpace.ToGameplay(planet, p); // the planet is UI; enemies and towers live in the camera's world
         RotationDegrees = planet.eulerAngles.z; // LevelManager turns the planet's Rigidbody2D
     }
 
@@ -141,6 +149,9 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
             }
             if (!t.IsDisabled) fuel += t.fuelIntake;
         }
+        if (moon != null)
+            foreach (BaseTowerData t in moon.Towers())
+                if (!t.IsDisabled) fuel += t.fuelIntake;
         FuelPerSecond = fuel;
     }
 
@@ -246,6 +257,16 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
             BaseTowerData t = TowerIn(i);
             if (t == null || t.IsDisabled) continue; // a tower without fuel doesn't cover anything
             snap.Towers.Add(new TowerInfo { Kind = t.data != null ? t.data.kind : TowerKind.Laser, AngleDeg = SlotAngle(i), Hp = t.Health, IsAlive = true });
+        }
+        if (moon != null)
+        {
+            // moon towers as the AI sees them: their angle around the planet
+            foreach (BaseTowerData t in moon.Towers())
+            {
+                if (t.IsDisabled || t.Body == null) continue;
+                Vector2 d = t.Body.position - (Vector2)transform.position;
+                snap.Towers.Add(new TowerInfo { Kind = t.data != null ? t.data.kind : TowerKind.Laser, AngleDeg = PlanetMath.Normalize(Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg), Hp = t.Health, IsAlive = true });
+            }
         }
         return snap;
     }
