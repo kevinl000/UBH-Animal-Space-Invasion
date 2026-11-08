@@ -278,6 +278,11 @@ public class BaseEnemyData : GameEntity
         slowFactor = Mathf.Clamp01(factor);
     }
 
+    public void RevealStealth()
+    {
+        IsStealthed = false;
+    }
+
     protected virtual void OnShieldBroken() { }
 
     protected virtual void Heal(float amount)

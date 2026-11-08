@@ -1,8 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class BaseTowerData : GameEntity, IDamageable, IFreezable
 {
+    // --- State ---
+    public static readonly List<BaseTowerData> Active = new List<BaseTowerData>();
+    public bool IsDisabled { get; private set; } // True when out of fuel or EMP'd
+
     // --- The Scriptable Object ---
     public TowerData data;
 
@@ -20,6 +25,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     protected float currentHealth;
     protected float fireTimer;
     protected float freezeTimer;
+    protected float fuelTimer;
     private bool dead;
 
     // --- Properties ---
@@ -50,10 +56,13 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         currentHealth = maxHealth;
         dead = false;
         freezeTimer = 0f;
+        fireTimer = fireRate;
+        fuelTimer = 0f;
+        IsDisabled = false;
 
         fireTimer = fireRate > 0f ? Random.Range(0f, fireRate * 0.2f) : 0f;
 
-        TowerEvents.RaiseTowerBuilt(this, cost);
+        TowerEvents.RaiseTowerBuilt(cost);
         OnInitialized();
     }
 
@@ -68,13 +77,38 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
         float dt = Time.deltaTime;
 
+        ConsumeFuel(dt);
+
         if (freezeTimer > 0f)
         {
             freezeTimer -= dt;
             return;
         }
 
+        if (IsDisabled) return;
+
         Tick(dt);
+    }
+
+    /// <summary>
+    /// Accumulates time and applies the Fuel Intake per second.
+    /// </summary>
+    protected virtual void ConsumeFuel(float dt)
+    {
+        if (fuelIntake == 0) return; // Free towers don't do anything here
+
+        fuelTimer += dt;
+        if (fuelTimer >= 1f)
+        {
+            fuelTimer -= 1f; // Remove 1 second from the timer
+
+            // Tell the economy manager to add/subtract this fuel amount
+            TowerEvents.RaiseTowerFuelTick(fuelIntake);
+
+            // NOTE: If you want towers to stop firing when you run out of fuel,
+            // your EconomyManager could disable the tower, or you could check a 
+            // global GameManager.HasFuel boolean here before letting Tick() run.
+        }
     }
 
     protected virtual void Tick(float dt)
@@ -97,6 +131,15 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     /// Called by the TowerProjectile when it hits an enemy.
     /// Override this in subclasses to apply debuffs (e.g., enemy.ApplySlow()).
     /// </summary>
+
+    public virtual void SetDisabled(bool disabled)
+    {
+        IsDisabled = disabled;
+
+        // Hook: You could change the sprite color here to grey it out,
+        // or stop a spinning radar animation when disabled.
+    }
+
     public virtual void OnHitEnemy(BaseEnemyData enemy)
     {
         // Default towers just deal raw damage (which is handled by the projectile itself),
@@ -128,7 +171,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
         dead = true;
         int refundAmount = Mathf.FloorToInt(cost * 0.5f);
-        TowerEvents.RaiseTowerSold(this, refundAmount);
+        TowerEvents.RaiseTowerSold(refundAmount);
 
         OnSold();
         Despawn();
@@ -149,9 +192,23 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
     protected virtual void OnDeath() { }
 
+    protected override void OnSpawned()
+    {
+        base.OnSpawned();
+        currentHealth = maxHealth;
+        dead = false;
+        freezeTimer = 0f;
+        fireTimer = fireRate;
+        fuelTimer = 0f;
+        IsDisabled = false; // Always start enabled
+
+        if (!Active.Contains(this)) Active.Add(this);
+    }
+
     protected override void OnDespawned()
     {
         base.OnDespawned();
         dead = true;
+        Active.Remove(this);
     }
 }
