@@ -1,13 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-// These pages render sprites on an overlay canvas, so zoom the shared visual root.
-// All combat visuals added later must share this coordinate space, not the HUD.
+// Overlay pages scale their art; gameplay camera zoom keeps all combat sprites in step.
 [DisallowMultipleComponent]
 public class PlanetPageZoom : MonoBehaviour
 {
+    [Tooltip("Overlay page binding. Leave empty when attached to a world-space GameplayLoopController.")]
     public PlanetPageController page;
     public RectTransform viewport;
     [Tooltip("Border used for spawning. Normally the usable playfield; can be the canvas for a full-screen border.")]
@@ -27,12 +30,37 @@ public class PlanetPageZoom : MonoBehaviour
     private int firstTouchId = -1;
     private int secondTouchId = -1;
     private float previousPinchDistance;
+    private Camera battleCamera;
+    private GameplayLoopController gameplay;
+    private float fittedCameraSize;
+    private PointerEventData pointer;
+    private EventSystem pointerEvents;
+    private readonly List<RaycastResult> uiHits = new List<RaycastResult>();
 
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
-        authoredScale = page.visualMount.localScale;
+        if (page != null) authoredScale = page.visualMount.localScale;
+        else
+        {
+            gameplay = GetComponent<GameplayLoopController>();
+            battleCamera = gameplay != null ? gameplay.battleCamera : null;
+            if (battleCamera != null) fittedCameraSize = battleCamera.orthographicSize;
+        }
         SetZoom(startingZoom, true);
+    }
+
+    private void Start()
+    {
+        if (page != null && FindAnyObjectByType<LevelPlanetDefense>() != null)
+        {
+            battleCamera = Camera.main;
+            if (battleCamera != null)
+            {
+                fittedCameraSize = battleCamera.orthographicSize;
+                ApplyZoom(CurrentZoom);
+            }
+        }
     }
 
     private void OnEnable()
@@ -55,9 +83,15 @@ public class PlanetPageZoom : MonoBehaviour
 
     private void Update()
     {
-        if (!page.controls.interactable || SceneLoadingScreen.IsLoading)
+        if (SceneLoadingScreen.IsLoading || Time.timeScale <= 0f
+            || (page != null && !page.controls.interactable)
+            || (page == null && (gameplay == null || !gameplay.Ready || gameplay.Paused
+                || gameplay.Phase == GameplayLoopController.GameplayPhase.BossEntrance
+                || gameplay.Phase == GameplayLoopController.GameplayPhase.Victory
+                || gameplay.Phase == GameplayLoopController.GameplayPhase.Defeat)))
         {
             ResetPinch();
+            TargetZoom = CurrentZoom;
             return;
         }
 
@@ -86,16 +120,51 @@ public class PlanetPageZoom : MonoBehaviour
         if (immediate) ApplyZoom(TargetZoom);
     }
 
+    // Resizing the playfield keeps the player's zoom relative to the newly fitted view.
+    public void SetFittedCameraSize(float size)
+    {
+        fittedCameraSize = size;
+        ApplyZoom(CurrentZoom);
+    }
+
     private void ApplyZoom(float zoom)
     {
         CurrentZoom = zoom;
-        page.visualMount.localScale = new Vector3(authoredScale.x * zoom, authoredScale.y * zoom, authoredScale.z);
+        if (page != null)
+            page.visualMount.localScale = new Vector3(authoredScale.x * zoom, authoredScale.y * zoom, authoredScale.z);
+        if (battleCamera == null || fittedCameraSize <= 0f) return;
+
+        // Keep an overlay planet's screen centre at the same gameplay-world point.
+        // Its pixel radius grows with zoom while units/pixel shrink, preserving combat geometry.
+        Vector3 anchor = page != null ? UiSpace.ToGameplay(page.visualMount, page.visualMount.position) : Vector3.zero;
+        battleCamera.orthographicSize = fittedCameraSize * startingZoom / zoom;
+        if (page != null)
+            battleCamera.transform.position += anchor - UiSpace.ToGameplay(page.visualMount, page.visualMount.position);
     }
 
     private bool Contains(Vector2 screenPoint)
     {
-        var camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
-        return RectTransformUtility.RectangleContainsScreenPoint(viewport, screenPoint, camera);
+        bool inside;
+        if (page == null) inside = battleCamera != null && battleCamera.pixelRect.Contains(screenPoint);
+        else
+        {
+            var camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            inside = RectTransformUtility.RectangleContainsScreenPoint(viewport, screenPoint, camera);
+        }
+        if (!inside || EventSystem.current == null) return inside;
+        if (pointer == null || pointerEvents != EventSystem.current)
+        {
+            pointerEvents = EventSystem.current;
+            pointer = new PointerEventData(pointerEvents);
+        }
+        pointer.position = screenPoint;
+        uiHits.Clear();
+        EventSystem.current.RaycastAll(pointer, uiHits);
+        foreach (RaycastResult hit in uiHits)
+            if (hit.gameObject.GetComponentInParent<Selectable>() != null
+                || hit.gameObject.GetComponentInParent<ScrollRect>() != null)
+                return false;
+        return true;
     }
 
     private bool ReadPinch()

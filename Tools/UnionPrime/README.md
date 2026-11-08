@@ -10,6 +10,13 @@ tower at its rotating socket; cyan means affordable and red means insufficient
 money. Occupied sockets cannot build and show no ghost. Keyboard focus also
 previews a socket. The bar observes the same phase permissions as clicking the planet.
 
+Mouse wheel over the battle zooms in/out; two fingers spread/pinch to zoom.
+Planet, towers, enemies, projectiles, effects and placement ghosts share the
+camera view, while the HUD stays fixed. The existing fitted view is the starting
+zoom (0.75), with the previous 0.5-1.0 zoom limits. The roster and controls do not
+trigger world zoom. Pause, loading, results and the boss entrance block zoom.
+After the entrance, the camera returns to the player's chosen zoom.
+
 Pause and 1x/2x are anchored at the top-left of Union Prime's HUD, on the same
 canvas as its pause/results overlay. The speed controller starts at 1x before
 subscribing to manager events: the loop registers Playing in its early Start,
@@ -168,6 +175,11 @@ contacts, Animator playback, viewport readability or live UI interaction.
    and confirm its Pause/Resume, speed, results and Retry use that planet.
 6. Inspect all four towers in the twelve sockets through the actual camera at
    16:9 and 4:3. Confirm the right panel and single bottom row do not overlap.
+   Wheel/pinch in and out during setup and combat: enemies, towers, shots,
+   ghosts and effects must scale together, keep their sockets, and retain their
+   combat behavior. Check clicking/building at both limits, resizing the Game
+   view while zoomed, and boss entrance/return at each limit. The roster wheel
+   must scroll only the roster; pause/results/controls must block zoom.
    Hover first/last/rotating sockets, change towers while hovering, build once,
    and check the ghost disappears on exit, pause, entrance and results. Repeat
    with moon sockets in Silverman Luna. Check foreground seating, aiming extremes, material/sorting,

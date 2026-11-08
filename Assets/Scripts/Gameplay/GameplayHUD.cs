@@ -146,7 +146,10 @@ public class GameplayHUD : MonoBehaviour
         float bottom = Mathf.Clamp(TowerPlacementPanel.Height * canvas.scaleFactor / Mathf.Max(1, screenHeight), 0f, 0.3f);
         loop.battleCamera.rect = new Rect(0, bottom, 1f - right, 1f - bottom);
         float aspect = Mathf.Max(0.1f, screenWidth * (1f - right) / Mathf.Max(1f, screenHeight * (1f - bottom)));
-        loop.battleCamera.orthographicSize = Mathf.Max(8.7f, 8.7f / aspect);
+        float fittedSize = Mathf.Max(8.7f, 8.7f / aspect);
+        PlanetPageZoom zoom = loop.GetComponent<PlanetPageZoom>();
+        if (zoom != null) zoom.SetFittedCameraSize(fittedSize);
+        else loop.battleCamera.orthographicSize = fittedSize;
         loop.battleCamera.transform.position = new Vector3(0, 0, -10);
     }
 

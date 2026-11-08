@@ -1,51 +1,54 @@
-# Planet page zoom
+# Planet and gameplay zoom
 
-All seven destination scenes inherit `PlanetPageZoom` from `Assets/UI/Planets/PlanetHUD.prefab`.
-Select the prefab root to tune **Minimum Zoom**, **Maximum Zoom**, **Starting Zoom**,
-**Wheel Sensitivity**, and **Zoom Speed**. Zoom values multiply the authored `PlanetVisual`
-scale: defaults are 0.5 to 1.0, starting at 0.75. The original artwork is unchanged.
+The existing PlanetPageZoom controller handles both world-space gameplay and
+older overlay planet pages. Mouse wheel up / two-finger spread zooms in; wheel
+down / pinch zooms out. Defaults remain 0.5-1.0, starting at 0.75, with unscaled
+smoothing and the existing wheel sensitivity.
 
-- Mouse wheel up enlarges the planet; wheel down reveals more space.
-- Spread two fingers to enlarge; pinch them together to zoom out. Both fingers must
-  begin inside `PlayArea/ZoomViewport`. A single finger still operates the tower roster.
-- Zoom stays centered on the planet. Stars, HUD, and tower roster stay fixed.
-- The wheel over the roster scrolls the roster. Scene loading and disabled page
-  controls block zoom. Wheel smoothing uses unscaled time.
+Union Prime receives the controller from GameplayBootstrap. GameplayHUD passes
+its fitted camera size to the controller, including after a viewport resize.
+Camera zoom scales the planet, towers, enemies, projectiles, effects and socket
+ghosts together. The overlay HUD stays fixed. World physics, ranges, movement,
+spawn distances and parent hierarchies do not change.
 
-These scenes currently use screen-space UI images, including the placed test towers.
-Scaling their shared parent preserves the existing layer order and hit testing. An
-orthographic camera's size would not affect this overlay canvas. This is a presentation
-transform; do not use the scaled canvas distances for combat ranges, speeds, or physics.
-If gameplay is moved to world-space sprites and physics, use orthographic camera zoom
-for that world rather than scaling physics objects.
+The older destination pages retain the controller on PlanetHUD.prefab.
+Their PlanetVisual art still uses its authored scale multiplied by zoom. In a
+gameplay scene, the camera changes by the inverse zoom factor around the same
+planet centre. This gives world-space combat sprites the same visible scale as
+the overlay planet, while keeping its measured world radius and centre stable.
+Pages without LevelPlanetDefense retain their original art-only zoom.
 
-## Spawn integration
+The fitted view is the starting zoom. Camera size is fitted size multiplied by
+startingZoom / CurrentZoom. An aspect-ratio change preserves CurrentZoom.
+Zoom is blocked during pause, loading, disabled page controls, results and
+Union Prime's boss entrance. The entrance owns the camera until it returns to
+the saved position and chosen zoom.
 
-`ZoomViewport` marks the usable playfield: 20 canvas units from the left edge, 20
-from the 440-unit sidebar, 120 below the top, and 100 above the bottom. It stretches
-with the canvas. It is a coordinate/input rectangle, not a visible border or mask.
-`Spawn Viewport` references that rectangle by default.
+Input must be inside the battle camera viewport (world-space gameplay) or
+ZoomViewport (overlay pages). HUD buttons and scrolling controls reject zoom.
+The wheel over the roster scrolls the roster. Both pinch fingers must start
+and remain in the playfield. Stars authored on the overlay HUD stay fixed.
 
-`MaximumViewBounds` returns this rectangle in **PlanetVisual local coordinates**
-at minimum zoom. It stays unchanged when the player zooms and recalculates when the
-viewport size/aspect changes. Do not spawn relative to the current zoomed-in view.
+## Existing overlay spawn helper
 
-`GetSpawnPosition(angleDegrees, clearance)` returns a local point just outside that
-rectangle. Angles run counterclockwise: 0 = right, 90 = up. Pass the enemy's bounding
-radius plus any extra gap as `clearance`, in PlanetVisual local units. One extra unit
-keeps even a zero-radius point outside the border.
+MaximumViewBounds and GetSpawnPosition remain available for overlay visual
+authoring. They return PlanetVisual local coordinates at minimum zoom. Current
+runtime EnemySpawner uses its configured world-space planet-radii distances;
+it does not use this historical overlay spawn helper.
 
-For a future UI enemy visual, parent it to `page.visualMount` (or an enemy layer with
-the same origin and unit scale), anchor it at the center, and assign the returned
-point to `anchoredPosition`. Keep simulation positions and distances in these unzoomed
-local units. Clip enemy visuals to the usable playfield when wiring that renderer so
-they do not appear over the HUD. Do not parent enemies to a rotating planet art child.
+## Manual verification
 
-There is no live enemy spawner in these scenes yet. This change supplies the boundary
-and position calculation; it does not change the wave director or create enemy waves.
+Do not launch Unity or run Unity test suites through Codex. Team review:
 
-## Verification
-
-Run `PlanetPageZoomTests`, `PlanetPageTests`, and `UnionPrimeVisualTestTests` in Unity's
-Play Mode Test Runner. On a touchscreen device, also check pinch direction, clamp feel,
-lifting/replacing fingers, and tower-roster dragging in the intended orientation.
+1. Open Union Prime directly and through navigation. Wheel and pinch to both
+   limits in setup and combat. Verify planet, enemies, towers, shots, effects
+   and ghosts change size together while HUD, costs and combat behavior remain
+   consistent. Place towers at both limits, including by numbered socket.
+2. Scroll the roster and hover the corner controls / bottom bar. These must
+   not zoom the battle. Check pause, loading, results and the boss entrance;
+   the camera must return to the chosen zoom after the entrance.
+3. Resize between 16:9 and 4:3 while zoomed. Verify the chosen zoom is retained,
+   the right sidebar and bottom row stay fixed, and placement still aligns.
+4. Open an older gameplay planet. Verify its overlay art and combat sprites
+   zoom together with no drifting, changed orbit radius or tower seating.
+   Check Silverman's moon and its towers separately.

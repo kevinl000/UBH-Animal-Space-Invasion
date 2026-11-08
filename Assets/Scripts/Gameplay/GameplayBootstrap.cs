@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Adds small runtime UI to gameplay scenes without editing them:
 ///  - Scenes with the GameplayLoopController (Union Prime): its GameplayHUD already has the results and PAUSE,
-///    so only the speed controller is added; GameplayHUD builds its button on the shared canvas.
+///    so speed and zoom controllers are added; GameplayHUD builds the speed button on its canvas.
 ///  - Older level scenes (LevelPlanetDefense with the PlanetHUD): a win / lose screen (GameResultScreen) and
 ///    working PAUSE / 1x-2x buttons on the existing HUD (LevelHudButtons).
 /// </summary>
@@ -29,6 +29,7 @@ public static class GameplayBootstrap
         if (loop != null)
         {
             if (loop.GetComponent<BattleSpeedButton>() == null) loop.gameObject.AddComponent<BattleSpeedButton>();
+            if (loop.GetComponent<PlanetPageZoom>() == null) loop.gameObject.AddComponent<PlanetPageZoom>();
             return;
         }
         LevelPlanetDefense defense = Object.FindAnyObjectByType<LevelPlanetDefense>();
