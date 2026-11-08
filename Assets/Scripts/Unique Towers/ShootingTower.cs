@@ -2,10 +2,22 @@ using UnityEngine;
 
 public class ShootingTower : BaseTowerData
 {
+    protected override void Tick(float dt)
+    {
+        if (Visual != null)
+        {
+            BaseEnemyData target = FindClosestEnemy();
+            if (target != null) Visual.Aim(target.Body.position);
+        }
+        base.Tick(dt);
+    }
+
     protected override void Fire()
     {
         BaseEnemyData target = FindClosestEnemy();
         if (target == null) return; // Nobody in range
+        if (Visual != null) { Visual.Aim(target.Body.position); Visual.Attack(); }
+        Vector3 origin = Visual != null && Visual.Muzzle != null ? Visual.Muzzle.position : transform.position;
 
         if (data.projectilePrefab != null)
         {
@@ -13,11 +25,11 @@ public class ShootingTower : BaseTowerData
             TowerProjectile proj = PoolManager.Instance.Spawn(
                 data.projectilePrefab,
                 null,
-                transform.position,
+                origin,
                 transform.eulerAngles.z
             );
 
-            proj.Launch(this, target, transform.position);
+            proj.Launch(this, target, origin);
         }
         else
         {

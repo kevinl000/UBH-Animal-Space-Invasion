@@ -23,6 +23,15 @@ public class PoolManager : MonoBehaviour
     public int maxSizePerPrefab = 200;
 
     private readonly Dictionary<GameEntity, ObjectPool<GameEntity>> pools = new Dictionary<GameEntity, ObjectPool<GameEntity>>();
+    private readonly HashSet<GameEntity> active = new HashSet<GameEntity>();
+
+    public void ClearCombat()
+    {
+        // Snapshot only at a phase boundary; Despawn changes the active set.
+        var snapshot = new List<GameEntity>(active);
+        foreach (GameEntity entity in snapshot)
+            if (entity != null && !(entity is BaseTowerData)) entity.Despawn();
+    }
 
     private void Awake()
     {
@@ -48,6 +57,7 @@ public class PoolManager : MonoBehaviour
         e.transform.SetParent(parent, false);
         e.gameObject.SetActive(true);
         e.NotifySpawned();
+        active.Add(e);
         return (T)e;
     }
 
@@ -74,6 +84,10 @@ public class PoolManager : MonoBehaviour
             return;
         }
         if (!e.IsSpawned) return; // already back in the pool
+        if (e is BaseTowerData || e is BaseEnemyData)
+            foreach (PooledEffect effect in e.GetComponentsInChildren<PooledEffect>())
+                if (effect.IsSpawned) effect.Despawn();
+        active.Remove(e);
         pool.Release(e);
     }
 

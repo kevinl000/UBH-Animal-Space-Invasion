@@ -169,7 +169,7 @@ public static class GameplaySetup
             if (existed) kept++; else made++;
 
             d.prefab = go.GetComponent<BaseEnemyData>();
-            if (art.projectile != null && enemyShots.ContainsKey(art.projectile)) d.projectilePrefab = enemyShots[art.projectile];
+            if (d.projectilePrefab == null && art.projectile != null && enemyShots.ContainsKey(art.projectile)) d.projectilePrefab = enemyShots[art.projectile];
             EditorUtility.SetDirty(d);
         }
 
@@ -198,7 +198,8 @@ public static class GameplaySetup
             t.ignoresShield = r.ignoresShield;
             t.canHitStealth = r.seesStealth;
             t.prefab = go.GetComponent<BaseTowerData>();
-            t.projectilePrefab = r.projectile != null && towerShots.ContainsKey(r.projectile) ? towerShots[r.projectile] : null;
+            if (t.projectilePrefab == null)
+                t.projectilePrefab = r.projectile != null && towerShots.ContainsKey(r.projectile) ? towerShots[r.projectile] : null;
             if (isNew) AssetDatabase.CreateAsset(t, dataPath);
             else EditorUtility.SetDirty(t);
         }
@@ -350,6 +351,11 @@ public static class GameplaySetup
     [MenuItem("Tools/Gameplay/2. Add Gameplay To Open Level Scene")]
     public static void SetupScene()
     {
+        if (Object.FindAnyObjectByType<GameplayLoopController>() != null)
+        {
+            Debug.Log("[GameplaySetup] This scene uses a configured gameplay loop. Edit its configuration; do not apply legacy scene setup.");
+            return;
+        }
         Scene scene = SceneManager.GetActiveScene();
         LevelManager lm = Object.FindAnyObjectByType<LevelManager>();
         if (lm == null)

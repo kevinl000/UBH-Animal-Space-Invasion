@@ -54,6 +54,7 @@ public class BaseEnemyData : GameEntity
     protected IPlanetDefense planet;
     protected EnemySpawnContext context;
     protected float attackTimer;
+    public CombatVisual Visual { get; private set; }
     private float slowTimer;
     private float slowFactor = 1f;
     private float dotTimer;
@@ -64,6 +65,7 @@ public class BaseEnemyData : GameEntity
     protected override void Awake()
     {
         base.Awake(); // Rigidbody2D: kinematic, no gravity (GameEntity)
+        Visual = GetComponent<CombatVisual>();
         currentHealth = maxHealth;
         if (hitCollider == null) Debug.LogWarning("[BaseEnemyData] '" + name + "' has no Collider2D, so nothing can collide with it.");
     }
@@ -107,6 +109,7 @@ public class BaseEnemyData : GameEntity
         if (!Active.Contains(this)) Active.Add(this);
         Teleport();
         OnInitialized();
+        if (Visual != null) Visual.ResetVisual();
         EnemyEvents.RaiseSpawned(this);
     }
 
@@ -116,7 +119,7 @@ public class BaseEnemyData : GameEntity
     // Physics step: all movement goes through the Rigidbody2D here.
     protected virtual void FixedUpdate()
     {
-        if (!IsAlive || data == null || planet == null) return;
+        if (!IsAlive || data == null || planet == null || !GameplayLoopController.CombatAllowed) return;
         float dt = Time.fixedDeltaTime;
         if (slowTimer > 0f)
         {
@@ -192,7 +195,9 @@ public class BaseEnemyData : GameEntity
             EnemyProjectile shot = PoolManager.Instance != null
                 ? PoolManager.Instance.Spawn(data.projectilePrefab, planet.Root)
                 : Instantiate(data.projectilePrefab, planet.Root);
-            shot.Launch(planet, AngleDegrees, Distance, angleDegrees, () => DealDamage(p, angleDegrees, amount, aoe, spread, bridge, ticket));
+            PooledEffect secondary = shot.secondaryEffect;
+            shot.Launch(planet, AngleDegrees, Distance, angleDegrees, () => DealDamage(p, angleDegrees, amount, aoe, spread, bridge, ticket, secondary));
+            if (Visual != null && Visual.Muzzle != null) shot.SetLaunchPosition(Visual.Muzzle.position);
         }
         else
         {
@@ -206,14 +211,20 @@ public class BaseEnemyData : GameEntity
         return DealDamage(planet, angleDegrees, amount, aoe, data.aoeSpreadDegrees, context.Bridge, context.Ticket);
     }
 
-    private static float DealDamage(IPlanetDefense target, float angleDegrees, float amount, bool aoe, float spread, WaveDirectorBridge bridge, int ticket)
+    private static float DealDamage(IPlanetDefense target, float angleDegrees, float amount, bool aoe, float spread, WaveDirectorBridge bridge, int ticket, PooledEffect secondary = null)
     {
         if (target == null) return 0f;
         float dealt = 0f;
         if (aoe)
         {
+            IDamageable center = target.GetTargetBelow(angleDegrees);
             foreach (IDamageable t in target.GetTargetsNear(angleDegrees, spread))
-                if (t != null && t.IsAlive) dealt += t.ReceiveDamage(amount);
+                if (t != null && t.IsAlive)
+                {
+                    BaseTowerData tower = t as BaseTowerData;
+                    if (tower != null && t != center) CombatVisual.Play(secondary, tower.transform.position, tower.transform.eulerAngles.z);
+                    dealt += t.ReceiveDamage(amount);
+                }
         }
         else
         {
@@ -239,7 +250,9 @@ public class BaseEnemyData : GameEntity
 
     private void HandleContact(Collider2D other)
     {
-        if (!IsAlive || other == null) return;
+        if (!IsAlive || other == null || !GameplayLoopController.CombatAllowed) return;
+        TowerProjectile projectile = other.GetComponentInParent<TowerProjectile>();
+        if (projectile != null) { projectile.TryHit(this); return; }
         IEnemyHitter hitter = other.GetComponentInParent<IEnemyHitter>();
         if (hitter != null && (!IsStealthed || hitter.CanHitStealth))
         {
@@ -324,11 +337,25 @@ public class BaseEnemyData : GameEntity
         EnemyEvents.RaiseKilled(money, fuel);
 
         OnDeath();
+        EnemyEvents.RaiseDied(this);
         Despawn();
     }
 
     /// <summary>Hook for death effects (e.g. Animal Ship releasing animals).</summary>
     protected virtual void OnDeath() { }
+
+    public void SetEntrancePosition(Vector3 position)
+    {
+        body.position = position;
+        transform.position = position;
+    }
+
+    public void CompleteEntrance()
+    {
+        Distance = TargetDistance;
+        Arrived = true;
+        Teleport();
+    }
 
     // Despawn() (from GameEntity) removes the enemy without drops (level end, or after death) and returns it to the PoolManager.
     protected override void OnDespawned()

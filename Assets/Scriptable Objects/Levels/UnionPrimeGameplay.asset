@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7398ff03bbf153dbba84ed733e95a8d0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelGameplayConfig
+  level: {fileID: 11400000, guid: 56e6348235c53aa4899b74e6811ea894, type: 2}
+  towers:
+  - {fileID: 11400000, guid: 2b5c374f02eb0e74fa40bca910d75430, type: 2}
+  - {fileID: 11400000, guid: c2d7e4c58c466c944bae49ae1de52d8e, type: 2}
+  - {fileID: 11400000, guid: f7b526bce9bf7b44fb620a7af83907dd, type: 2}
+  - {fileID: 11400000, guid: dc56ef29c353f8d43861b1c4f53434da, type: 2}
+  waves:
+  - duration: 20
+    restDuration: 15
+    costBudget: 30
+    roster:
+    - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
+      enemyInstances: []
+      startingBudget: 0.5
+      endingBudget: 0.5
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
+      enemyInstances: []
+      startingBudget: 0.5
+      endingBudget: 0.5
+      isLevelBoss: 0
+    miniboss: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+  - duration: 20
+    restDuration: 15
+    costBudget: 50
+    roster:
+    - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
+      enemyInstances: []
+      startingBudget: 0.4
+      endingBudget: 0.4
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
+      enemyInstances: []
+      startingBudget: 0.4
+      endingBudget: 0.4
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    miniboss: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+  - duration: 20
+    restDuration: 15
+    costBudget: 70
+    roster:
+    - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    miniboss: {fileID: 0}
+  finalBosses:
+  - {fileID: 11400000, guid: 9d64b6600c3255b47ac2285e5484a139, type: 2}
+  - {fileID: 11400000, guid: 72c2a62784d8b234f92081973ca78f96, type: 2}
+  starterSlots: 0000000006000000
+  spawnInterval: 1
+  bossEntranceDuration: 3
+  nextScene: CapenMajor

@@ -24,6 +24,7 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
     [Header("Slots")]
     [Tooltip("README: small 6, small-medium 8, medium 12, big 16.")]
     public int slots = 12;
+    public Transform[] socketMounts = new Transform[0];
     [Tooltip("Angle of slot 0 before rotation (90 = top).")]
     public float slot0Angle = 90f;
     [Tooltip("Planet radius in world units. 0 = from the planet's CircleCollider2D.")]
@@ -60,7 +61,7 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
         if (planet == null && levelManager != null && levelManager.planetBody != null) planet = levelManager.planetBody.transform;
         if (spawner == null) spawner = FindAnyObjectByType<EnemySpawner>();
         if (moon == null) moon = FindAnyObjectByType<MoonOrbit>();
-        slotTowers = new Slot[Mathf.Max(1, slots)];
+        slotTowers = new Slot[Mathf.Max(1, socketMounts.Length > 0 ? socketMounts.Length : slots)];
         hull = new PlanetHull(this);
         autoRadius = radius <= 0f;
         if (autoRadius) radius = MeasureRadius();
@@ -118,6 +119,7 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
 
     private void Update()
     {
+        if (GameplayLoopController.Instance != null) return;
         if (levelManager != null && levelManager.time != null && spawner != null && spawner.level != null && spawner.level.maxTime > 0f)
         {
             float left = Mathf.Max(0f, spawner.level.maxTime - spawner.Elapsed);
@@ -144,8 +146,8 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
             if (t.Body != null)
             {
                 float a = SlotAngle(i);
-                t.Body.MovePosition(transform.TransformPoint(PlanetMath.ToLocal(a, towerDistance, radius)));
-                t.Body.MoveRotation(a - 90f); // sprite "up" points away from the planet (that's the FOV direction)
+                t.Body.MovePosition(SlotPosition(i));
+                t.Body.MoveRotation(SlotRotation(i)); // sprite "up" points away from the planet (that's the FOV direction)
             }
             if (!t.IsDisabled) fuel += t.fuelIntake;
         }
@@ -157,13 +159,40 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
 
     // ---------------------------------------------------------------- slots
 
+    private float SlotRotation(int slot)
+    {
+        return socketMounts.Length > 0 ? socketMounts[slot].eulerAngles.z : SlotAngle(slot) - 90f;
+    }
+
+    public Vector3 SlotPosition(int slot)
+    {
+        return socketMounts.Length > 0 ? socketMounts[slot].position
+            : transform.TransformPoint(PlanetMath.ToLocal(SlotAngle(slot), towerDistance, radius));
+    }
+
     public float SlotAngle(int slot)
     {
+        if (socketMounts.Length > 0)
+        {
+            Vector3 p = transform.InverseTransformPoint(socketMounts[slot].position);
+            return PlanetMath.Normalize(Mathf.Atan2(p.y, p.x) * Mathf.Rad2Deg);
+        }
         return PlanetMath.Normalize(slot0Angle + slot * (360f / slotTowers.Length) + RotationDegrees);
     }
 
     public int SlotAt(float angleDegrees)
     {
+        if (socketMounts.Length > 0)
+        {
+            int best = 0;
+            float distance = float.MaxValue;
+            for (int i = 0; i < socketMounts.Length; i++)
+            {
+                float d = PlanetMath.Distance(SlotAngle(i), angleDegrees);
+                if (d < distance) { distance = d; best = i; }
+            }
+            return best;
+        }
         float step = 360f / slotTowers.Length;
         float rel = PlanetMath.Normalize(angleDegrees - slot0Angle - RotationDegrees);
         return Mathf.RoundToInt(rel / step) % slotTowers.Length;
@@ -180,27 +209,32 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
     }
 
     /// <summary>Builds a tower in a slot. Returns false (with a reason for the UI) if it can't.</summary>
-    public bool TryPlaceTower(TowerData data, int slot, out string reason)
+    public bool TryPlaceTower(TowerData data, int slot, out string reason, bool free = false)
     {
         reason = null;
+        var loop = GameplayLoopController.Instance;
+        if (loop != null && ((!free && !loop.CanBuild) || (free && loop.Phase != GameplayLoopController.GameplayPhase.Setup)
+            || System.Array.IndexOf(loop.config.towers, data) < 0))
+        { reason = "Building is unavailable."; return false; }
         if (data == null || data.prefab == null) { reason = "This tower has no prefab yet."; return false; }
         if (slot < 0 || slot >= slotTowers.Length) { reason = "No slot there."; return false; }
         if (TowerIn(slot) != null) { reason = "That slot already has a tower."; return false; }
-        if (levelManager != null && !levelManager.CanAfford(data.cost)) { reason = "Not enough money ($" + data.cost + ")."; return false; }
+        if (!free && levelManager != null && !levelManager.CanAfford(data.cost)) { reason = "Not enough money ($" + data.cost + ")."; return false; }
         if (PoolManager.Instance == null) { reason = "No PoolManager in the scene."; return false; }
 
         float a = SlotAngle(slot);
         BaseTowerData tower = PoolManager.Instance.Spawn(data.prefab, transform,
-            transform.TransformPoint(PlanetMath.ToLocal(a, towerDistance, radius)), a - 90f);
+            SlotPosition(slot), SlotRotation(slot));
         tower.name = data.name;
-        tower.Initialize(data); // raises TowerBuilt -> LevelManager pays the cost
+        tower.Initialize(data, free); // raises TowerBuilt -> LevelManager pays the cost
         slotTowers[slot] = new Slot { Tower = tower, SpawnId = tower.SpawnId };
         return true;
     }
 
-    /// <summary>Sells the tower in this slot (half the cost back). Returns false if the slot is empty.</summary>
+    /// <summary>Uses the gameplay loop's phase/refund rules, or the legacy half-price refund.</summary>
     public bool SellTower(int slot)
     {
+        if (GameplayLoopController.Instance != null && !GameplayLoopController.Instance.CanSell) return false;
         BaseTowerData t = TowerIn(slot);
         if (t == null) return false;
         t.Sell();

@@ -6,6 +6,8 @@ public class RadarTower : BaseTowerData
 
     private float pulseTimer;
 
+    protected override void OnInitialized() { pulseTimer = 0f; }
+
     // Radar's README attack type is N/A (None), and the base Tick skips None, so pulse on our own timer.
     protected override void Tick(float dt)
     {
@@ -17,9 +19,11 @@ public class RadarTower : BaseTowerData
 
     protected override void Fire()
     {
+        if (Visual != null) Visual.Attack();
         // FireRate acts as the pulse interval (e.g., pulse every 0.5s)
-        foreach (BaseEnemyData enemy in BaseEnemyData.Active)
+        for (int i = BaseEnemyData.Active.Count - 1; i >= 0; i--)
         {
+            BaseEnemyData enemy = BaseEnemyData.Active[i];
             if (enemy.IsAlive && InSight(enemy))
             {
                 // 1. Standard Radar: Reveal them 

@@ -7,6 +7,14 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     // --- State ---
     public static readonly List<BaseTowerData> Active = new List<BaseTowerData>();
     public bool IsDisabled { get; private set; } // True when out of fuel or EMP'd
+    public bool IsFrozen => freezeTimer > 0f;
+    public CombatVisual Visual { get; private set; }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Visual = GetComponent<CombatVisual>();
+    }
 
     // --- The Scriptable Object ---
     public TowerData data;
@@ -27,6 +35,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     protected float freezeTimer;
     protected float fuelTimer;
     private bool dead;
+    private float paidFuelRemaining;
 
     // --- Properties ---
     public float Health { get { return currentHealth; } }
@@ -42,7 +51,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     public bool CanHitStealth { get { return canHitStealth; } }
 
     /// <summary>Call this when placing the tower.</summary>
-    public virtual void Initialize(TowerData towerData)
+    public virtual void Initialize(TowerData towerData, bool free = false)
     {
         data = towerData;
 
@@ -60,11 +69,13 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         freezeTimer = 0f;
         fireTimer = fireRate;
         fuelTimer = 0f;
+        paidFuelRemaining = 0f;
         IsDisabled = false;
 
         fireTimer = fireRate > 0f ? Random.Range(0f, fireRate * 0.2f) : 0f;
 
-        TowerEvents.RaiseTowerBuilt(cost);
+        TowerEvents.RaiseTowerBuilt(free ? 0 : cost);
+        if (Visual != null) Visual.ResetVisual();
         OnInitialized();
     }
 
@@ -75,17 +86,27 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
     protected virtual void Update()
     {
-        if (!IsAlive || data == null) return;
+        if (!IsAlive || data == null || !GameplayLoopController.CombatAllowed) return;
 
         float dt = Time.deltaTime;
+        bool frozen = freezeTimer > 0f;
+        if (frozen) freezeTimer = Mathf.Max(0f, freezeTimer - dt);
 
-        ConsumeFuel(dt);
-
-        if (freezeTimer > 0f)
+        if (GameplayLoopController.Instance != null && fuelIntake < 0)
         {
-            freezeTimer -= dt;
-            return;
+            // Pay for a powered second before firing. A paid second stays usable at zero balance.
+            if (paidFuelRemaining <= 0f)
+            {
+                bool paid = GameplayLoopController.Instance.levelManager.TryConsumeFuel(-fuelIntake);
+                SetDisabled(!paid);
+                if (!paid) return;
+                paidFuelRemaining = 1f;
+            }
+            paidFuelRemaining -= dt;
         }
+        else ConsumeFuel(dt);
+
+        if (frozen) return;
 
         if (IsDisabled) return;
 
@@ -162,14 +183,15 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     }
     public float ReceiveDamage(float amount)
     {
-        if (!IsAlive || amount <= 0f) return 0f;
+        if (!IsAlive || amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount)) return 0f;
 
+        float dealt = Mathf.Min(amount, currentHealth);
         currentHealth -= amount;
         if (currentHealth <= 0f)
         {
             Die();
         }
-        return amount;
+        return dealt;
     }
 
     public void Freeze(float seconds)
@@ -183,9 +205,11 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     public virtual void Sell()
     {
         if (!IsAlive) return;
+        var loop = GameplayLoopController.Instance;
+        if (loop != null && !loop.CanSell) return;
 
         dead = true;
-        int refundAmount = Mathf.FloorToInt(cost * 0.5f);
+        int refundAmount = loop != null ? cost : Mathf.FloorToInt(cost * 0.5f);
         TowerEvents.RaiseTowerSold(refundAmount);
 
         OnSold();
@@ -226,4 +250,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         dead = true;
         Active.Remove(this);
     }
+
+    protected virtual void OnDisable() { Active.Remove(this); }
+    protected virtual void OnDestroy() { Active.Remove(this); }
 }

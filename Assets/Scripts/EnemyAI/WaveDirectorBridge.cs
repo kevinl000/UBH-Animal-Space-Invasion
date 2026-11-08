@@ -65,6 +65,41 @@ public class WaveDirectorBridge : MonoBehaviour
     private readonly Dictionary<EnemyData, EnemyKind> kindCache = new Dictionary<EnemyData, EnemyKind>();
     private LevelEnemyEntry pending;   // the enemy the AI has decided to send next
     private float pendingSince;
+    private GameplayWave wave;
+    private float waveSpent;
+
+    public void BeginWave(GameplayWave definition)
+    {
+        wave = definition;
+        waveSpent = 0f;
+        pending = null;
+    }
+
+    public LevelEnemyEntry PickWaveEntry(float releasedBudget)
+    {
+        if (wave == null) return null;
+        float ceiling = wave.costBudget - waveSpent;
+        if (pending == null)
+        {
+            candidates.Clear();
+            foreach (LevelEnemyEntry entry in wave.roster)
+            {
+                if (entry == null || entry.enemy == null || entry.startingBudget <= 0f) continue;
+                int cost = LevelData.EffectiveCost(entry.enemy);
+                candidates.Add(new AdaptiveWaveDirector.Candidate { Kind = KindOf(entry.enemy), Cost = cost,
+                    BaseProbability = entry.startingBudget / cost, Tag = entry });
+            }
+            var chosen = director.PickEnemy(candidates, ceiling);
+            pending = chosen != null ? (LevelEnemyEntry)chosen.Tag : null;
+        }
+        return pending != null && LevelData.EffectiveCost(pending.enemy) <= releasedBudget - waveSpent ? pending : null;
+    }
+
+    public void RecordWaveSpawn(LevelEnemyEntry entry)
+    {
+        waveSpent += LevelData.EffectiveCost(entry.enemy);
+        pending = null;
+    }
 
     /// <summary>The enemy the AI is saving budget for (null if none). Handy for a debug label.</summary>
     public LevelEnemyEntry Pending

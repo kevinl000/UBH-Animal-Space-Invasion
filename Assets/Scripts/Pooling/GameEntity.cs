@@ -26,6 +26,7 @@ public abstract class GameEntity : MonoBehaviour
 
     protected Rigidbody2D body;
     protected Collider2D hitCollider;
+    protected Animator[] spriteAnimators;
     private bool destroyedWithoutPool;
     private static int nextSpawnId;
 
@@ -34,6 +35,7 @@ public abstract class GameEntity : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         if (body == null) body = gameObject.AddComponent<Rigidbody2D>(); // prefab made before RequireComponent was added
         hitCollider = GetComponent<Collider2D>();
+        spriteAnimators = GetComponentsInChildren<Animator>(true);
         ConfigureBody(body);
     }
 
@@ -58,6 +60,12 @@ public abstract class GameEntity : MonoBehaviour
         IsSpawned = true;
         destroyedWithoutPool = false;
         SpawnId = ++nextSpawnId;
+        foreach (Animator animator in spriteAnimators)
+        {
+            animator.speed = 1f;
+            animator.Rebind();
+            animator.Update(0f);
+        }
         OnSpawned();
     }
 
@@ -70,6 +78,14 @@ public abstract class GameEntity : MonoBehaviour
 
     /// <summary>Reset per-use state here (HP, timers...). The object is active.</summary>
     protected virtual void OnSpawned() { }
+
+    protected virtual void LateUpdate()
+    {
+        // Towers/enemies bind their own power/status visuals through CombatVisual.
+        if (this is BaseTowerData || this is BaseEnemyData) return;
+        foreach (Animator animator in spriteAnimators)
+            animator.speed = GameplayLoopController.CombatAllowed ? 1f : 0f;
+    }
 
     /// <summary>Clean up here (unregister from lists...). The object is still active.</summary>
     protected virtual void OnDespawned() { }

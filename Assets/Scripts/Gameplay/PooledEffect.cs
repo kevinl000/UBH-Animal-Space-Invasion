@@ -18,7 +18,7 @@ public class PooledEffect : GameEntity
 
     private void FixedUpdate()
     {
-        if (!IsSpawned) return;
+        if (!IsSpawned || !GameplayLoopController.CombatAllowed) return;
         timer -= Time.fixedDeltaTime;
         if (timer <= 0f) Despawn();
     }

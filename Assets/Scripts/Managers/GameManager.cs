@@ -57,6 +57,14 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Playing);
     }
 
+    // Register an already loaded gameplay scene (including opening it directly in the editor).
+    public void RegisterLoadedLevel(string sceneName)
+    {
+        LastPlayedLevel = sceneName;
+        Time.timeScale = 1f;
+        UpdateGameState(GameState.Playing);
+    }
+
     public void RestartCurrentLevel()
     {
         if (!string.IsNullOrEmpty(LastPlayedLevel))

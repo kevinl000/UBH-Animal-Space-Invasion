@@ -15,6 +15,12 @@ public class TowerProjectile : GameEntity, IEnemyHitter
 
     private BaseTowerData sourceTower;
     private BaseEnemyData target;
+    public PooledEffect impactEffect;
+    private int targetSpawnId;
+    private int sourceSpawnId;
+    private float areaRadius;
+    private bool consumed;
+    private float dotDamage, dotDuration, slowFactor, percentDamage;
     private float lifeTimer;
     private Vector2 moveDirection;
 
@@ -30,6 +36,17 @@ public class TowerProjectile : GameEntity, IEnemyHitter
     {
         sourceTower = tower;
         target = enemyTarget;
+        targetSpawnId = target != null ? target.SpawnId : 0;
+        sourceSpawnId = tower.SpawnId;
+        consumed = false;
+        PestTrapTower trap = tower as PestTrapTower;
+        dotDamage = trap != null ? trap.Damage : 0f;
+        dotDuration = trap != null ? trap.slowDuration : 0f;
+        slowFactor = trap != null ? trap.slowAmount : 1f;
+        BallisticaTower ballistica = tower as BallisticaTower;
+        percentDamage = ballistica != null ? ballistica.percentDamage : 0f;
+        AoETower area = tower as AoETower;
+        areaRadius = area != null ? area.effectRadius : 0f;
 
         // Copy stats from the tower
         Damage = tower.ProjectileDamage;
@@ -37,6 +54,7 @@ public class TowerProjectile : GameEntity, IEnemyHitter
         CanHitStealth = tower.CanHitStealth;
 
         lifeTimer = maxLifeTime;
+        moveDirection = Vector2.right;
 
         // Teleport to the spawn position (e.g., the tower's barrel)
         body.position = spawnPosition;
@@ -51,7 +69,7 @@ public class TowerProjectile : GameEntity, IEnemyHitter
 
     private void FixedUpdate()
     {
-        if (!IsSpawned) return;
+        if (!IsSpawned || !GameplayLoopController.CombatAllowed) return;
 
         lifeTimer -= Time.fixedDeltaTime;
         if (lifeTimer <= 0f)
@@ -61,7 +79,7 @@ public class TowerProjectile : GameEntity, IEnemyHitter
         }
 
         // Homing logic: update direction if the target is still alive
-        if (target != null && target.IsAlive)
+        if (target != null && target.IsAlive && target.SpawnId == targetSpawnId)
         {
             moveDirection = (target.Body.position - body.position).normalized;
             FaceDirection(moveDirection);
@@ -78,17 +96,41 @@ public class TowerProjectile : GameEntity, IEnemyHitter
 
     // --- IEnemyHitter Implementation ---
 
-    /// <summary>Triggered by BaseEnemyData's OnTriggerEnter2D.</summary>
-    public void OnHitEnemy(BaseEnemyData enemy)
+    // Reserve the hit before damage: death callbacks and multiple contacts cannot reuse it.
+    public void TryHit(BaseEnemyData enemy)
     {
-        // 1. Let the tower know it hit something, in case the tower applies Poison/Slows
-        if (sourceTower != null && sourceTower.IsAlive)
+        if (!IsSpawned || consumed || !GameplayLoopController.CombatAllowed || !enemy.IsTargetable(CanHitStealth)) return;
+        consumed = true;
+        Vector3 hitAt = enemy.transform.position;
+        Vector3 contact = enemy.Collider != null ? (Vector3)enemy.Collider.ClosestPoint(body.position) : hitAt;
+        if (IgnoresShield) enemy.TakeDamageIgnoringShield(Damage);
+        else enemy.TakeDamage(Damage);
+        if (areaRadius > 0f)
         {
-            sourceTower.OnHitEnemy(enemy);
+            for (int i = BaseEnemyData.Active.Count - 1; i >= 0; i--)
+            {
+                BaseEnemyData other = BaseEnemyData.Active[i];
+                if (other == enemy || !other.IsTargetable(CanHitStealth) || Vector2.Distance(other.Body.position, hitAt) > areaRadius) continue;
+                if (IgnoresShield) other.TakeDamageIgnoringShield(Damage);
+                else other.TakeDamage(Damage);
+            }
         }
-
-        // 2. The enemy's OnTriggerEnter2D has already subtracted the health at this point,
-        // so the projectile's only remaining job is to destroy itself.
+        else if (dotDuration > 0f && enemy.IsAlive)
+        {
+            enemy.ApplySlow(dotDuration, slowFactor);
+            enemy.ApplyDamageOverTime(dotDamage, dotDuration);
+        }
+        else if (percentDamage > 0f && enemy.IsAlive)
+        {
+            if (IgnoresShield) enemy.TakeDamageIgnoringShield(enemy.MaxHealth * percentDamage);
+            else enemy.TakeDamage(enemy.MaxHealth * percentDamage);
+        }
+        else if (sourceTower != null && sourceTower.IsAlive && sourceTower.SpawnId == sourceSpawnId)
+            sourceTower.OnHitEnemy(enemy);
+        float scale = areaRadius > 0f ? areaRadius : 1f;
+        CombatVisual.Play(impactEffect, areaRadius > 0f ? hitAt : contact, body.rotation, null, scale);
         Despawn();
     }
+
+    public void OnHitEnemy(BaseEnemyData enemy) { Despawn(); }
 }

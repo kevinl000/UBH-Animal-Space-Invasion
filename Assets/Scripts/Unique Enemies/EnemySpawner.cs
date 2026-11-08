@@ -18,6 +18,10 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("Seconds between spawn attempts (one enemy at most per attempt).")]
     public float spawnInterval = 0.5f;
     public bool startOnAwake = true;
+    public bool externallyControlled;
+    private GameplayWave currentWave;
+    private float waveStart;
+    private float nextWaveSpawn;
 
     [Tooltip("The level's PoolManager. Empty = PoolManager.Instance.")]
     public PoolManager pool;
@@ -45,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
         if (level == null) { Debug.LogError("[EnemySpawner] No LevelData assigned."); return; }
         if (Pool == null) { Debug.LogError("[EnemySpawner] No PoolManager in the scene. Add one (there should be exactly one per level)."); return; }
 
-        level.Init();
+        if (!externallyControlled) level.Init();
         BaseEnemyData.Active.RemoveAll(e => e == null); // static list can outlive a play session in the editor
         if (bridge != null)
         {
@@ -66,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if (!Running) return;
+        if (!Running || externallyControlled || !GameplayLoopController.CombatAllowed) return;
         float previous = Elapsed;
         Elapsed += Time.deltaTime;
 
@@ -129,6 +133,42 @@ public class EnemySpawner : MonoBehaviour
         bool shiny = Random.value < (data != null && data.isBoss ? 0.01f : 0.05f); // README shiny chances
         bool orbits = data != null && data.movement != EnemyMovement.StopAndShoot;
         return Spawn(data, angleDegrees, shiny, orbits, 0, distance);
+    }
+
+    public void BeginWave(GameplayWave wave, float completedSpawnTime)
+    {
+        currentWave = wave;
+        waveStart = completedSpawnTime;
+        nextWaveSpawn = 0f;
+        bridge.BeginWave(wave);
+        Running = true;
+    }
+
+    public void TickWave(float elapsed)
+    {
+        if (!Running || currentWave == null || !GameplayLoopController.CombatAllowed) return;
+        Elapsed = waveStart + elapsed;
+        if (elapsed < nextWaveSpawn) return;
+        nextWaveSpawn = elapsed + GameplayLoopController.Instance.config.spawnInterval;
+        DefenseSnapshot snapshot = planet.BuildSnapshot();
+        bridge.Tick(Elapsed, snapshot);
+        float available = currentWave.costBudget * Mathf.Clamp01(elapsed / currentWave.duration);
+        LevelEnemyEntry entry = bridge.PickWaveEntry(available);
+        if (entry == null) return;
+        SpawnModifiers mods = bridge.RollModifiers(entry, snapshot);
+        BaseEnemyData enemy = Spawn(entry.enemy, mods.SpawnAngleDeg, mods.IsShiny, mods.Orbits, mods.Ticket, spawnDistance);
+        if (enemy != null) bridge.RecordWaveSpawn(entry);
+        else bridge.ReportGone(mods.Ticket);
+    }
+
+    public BaseEnemyData SpawnEncounter(EnemyData data)
+    {
+        if (data == null) { Debug.LogError("[EnemySpawner] Missing encounter data."); return null; }
+        bool shiny = Random.value < (data.isBoss ? 0.01f : 0.05f);
+        bool orbit = data.isBoss || Random.value < 0.5f;
+        BaseEnemyData enemy = Spawn(data, Random.Range(0f, 360f), shiny, orbit, 0, spawnDistance);
+        if (data.isBoss && enemy != null) EnemyEvents.RaiseBossSpawned(enemy);
+        return enemy;
     }
 
     /// <summary>Asks the PoolManager to create a few instances of every enemy in the level up front.</summary>

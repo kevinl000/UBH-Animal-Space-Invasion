@@ -8,6 +8,8 @@ public static class EnemyEvents
     /// <summary>(money dropped, fuel dropped). Shiny drops are already doubled.</summary>
     public static event Action<int, int> Killed;
     public static event Action<BaseEnemyData> Spawned;
+    public static event Action<BaseEnemyData> Died;
+    public static void RaiseDied(BaseEnemyData enemy) { Died?.Invoke(enemy); }
     /// <summary>Fires a few seconds before the halfway boss (for the "boss incoming" message).</summary>
     public static event Action<EnemyData> BossWarning;
     public static event Action<BaseEnemyData> BossSpawned;

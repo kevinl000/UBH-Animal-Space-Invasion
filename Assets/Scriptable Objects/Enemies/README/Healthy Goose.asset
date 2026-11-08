@@ -30,4 +30,4 @@ MonoBehaviour:
   attackInterval: 2
   aoeSpreadDegrees: 30
   prefab: {fileID: 2109443899840517452, guid: 83ee4ba68f2227449b5730d56f24d776, type: 3}
-  projectilePrefab: {fileID: 5666207574694251952, guid: 8abe029aef08d424b826c566029137d4, type: 3}
+  projectilePrefab: {fileID: 5666207574694251952, guid: 93169e07fb79571b82a34656752dd931, type: 3}

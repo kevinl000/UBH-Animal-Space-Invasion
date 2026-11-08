@@ -1,5 +1,25 @@
 # Gameplay setup (towers + enemies + level)
 
+## Union Prime integration (2026-11-08)
+
+Union Prime now uses the centralized `GameplayLoopController` and the
+`UnionPrimeGameplay` configuration asset: setup, three timed waves, clearing,
+safe full-refund breaks, random tutorial boss, entrance camera and results.
+Its serialized world-space scene is ready to open; it does not use the legacy
+automatic start / halfway boss / time-up victory described below. See
+`Tools/UnionPrime/README.md` for controls, tuning, required teammate-code changes,
+art bindings, offline verification and the team's manual Unity checklist.
+
+All completed art is bound to runtime prefab children while tutorial unlocks
+remain restricted. Existing art assets and GUIDs are preserved. The legacy
+prefab/data menu keeps assigned projectile overrides, and scene setup refuses
+to overwrite a scene with a configured gameplay loop.
+
+No Unity execution or Unity tests were performed for this integration. The
+historical test instructions below belong to the teammate's earlier foundation.
+
+## Legacy setup for other scenes
+
 How a level scene is put together so towers, enemies, the enemy AI and the LevelManager work as one game.
 
 ## Two menu items do the setup

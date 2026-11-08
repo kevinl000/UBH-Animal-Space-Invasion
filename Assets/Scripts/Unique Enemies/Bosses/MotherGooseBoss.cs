@@ -27,6 +27,7 @@ public class MotherGooseBoss : BossEnemy
         flockTimer -= dt;
         if (flockTimer > 0f) return;
         flockTimer = flockInterval;
+        if (Visual != null) Visual.Attack();
         for (int i = 0; i < flockSize; i++)
         {
             float offset = flockSize > 1 ? Mathf.Lerp(-flockSpread / 2f, flockSpread / 2f, i / (float)(flockSize - 1)) : 0f;

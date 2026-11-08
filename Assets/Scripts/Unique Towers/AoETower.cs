@@ -10,8 +10,10 @@ public class AoETower : ShootingTower
         // The primary target already took damage from the projectile hitting it.
         // Now we find everyone else in the blast radius.
 
-        foreach (BaseEnemyData enemy in BaseEnemyData.Active)
+        // Death removes entries from Active, so walk backward rather than using an enumerator.
+        for (int i = BaseEnemyData.Active.Count - 1; i >= 0; i--)
         {
+            BaseEnemyData enemy = BaseEnemyData.Active[i];
             // Skip the one we already hit, or dead/untargetable enemies
             if (enemy == primaryTarget || !enemy.IsTargetable(CanHitStealth)) continue;
 

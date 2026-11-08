@@ -8,6 +8,8 @@ public class ResourceTower : BaseTowerData
 
     private float generateTimer;
 
+    protected override void OnInitialized() { generateTimer = fireRate > 0f ? fireRate : 1f; }
+
     // Generates on its own timer even when attackType is None (the base Tick skips None).
     protected override void Tick(float dt)
     {

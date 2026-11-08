@@ -79,6 +79,9 @@ public class LevelManager : MonoBehaviour, IDamageable
     private void FixedUpdate()
     {
         if (currentHealth <= 0f || levelData == null || planetBody == null) return;
+        var loop = GameplayLoopController.Instance;
+        if (loop != null && (loop.Paused || loop.Phase == GameplayLoopController.GameplayPhase.BossEntrance ||
+            loop.Phase == GameplayLoopController.GameplayPhase.Victory || loop.Phase == GameplayLoopController.GameplayPhase.Defeat)) return;
 
         // Use rotation speed and direction directly from LevelData
         float direction = levelData.isClockwise ? -1f : 1f;
@@ -111,6 +114,13 @@ public class LevelManager : MonoBehaviour, IDamageable
         UpdateTowerPowerStates();
     }
 
+    public bool TryConsumeFuel(int amount)
+    {
+        if (amount < 0 || TotalFuel < amount) return false;
+        ChangeFuel(-amount);
+        return true;
+    }
+
     /// <summary>
     /// Updates both resources together, or neither if either balance would become negative.
     /// </summary>
@@ -129,6 +139,7 @@ public class LevelManager : MonoBehaviour, IDamageable
         TotalMoney = (int)nextMoney;
         TotalFuel = nextFuel;
         RefreshResourceBar();
+        UpdateTowerPowerStates();
     }
 
     public void RefreshResourceBar()
@@ -168,6 +179,7 @@ public class LevelManager : MonoBehaviour, IDamageable
     {
         foreach (BaseTowerData tower in BaseTowerData.Active)
         {
+            if (GameplayLoopController.Instance != null && tower.fuelIntake < 0) continue; // prepaid per tower during combat
             if (tower.fuelIntake >= 0)
             {
                 if (tower.IsDisabled) tower.SetDisabled(false);

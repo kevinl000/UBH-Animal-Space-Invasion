@@ -32,7 +32,8 @@ public class TowerPlacementInput : MonoBehaviour
     public TowerData Selected { get; private set; }
 
     private TowerPlacementPanel quickPlacement;
-    private bool CanBuild => !SceneLoadingScreen.IsLoading && Time.timeScale > 0f;
+    private bool CanBuild => !SceneLoadingScreen.IsLoading
+        && (GameplayLoopController.Instance?.CanBuild ?? (Time.timeScale > 0f));
 
     private string lastCardName;
     private readonly List<RaycastResult> uiHits = new List<RaycastResult>();
@@ -54,8 +55,16 @@ public class TowerPlacementInput : MonoBehaviour
                 sandbox.enabled = false;
     }
 
+    public void SelectTower(TowerData tower)
+    {
+        if (System.Array.IndexOf(towers, tower) < 0) return;
+        Selected = tower;
+        Show("Selected " + tower.name + " ($" + tower.cost + ")");
+    }
+
     private void Update()
     {
+        var loop = GameplayLoopController.Instance;
         if (!CanBuild) return;
         ReadSelection();
 
@@ -85,9 +94,11 @@ public class TowerPlacementInput : MonoBehaviour
 
         float angle = PlanetMath.Normalize(Mathf.Atan2(local.y, local.x) * Mathf.Rad2Deg);
         int slot = defense.SlotAt(angle);
+        if (defense.socketMounts.Length > 0 && Vector2.Distance(world, defense.SlotPosition(slot)) > 0.7f) return;
 
         if (right)
         {
+            if (loop != null && !loop.CanSell) { Show("Sell for a full refund during setup or breaks."); return; }
             Show(defense.SellTower(slot) ? "Sold." : "No tower there to sell.");
             return;
         }
