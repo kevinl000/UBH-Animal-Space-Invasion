@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Building towers in a level:
 ///  - Pick a tower: click its card in the HUD (PlanetPageController's selected card), or press 1-9 / 0.
+///  - Choose a numbered socket in the quick placement panel to build without tracking the planet.
 ///  - Left click near the planet's edge: build it in the closest slot (money is checked).
 ///  - Right click near a tower: sell it (half the cost back).
 /// </summary>
@@ -30,6 +31,9 @@ public class TowerPlacementInput : MonoBehaviour
 
     public TowerData Selected { get; private set; }
 
+    private TowerPlacementPanel quickPlacement;
+    private bool CanBuild => !SceneLoadingScreen.IsLoading && Time.timeScale > 0f;
+
     private string lastCardName;
     private readonly List<RaycastResult> uiHits = new List<RaycastResult>();
 
@@ -52,6 +56,7 @@ public class TowerPlacementInput : MonoBehaviour
 
     private void Update()
     {
+        if (!CanBuild) return;
         ReadSelection();
 
         Mouse mouse = Mouse.current;
@@ -61,7 +66,7 @@ public class TowerPlacementInput : MonoBehaviour
         if (!left && !right) return;
 
         Vector2 screen = mouse.position.ReadValue();
-        if (OverButton(screen)) return; // clicks on HUD buttons are for the HUD
+        if (OverControls(screen)) return;
 
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z));
 
@@ -70,10 +75,7 @@ public class TowerPlacementInput : MonoBehaviour
         if (moon != null && moon.TryGetSlotAt(world, out moonSlot))
         {
             if (right) { Show(moon.SellTower(moonSlot) ? "Sold." : "No tower there to sell."); return; }
-            if (Selected == null) { Show("Pick a tower first."); return; }
-            string why;
-            if (moon.TryPlaceTower(Selected, moonSlot, out why)) Show("Built " + Selected.name + " on the moon.");
-            else Show(why);
+            PlaceSelected(moonSlot, true);
             return;
         }
 
@@ -90,10 +92,32 @@ public class TowerPlacementInput : MonoBehaviour
             return;
         }
 
+        PlaceSelected(slot, false);
+    }
+
+    private void LateUpdate()
+    {
+        if (quickPlacement == null && defense != null && Selected != null)
+            quickPlacement = new TowerPlacementPanel(transform, defense, moon, PlaceSelected);
+        quickPlacement?.Refresh(CanBuild ? Selected : null);
+    }
+
+    private void OnDisable()
+    {
+        quickPlacement?.Hide();
+    }
+
+    private void PlaceSelected(int slot, bool onMoon)
+    {
+        if (!isActiveAndEnabled || !CanBuild) return;
         if (Selected == null) { Show("Pick a tower first."); return; }
+
         string reason;
-        if (defense.TryPlaceTower(Selected, slot, out reason)) Show("Built " + Selected.name + ".");
-        else Show(reason);
+        bool built = onMoon ? moon.TryPlaceTower(Selected, slot, out reason)
+            : defense.TryPlaceTower(Selected, slot, out reason);
+        string result = built ? "Built " + Selected.name + (onMoon ? " on the moon." : ".") : reason;
+        Show(result);
+        quickPlacement?.ShowResult(result);
     }
 
     private void ReadSelection()
@@ -138,14 +162,15 @@ public class TowerPlacementInput : MonoBehaviour
         return string.IsNullOrEmpty(s) ? "" : s.Replace(" ", "").Replace("_", "").ToLowerInvariant();
     }
 
-    private bool OverButton(Vector2 screen)
+    private bool OverControls(Vector2 screen)
     {
         if (EventSystem.current == null) return false;
         var data = new PointerEventData(EventSystem.current) { position = screen };
         uiHits.Clear();
         EventSystem.current.RaycastAll(data, uiHits);
         foreach (RaycastResult r in uiHits)
-            if (r.gameObject.GetComponentInParent<Selectable>() != null || r.gameObject.GetComponentInParent<ScrollRect>() != null)
+            if ((quickPlacement != null && quickPlacement.Contains(r.gameObject.transform))
+                || r.gameObject.GetComponentInParent<Selectable>() != null || r.gameObject.GetComponentInParent<ScrollRect>() != null)
                 return true;
         return false;
     }
