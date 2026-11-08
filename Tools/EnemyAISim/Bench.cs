@@ -17,6 +17,7 @@ class Result
 
 static class Bench
 {
+    public static Fam FamOfPublic(EnemyKind k) { return FamOf(k); }
     static Fam FamOf(EnemyKind k)
     {
         if (k == EnemyKind.StealthGoose) return Fam.Stealth;
