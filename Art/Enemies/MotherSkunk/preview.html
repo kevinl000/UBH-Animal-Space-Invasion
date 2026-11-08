@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mother Skunk — Level 2 boss</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color-scheme:dark;color:#e8edf6;background:#0d1423}body{max-width:1100px;margin:28px auto;padding:0 20px}h1{font-size:28px;margin-bottom:4px}p{color:#bdcadd}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:20px;background:#22283e;padding:16px;border-radius:12px}label{display:flex;align-items:center;gap:8px}select{padding:6px 10px;background:#27384d;color:#eaf9ff;border:1px solid #50657b;border-radius:6px}canvas{display:block;width:100%;height:auto;border:1px solid #344055;border-radius:12px;margin:18px 0}a{color:#b4e7de}.note{font-size:14px}#status{color:#ffb5a8}
+</style>
+<h1>Mother Skunk</h1>
+<p>Level 2 heavy bomber · deep plum and charcoal hull · single broad bomb bay.</p>
+<div class="controls">
+<label>Camera size <input id="zoom" type="range" min="45" max="105" value="85"></label>
+<label>Background <select id="background"><option value="space">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+<label><input id="marker" type="checkbox"> Outlet marker</label>
+<label><input id="bomb" type="checkbox" checked> Bomb size sample</label>
+</div>
+<p id="status" role="status"></p>
+<canvas id="view" width="1100" height="650" aria-label="Mother Skunk, Healthy Skunk and Basic Skunk 3 compared at the same world scale"></canvas>
+<p class="note">Both bosses are 1.5× basic enemy width. The separate bomb sample uses the existing flight sprite at 1.3× scale. It shows size and facing only; no volley count, spacing or damage area is simulated. Existing gas effects retain their current sizes.</p>
+<p><a href="README.md">Asset handoff</a> · <a href="comparison.png">Static comparison</a> · <a href="assembly.json">Assembly notes</a></p>
+<script id="assembly" type="application/json">{"name": "Mother Skunk", "level": 2, "generation_mode": "built-in image_gen, reference-guided new sprite", "source": "Art/Enemies/MotherSkunk/mother-skunk-source-v1.png", "runtime_sprite": "Assets/Art/Enemies/MotherSkunk/MotherSkunk.png", "visual_prefab": "Assets/Prefabs/Enemies/MotherSkunkVisual.prefab", "canvas_pixels": [1254, 1254], "visible_bounds_alpha128": [14, 245, 1240, 1040], "pixels_per_unit": 536.0478223740392, "transform_scale": [1.5, 1.5, 1], "visible_width_world_units": 3.4306640625, "healthy_skunk_ppu": 529.0520922288642, "basic_skunk_3_ppu": 512.4372331340735, "pilot_facing": "-X", "bomb_outlet_facing": "-Y", "gameplay_visual_child_rotation_z": 180, "bomb_outlet_pixel_top_left": [627, 1042], "bomb_outlet_local": [0.0, -0.7741846579323002], "projectile_visual": "Assets/Prefabs/Projectiles/HealthySkunkProjectileVisual.prefab", "projectile_visual_scale": 1.3, "projectile_visual_child_rotation_z": 0, "projectile_forward": "+Y", "burst_visual": "Assets/Prefabs/Projectiles/SkunkBombBurstVisual.prefab", "hit_puff_visual": "Assets/Prefabs/Projectiles/SkunkBombHitPuffVisual.prefab", "gas_growth_direction": "+Y outward from planet", "bomb_flight": {"name": "SkunkBombFlight", "file_id": 21300000, "rect": [0, 836, 418, 418], "pivot": [0.5311004784688995, 0.39832535885167464], "visible_bounds_in_cell": [159, 159, 285, 344], "anchor": "center"}, "bomb_sheet": "Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png", "bomb_sheet_height": 1254, "scope": "Visual assets only; volley count/timing/spread, damage and existing effects unchanged."}</script>
+<script>
+const data=JSON.parse(document.getElementById('assembly').textContent);
+const canvas=document.getElementById('view'),ctx=canvas.getContext('2d');
+const zoom=document.getElementById('zoom'),background=document.getElementById('background'),marker=document.getElementById('marker'),bomb=document.getElementById('bomb');
+const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('Could not load '+src));img.src=src;});
+let images;
+function label(value,x,y,size=17){ctx.fillStyle=background.value==='light'?'#26354b':'#cbd9e8';ctx.textAlign='center';ctx.font=size+'px system-ui';ctx.fillText(value,x,y);}
+function sprite(img,x,y,ppu,scale,z){const w=img.width/ppu*scale*z,h=img.height/ppu*scale*z;ctx.drawImage(img,x-w/2,y-h/2,w,h);}
+function draw(){
+ const z=Number(zoom.value);ctx.fillStyle=background.value==='light'?'#e4e8ed':'#0c1424';ctx.fillRect(0,0,1100,650);
+ if(background.value==='grid')for(let y=0;y<650;y+=24)for(let x=0;x<1100;x+=24){ctx.fillStyle=(x/24+y/24)%2?'#2c394c':'#202b3b';ctx.fillRect(x,y,24,24);}
+ ctx.imageSmoothingEnabled=false;
+ sprite(images[0],210,265,data.pixels_per_unit,1.5,z);sprite(images[1],605,265,data.healthy_skunk_ppu,1.5,z);sprite(images[2],955,265,data.basic_skunk_3_ppu,1,z);
+ const ox=210+data.bomb_outlet_local[0]*1.5*z,oy=265-data.bomb_outlet_local[1]*1.5*z;
+ if(marker.checked){ctx.strokeStyle='#ff7393';ctx.beginPath();ctx.moveTo(ox-7,oy);ctx.lineTo(ox+7,oy);ctx.moveTo(ox,oy-7);ctx.lineTo(ox,oy+7);ctx.stroke();}
+ if(bomb.checked){const f=data.bomb_flight,w=f.rect[2]/512*1.3*z,h=f.rect[3]/512*1.3*z;ctx.save();ctx.translate(ox,oy+42);ctx.rotate(Math.PI);ctx.drawImage(images[3],f.rect[0],data.bomb_sheet_height-f.rect[1]-f.rect[3],f.rect[2],f.rect[3],-w*f.pivot[0],-h*(1-f.pivot[1]),w,h);ctx.restore();}
+ label('Mother Skunk · 1.5×',210,530);label('Healthy Skunk · 1.5×',605,530);label('Basic Skunk 3 · 1×',955,530);
+ label('Wider hull · plum bomber palette',210,560,13);label('Existing tutorial boss',605,560,13);label('Existing tier 3',955,560,13);
+}
+Promise.all(['mother-skunk-source-v1.png','../HealthySkunk/healthy-skunk-source-v1.png','../BasicSkunk3/basic-skunk-3-source-v1.png','../../../Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png'].map(load)).then(result=>{images=result;[zoom,background,marker,bomb].forEach(control=>control.addEventListener('input',draw));draw();}).catch(error=>{document.getElementById('status').textContent=error.message;});
+</script>
+</html>

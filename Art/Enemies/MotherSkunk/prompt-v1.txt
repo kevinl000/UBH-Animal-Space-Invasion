@@ -1,0 +1,14 @@
+Mode: built-in image_gen, reference-guided new sprite
+References:
+- Art/Enemies/HealthySkunk/healthy-skunk-source-v1.png
+- Art/Enemies/BasicSkunk3/basic-skunk-3-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: one production-ready transparent pixel-art boss sprite for Unity 2D planetary tower-defense.
+Reference image 1 is Healthy Skunk: animal identity and coarse pixel-art family. Reference image 2 is Basic Skunk 3: basic enemy proportions only. Create a NEW MOTHER SKUNK level-2 heavy bomber sprite; preserve the existing references unchanged.
+Subject: exactly one natural black-and-ivory skunk piloting a distinctly WIDE, LOW, broad-shouldered heavy bomber UFO under a slightly squat BLUE glass dome. Pilot faces LEFT and has a focused expression, broad rounded body, recognizable ivory forehead stripe, and a large raised curled tail with an unmistakable wide white stripe. Keep face and stripe legible. No clothing, medals, crown or human hands.
+Hull: DEEP PLUM/PURPLE metal panels with CHARCOAL structural bands, stepped navy-black outline and restrained lavender edge highlights. Dark plum is the main hull color, distinctly different from Healthy Skunk's navy and Basic Skunk 3's red; NOT pink, bright magenta, gold or cream. Six mint-green running lights across the rim. A broad, flatter saucer silhouette with a substantial shallow armored lower hull: emphasize WIDTH over height and avoid a deep bowl shape. Use a wide simple EMPTY central rectangular bomb bay below the hull, with a clear downward exit. Exactly TWO small cyan/mint side thrusters flank the bay well away from its centerline. ONE central opening, no three barrels or multiple fixed bomb outlets. No bomb drawn in opening, no gas clouds, projectiles, flying minions or attack effects baked into the sprite.
+Style: match references' coarse chunky pixel art, large square pixel clusters, stepped dark outlines, simple block shading, crisp edges, readable at small gameplay size. No smooth vector shading or 3D realism, no thin intricate greebles.
+Composition: ONE complete upright UFO with skunk on square genuinely alpha-transparent canvas, generous transparent padding all around, full tail, saucer, bay and small thrusters visible. Main hull spans about 88% canvas width. Same side/front three-quarter view as references. Pilot local -X, downward bomb-bay local -Y. Static sprite.
+No scenery, ground shadow, floor, text, logo, border, health bar, checkerboard texture, sparkle or shiny variant.

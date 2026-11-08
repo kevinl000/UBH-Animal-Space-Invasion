@@ -1,0 +1,69 @@
+{
+  "name": "Mother Skunk",
+  "level": 2,
+  "generation_mode": "built-in image_gen, reference-guided new sprite",
+  "source": "Art/Enemies/MotherSkunk/mother-skunk-source-v1.png",
+  "runtime_sprite": "Assets/Art/Enemies/MotherSkunk/MotherSkunk.png",
+  "visual_prefab": "Assets/Prefabs/Enemies/MotherSkunkVisual.prefab",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha128": [
+    14,
+    245,
+    1240,
+    1040
+  ],
+  "pixels_per_unit": 536.0478223740392,
+  "transform_scale": [
+    1.5,
+    1.5,
+    1
+  ],
+  "visible_width_world_units": 3.4306640625,
+  "healthy_skunk_ppu": 529.0520922288642,
+  "basic_skunk_3_ppu": 512.4372331340735,
+  "pilot_facing": "-X",
+  "bomb_outlet_facing": "-Y",
+  "gameplay_visual_child_rotation_z": 180,
+  "bomb_outlet_pixel_top_left": [
+    627,
+    1042
+  ],
+  "bomb_outlet_local": [
+    0.0,
+    -0.7741846579323002
+  ],
+  "projectile_visual": "Assets/Prefabs/Projectiles/HealthySkunkProjectileVisual.prefab",
+  "projectile_visual_scale": 1.3,
+  "projectile_visual_child_rotation_z": 0,
+  "projectile_forward": "+Y",
+  "burst_visual": "Assets/Prefabs/Projectiles/SkunkBombBurstVisual.prefab",
+  "hit_puff_visual": "Assets/Prefabs/Projectiles/SkunkBombHitPuffVisual.prefab",
+  "gas_growth_direction": "+Y outward from planet",
+  "bomb_flight": {
+    "name": "SkunkBombFlight",
+    "file_id": 21300000,
+    "rect": [
+      0,
+      836,
+      418,
+      418
+    ],
+    "pivot": [
+      0.5311004784688995,
+      0.39832535885167464
+    ],
+    "visible_bounds_in_cell": [
+      159,
+      159,
+      285,
+      344
+    ],
+    "anchor": "center"
+  },
+  "bomb_sheet": "Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png",
+  "bomb_sheet_height": 1254,
+  "scope": "Visual assets only; volley count/timing/spread, damage and existing effects unchanged."
+}
