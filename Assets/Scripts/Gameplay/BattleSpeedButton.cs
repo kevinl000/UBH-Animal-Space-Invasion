@@ -9,46 +9,35 @@ using UnityEngine.UI;
 public class BattleSpeedButton : MonoBehaviour
 {
     public float fastSpeed = 2f;
-    [Tooltip("Same layout as GameplayHUD: anchored at the top centre, 1600x900 reference.")]
-    public Vector2 position = new Vector2(-80f, -90f);
+    [Tooltip("Top-left offset in GameplayHUD's 1600x900 reference coordinates.")]
+    public Vector2 position = new Vector2(242f, -36f);
     public Vector2 size = new Vector2(120f, 40f);
 
-    public float Speed { get; private set; }
+    // GameplayLoopController.Start registers Playing before ordinary Start methods.
+    public float Speed { get; private set; } = 1f;
 
     private Text label;
     private readonly Color ink = new Color32(232, 241, 255, 255);
     private readonly Color idle = new Color32(38, 58, 84, 255);
     private readonly Color active = new Color32(238, 185, 77, 255);
     private Image background;
+    private Button button;
 
     private void OnEnable() { GameManager.OnGameStateChanged += OnState; }
     private void OnDisable() { GameManager.OnGameStateChanged -= OnState; }
 
-    private void Start()
+    public void Build(Transform parent, Font font)
     {
-        Speed = 1f;
-        GameplayHUD hud = FindAnyObjectByType<GameplayHUD>();
-        Font font = hud != null && hud.font != null ? hud.font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-
-        var root = new GameObject("Speed Button Canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        root.transform.SetParent(transform, false);
-        Canvas canvas = root.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 99; // just under the GameplayHUD (100), so its pause / result screens cover it
-        CanvasScaler scaler = root.GetComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1600f, 900f);
-        scaler.matchWidthOrHeight = 1f;
-
+        if (button != null) return;
         var go = new GameObject("1x / 2x", typeof(RectTransform), typeof(Image), typeof(Button));
         RectTransform rt = go.GetComponent<RectTransform>();
-        rt.SetParent(root.transform, false);
-        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);
+        rt.SetParent(parent, false);
+        rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f);
         rt.anchoredPosition = position;
         rt.sizeDelta = size;
         background = go.GetComponent<Image>();
         background.color = idle;
-        Button button = go.GetComponent<Button>();
+        button = go.GetComponent<Button>();
         button.targetGraphic = background;
         button.onClick.AddListener(Toggle);
 
@@ -59,7 +48,7 @@ public class BattleSpeedButton : MonoBehaviour
         trt.anchorMax = Vector2.one;
         trt.offsetMin = trt.offsetMax = Vector2.zero;
         label = text.GetComponent<Text>();
-        label.font = font;
+        label.font = font != null ? font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         label.fontSize = 22;
         label.alignment = TextAnchor.MiddleCenter;
         label.raycastTarget = false;
@@ -68,6 +57,7 @@ public class BattleSpeedButton : MonoBehaviour
 
     public void Toggle()
     {
+        if (SceneLoadingScreen.IsLoading) return;
         GameManager gm = GameManager.Instance;
         if (gm == null || gm.CurrentState != GameManager.GameState.Playing) return; // not while paused or after the result
         Speed = Speed > 1f ? 1f : fastSpeed;
@@ -78,10 +68,13 @@ public class BattleSpeedButton : MonoBehaviour
     private void OnState(GameManager.GameState state)
     {
         if (state == GameManager.GameState.Playing) Time.timeScale = Speed; // ResumeGame put it back to 1
+        Refresh();
     }
 
     private void Refresh()
     {
+        if (button != null) button.interactable = GameManager.Instance != null
+            && GameManager.Instance.CurrentState == GameManager.GameState.Playing;
         if (label != null) { label.text = Speed > 1f ? "2x  >>" : "1x  >"; label.color = Speed > 1f ? idle : ink; }
         if (background != null) background.color = Speed > 1f ? active : idle;
     }

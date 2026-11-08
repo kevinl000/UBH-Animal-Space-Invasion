@@ -100,17 +100,19 @@ public class GameResultScreen : MonoBehaviour
 
     public void Retry()
     {
-        Time.timeScale = 1f;
+        if (SceneLoadingScreen.IsLoading) return;
         GameManager gm = GameManager.Instance;
         if (gm != null && !string.IsNullOrEmpty(gm.LastPlayedLevel)) { gm.RestartCurrentLevel(); return; }
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // opened directly in the editor
     }
 
     public void LevelSelect()
     {
-        Time.timeScale = 1f;
+        if (SceneLoadingScreen.IsLoading) return;
         GameManager gm = GameManager.Instance;
         if (gm != null && SceneController.Instance != null) { gm.GoToLevelSelect(); return; }
+        Time.timeScale = 1f;
         SceneManager.LoadScene("LevelSelect");
     }
 

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Adds small runtime UI to gameplay scenes without editing them:
 ///  - Scenes with the GameplayLoopController (Union Prime): its GameplayHUD already has the results and PAUSE,
-///    so only the 1x / 2x speed button is added (BattleSpeedButton).
+///    so only the speed controller is added; GameplayHUD builds its button on the shared canvas.
 ///  - Older level scenes (LevelPlanetDefense with the PlanetHUD): a win / lose screen (GameResultScreen) and
 ///    working PAUSE / 1x-2x buttons on the existing HUD (LevelHudButtons).
 /// </summary>

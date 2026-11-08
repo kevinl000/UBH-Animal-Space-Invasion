@@ -75,8 +75,12 @@ public class GameplayHUD : MonoBehaviour
         start = Button("START WAVE 1", sidebar, new Vector2(0, -738), new Vector2(324, 56), () => { PlayClick(); loop.StartGame(); });
         start.GetComponent<Image>().color = gold;
         start.GetComponentInChildren<Text>().color = panel;
-        boss = Label("", root.transform, new Vector2(-180, -38), new Vector2(650, 40), 25, gold);
-        Button("PAUSE", root.transform, new Vector2(-260, -90), new Vector2(160, 40), () => GameManager.Instance.PauseGame());
+        boss = Label("", root.transform, new Vector2(-180, -86), new Vector2(650, 40), 25, gold);
+        RectTransform pause = Button("PAUSE", root.transform, new Vector2(96, -36), new Vector2(160, 40),
+            () => GameManager.Instance.PauseGame()).GetComponent<RectTransform>();
+        pause.anchorMin = pause.anchorMax = new Vector2(0f, 1f);
+        BattleSpeedButton speed = loop.GetComponent<BattleSpeedButton>();
+        if (speed != null) speed.Build(root.transform, font);
         FitCamera();
         EventSystem.current.SetSelectedGameObject(start.gameObject);
     }

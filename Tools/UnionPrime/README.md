@@ -10,6 +10,18 @@ tower at its rotating socket; cyan means affordable and red means insufficient
 money. Occupied sockets cannot build and show no ghost. Keyboard focus also
 previews a socket. The bar observes the same phase permissions as clicking the planet.
 
+Pause and 1x/2x are anchored at the top-left of Union Prime's HUD, on the same
+canvas as its pause/results overlay. The speed controller starts at 1x before
+subscribing to manager events: the loop registers Playing in its early Start,
+before ordinary Start methods run. Initializing speed in Start would instead
+apply the default zero speed and freeze physics while setup still permits
+building. Pause/resume retains the selected speed.
+
+Older planets retain their styled HUD buttons, repositioned to the upper-left
+below their title/resource strip. They register the loaded scene with GameManager
+for direct-editor play and retry, and follow its pause/resume state. Their result
+screen remains separate; configured Union Prime uses only GameplayHUD's results.
+
 The scene is already serialized and wired. **Do not run the legacy Gameplay
 scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
 
@@ -125,6 +137,9 @@ contacts, Animator playback, viewport readability or live UI interaction.
 
 1. Open Union Prime directly and through the menu. Confirm 100 HP / 10 money /
    150 fuel, two opposite Lasers, twelve sockets and only four available towers.
+   Confirm it starts at 1x, the planet rotates, and both starter Lasers follow
+   their sockets before pressing Start. Build by clicking the planet and by
+   socket number; each real tower must coincide with its ghost and stay mounted.
    Wait in setup: fuel must stay unchanged. Buy/sell; costs/refunds happen once.
 2. Start. Check 20 seconds of spawning, Shielded Goose, complete clearing, then
    exactly 15 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm no deer,
@@ -137,6 +152,9 @@ contacts, Animator playback, viewport readability or live UI interaction.
 5. Check victory, defeat and a near-simultaneous lethal exchange. Next Level is
    highlighted/focused and opens Capen; Retry and Title use existing managers.
    Retry from setup, pause and defeat must reset resources, starters and waves.
+   Check the top-left 1x/2x control, pause/resume at 2x, and Retry returning to 1x.
+   Pause/results must cover and block the controls. Open an older planet directly
+   and confirm its Pause/Resume, speed, results and Retry use that planet.
 6. Inspect all four towers in the twelve sockets through the actual camera at
    16:9 and 4:3. Confirm the right panel and single bottom row do not overlap.
    Hover first/last/rotating sockets, change towers while hovering, build once,
