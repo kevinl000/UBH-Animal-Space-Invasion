@@ -16,6 +16,14 @@ class FakeBullet : IEnemyHitter
     public void OnHitEnemy(BaseEnemyData enemy) { Hits++; }
 }
 
+/// <summary>Stands in for the team's BaseTowerData: any GameEntity can use the same PoolManager.</summary>
+class FakeTowerEntity : GameEntity
+{
+    public int SpawnedCalls, DespawnedCalls;
+    protected override void OnSpawned() { SpawnedCalls++; }
+    protected override void OnDespawned() { DespawnedCalls++; }
+}
+
 class FakeTower : IDamageable, IFreezable
 {
     public float Hp; public float FrozenFor; public float Taken;
@@ -88,6 +96,7 @@ static class EnemyTests
     static SimplePlanetDefense planet;
     static EnemySpawner spawner;
     static WaveDirectorBridge bridge;
+    static PoolManager pool;
 
     static void NewWorld(params int[] towerSlots)
     {
@@ -95,6 +104,8 @@ static class EnemyTests
         BaseEnemyData.Active.Clear();
         UnityEngine.Random.Rng = new System.Random(7);
         UnityEngine.Debug.Log.Clear();
+        pool = new PoolManager();
+        Register(pool);
         planet = new SimplePlanetDefense { radius = 100f, slots = 12, rotationDegreesPerSecond = 0f, slot0Angle = 90f, planetMaxHealth = 100f };
         Register(planet);
         foreach (int s in towerSlots) planet.RegisterTower(s, TowerKind.Laser, new FakeTower(25));
@@ -325,8 +336,8 @@ static class EnemyTests
         Check("Full 120s level through the spawner and the AI (README roster + boss)", error == null && spawned > 10 && bosses == 1 && warnings == 1 && timeUp == 1 && !overBudget && errs.Count == 0,
             (error ?? "no exceptions") + ", " + spawned + " enemies spawned, boss " + bosses + ", boss warning " + warnings + ", time-up " + timeUp
             + ", spent " + lv.SpentBudget + " of " + lv.GetTotalBudget(120) + ", over budget: " + overBudget + ", planet HP " + planet.PlanetHealth.ToString("F0"));
-        Check("Full level reuses pooled enemies instead of creating one per spawn", instances < spawned + 12 * 5 && error == null,
-            spawned + " spawns served by " + instances + " instances (" + "prewarm 5 per roster enemy), alive at the end " + BaseEnemyData.Active.Count);
+        Check("Full level reuses pooled enemies instead of creating one per spawn", instances < spawned && error == null,
+            spawned + " spawns served by " + instances + " instances from the one PoolManager (prewarm 5 per roster prefab), alive at the end " + BaseEnemyData.Active.Count);
     }
 
     static void ProjectileHit()
@@ -338,9 +349,7 @@ static class EnemyTests
         withProjectile.name = "Basic Goose 1";
         withProjectile.projectilePrefab = new EnemyProjectile { speed = 2.5f };
         spawner.Spawn(withProjectile, SlotAngle(0), false, false, 0, 4f);
-        Run(3.0f);
-        float early = Tower(0).Taken;
-        Run(6f);
+        Run(9f);
         Check("Projectile flies to the planet and deals damage on impact (pooled)", Tower(0).Taken > 0 && MonoBehaviour.LiveCount<EnemyProjectile>() <= 2,
             "tower damage " + Tower(0).Taken + ", projectile instances ever made " + MonoBehaviour.LiveCount<EnemyProjectile>() + " for " + Tower(0).Taken + " shots, in flight now " + MonoBehaviour.ActiveCount<EnemyProjectile>());
     }
@@ -401,6 +410,22 @@ static class EnemyTests
             inactiveAfterDeath && reused && fresh && notCharging && doubleRelease == "none" && MonoBehaviour.LiveCount<DeerEnemy>() == 1,
             "inactive after death: " + inactiveAfterDeath + ", same instance reused: " + reused + ", fresh HP/distance/state: " + fresh + " (distance after 1s " + again.Distance.ToString("F2")
             + "), double despawn error: " + doubleRelease + ", deer instances " + MonoBehaviour.LiveCount<DeerEnemy>());
+
+        // One PoolManager for everything: enemies and towers (any GameEntity) share it
+        NewWorld();
+        var towerPrefab = new FakeTowerEntity();
+        var t1 = pool.Spawn(towerPrefab, planet.Root);
+        t1.Despawn();
+        var t2 = pool.Spawn(towerPrefab, planet.Root);
+        var goose = Spawn("Basic Goose 1");
+        int managers = MonoBehaviour.LiveCount<PoolManager>();
+        bool spawnerHasNoPools = typeof(EnemySpawner).GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
+            .All(f => !f.FieldType.Name.StartsWith("ObjectPool") && !(f.FieldType.IsGenericType && f.FieldType.GetGenericArguments().Any(a => a.Name.StartsWith("ObjectPool"))));
+        Check("One PoolManager serves enemies and towers (GameEntity base); the spawner owns no pools",
+            managers == 1 && ReferenceEquals(t1, t2) && t2.SpawnedCalls == 2 && t2.DespawnedCalls == 1 && t2.IsSpawned && goose is GameEntity && goose.SourcePrefab != null
+            && pool.CountAll(towerPrefab) == 1 && pool.CountActive(towerPrefab) == 1 && spawnerHasNoPools,
+            "PoolManagers in level " + managers + ", tower instance reused: " + ReferenceEquals(t1, t2) + " (OnSpawned " + t2.SpawnedCalls + ", OnDespawned " + t2.DespawnedCalls
+            + "), goose is a GameEntity from the same manager: " + (goose.SourcePrefab != null) + ", spawner owns no ObjectPool: " + spawnerHasNoPools);
 
         // Endangered Deer: a guard that died and was reused as a normal deer no longer counts
         NewWorld(0);

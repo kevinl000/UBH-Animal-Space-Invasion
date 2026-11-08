@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 /// <summary>What the spawner hands an enemy when it's created.</summary>
 public class EnemySpawnContext
@@ -22,10 +21,9 @@ public class EnemySpawnContext
 ///
 /// Prefab needs: this component (or a subclass), a Rigidbody2D (added automatically) and a Collider2D.
 /// Movement goes through the Rigidbody2D (kinematic, MovePosition / MoveRotation in FixedUpdate).
-/// Instances come from the EnemySpawner's ObjectPool and go back to it with Despawn().
+/// Inherits GameEntity, so instances come from the level's PoolManager and go back with Despawn().
 /// </summary>
-[RequireComponent(typeof(Rigidbody2D))]
-public class BaseEnemyData : MonoBehaviour
+public class BaseEnemyData : GameEntity
 {
     public EnemyData data;
     public float maxHealth;
@@ -51,42 +49,19 @@ public class BaseEnemyData : MonoBehaviour
     public bool Arrived { get; protected set; }
     public bool Orbits { get; protected set; }
 
-    /// <summary>Goes up every time this instance is (re)used from the pool, so old references can tell it's a different enemy now.</summary>
-    public int SpawnId { get; private set; }
-    public Rigidbody2D Body { get { return body; } }
-    public Collider2D Collider { get { return hitCollider; } }
-
     protected IPlanetDefense planet;
     protected EnemySpawnContext context;
     protected float attackTimer;
-    protected Rigidbody2D body;
-    protected Collider2D hitCollider;
-    private IObjectPool<BaseEnemyData> pool;
     private float slowTimer;
     private float slowFactor = 1f;
     private bool dead;
     private bool reported;
-    private bool despawned;
-    private static int nextSpawnId;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake(); // Rigidbody2D: kinematic, no gravity (GameEntity)
         currentHealth = maxHealth;
-        body = GetComponent<Rigidbody2D>();
-        if (body == null) body = gameObject.AddComponent<Rigidbody2D>(); // prefab made before RequireComponent was added
-        hitCollider = GetComponent<Collider2D>();
         if (hitCollider == null) Debug.LogWarning("[BaseEnemyData] '" + name + "' has no Collider2D, so nothing can collide with it.");
-        // Kinematic: the enemy follows its own path (MovePosition), physics only reports contacts.
-        body.bodyType = RigidbodyType2D.Kinematic;
-        body.useFullKinematicContacts = true; // also report contacts with kinematic / static colliders
-        body.gravityScale = 0f;
-        body.interpolation = RigidbodyInterpolation2D.Interpolate;
-    }
-
-    /// <summary>Called by the spawner when it creates the instance for its pool.</summary>
-    public void SetPool(IObjectPool<BaseEnemyData> owner)
-    {
-        pool = owner;
     }
 
     /// <summary>Kept for compatibility. Prefer Initialize(data, context) from the spawner.</summary>
@@ -105,10 +80,8 @@ public class BaseEnemyData : MonoBehaviour
         speed = data != null ? data.moveSpeed : speed;
         damage = data != null ? data.damage : damage;
 
-        SpawnId = ++nextSpawnId;
         dead = false;
         reported = false;
-        despawned = false;
         slowTimer = 0f;
         slowFactor = 1f;
         IsInvulnerable = false;
@@ -203,8 +176,8 @@ public class BaseEnemyData : MonoBehaviour
             float spread = data.aoeSpreadDegrees;
             WaveDirectorBridge bridge = context.Bridge;
             int ticket = context.Ticket;
-            EnemyProjectile shot = context.Spawner != null
-                ? context.Spawner.GetProjectile(data.projectilePrefab)
+            EnemyProjectile shot = PoolManager.Instance != null
+                ? PoolManager.Instance.Spawn(data.projectilePrefab, planet.Root)
                 : Instantiate(data.projectilePrefab, planet.Root);
             shot.Launch(planet, AngleDegrees, Distance, angleDegrees, () => DealDamage(p, angleDegrees, amount, aoe, spread, bridge, ticket));
         }
@@ -331,16 +304,12 @@ public class BaseEnemyData : MonoBehaviour
     /// <summary>Hook for death effects (e.g. Animal Ship releasing animals).</summary>
     protected virtual void OnDeath() { }
 
-    /// <summary>Removes the enemy without drops (level end, or after death). Returns it to the pool if it came from one.</summary>
-    public void Despawn()
+    // Despawn() (from GameEntity) removes the enemy without drops (level end, or after death) and returns it to the PoolManager.
+    protected override void OnDespawned()
     {
-        if (despawned) return;
-        despawned = true;
         dead = true;
         Active.Remove(this);
         ReportGone(); // despawned without dying (level end): still counts for learning
-        if (pool != null) pool.Release(this);
-        else Destroy(gameObject);
     }
 
     protected virtual void OnDisable()

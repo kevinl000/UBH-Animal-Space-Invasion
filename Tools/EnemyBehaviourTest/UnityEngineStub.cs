@@ -179,6 +179,7 @@ namespace UnityEngine
         public Quaternion localRotation;
         public Vector3 eulerAngles { get { return new Vector3(0, 0, 0); } }
         public Vector3 TransformPoint(Vector3 p) { return p; }
+        public void SetParent(Transform p, bool worldPositionStays) { parent = p; }
     }
 
     public struct Vector2

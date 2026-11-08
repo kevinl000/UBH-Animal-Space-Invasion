@@ -1,13 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 using EnemyAI;
 
 /// <summary>
 /// Spawns enemies chosen by the enemy AI (WaveDirectorBridge) and the halfway boss.
 /// Setup: put this, a WaveDirectorBridge and an IPlanetDefense (e.g. SimplePlanetDefense) in the level scene,
 /// assign the LevelData, and give each EnemyData a prefab.
-/// Enemies and enemy projectiles are reused through one ObjectPool per prefab instead of Instantiate / Destroy.
+/// It only decides what to spawn and when; the instances come from the level's PoolManager.
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
@@ -21,12 +19,10 @@ public class EnemySpawner : MonoBehaviour
     public float spawnInterval = 0.5f;
     public bool startOnAwake = true;
 
-    [Header("Object pools (one per prefab)")]
-    [Tooltip("Instances created up front per enemy prefab when Begin() runs, so the first wave doesn't stutter.")]
+    [Tooltip("The level's PoolManager. Empty = PoolManager.Instance.")]
+    public PoolManager pool;
+    [Tooltip("Instances the PoolManager creates up front per enemy in the level when Begin() runs, so the first wave doesn't stutter.")]
     public int prewarmPerEnemy = 5;
-    public int poolDefaultCapacity = 20;
-    [Tooltip("Extra instances above this are destroyed instead of kept when they come back.")]
-    public int poolMaxSize = 200;
 
     public float Elapsed { get; private set; }
     public bool Running { get; private set; }
@@ -34,8 +30,8 @@ public class EnemySpawner : MonoBehaviour
     private IPlanetDefense planet;
     private float nextSpawn;
     private bool timeUpRaised;
-    private readonly Dictionary<BaseEnemyData, ObjectPool<BaseEnemyData>> enemyPools = new Dictionary<BaseEnemyData, ObjectPool<BaseEnemyData>>();
-    private readonly Dictionary<EnemyProjectile, ObjectPool<EnemyProjectile>> projectilePools = new Dictionary<EnemyProjectile, ObjectPool<EnemyProjectile>>();
+
+    private PoolManager Pool { get { return pool != null ? pool : PoolManager.Instance; } }
 
     private void Start()
     {
@@ -47,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
         planet = planetDefense as IPlanetDefense;
         if (planet == null) { Debug.LogError("[EnemySpawner] planetDefense must implement IPlanetDefense."); return; }
         if (level == null) { Debug.LogError("[EnemySpawner] No LevelData assigned."); return; }
+        if (Pool == null) { Debug.LogError("[EnemySpawner] No PoolManager in the scene. Add one (there should be exactly one per level)."); return; }
 
         level.Init();
         BaseEnemyData.Active.RemoveAll(e => e == null); // static list can outlive a play session in the editor
@@ -108,7 +105,9 @@ public class EnemySpawner : MonoBehaviour
         }
         if (planet == null) planet = planetDefense as IPlanetDefense;
 
-        BaseEnemyData enemy = PoolFor(data.prefab).Get();
+        if (Pool == null) { Debug.LogError("[EnemySpawner] No PoolManager in the scene."); return null; }
+
+        BaseEnemyData enemy = Pool.Spawn(data.prefab, planet.Root);
         enemy.name = data.name;
         enemy.Initialize(data, new EnemySpawnContext
         {
@@ -132,82 +131,20 @@ public class EnemySpawner : MonoBehaviour
         return Spawn(data, angleDegrees, shiny, orbits, 0, distance);
     }
 
-    // ---------------------------------------------------------------- pools
-
-    private ObjectPool<BaseEnemyData> PoolFor(BaseEnemyData prefab)
-    {
-        ObjectPool<BaseEnemyData> pool;
-        if (enemyPools.TryGetValue(prefab, out pool)) return pool;
-        ObjectPool<BaseEnemyData> created = null;
-        created = new ObjectPool<BaseEnemyData>(
-            () =>
-            {
-                BaseEnemyData e = Instantiate(prefab, planet.Root);
-                e.SetPool(created);
-                e.gameObject.SetActive(false);
-                return e;
-            },
-            e => e.gameObject.SetActive(true),
-            e => e.gameObject.SetActive(false),
-            e => { if (e != null) Destroy(e.gameObject); },
-            true, poolDefaultCapacity, poolMaxSize);
-        enemyPools[prefab] = created;
-        return created;
-    }
-
-    /// <summary>For enemies firing projectiles: a pooled instance, released by the projectile itself on impact.</summary>
-    public EnemyProjectile GetProjectile(EnemyProjectile prefab)
-    {
-        if (planet == null) planet = planetDefense as IPlanetDefense;
-        ObjectPool<EnemyProjectile> pool;
-        if (!projectilePools.TryGetValue(prefab, out pool))
-        {
-            ObjectPool<EnemyProjectile> created = null;
-            created = new ObjectPool<EnemyProjectile>(
-                () =>
-                {
-                    EnemyProjectile p = Instantiate(prefab, planet.Root);
-                    p.SetPool(created);
-                    p.gameObject.SetActive(false);
-                    return p;
-                },
-                p => p.gameObject.SetActive(true),
-                p => p.gameObject.SetActive(false),
-                p => { if (p != null) Destroy(p.gameObject); },
-                true, poolDefaultCapacity, poolMaxSize);
-            projectilePools[prefab] = created;
-            pool = created;
-        }
-        return pool.Get();
-    }
-
-    /// <summary>Creates a few instances of every enemy in the level up front.</summary>
+    /// <summary>Asks the PoolManager to create a few instances of every enemy in the level up front.</summary>
     private void Prewarm()
     {
         if (prewarmPerEnemy <= 0 || level == null || level.enemyDataList == null) return;
         foreach (LevelEnemyEntry entry in level.enemyDataList)
-        {
-            if (entry == null || entry.enemy == null || entry.enemy.prefab == null) continue;
-            ObjectPool<BaseEnemyData> pool = PoolFor(entry.enemy.prefab);
-            var temp = new List<BaseEnemyData>();
-            while (pool.CountAll < prewarmPerEnemy) temp.Add(pool.Get());
-            foreach (BaseEnemyData e in temp) pool.Release(e);
-        }
+            if (entry != null && entry.enemy != null && entry.enemy.prefab != null)
+                Pool.Prewarm(entry.enemy.prefab, prewarmPerEnemy);
     }
 
-    /// <summary>Sends every living enemy back to its pool (no drops), e.g. when the level ends.</summary>
+    /// <summary>Sends every living enemy back to the PoolManager (no drops), e.g. when the level ends.</summary>
     public void DespawnAll()
     {
         foreach (BaseEnemyData e in BaseEnemyData.Active.ToArray())
             if (e != null) e.Despawn();
-    }
-
-    private void OnDestroy()
-    {
-        foreach (ObjectPool<BaseEnemyData> p in enemyPools.Values) p.Clear();
-        foreach (ObjectPool<EnemyProjectile> p in projectilePools.Values) p.Clear();
-        enemyPools.Clear();
-        projectilePools.Clear();
     }
 
     private void SpawnBoss()

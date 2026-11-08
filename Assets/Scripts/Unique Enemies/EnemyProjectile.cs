@@ -1,21 +1,17 @@
 using System;
 using UnityEngine;
-using UnityEngine.Pool;
 
 /// <summary>
 /// Visual projectile (poop, skunk bomb, horn). Flies from the enemy to the planet surface,
 /// then calls back so the enemy deals its damage on impact. Optional: without a prefab, hits are instant.
-/// Moves through its Rigidbody2D (kinematic) and comes from the EnemySpawner's ObjectPool.
+/// Moves through its Rigidbody2D (kinematic) and comes from the level's PoolManager (it's a GameEntity).
 /// </summary>
-[RequireComponent(typeof(Rigidbody2D))]
-public class EnemyProjectile : MonoBehaviour
+public class EnemyProjectile : GameEntity
 {
     [Tooltip("Planet radii per second.")]
     public float speed = 2.5f;
 
     private IPlanetDefense planet;
-    private Rigidbody2D body;
-    private IObjectPool<EnemyProjectile> pool;
     private float startAngle, targetAngle, startDistance;
     private float distance;
     private Action onHit;
@@ -23,19 +19,10 @@ public class EnemyProjectile : MonoBehaviour
 
     public float Distance { get { return distance; } }
 
-    private void Awake()
+    protected override void OnDespawned()
     {
-        body = GetComponent<Rigidbody2D>();
-        if (body == null) body = gameObject.AddComponent<Rigidbody2D>();
-        body.bodyType = RigidbodyType2D.Kinematic;
-        body.gravityScale = 0f;
-        body.interpolation = RigidbodyInterpolation2D.Interpolate;
-    }
-
-    /// <summary>Called by the spawner when it creates the instance for its pool.</summary>
-    public void SetPool(IObjectPool<EnemyProjectile> owner)
-    {
-        pool = owner;
+        launched = false;
+        onHit = null;
     }
 
     /// <summary>Starts at the enemy (angle + distance in planet radii) and flies to the planet surface at targetAngle.</summary>
@@ -69,10 +56,10 @@ public class EnemyProjectile : MonoBehaviour
         if (distance <= 1f)
         {
             launched = false;
-            if (onHit != null) onHit();
+            Action hit = onHit;
             onHit = null;
-            if (pool != null) pool.Release(this);
-            else Destroy(gameObject);
+            if (hit != null) hit();
+            Despawn(); // back to the PoolManager
         }
     }
 }
