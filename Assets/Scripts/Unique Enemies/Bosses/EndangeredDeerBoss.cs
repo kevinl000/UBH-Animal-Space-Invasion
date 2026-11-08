@@ -12,14 +12,23 @@ public class EndangeredDeerBoss : BossEnemy
     [Tooltip("README 'n': seconds between guards (not decided yet).")]
     public float guardInterval = 12f;
 
-    private readonly List<BaseEnemyData> guards = new List<BaseEnemyData>();
+    // Guards come from the pool, so remember which spawn each one was: a reused instance is a different enemy.
+    private readonly List<KeyValuePair<BaseEnemyData, int>> guards = new List<KeyValuePair<BaseEnemyData, int>>();
     private float guardTimer;
 
-    public int LivingGuards { get { guards.RemoveAll(g => g == null || !g.IsAlive); return guards.Count; } }
+    public int LivingGuards
+    {
+        get
+        {
+            guards.RemoveAll(g => g.Key == null || !g.Key.IsAlive || g.Key.SpawnId != g.Value);
+            return guards.Count;
+        }
+    }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        guards.Clear();
         guardTimer = 0f; // first guard as soon as it arrives
     }
 
@@ -33,7 +42,7 @@ public class EndangeredDeerBoss : BossEnemy
             {
                 guardTimer = guardInterval;
                 BaseEnemyData g = Summon(guardEnemy, 0f);
-                if (g != null) guards.Add(g);
+                if (g != null) guards.Add(new KeyValuePair<BaseEnemyData, int>(g, g.SpawnId));
             }
         }
         IsInvulnerable = LivingGuards > 0;

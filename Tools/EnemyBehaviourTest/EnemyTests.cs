@@ -7,6 +7,15 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using EnemyAI;
 
+class FakeBullet : IEnemyHitter
+{
+    public float Damage { get; set; }
+    public bool IgnoresShield { get; set; }
+    public bool CanHitStealth { get; set; }
+    public int Hits;
+    public void OnHitEnemy(BaseEnemyData enemy) { Hits++; }
+}
+
 class FakeTower : IDamageable, IFreezable
 {
     public float Hp; public float FrozenFor; public float Taken;
@@ -210,6 +219,7 @@ static class EnemyTests
         Bosses();
         FullLevel();
         ProjectileHit();
+        PhysicsAndPooling();
 
         Console.WriteLine("Enemy behaviour: " + pass + " passed, " + fail + " failed");
         if (fail > 0) Environment.ExitCode = 1;
@@ -311,9 +321,12 @@ static class EnemyTests
         catch (Exception ex) { error = ex.GetType().Name + ": " + ex.Message; }
         EnemyEvents.Spawned -= onSpawn; EnemyEvents.BossSpawned -= onBoss; EnemyEvents.BossWarning -= onWarn; EnemyEvents.LevelTimeUp -= onTimeUp;
         var errs = UnityEngine.Debug.Log.Where(l => l.StartsWith("ERROR")).ToList();
+        int instances = MonoBehaviour.LiveCount<BaseEnemyData>();
         Check("Full 120s level through the spawner and the AI (README roster + boss)", error == null && spawned > 10 && bosses == 1 && warnings == 1 && timeUp == 1 && !overBudget && errs.Count == 0,
             (error ?? "no exceptions") + ", " + spawned + " enemies spawned, boss " + bosses + ", boss warning " + warnings + ", time-up " + timeUp
             + ", spent " + lv.SpentBudget + " of " + lv.GetTotalBudget(120) + ", over budget: " + overBudget + ", planet HP " + planet.PlanetHealth.ToString("F0"));
+        Check("Full level reuses pooled enemies instead of creating one per spawn", instances < spawned + 12 * 5 && error == null,
+            spawned + " spawns served by " + instances + " instances (" + "prewarm 5 per roster enemy), alive at the end " + BaseEnemyData.Active.Count);
     }
 
     static void ProjectileHit()
@@ -328,7 +341,82 @@ static class EnemyTests
         Run(3.0f);
         float early = Tower(0).Taken;
         Run(6f);
-        Check("Projectile flies to the planet and deals damage on impact", Tower(0).Taken > early || Tower(0).Taken > 0, "tower damage " + Tower(0).Taken + ", projectiles alive now " + MonoBehaviour.LiveCount<EnemyProjectile>());
+        Check("Projectile flies to the planet and deals damage on impact (pooled)", Tower(0).Taken > 0 && MonoBehaviour.LiveCount<EnemyProjectile>() <= 2,
+            "tower damage " + Tower(0).Taken + ", projectile instances ever made " + MonoBehaviour.LiveCount<EnemyProjectile>() + " for " + Tower(0).Taken + " shots, in flight now " + MonoBehaviour.ActiveCount<EnemyProjectile>());
+    }
+
+    static void PhysicsAndPooling()
+    {
+        // Movement goes through the Rigidbody2D, not the transform
+        NewWorld(0);
+        var g = Spawn("Basic Goose 2", SlotAngle(0));
+        Run(6f);
+        Vector2 expected = PlanetMath.ToLocal(SlotAngle(0), Data["Basic Goose 2"].stopDistance, planet.radius);
+        var b = g.Body;
+        float err = new Vector2(b.position.x - expected.x, b.position.y - expected.y).magnitude;
+        Check("Enemies move through a kinematic Rigidbody2D (MovePosition / MoveRotation), not the transform",
+            b.bodyType == RigidbodyType2D.Kinematic && b.useFullKinematicContacts && b.gravityScale == 0f && b.MovePositionCalls > 50 && err < 0.01f
+            && g.transform.localPosition.sqrMagnitude == 0f && Math.Abs(b.rotation - (SlotAngle(0) + 90f)) < 0.01f,
+            "MovePosition calls " + b.MovePositionCalls + ", body at (" + b.position.x.ToString("F1") + ", " + b.position.y.ToString("F1") + ") expected (" + expected.x.ToString("F1") + ", " + expected.y.ToString("F1")
+            + "), transform untouched: " + (g.transform.localPosition.sqrMagnitude == 0f) + ", rotation " + b.rotation + " (faces the planet)");
+
+        // Collisions: OnTriggerEnter2D / OnCollisionEnter2D find an IEnemyHitter on the other collider
+        NewWorld();
+        var target = Spawn("Basic Skunk 3");
+        var bullet = new FakeBullet { Damage = 3f };
+        var bulletCollider = new Collider2D { attached = bullet };
+        Invoke(target, "OnTriggerEnter2D", bulletCollider);
+        Invoke(target, "OnCollisionEnter2D", new Collision2D { collider = bulletCollider });
+        bool damaged = target.Health == 2f && bullet.Hits == 2;
+        var sneaky = Spawn("Stealth Goose");
+        Invoke(sneaky, "OnTriggerEnter2D", bulletCollider);
+        bool stealthSafe = sneaky.IsAlive && bullet.Hits == 2;
+        var radar = new FakeBullet { Damage = 5f, CanHitStealth = true };
+        Invoke(sneaky, "OnTriggerEnter2D", new Collider2D { attached = radar });
+        bool radarKilled = !sneaky.IsAlive; // read now: the next Spawn may reuse this pooled instance
+        var shielded = Spawn("Shielded Skunk");
+        Invoke(shielded, "OnTriggerEnter2D", new Collider2D { attached = new FakeBullet { Damage = 1f, IgnoresShield = true } });
+        var plain = Spawn("Basic Goose 1");
+        Invoke(plain, "OnTriggerEnter2D", new Collider2D()); // something that isn't a hitter
+        Check("Collisions and triggers with an IEnemyHitter damage the enemy",
+            damaged && stealthSafe && radarKilled && shielded.HasShield && shielded.Health == 7f && plain.IsAlive && plain.Health == 1f,
+            "skunk HP 8 -> " + target.Health + " after a trigger + a collision of 3, bullet notified " + bullet.Hits + "x; stealth goose ignored by a normal bullet: " + stealthSafe
+            + ", killed by radar: " + radarKilled + "; pest-trap style hit kept the shield: " + shielded.HasShield + "; non-hitter contact did nothing: " + (plain.Health == 1f));
+
+        // Pool: a dead enemy goes back and comes out fresh
+        NewWorld(0);
+        var deer = Spawn("Basic Deer", SlotAngle(0));
+        Run(9f); // orbiting / charging
+        int firstId = deer.SpawnId;
+        deer.TakeDamage(999f);
+        bool inactiveAfterDeath = !deer.gameObject.activeSelf && !BaseEnemyData.Active.Contains(deer);
+        var again = Spawn("Basic Deer", 30f);
+        bool reused = ReferenceEquals(again, deer);
+        bool fresh = again.IsAlive && again.Health == 10f && again.Distance == 4f && !again.Arrived && again.SpawnId != firstId && again.gameObject.activeSelf && BaseEnemyData.Active.Contains(again);
+        Run(1f);
+        bool notCharging = again.Distance > 3f; // still flying in, not stuck in an old charge
+        string doubleRelease = "none";
+        try { again.Despawn(); again.Despawn(); } catch (Exception ex) { doubleRelease = ex.GetType().Name; }
+        Check("Object pool: a killed enemy is reused fresh (no Instantiate per spawn)",
+            inactiveAfterDeath && reused && fresh && notCharging && doubleRelease == "none" && MonoBehaviour.LiveCount<DeerEnemy>() == 1,
+            "inactive after death: " + inactiveAfterDeath + ", same instance reused: " + reused + ", fresh HP/distance/state: " + fresh + " (distance after 1s " + again.Distance.ToString("F2")
+            + "), double despawn error: " + doubleRelease + ", deer instances " + MonoBehaviour.LiveCount<DeerEnemy>());
+
+        // Endangered Deer: a guard that died and was reused as a normal deer no longer counts
+        NewWorld(0);
+        var ed = (EndangeredDeerBoss)Spawn("Endangered Deer", SlotAngle(0), false, true);
+        Run(6f);
+        var guard = BaseEnemyData.Active.First(e => e.name == "Shielded Deer");
+        guard.TakeDamage(1f); guard.TakeDamage(999f);
+        var reusedGuard = Spawn("Shielded Deer", 200f); // same pooled instance, now an unrelated deer
+        int living = ed.LivingGuards;
+        Check("Pooled guards: a reused instance isn't mistaken for the boss's old guard",
+            ReferenceEquals(reusedGuard, guard) && living == 0, "reused same instance: " + ReferenceEquals(reusedGuard, guard) + ", boss counts living guards " + living);
+    }
+
+    static void Invoke(BaseEnemyData e, string method, object arg)
+    {
+        typeof(BaseEnemyData).GetMethod(method, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(e, new[] { arg });
     }
 
     // README table vs EnemyDataGenerator table

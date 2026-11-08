@@ -15,6 +15,7 @@ public class DeerEnemy : BaseEnemyData
     protected override void OnInitialized()
     {
         Orbits = true; // deer always orbit
+        state = State.Orbiting; // pooled instances start fresh
     }
 
     protected override void Tick(float dt)

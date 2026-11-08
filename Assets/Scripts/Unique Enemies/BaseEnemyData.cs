@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 /// <summary>What the spawner hands an enemy when it's created.</summary>
 public class EnemySpawnContext
@@ -16,9 +17,14 @@ public class EnemySpawnContext
 
 /// <summary>
 /// Base for every enemy. Handles README stats, approach, orbiting, attacking the slot below,
-/// shields, stealth, shiny, slows, drops, and reporting to the enemy AI.
+/// shields, stealth, shiny, slows, drops, collisions, and reporting to the enemy AI.
 /// Subclasses override Attack(), Tick() or OnDeath() for their special behaviour.
+///
+/// Prefab needs: this component (or a subclass), a Rigidbody2D (added automatically) and a Collider2D.
+/// Movement goes through the Rigidbody2D (kinematic, MovePosition / MoveRotation in FixedUpdate).
+/// Instances come from the EnemySpawner's ObjectPool and go back to it with Despawn().
 /// </summary>
+[RequireComponent(typeof(Rigidbody2D))]
 public class BaseEnemyData : MonoBehaviour
 {
     public EnemyData data;
@@ -45,17 +51,42 @@ public class BaseEnemyData : MonoBehaviour
     public bool Arrived { get; protected set; }
     public bool Orbits { get; protected set; }
 
+    /// <summary>Goes up every time this instance is (re)used from the pool, so old references can tell it's a different enemy now.</summary>
+    public int SpawnId { get; private set; }
+    public Rigidbody2D Body { get { return body; } }
+    public Collider2D Collider { get { return hitCollider; } }
+
     protected IPlanetDefense planet;
     protected EnemySpawnContext context;
     protected float attackTimer;
+    protected Rigidbody2D body;
+    protected Collider2D hitCollider;
+    private IObjectPool<BaseEnemyData> pool;
     private float slowTimer;
     private float slowFactor = 1f;
     private bool dead;
     private bool reported;
+    private bool despawned;
+    private static int nextSpawnId;
 
     protected virtual void Awake()
     {
         currentHealth = maxHealth;
+        body = GetComponent<Rigidbody2D>();
+        if (body == null) body = gameObject.AddComponent<Rigidbody2D>(); // prefab made before RequireComponent was added
+        hitCollider = GetComponent<Collider2D>();
+        if (hitCollider == null) Debug.LogWarning("[BaseEnemyData] '" + name + "' has no Collider2D, so nothing can collide with it.");
+        // Kinematic: the enemy follows its own path (MovePosition), physics only reports contacts.
+        body.bodyType = RigidbodyType2D.Kinematic;
+        body.useFullKinematicContacts = true; // also report contacts with kinematic / static colliders
+        body.gravityScale = 0f;
+        body.interpolation = RigidbodyInterpolation2D.Interpolate;
+    }
+
+    /// <summary>Called by the spawner when it creates the instance for its pool.</summary>
+    public void SetPool(IObjectPool<BaseEnemyData> owner)
+    {
+        pool = owner;
     }
 
     /// <summary>Kept for compatibility. Prefer Initialize(data, context) from the spawner.</summary>
@@ -74,6 +105,14 @@ public class BaseEnemyData : MonoBehaviour
         speed = data != null ? data.moveSpeed : speed;
         damage = data != null ? data.damage : damage;
 
+        SpawnId = ++nextSpawnId;
+        dead = false;
+        reported = false;
+        despawned = false;
+        slowTimer = 0f;
+        slowFactor = 1f;
+        IsInvulnerable = false;
+
         IsShiny = context.IsShiny;
         if (IsShiny) maxHealth *= 2f; // README: shiny = double HP
         currentHealth = maxHealth;
@@ -87,7 +126,7 @@ public class BaseEnemyData : MonoBehaviour
         attackTimer = data != null ? Random.Range(0f, data.attackInterval) : 1f; // don't all fire on the same frame
 
         if (!Active.Contains(this)) Active.Add(this);
-        Place();
+        Teleport();
         OnInitialized();
         EnemyEvents.RaiseSpawned(this);
     }
@@ -95,10 +134,11 @@ public class BaseEnemyData : MonoBehaviour
     /// <summary>Hook for subclasses after stats are set.</summary>
     protected virtual void OnInitialized() { }
 
-    protected virtual void Update()
+    // Physics step: all movement goes through the Rigidbody2D here.
+    protected virtual void FixedUpdate()
     {
         if (!IsAlive || data == null || planet == null) return;
-        float dt = Time.deltaTime;
+        float dt = Time.fixedDeltaTime;
         if (slowTimer > 0f)
         {
             slowTimer -= dt;
@@ -158,8 +198,15 @@ public class BaseEnemyData : MonoBehaviour
     {
         if (data.projectilePrefab != null && planet != null)
         {
-            EnemyProjectile p = Instantiate(data.projectilePrefab, planet.Root);
-            p.Launch(planet, transform.localPosition, angleDegrees, () => HitAt(angleDegrees, amount, aoe));
+            // Capture everything now: this enemy may die and be reused from the pool before the projectile lands.
+            IPlanetDefense p = planet;
+            float spread = data.aoeSpreadDegrees;
+            WaveDirectorBridge bridge = context.Bridge;
+            int ticket = context.Ticket;
+            EnemyProjectile shot = context.Spawner != null
+                ? context.Spawner.GetProjectile(data.projectilePrefab)
+                : Instantiate(data.projectilePrefab, planet.Root);
+            shot.Launch(planet, AngleDegrees, Distance, angleDegrees, () => DealDamage(p, angleDegrees, amount, aoe, spread, bridge, ticket));
         }
         else
         {
@@ -170,21 +217,55 @@ public class BaseEnemyData : MonoBehaviour
     /// <summary>Deals damage at an angle on the planet and reports it to the AI. Returns damage dealt.</summary>
     protected float HitAt(float angleDegrees, float amount, bool aoe)
     {
-        if (planet == null) return 0f;
+        return DealDamage(planet, angleDegrees, amount, aoe, data.aoeSpreadDegrees, context.Bridge, context.Ticket);
+    }
+
+    private static float DealDamage(IPlanetDefense target, float angleDegrees, float amount, bool aoe, float spread, WaveDirectorBridge bridge, int ticket)
+    {
+        if (target == null) return 0f;
         float dealt = 0f;
         if (aoe)
         {
-            foreach (IDamageable t in planet.GetTargetsNear(angleDegrees, data.aoeSpreadDegrees))
+            foreach (IDamageable t in target.GetTargetsNear(angleDegrees, spread))
                 if (t != null && t.IsAlive) dealt += t.ReceiveDamage(amount);
         }
         else
         {
-            IDamageable t = planet.GetTargetBelow(angleDegrees);
+            IDamageable t = target.GetTargetBelow(angleDegrees);
             if (t != null && t.IsAlive) dealt += t.ReceiveDamage(amount);
         }
-        if (dealt > 0f && context.Bridge != null) context.Bridge.ReportDamage(context.Ticket, dealt);
+        if (dealt > 0f && bridge != null) bridge.ReportDamage(ticket, dealt);
         return dealt;
     }
+
+    // ---------------------------------------------------------------- collisions
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HandleContact(collision.collider);
+    }
+
+    // Tower bullets are often triggers, so handle both.
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        HandleContact(other);
+    }
+
+    private void HandleContact(Collider2D other)
+    {
+        if (!IsAlive || other == null) return;
+        IEnemyHitter hitter = other.GetComponentInParent<IEnemyHitter>();
+        if (hitter != null && (!IsStealthed || hitter.CanHitStealth))
+        {
+            if (hitter.IgnoresShield) TakeDamageIgnoringShield(hitter.Damage);
+            else TakeDamage(hitter.Damage);
+            hitter.OnHitEnemy(this);
+        }
+        OnContact(other, hitter);
+    }
+
+    /// <summary>Hook for subclasses: called for every collision / trigger contact (hitter is null if the other object isn't one).</summary>
+    protected virtual void OnContact(Collider2D other, IEnemyHitter hitter) { }
 
     // ---------------------------------------------------------------- taking damage
 
@@ -244,16 +325,33 @@ public class BaseEnemyData : MonoBehaviour
         EnemyEvents.RaiseKilled(this, money, fuel);
 
         OnDeath();
-        Destroy(gameObject);
+        Despawn();
     }
 
     /// <summary>Hook for death effects (e.g. Animal Ship releasing animals).</summary>
     protected virtual void OnDeath() { }
 
+    /// <summary>Removes the enemy without drops (level end, or after death). Returns it to the pool if it came from one.</summary>
+    public void Despawn()
+    {
+        if (despawned) return;
+        despawned = true;
+        dead = true;
+        Active.Remove(this);
+        ReportGone(); // despawned without dying (level end): still counts for learning
+        if (pool != null) pool.Release(this);
+        else Destroy(gameObject);
+    }
+
+    protected virtual void OnDisable()
+    {
+        Active.Remove(this);
+    }
+
     protected virtual void OnDestroy()
     {
         Active.Remove(this);
-        ReportGone(); // despawned without dying (level end): still counts for learning
+        ReportGone();
     }
 
     private void ReportGone()
@@ -265,12 +363,34 @@ public class BaseEnemyData : MonoBehaviour
 
     // ---------------------------------------------------------------- helpers
 
+    /// <summary>World position for the current angle and distance (same maths as before, through the planet root).</summary>
+    protected Vector2 TargetPosition()
+    {
+        return planet.Root.TransformPoint(PlanetMath.ToLocal(AngleDegrees, Distance, planet.Radius));
+    }
+
+    /// <summary>Faces the planet centre (sprites drawn facing up).</summary>
+    protected float TargetRotation()
+    {
+        return planet.Root.eulerAngles.z + AngleDegrees + 90f;
+    }
+
+    /// <summary>Moves the Rigidbody2D to the current angle and distance during the physics step.</summary>
     protected void Place()
     {
         if (planet == null) return;
-        transform.localPosition = PlanetMath.ToLocal(AngleDegrees, Distance, planet.Radius);
-        // face the planet centre (sprites drawn facing up)
-        transform.localRotation = Quaternion.Euler(0f, 0f, AngleDegrees + 90f);
+        body.MovePosition(TargetPosition());
+        body.MoveRotation(TargetRotation());
+    }
+
+    /// <summary>Instant jump to the spawn point (Rigidbody2D.position, not MovePosition, so it doesn't sweep from where the pooled instance was).</summary>
+    protected void Teleport()
+    {
+        if (planet == null) return;
+        body.position = TargetPosition();
+        body.rotation = TargetRotation();
+        body.linearVelocity = Vector2.zero;
+        body.angularVelocity = 0f;
     }
 
     /// <summary>Summons another enemy next to this one (bosses). Returns null without a spawner.</summary>

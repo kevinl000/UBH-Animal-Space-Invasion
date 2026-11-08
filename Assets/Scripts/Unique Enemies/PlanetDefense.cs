@@ -18,6 +18,21 @@ public interface IDamageable
     float ReceiveDamage(float amount);
 }
 
+/// <summary>
+/// Put this on anything that damages enemies by touching them (tower bullets, lasers, traps).
+/// The enemy's OnCollisionEnter2D / OnTriggerEnter2D finds it on the other collider (or its parents) and applies the damage.
+/// </summary>
+public interface IEnemyHitter
+{
+    float Damage { get; }
+    /// <summary>True for damage over time like the Pest Trap.</summary>
+    bool IgnoresShield { get; }
+    /// <summary>True for towers that reveal stealth (Radar).</summary>
+    bool CanHitStealth { get; }
+    /// <summary>Called after the hit, e.g. to return the bullet to its pool.</summary>
+    void OnHitEnemy(BaseEnemyData enemy);
+}
+
 /// <summary>Optional for towers: lets Restraining Buck freeze them.</summary>
 public interface IFreezable
 {

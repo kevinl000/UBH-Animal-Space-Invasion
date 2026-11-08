@@ -22,6 +22,7 @@ public class SneakyHealthyGooseBoss : BossEnemy
     {
         base.OnInitialized();
         phaseTimer = secondsBetweenStealth;
+        inStealth = false; // pooled instances start fresh
     }
 
     protected override void Tick(float dt)
