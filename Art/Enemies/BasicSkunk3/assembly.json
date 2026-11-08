@@ -1,0 +1,51 @@
+{
+  "asset": "Basic Skunk 3",
+  "mode": "built-in image_gen edit",
+  "source": "basic-skunk-3-source-v1.png",
+  "prompt": "prompt-v1.txt",
+  "edit_target": "Assets/Art/Enemies/BasicSkunk2/BasicSkunk2.png",
+  "runtime_sprite": "Assets/Art/Enemies/BasicSkunk3/BasicSkunk3.png",
+  "visual_prefab": "Assets/Prefabs/Enemies/BasicSkunk3Visual.prefab",
+  "palette": "Crimson-red hull and ruby/rose-red dome; natural skunk, mint lights, cyan/mint thrusters and empty gray-rimmed outlet retained visually.",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha_128": [
+    41,
+    157,
+    1213,
+    1026
+  ],
+  "reference_visible_bounds_alpha_128": [
+    41,
+    159,
+    1212,
+    1020
+  ],
+  "pixels_per_unit": 512.4372331340735,
+  "reference_pixels_per_unit": 512,
+  "visible_width_world_units": 2.2871093749999996,
+  "transform_scale": [
+    1,
+    1,
+    1
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "pilot_facing": "-X",
+  "bomb_outlet_facing": "-Y",
+  "gameplay_visual_child_rotation_z": 180,
+  "projectile_visual": "Assets/Prefabs/Projectiles/SkunkBombProjectileVisual.prefab",
+  "burst_visual": "Assets/Prefabs/Projectiles/SkunkBombBurstVisual.prefab",
+  "hit_puff_visual": "Assets/Prefabs/Projectiles/SkunkBombHitPuffVisual.prefab",
+  "projectile_forward": "+Y",
+  "projectile_visual_child_rotation_z": 0,
+  "gas_growth_direction": "+Y outward from surface",
+  "texture_guid": "84138d8c0b274ede905858648d3299ab",
+  "folder_guid": "9e999736169049009246620f397e789f",
+  "prefab_guid": "6a700654a8774835b73d26fbe7cc65f7",
+  "scope": "Visual assets only; no gameplay or progression changes."
+}

@@ -1,0 +1,11 @@
+Generation mode: built-in image_gen edit; transparent_background=true.
+Edit target: Assets/Art/Enemies/BasicSkunk1/BasicSkunk1.png
+
+Use case: precise-object-edit.
+Asset type: transparent Unity pixel-art enemy sprite, Basic Skunk 2.
+Input image 1 is the approved Basic Skunk 1 and is the edit target. Make a clear higher-HP COLOR VARIANT of exactly this same skunk-piloted UFO.
+Primary request: recolor the entire charcoal/navy/slate metal saucer hull to warm COPPER-ORANGE: deep burnt-sienna shadows, saturated copper/orange midtones, bright peach-copper highlighted plates and rim. Recolor the entire blue glass dome to AMBER-ORANGE glass: burnt amber behind the pilot, orange glass, pale peach/gold rim and white highlights. It must read unmistakably WARM ORANGE at 80-160 pixels wide, clearly different from the original dark navy saucer and blue dome.
+Preserve the natural BLACK AND WHITE SKUNK entirely unchanged: same face, short left-facing muzzle, ears, focused expression, white back stripe, large upright curled striped tail, natural black fur and ivory-white markings, exact pose and shape. Preserve the six MINT-GREEN running lights and the two small cyan/mint side thrusters, including their sizes and positions. Keep the CENTRAL bomb outlet at the underside EMPTY with a near-black hollow opening and neutral gray rim; do not fill it with light or a bomb. Maintain a clear transparent downward bomb-drop path between the two thrusters.
+Keep all ship geometry, silhouette, hull thickness, dome outline, proportions, composition, square canvas, subject position, transparent margins, pixel grid, coarse pixel clusters and stepped dark outlines identical to input. ONLY change colors of hull and dome. This basic unit has higher HP communicated solely by palette.
+Scene/backdrop: one isolated static sprite with genuine alpha transparency. No fake checkerboard, scenery or backdrop.
+Avoid: new armor, thicker hull, shield, weapons, extra lights, costume, badge, text, numbers, watermark, bomb projectile, particles, long exhaust, gas cloud or animation. No blue dome or navy hull remains; those regions become orange/copper. Keep recognizable coarse pixel art, no new detail or smooth/vector/3D rendering.

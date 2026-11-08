@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "source_runtime_byte_identical": true,
+    "rgba_with_real_transparency": true,
+    "visible_width_matches_reference": true,
+    "new_guids_unique": true,
+    "prefab_sprite_reference": true,
+    "visual_components_only": true,
+    "point_clamp_no_mips_no_compression": true,
+    "no_resize_by_importer": true,
+    "preview_three_image_references_exist": true,
+    "existing_bomb_effect_references_present": true
+  },
+  "source_runtime_sha256": "9a1820a9bdce75cd5df88175c153c31828b8ea558f3030d015598d6d1a95d636",
+  "visible_bounds_threshold": 128,
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "fully_transparent_pixels": 899975,
+  "note": "Generated source retained unchanged, including faint alpha edges; visually consistent, not pixel-identical to the reference.",
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "remaining": "Manual camera readability, import/material, outlet alignment and gameplay hookup review."
+}

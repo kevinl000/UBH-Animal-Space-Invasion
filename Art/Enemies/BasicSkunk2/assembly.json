@@ -1,0 +1,51 @@
+{
+  "asset": "Basic Skunk 2",
+  "mode": "built-in image_gen edit",
+  "source": "basic-skunk-2-source-v1.png",
+  "prompt": "prompt-v1.txt",
+  "edit_target": "Assets/Art/Enemies/BasicSkunk1/BasicSkunk1.png",
+  "runtime_sprite": "Assets/Art/Enemies/BasicSkunk2/BasicSkunk2.png",
+  "visual_prefab": "Assets/Prefabs/Enemies/BasicSkunk2Visual.prefab",
+  "palette": "Copper-orange hull and amber dome; natural skunk, mint lights, cyan/mint thrusters and empty gray-rimmed outlet retained visually.",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha_128": [
+    40,
+    158,
+    1214,
+    1022
+  ],
+  "reference_visible_bounds_alpha_128": [
+    41,
+    159,
+    1212,
+    1020
+  ],
+  "pixels_per_unit": 513.3116994022204,
+  "reference_pixels_per_unit": 512,
+  "visible_width_world_units": 2.287109375,
+  "transform_scale": [
+    1,
+    1,
+    1
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "pilot_facing": "-X",
+  "bomb_outlet_facing": "-Y",
+  "gameplay_visual_child_rotation_z": 180,
+  "projectile_visual": "Assets/Prefabs/Projectiles/SkunkBombProjectileVisual.prefab",
+  "burst_visual": "Assets/Prefabs/Projectiles/SkunkBombBurstVisual.prefab",
+  "hit_puff_visual": "Assets/Prefabs/Projectiles/SkunkBombHitPuffVisual.prefab",
+  "projectile_forward": "+Y",
+  "projectile_visual_child_rotation_z": 0,
+  "gas_growth_direction": "+Y outward from surface",
+  "texture_guid": "a3f7357c6c404ba7823e0fca47db71a4",
+  "folder_guid": "d1f5419381c84cc28a8297e893963db1",
+  "prefab_guid": "94645d2937f040ceac5fee5d266c4b95",
+  "scope": "Visual assets only; no gameplay or progression changes."
+}

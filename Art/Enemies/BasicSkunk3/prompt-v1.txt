@@ -1,0 +1,11 @@
+Generation mode: built-in image_gen edit; transparent_background=true.
+Edit target: Assets/Art/Enemies/BasicSkunk2/BasicSkunk2.png
+
+Use case: precise-object-edit.
+Asset type: transparent Unity pixel-art enemy sprite, Basic Skunk 3.
+Input image 1 is the existing copper-orange Basic Skunk 2 and is the edit target. Make a clear third-tier COLOR VARIANT of exactly this same skunk-piloted UFO.
+Primary request: recolor the entire copper-orange metal saucer hull to saturated CRIMSON RED: deep burgundy shadows, rich ruby/crimson midtones, and pale rose-red highlighted plates and rim. Recolor the entire amber-orange glass dome to RUBY/ROSE-RED glass: dark wine-red behind the skunk, saturated cool red glass and pale pink/white highlights. It must read unmistakably RED at 80-160 pixels wide, clearly different from both the original navy/blue tier 1 and orange/amber tier 2. Keep the reds cool, ruby and slightly pinkish; do not use orange or copper surfaces.
+Preserve the natural BLACK AND WHITE SKUNK entirely unchanged: same left-facing muzzle and face, ears, focused expression, white back stripe, large upright curled striped tail, natural black fur and ivory-white markings, exact pose and shape. Preserve the six MINT-GREEN running lights and the two small cyan/mint side thrusters, including their sizes and positions. Preserve the CENTRAL bomb outlet at the underside EMPTY with a near-black hollow opening and neutral gray rim. No bomb inside. Maintain the clear transparent downward bomb-drop path between the two thrusters.
+Preserve every ship shape: same geometry, silhouette, hull thickness, dome outline, proportions, subject position, square canvas, transparent padding, pixel grid, coarse pixel clusters and stepped dark outlines. ONLY recolor hull and glass. Higher HP is represented by color alone.
+Scene/backdrop: one isolated static sprite on genuine alpha transparency; no backdrop or fake checkerboard.
+Avoid: new armor, larger or thicker ship, shield, weapon, extra light, costume, badge, text, number, watermark, bomb projectile, particles, long exhaust, gas cloud or animation. No orange or blue hull/glass regions remaining; those regions become crimson/red. Keep coarse pixel art; no added detail or smooth/vector/3D rendering.
