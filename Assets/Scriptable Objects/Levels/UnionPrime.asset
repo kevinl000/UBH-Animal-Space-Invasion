@@ -22,7 +22,17 @@ MonoBehaviour:
     startingBudget: 1
     endingBudget: 1
     isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
   - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 35f37c7ed9c4add41847cad182e58d27, type: 2}
     enemyInstances: []
     startingBudget: 1
     endingBudget: 1

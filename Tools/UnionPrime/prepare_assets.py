@@ -330,7 +330,8 @@ def prepare_config():
         text = setfield(text, key, str(value))
     # Prewarm/validation roster; actual wave permissions are exclusively in the configuration.
     roster = ''
-    for name in ['Basic Goose 1', 'Basic Skunk 1', 'Shielded Goose', 'Shielded Skunk', 'Healthy Goose', 'Healthy Skunk']:
+    for name in ['Basic Goose 1', 'Basic Goose 2', 'Basic Skunk 1', 'Basic Skunk 2',
+                 'Shielded Goose', 'Shielded Skunk', 'Healthy Goose', 'Healthy Skunk']:
         roster += f'''  - enemy: {ref(DATA_FOLDER + 'Enemies/README/' + name + '.asset')}
     enemyInstances: []
     startingBudget: 1
@@ -343,10 +344,15 @@ def prepare_config():
     for name in ['Laser', 'Bomb', 'Sniper', 'Pest Trap']:
         fields += '  - ' + ref(DATA_FOLDER + 'Towers/README/' + name + '.asset') + '\n'
     fields += '  waves:\n'
-    waves = [(30, [.5, .5], 'Shielded Goose'), (50, [.4, .4, .2], 'Shielded Skunk'), (70, [.3, .3, .2, .2], None)]
-    for budget, shares, miniboss in waves:
+    waves = [
+        (45, [('Basic Goose 1', .35), ('Basic Goose 2', .35), ('Basic Skunk 1', .3)], 'Shielded Goose'),
+        (65, [('Basic Goose 1', .15), ('Basic Goose 2', .25), ('Basic Skunk 1', .2),
+              ('Basic Skunk 2', .15), ('Shielded Goose', .25)], 'Shielded Skunk'),
+        (70, [('Basic Goose 1', .3), ('Basic Skunk 1', .3), ('Shielded Goose', .2), ('Shielded Skunk', .2)], None),
+    ]
+    for budget, roster, miniboss in waves:
         fields += f'  - duration: 20\n    restDuration: 10\n    costBudget: {budget}\n    roster:\n'
-        for name, share in zip(['Basic Goose 1', 'Basic Skunk 1', 'Shielded Goose', 'Shielded Skunk'], shares):
+        for name, share in roster:
             fields += f'''    - enemy: {ref(DATA_FOLDER + 'Enemies/README/' + name + '.asset')}
       enemyInstances: []
       startingBudget: {share}

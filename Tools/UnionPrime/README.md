@@ -52,14 +52,18 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
   the current README stats. All eleven non-boss enemy types now have twice their
   original HP; all eight boss types keep their HP. New/legacy enemy data without
   an authored HP value now defaults to 2 instead of 1. Shiny enemies retain their
-  additional 2x HP multiplier. Spawn budgets, enemy costs and rewards are unchanged.
+  additional 2x HP multiplier. Enemy costs and rewards are unchanged.
   The teammate's existing attack intervals, ranges and
   0.8-world-unit Bomb/Tesla radii remain initial tuning values where the README
   does not specify them. `fireRate` means **seconds between shots**.
 
-Wave 1 releases budget 30 for Basic Goose 1 and Basic Skunk 1, followed by one
-Shielded Goose. Wave 2 releases 50 and adds regular Shielded Goose, followed by
-one Shielded Skunk. Wave 3 releases 70 and adds regular Shielded Skunk; at its
+Wave 1 releases budget 45 (previously 30): 35% Basic Goose 1, 35% Basic Goose 2,
+and 30% Basic Skunk 1 by cost, followed by one Shielded Goose. Wave 2 releases
+65 (previously 50): 15% Basic Goose 1, 25% Basic Goose 2, 20% Basic Skunk 1,
+15% Basic Skunk 2 and 25% Shielded Goose, followed by one Shielded Skunk.
+The variant-2 enemies add durability without changing their global stats or
+the director algorithm; they are included in Union Prime's prewarm roster.
+Wave 3 retains budget 70 and its previous roster/shares; at its
 20-second boundary a 50/50 Healthy Goose/Healthy Skunk encounter replaces the
 miniboss. These end encounters are outside the regular spawn budget.
 
@@ -181,8 +185,12 @@ contacts, Animator playback, viewport readability or live UI interaction.
    Check initial placement and a sold/rebuilt pooled tower: neither should flash
    at the planet centre before seating. Repeat with a moon socket.
 2. Start. Check 20 seconds of spawning, Shielded Goose, complete clearing, then
-   exactly 10 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm no deer,
-   stealth or basic variants 2/3; building works and selling is blocked in combat.
+   exactly 10 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm Basic
+   Goose 2 appears from wave 1 and Basic Skunk 2 from wave 2, with no deer,
+   stealth or variant-3 enemies. Building works and selling is blocked in combat.
+   Compare waves 1/2 with several extra towers: they should need more shots
+   and have more sustained pressure. Review actual difficulty manually; these
+   are starting tuning values, not a measured win-rate target.
 3. Check weapon arcs and moving muzzles, projectile contacts, shield absorption
    and reset, Pest Trap's three-second DOT, nearby Bomb splash and effect reuse.
    Confirm Laser/Bomb/Sniper spend 1 fuel per shot, Pest Trap spends 2, and an

@@ -21,37 +21,52 @@ MonoBehaviour:
   waves:
   - duration: 20
     restDuration: 10
-    costBudget: 30
+    costBudget: 45
     roster:
     - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
       enemyInstances: []
-      startingBudget: 0.5
-      endingBudget: 0.5
+      startingBudget: 0.35
+      endingBudget: 0.35
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+      enemyInstances: []
+      startingBudget: 0.35
+      endingBudget: 0.35
       isLevelBoss: 0
     - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
       enemyInstances: []
-      startingBudget: 0.5
-      endingBudget: 0.5
+      startingBudget: 0.3
+      endingBudget: 0.3
       isLevelBoss: 0
     miniboss: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
   - duration: 20
     restDuration: 10
-    costBudget: 50
+    costBudget: 65
     roster:
     - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
       enemyInstances: []
-      startingBudget: 0.4
-      endingBudget: 0.4
+      startingBudget: 0.15
+      endingBudget: 0.15
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+      enemyInstances: []
+      startingBudget: 0.25
+      endingBudget: 0.25
       isLevelBoss: 0
     - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
       enemyInstances: []
-      startingBudget: 0.4
-      endingBudget: 0.4
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 35f37c7ed9c4add41847cad182e58d27, type: 2}
+      enemyInstances: []
+      startingBudget: 0.15
+      endingBudget: 0.15
       isLevelBoss: 0
     - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
       enemyInstances: []
-      startingBudget: 0.2
-      endingBudget: 0.2
+      startingBudget: 0.25
+      endingBudget: 0.25
       isLevelBoss: 0
     miniboss: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
   - duration: 20

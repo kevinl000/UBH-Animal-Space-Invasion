@@ -83,14 +83,17 @@ def check():
                for p in (ROOT / 'Assets/Scriptable Objects/Enemies/README').glob('*.asset')}
     wave_text = config.split('  waves:\n')[1].split('  finalBosses:')[0]
     waves = re.split(r'^  - duration:', wave_text, flags=re.M)[1:]
-    expected_rosters = [{'Basic Goose 1', 'Basic Skunk 1'}, {'Basic Goose 1', 'Basic Skunk 1', 'Shielded Goose'},
+    expected_rosters = [{'Basic Goose 1', 'Basic Goose 2', 'Basic Skunk 1'},
+                        {'Basic Goose 1', 'Basic Goose 2', 'Basic Skunk 1', 'Basic Skunk 2', 'Shielded Goose'},
                         {'Basic Goose 1', 'Basic Skunk 1', 'Shielded Goose', 'Shielded Skunk'}]
     for n, wave in enumerate(waves):
         assert float(wave.splitlines()[0]) == 20
-        assert f'costBudget: {[30, 50, 70][n]}' in wave
+        assert f'costBudget: {[45, 65, 70][n]}' in wave
         assert 'restDuration: 10' in wave
         roster = {reverse[g] for g in re.findall(r'    - enemy: \{fileID: \d+, guid: (\w+)', wave)}
         assert roster == expected_rosters[n], (n, roster)
+        shares = [float(s) for s in re.findall(r'      startingBudget: ([\d.]+)', wave)]
+        assert abs(sum(shares) - 1.0) < 1e-6, f'Wave {n + 1} cost shares must sum to one'
     assert len(waves) == 3
     assert 'starterSlots: 0000000006000000' in config
     assert 'nextScene: CapenMajor' in config
