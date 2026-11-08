@@ -1,0 +1,11 @@
+{
+  "socket_aim_compositions": 180,
+  "tower_types": 5,
+  "source_tower_scale": 2,
+  "runtime_tower_scale": 1.5,
+  "ring_scale": 0.75,
+  "conservative_tower_outer_radius": 5.226639957947168,
+  "opaque_supernova_core_radius": 6.0141156271607805,
+  "all_towers_inside_peak": true,
+  "unity_launched": false
+}

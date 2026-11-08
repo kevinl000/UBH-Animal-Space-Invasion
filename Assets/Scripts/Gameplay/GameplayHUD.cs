@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GameplayHUD : MonoBehaviour
 {
     public GameplayLoopController loop;
+    [Min(0.1f)] public float worldMagnification = 1f;
     public Font font;
     public Sprite[] towerPortraits;
     public AudioClip confirmSound;
@@ -161,7 +162,7 @@ public class GameplayHUD : MonoBehaviour
         float bottom = Mathf.Clamp(TowerPlacementPanel.Height * canvas.scaleFactor / Mathf.Max(1, screenHeight), 0f, 0.3f);
         loop.battleCamera.rect = new Rect(0, bottom, 1f - right, 1f - bottom);
         float aspect = Mathf.Max(0.1f, screenWidth * (1f - right) / Mathf.Max(1f, screenHeight * (1f - bottom)));
-        float fittedSize = Mathf.Max(8.7f, 8.7f / aspect);
+        float fittedSize = Mathf.Max(8.7f, 8.7f / aspect) / Mathf.Max(0.1f, worldMagnification);
         PlanetPageZoom zoom = loop.GetComponent<PlanetPageZoom>();
         if (zoom != null) zoom.SetFittedCameraSize(fittedSize);
         else loop.battleCamera.orthographicSize = fittedSize;
@@ -203,11 +204,16 @@ public class GameplayHUD : MonoBehaviour
         RectTransform window = Box("Result", shade, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(540, 410), panel);
         Label(title == "VICTORY" ? planetTitle + " DEFENDED!" : title, window, new Vector2(0, -65), new Vector2(500, 60), 32, gold);
         bool won = title == "VICTORY";
-        Button primary = Button(won ? "NEXT LEVEL  →  " + loop.config.nextPlanetName.ToUpperInvariant() : title == "PAUSED" ? "RESUME" : "RETRY", window,
+        bool lastLevel = string.IsNullOrEmpty(loop.config.nextScene);
+        Button primary = Button(won ? lastLevel ? "LEVEL SELECT" : "NEXT LEVEL  →  " + loop.config.nextPlanetName.ToUpperInvariant() : title == "PAUSED" ? "RESUME" : "RETRY", window,
             new Vector2(0, -170), new Vector2(450, 64), () =>
             {
                 PlayClick();
-                if (won) GameManager.Instance.StartLevel(loop.config.nextScene);
+                if (won)
+                {
+                    if (lastLevel) GameManager.Instance.GoToLevelSelect();
+                    else GameManager.Instance.StartLevel(loop.config.nextScene);
+                }
                 else if (title == "PAUSED") GameManager.Instance.ResumeGame();
                 else GameManager.Instance.RestartCurrentLevel();
             });

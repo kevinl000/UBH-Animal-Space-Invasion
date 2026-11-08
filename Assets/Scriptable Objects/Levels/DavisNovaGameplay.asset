@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7398ff03bbf153dbba84ed733e95a8d0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelGameplayConfig
+  displayName: Davis Nova
+  stageLabel: CAMPUS DEFENSE / LEVEL 2
+  nextPlanetName: Level Select
+  level: {fileID: 11400000, guid: 35145bc3e678bd94b9d90e270041f679, type: 2}
+  towers:
+  - {fileID: 11400000, guid: 2b5c374f02eb0e74fa40bca910d75430, type: 2}
+  - {fileID: 11400000, guid: c2d7e4c58c466c944bae49ae1de52d8e, type: 2}
+  - {fileID: 11400000, guid: f7b526bce9bf7b44fb620a7af83907dd, type: 2}
+  - {fileID: 11400000, guid: dc56ef29c353f8d43861b1c4f53434da, type: 2}
+  - {fileID: 11400000, guid: 661b4c74ae4a31f4e90a83cc2f6bccb4, type: 2}
+  waves:
+  - duration: 20
+    restDuration: 10
+    costBudget: 80
+    roster:
+    - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 35f37c7ed9c4add41847cad182e58d27, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 997aa4ecad1275d42aae23606e57e070, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    miniboss: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+  - duration: 20
+    restDuration: 10
+    costBudget: 105
+    roster:
+    - enemy: {fileID: 11400000, guid: 997aa4ecad1275d42aae23606e57e070, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 35f37c7ed9c4add41847cad182e58d27, type: 2}
+      enemyInstances: []
+      startingBudget: 0.25
+      endingBudget: 0.25
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: ba3f054cf484e254aaa1eeb31af5d385, type: 2}
+      enemyInstances: []
+      startingBudget: 0.15
+      endingBudget: 0.15
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+      enemyInstances: []
+      startingBudget: 0.15
+      endingBudget: 0.15
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+      enemyInstances: []
+      startingBudget: 0.15
+      endingBudget: 0.15
+      isLevelBoss: 0
+    miniboss: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+  - duration: 20
+    restDuration: 10
+    costBudget: 130
+    roster:
+    - enemy: {fileID: 11400000, guid: 997aa4ecad1275d42aae23606e57e070, type: 2}
+      enemyInstances: []
+      startingBudget: 0.3
+      endingBudget: 0.3
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: ba3f054cf484e254aaa1eeb31af5d385, type: 2}
+      enemyInstances: []
+      startingBudget: 0.25
+      endingBudget: 0.25
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+      enemyInstances: []
+      startingBudget: 0.2
+      endingBudget: 0.2
+      isLevelBoss: 0
+    - enemy: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+      enemyInstances: []
+      startingBudget: 0.25
+      endingBudget: 0.25
+      isLevelBoss: 0
+    miniboss: {fileID: 0}
+  finalBosses:
+  - {fileID: 11400000, guid: a98da249f2bbba845b2b3c4c510792da, type: 2}
+  starterSlots: 0000000006000000
+  spawnInterval: 1
+  bossEntranceDuration: 3
+  bossReinforcementBudgetFraction: 0.5
+  bossReinforcementRate: 1
+  bossReinforcementMaxAlive: 6
+  bossReinforcementTaperHealth: 0.5
+  bossReinforcementStopHealth: 0.15
+  nextScene:

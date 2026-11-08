@@ -1,0 +1,136 @@
+{
+  "cell_size": 512,
+  "pixels_per_unit": 100,
+  "fps": 10,
+  "cleanup": "alpha below 8 removed; RGB preserved; equal-grid crops centered without rescaling",
+  "frames": [
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-01.png",
+      "source_rect": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "opaque_bounds": [
+        223,
+        219,
+        290,
+        288
+      ],
+      "sha256": "af020b57d01f9e11e8fa043ace25d56a71a5c7134ee39a26ddb12cdfde67be18"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-02.png",
+      "source_rect": [
+        444,
+        0,
+        887,
+        444
+      ],
+      "opaque_bounds": [
+        178,
+        175,
+        335,
+        334
+      ],
+      "sha256": "c0360e3e8955fcf86c88d87a493fe348fac5a3538dc2aed0bf1a4d84db852f83"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-03.png",
+      "source_rect": [
+        887,
+        0,
+        1330,
+        444
+      ],
+      "opaque_bounds": [
+        134,
+        134,
+        378,
+        380
+      ],
+      "sha256": "f71e932624e6041fffab9bce71e07e5b01baf3f9b02f5bb6df7b2d8cbaa63199"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-04.png",
+      "source_rect": [
+        1330,
+        0,
+        1774,
+        444
+      ],
+      "opaque_bounds": [
+        99,
+        92,
+        415,
+        417
+      ],
+      "sha256": "a26042768767719c277579999bb9a59b1eb0164fb4463b22adfb7370377ad2f3"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-05.png",
+      "source_rect": [
+        0,
+        444,
+        444,
+        887
+      ],
+      "opaque_bounds": [
+        96,
+        88,
+        418,
+        419
+      ],
+      "sha256": "fc24037ab4d9c8554b4c76da84bc434e22de1366778cbf6143327b05fbdffa7a"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-06.png",
+      "source_rect": [
+        444,
+        444,
+        887,
+        887
+      ],
+      "opaque_bounds": [
+        105,
+        106,
+        406,
+        402
+      ],
+      "sha256": "c3dde71361166b2cd06b5b4ef849360b5f254aad38ea72c87297ebde6c955a8d"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-07.png",
+      "source_rect": [
+        887,
+        444,
+        1330,
+        887
+      ],
+      "opaque_bounds": [
+        117,
+        114,
+        396,
+        395
+      ],
+      "sha256": "67069d2061a6a47b0785bd120ae7fbb3dd3dafe4f108f4d0dfa0f899caa8195d"
+    },
+    {
+      "path": "Assets/Art/Effects/DavisNovaSupernova/Supernova-08.png",
+      "source_rect": [
+        1330,
+        444,
+        1774,
+        887
+      ],
+      "opaque_bounds": [
+        122,
+        115,
+        393,
+        392
+      ],
+      "sha256": "f7a6419d42e22eea2b7458e686eff2162e0f3b666cc3d76252559969202ed57d"
+    }
+  ]
+}
