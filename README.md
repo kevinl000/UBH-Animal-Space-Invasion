@@ -3,17 +3,17 @@
 *Enemies have a 5% chance of spawning in shiny, giving them double HP, gives double Money/Fuel*
 |Enemy Name | HP | Money Drop | Fuel Drop | Damage | Attack type | Description |
 |--|--|--|--|--|--|--|
-|Basic Goose 1| 1 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
-|Basic Goose 2| 2 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
-|Basic Goose 3| 4 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
-|Shielded Goose| 4 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles. Will have a shield that negates the first incoming damage |
-|Stealth Goose| 1 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles. Will be invisible to most towers |
-|Basic Skunk 1| 2 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
-|Basic Skunk 2| 4 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
-|Basic Skunk 3| 8 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
-|Shielded Skunk| 8 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs. Will have a shield that negates the first incoming damage |
-|Basic Deer | 10 | 4 | 4 | 5 | Single | Enemy will fly towards planet and start orbiting. Periodically will stop and charge the planet |
-|Shielded Deer | 10 | 4 | 4 | 5 | Single | Enemy will fly towards planet and start orbiting. Periodically will stop and charge the planet. Will have a shield that negates the first incoming damage |
+|Basic Goose 1| 2 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
+|Basic Goose 2| 4 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
+|Basic Goose 3| 8 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles |
+|Shielded Goose| 8 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles. Will have a shield that negates the first incoming damage |
+|Stealth Goose| 2 | 1 | 1 | 1 | Single | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoots poop projectiles. Will be invisible to most towers |
+|Basic Skunk 1| 4 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
+|Basic Skunk 2| 8 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
+|Basic Skunk 3| 16 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs |
+|Shielded Skunk| 16 | 2 | 2 | 2 | AOE | Enemy will fly towards the planet. Will stop at a certain distance from the planet. shoot skunk bombs. Will have a shield that negates the first incoming damage |
+|Basic Deer | 20 | 4 | 4 | 5 | Single | Enemy will fly towards planet and start orbiting. Periodically will stop and charge the planet |
+|Shielded Deer | 20 | 4 | 4 | 5 | Single | Enemy will fly towards planet and start orbiting. Periodically will stop and charge the planet. Will have a shield that negates the first incoming damage |
 
 # Towers
 | Unlock Level | Tower Name | HP | Cost | Fuel Intake (F/shot; Gamma: F/pulse; Oil Rig: F/s) | FOV(Degrees) | Damage | Attack Type | Description |

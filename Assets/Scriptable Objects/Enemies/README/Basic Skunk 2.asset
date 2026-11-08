@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: PlanetaryDefense.Runtime::EnemyData
   cost: 8
   isBoss: 0
-  maxHealth: 4
+  maxHealth: 8
   damage: 2
   attackType: 1
   moneyDrop: 2

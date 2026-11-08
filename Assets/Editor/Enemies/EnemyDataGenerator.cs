@@ -26,20 +26,20 @@ public static class EnemyDataGenerator
         }
     }
 
-    // README numbers. cost = enemy AI weight (HP + 2 x damage, +2 shield, +2 stealth); interval is not in the README.
+    // README numbers. Cost retains the authored AI budget weights; interval is not in the README.
     static readonly Row[] Rows =
     {
-        new Row("Basic Goose 1",  1, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 3,  1.5f),
-        new Row("Basic Goose 2",  2, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 4,  1.5f),
-        new Row("Basic Goose 3",  4, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 6,  1.5f),
-        new Row("Shielded Goose", 4, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   true,  false, false, 8,  1.5f),
-        new Row("Stealth Goose",  1, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, true,  false, 5,  1.5f),
-        new Row("Basic Skunk 1",  2, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 6,  2f),
-        new Row("Basic Skunk 2",  4, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 8,  2f),
-        new Row("Basic Skunk 3",  8, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 12, 2f),
-        new Row("Shielded Skunk", 8, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   true,  false, false, 14, 2f),
-        new Row("Basic Deer",    10, 4, 4, 5, EnemyAttackType.Single, EnemyMovement.OrbitAndCharge, false, false, false, 20, 4f),
-        new Row("Shielded Deer", 10, 4, 4, 5, EnemyAttackType.Single, EnemyMovement.OrbitAndCharge, true,  false, false, 22, 4f),
+        new Row("Basic Goose 1",  2, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 3,  1.5f),
+        new Row("Basic Goose 2",  4, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 4,  1.5f),
+        new Row("Basic Goose 3",  8, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, false, false, 6,  1.5f),
+        new Row("Shielded Goose", 8, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   true,  false, false, 8,  1.5f),
+        new Row("Stealth Goose",  2, 1, 1, 1, EnemyAttackType.Single, EnemyMovement.StopAndShoot,   false, true,  false, 5,  1.5f),
+        new Row("Basic Skunk 1",  4, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 6,  2f),
+        new Row("Basic Skunk 2",  8, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 8,  2f),
+        new Row("Basic Skunk 3",  16, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   false, false, false, 12, 2f),
+        new Row("Shielded Skunk", 16, 2, 2, 2, EnemyAttackType.AoE,    EnemyMovement.StopAndShoot,   true,  false, false, 14, 2f),
+        new Row("Basic Deer",    20, 4, 4, 5, EnemyAttackType.Single, EnemyMovement.OrbitAndCharge, false, false, false, 20, 4f),
+        new Row("Shielded Deer", 20, 4, 4, 5, EnemyAttackType.Single, EnemyMovement.OrbitAndCharge, true,  false, false, 22, 4f),
 
         new Row("Healthy Goose",        50, 10, 10, 2, EnemyAttackType.Single, EnemyMovement.Orbit, false, false, true, 40, 2f),
         new Row("Healthy Skunk",        40, 10, 10, 3, EnemyAttackType.AoE,    EnemyMovement.Orbit, false, false, true, 40, 3f),

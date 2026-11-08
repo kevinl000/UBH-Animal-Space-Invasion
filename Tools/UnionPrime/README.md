@@ -49,7 +49,11 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
   permissions, boss camera entrance and win/loss. Combat and input consult this
   controller; they do not keep competing wave or result clocks.
 - Canonical `EnemyData` and `TowerData` under `Assets/Scriptable Objects/` retain
-  the README stats. The teammate's existing attack intervals, ranges and
+  the current README stats. All eleven non-boss enemy types now have twice their
+  original HP; all eight boss types keep their HP. New/legacy enemy data without
+  an authored HP value now defaults to 2 instead of 1. Shiny enemies retain their
+  additional 2x HP multiplier. Spawn budgets, enemy costs and rewards are unchanged.
+  The teammate's existing attack intervals, ranges and
   0.8-world-unit Bomb/Tesla radii remain initial tuning values where the README
   does not specify them. `fireRate` means **seconds between shots**.
 

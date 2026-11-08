@@ -21,7 +21,7 @@ public class EnemyData : ScriptableObject
     public bool isBoss; // identity only: this type is a boss kind. Halfway spawn uses LevelEnemyEntry.isLevelBoss.
 
     [Header("README stats")]
-    public float maxHealth = 1f;
+    public float maxHealth = 2f;
     public float damage = 1f;
     public EnemyAttackType attackType = EnemyAttackType.Single;
     public int moneyDrop = 1;
