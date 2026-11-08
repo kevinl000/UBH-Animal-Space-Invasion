@@ -1,0 +1,15 @@
+Mode: built-in image_gen, reference-guided new asset
+References:
+- Art/Enemies/RestrainingBuck/restraining-buck-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: production-ready transparent pixel-art projectile and impact sprite sheet for Unity.
+Reference image is Restraining Buck, for its ivory/tan antlers, pale-cyan accents and chunky pixel-art style ONLY. Do not draw the buck or UFO.
+Make a square genuinely alpha-transparent canvas in a STRICT 2 by 2 grid of four equal square cells with NO visible grid, borders, text or labels. Exactly FOUR separate sprites, one centered per cell, generous transparent margins, same coarse pixel size across cells.
+TOP LEFT cell: one compact IVORY/TAN ANTLER SHARD projectile with a narrow tapered main shaft pointing straight UP (local +Y) and two short recognizable antler tines. Natural ivory bone core with pale cyan FROST ONLY on tips and a couple blocky ice accents. It must clearly read as an antler, not a metal arrow, sword, icicle or snowflake. Total length about 60% cell height, width about 30% cell width. No baked-in flight trail, particles or impact behind the projectile. One static flight sprite.
+TOP RIGHT cell: impact frame 1, a small compact pale-cyan angular frost flash with a tiny ivory contact chip; centered, no projectile. Footprint about 25% cell width.
+BOTTOM LEFT cell: impact frame 2, a slightly wider little burst of a FEW large crisp pale-cyan/ivory ice chips with transparent gaps; about 40% cell width. Single-target contact, not an AoE explosion.
+BOTTOM RIGHT cell: impact frame 3, a few smaller fading cyan ice fragments spaced close to the same center, about 35% cell width. No central filled mass.
+Style: deliberately coarse chunky pixel art, square pixel clusters, crisp stepped edges, restrained dark-blue outlines and simple two/three-tone block shading. Match reference at gameplay size. No blur, soft glow, smooth vector lines, tiny noise or dense sparkles.
+Background and cell gaps must be genuine alpha transparency. No scenery, characters, UFO, text, symbols, labels, health bar, ice cloud covering a wide area, checkerboard texture or floor shadow. All four sprites have complete silhouettes and at least 15% transparent cell margins. The three impact frames share the same contact center and stable scale; only the frost chips change.

@@ -1,0 +1,12 @@
+Mode: built-in image_gen, reference-guided new asset
+References:
+- Art/Enemies/RestrainingBuck/restraining-buck-source-v1.png
+- Assets/Art/Planets/UnionPrime/LaserPortrait.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: ONE production-ready transparent pixel-art frozen-status OVERLAY for a small Unity tower.
+Reference image 1 Restraining Buck supplies pale-cyan/ivory/navy palette and coarse pixel style. Reference image 2 is a rabbit laser tower to explain the open space needed; DO NOT reproduce the tower, rabbit or gun. Only create the separate sparse ice overlay, no target baked in.
+Design a shallow U-shaped arrangement of pale-cyan frost: a low small icy base ledge, two narrow broken side clusters that rise about half to two-thirds of the total open-frame height, and a few short chunky icicles. The CENTER and TOP remain visibly OPEN and fully transparent so the rabbit, controls and tall gun are readable underneath. The two side clusters should frame, not cover, a small tower. Mostly transparent negative space; avoid a filled ice block, solid wall, full enclosing bubble, shield or huge snowflake icon.
+Canvas: square, ONE overlay centered horizontally with generous alpha-transparent margins, artwork about 70% canvas width, overall visible height about 65-75% of that width. Flat bottom contact/ground baseline, ice grows upward (local +Y). Cyan/ice blue with a few ivory highlights and dark-blue stepped edges. Simple sparse large square pixel clusters matching reference; crisp coarse pixel art, no soft glows, blurred fog, smooth vector look or dense tiny shards. One static sprite; duration will be controlled by gameplay later.
+Output on REAL ALPHA-TRANSPARENT background with fully transparent center, top, holes and margins. No tower, rabbit, gun, platform structure, planet, background, floor shadow, text, label, logo, border, panel, checkerboard texture, projectile or impact flash. This is a readable frozen-status frame for ONE tower, not a damaging AoE effect.

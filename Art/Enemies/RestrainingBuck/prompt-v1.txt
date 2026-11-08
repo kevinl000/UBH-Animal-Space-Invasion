@@ -1,0 +1,14 @@
+Mode: built-in image_gen, reference-guided new sprite
+References:
+- Art/Enemies/HealthyGoose/healthy-goose-source-v1.png
+- Art/Enemies/MotherSkunk/mother-skunk-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: ONE production-ready transparent pixel-art boss sprite for Unity 2D planetary tower defense.
+Reference 1 Healthy Goose and reference 2 Mother Skunk define the established animal-under-blue-glass-UFO family, chunky pixel size and stepped outlines. Create a NEW animal and ship: RESTRAINING BUCK, level-3 boss. No changes to references.
+Subject: a broad-chested natural BROWN MALE DEER with an IVORY muzzle and chest, large pointed ears, dark nose, focused readable eye, and impressive branching NATURAL IVORY/TAN ANTLERS. Buck faces LEFT, with full head, neck and upper body visible under a slightly taller BLUE GLASS DOME. BOTH antlers stay entirely inside the dome with clear blue gaps between antler tips and glass; simplified bold branching silhouette, no huge tangle or tiny branches. Warm brown animal is visibly distinct from its icy ship. No clothing, armor costume, medals, crown or human hands.
+Ship: substantial STEEL-GRAY UFO hull, dark NAVY structural bands and stepped outline, PALE CYAN running lights, restrained cool silver/cyan highlights. Broad compact saucer with a solid rim matching reference family. Exactly ONE short narrow CENTRAL UNDERSIDE LAUNCHER points straight DOWN, with a simple small dark muzzle and cyan rim. Two small pale-cyan side thrusters flank it, well clear of the center firing path. No gun turret or side weapons.
+Style: coarse chunky pixel art with large square pixel clusters, crisp hard stepped edges, dark outlines and simple block shading. Same upright side/front three-quarter view as references; readable at small gameplay size. No smooth vector art, realistic 3D, intricate greebles or thin decorative details.
+Composition: ONE complete upright UFO and buck on a square real ALPHA-TRANSPARENT canvas; full dome, antlers, launcher and small thrusters visible, transparent margins all around. Saucer about 87-90% canvas width. Pilot local -X; launcher local -Y. Static sprite with no flight or shooting effects baked in.
+No background, floor, drop shadow, text, logo, border, health bar, projectile, falling antler, ice cloud, sparkle, surrounding freeze aura or checkerboard transparency. Buck keeps its antlers; shot art will be separate.

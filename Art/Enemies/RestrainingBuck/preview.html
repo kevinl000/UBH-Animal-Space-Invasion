@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Restraining Buck — Level 3 boss</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color-scheme:dark;color:#e6edf7;background:#0d1524}body{max-width:1100px;margin:28px auto;padding:0 20px}h1{font-size:28px;margin-bottom:4px}p{color:#b9cadd}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:20px;background:#1d2c40;padding:16px;border-radius:12px}label{display:flex;align-items:center;gap:8px}button,select{padding:7px 10px;background:#263c50;border:1px solid #49647a;border-radius:6px;color:#edf9ff}canvas{display:block;width:100%;height:auto;border:1px solid #31465f;border-radius:12px;margin:18px 0}a{color:#a5e4ee}.note{font-size:14px}#status{color:#ffb7a8}
+</style>
+<h1>Restraining Buck</h1>
+<p>Level 3 · steel-gray interceptor · ivory antler projectile with cyan frost.</p>
+<div class="controls">
+<label>Camera size <input id="zoom" type="range" min="50" max="100" value="85"></label>
+<label>Background <select id="background"><option value="space">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+<label><input id="marker" type="checkbox"> Muzzle marker</label>
+<button id="replay" type="button">Replay impact</button>
+<label><input id="repeat" type="checkbox" checked> Repeat impact sample</label>
+<label><input id="frozen" type="checkbox" checked> Frozen-status sample</label>
+</div>
+<p id="status" role="status"></p>
+<canvas id="view" width="1100" height="1000" aria-label="Restraining Buck beside Healthy Goose with separate horn projectile, frost impact and frozen tower samples"></canvas>
+<p class="note">Bosses use the same world scale; both are 1.5× the Basic Goose 1 reference width. Lower samples are enlarged 3× for inspection. Projectile, impact and status samples are independent: this page does not simulate targeting, attack timing or freeze duration.</p>
+<p><a href="README.md">Boss handoff</a> · <a href="../../Projectiles/BuckHorn/README.md">Horn and impact</a> · <a href="../../Effects/BuckFreeze/README.md">Frozen status</a> · <a href="comparison.png">Static comparison</a></p>
+<script id="assembly" type="application/json">{"name": "Restraining Buck", "level": 3, "generation_mode": "built-in image_gen, reference-guided new assets", "source": "Art/Enemies/RestrainingBuck/restraining-buck-source-v1.png", "runtime_sprite": "Assets/Art/Enemies/RestrainingBuck/RestrainingBuck.png", "visual_prefab": "Assets/Prefabs/Enemies/RestrainingBuckVisual.prefab", "canvas_pixels": [1254, 1254], "visible_bounds_alpha128": [14, 28, 1241, 1226], "pixels_per_unit": 539.7113402061856, "visual_scale": 1.5, "visible_width_world_units": 3.41015625, "healthy_goose_ppu": 528.2749140893471, "pilot_facing": "-X", "launcher_facing": "-Y", "gameplay_visual_child_rotation_z": 180, "muzzle_source_pixel_top_left": [627, 1227], "muzzle_local": [0.0, -1.111705378973105], "muzzle_local_rotation_z": 180, "horn": {"source": "Art/Projectiles/BuckHorn/buck-horn-sheet-source-v1.png", "runtime_sheet": "Assets/Art/Projectiles/BuckHorn/BuckHornSheet.png", "canvas_pixels": [1254, 1254], "pixels_per_unit": 881.25, "flight_forward": "+Y", "flight_visible_length_units": 0.48, "projectile_prefab": "Assets/Prefabs/Projectiles/BuckHornProjectileVisual.prefab", "impact_prefab": "Assets/Prefabs/Projectiles/BuckHornImpactVisual.prefab", "clip": "Assets/Animations/Projectiles/BuckHorn/BuckHornImpact.anim", "controller": "Assets/Animations/Projectiles/BuckHorn/BuckHornImpact.controller", "impact_fps": 12, "impact_duration_seconds": 0.25, "impact_loop": false, "impact_ends_with_empty_sprite": true, "frames": [{"name": "BuckHornFlight", "file_id": 21300000, "rect": [0, 627, 627, 627], "pivot": [0.5151515151515151, 0.49681020733652315], "visible_bounds_alpha16": [212, 104, 434, 527]}, {"name": "BuckHornImpact01", "file_id": 21300002, "rect": [627, 627, 627, 627], "pivot": [0.4904306220095694, 0.46012759170653905], "visible_bounds_alpha16": [212, 239, 403, 438]}, {"name": "BuckHornImpact02", "file_id": 21300004, "rect": [0, 0, 627, 627], "pivot": [0.49920255183413076, 0.5151515151515151], "visible_bounds_alpha16": [175, 180, 451, 428]}, {"name": "BuckHornImpact03", "file_id": 21300006, "rect": [627, 0, 627, 627], "pivot": [0.4904306220095694, 0.5239234449760766], "visible_bounds_alpha16": [212, 233, 403, 364]}]}, "freeze": {"source": "Art/Effects/BuckFreeze/buck-frozen-status-source-v1.png", "runtime_sprite": "Assets/Art/Effects/BuckFreeze/BuckFrozenStatus.png", "visual_prefab": "Assets/Prefabs/Effects/BuckFrozenStatusVisual.prefab", "canvas_pixels": [1254, 1254], "visible_bounds_alpha16": [108, 473, 1144, 1073], "pixels_per_unit": 941.8181818181818, "pivot": [0.49920255183413076, 0.14433811802232854], "visible_width_units": 1.1, "renderer_alpha": 0.8, "growth_direction": "+Y outward from tower base", "duration": "Owned by gameplay; no fixed duration or automatic timer."}, "scope": "Visual assets only. Freeze timing, duration, target selection, stats, collisions, pooling and scenes unchanged."}</script>
+<script>
+const data=JSON.parse(document.getElementById('assembly').textContent);
+const canvas=document.getElementById('view'),ctx=canvas.getContext('2d');
+const zoom=document.getElementById('zoom'),background=document.getElementById('background'),marker=document.getElementById('marker'),repeat=document.getElementById('repeat'),frozen=document.getElementById('frozen');
+const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('Could not load '+src));img.src=src;});
+let images,started=performance.now();
+function label(value,x,y,size=17){ctx.fillStyle=background.value==='light'?'#263b50':'#c6d9e7';ctx.font=size+'px system-ui';ctx.textAlign='center';ctx.fillText(value,x,y);}
+function sprite(img,x,y,ppu,scale,z,pivot=[.5,.5]){const w=img.width/ppu*scale*z,h=img.height/ppu*scale*z;ctx.drawImage(img,x-w*pivot[0],y-h*(1-pivot[1]),w,h);}
+function frame(f,x,y,z){const w=f.rect[2]/data.horn.pixels_per_unit*z,h=f.rect[3]/data.horn.pixels_per_unit*z;ctx.drawImage(images[2],f.rect[0],data.horn.canvas_pixels[1]-f.rect[1]-f.rect[3],f.rect[2],f.rect[3],x-w*f.pivot[0],y-h*(1-f.pivot[1]),w,h);}
+function draw(now){
+ const z=Number(zoom.value);ctx.fillStyle=background.value==='light'?'#e1e8ed':'#0c1424';ctx.fillRect(0,0,1100,1000);
+ if(background.value==='grid')for(let y=0;y<1000;y+=24)for(let x=0;x<1100;x+=24){ctx.fillStyle=(x/24+y/24)%2?'#2a3b4d':'#1e2c3b';ctx.fillRect(x,y,24,24);}
+ ctx.imageSmoothingEnabled=false;
+ sprite(images[0],300,245,data.pixels_per_unit,1.5,z);sprite(images[1],800,245,data.healthy_goose_ppu,1.5,z);
+ if(marker.checked){const x=300+data.muzzle_local[0]*1.5*z,y=245-data.muzzle_local[1]*1.5*z;ctx.strokeStyle='#ff7894';ctx.beginPath();ctx.moveTo(x-7,y);ctx.lineTo(x+7,y);ctx.moveTo(x,y-7);ctx.lineTo(x,y+7);ctx.stroke();}
+ label('Restraining Buck · 1.5×',300,470);label('Healthy Goose · 1.5×',800,470);
+ label('Separate effect samples · 3× detail scale',550,555,20);
+ const detail=z*3;frame(data.horn.frames[0],180,735,detail);
+ let elapsed=(now-started)/1000;if(repeat.checked)elapsed%=1.5;
+ const index=Math.floor(elapsed*data.horn.impact_fps);
+ if(index>=0&&index<3)frame(data.horn.frames[index+1],530,735,detail);
+ const base=850,towerHeight=images[4].height/100*1.25*detail;
+ sprite(images[4],900,base-towerHeight/2,100,1.25,detail);
+ if(frozen.checked){ctx.globalAlpha=data.freeze.renderer_alpha;sprite(images[3],900,base,data.freeze.pixels_per_unit,1,detail,data.freeze.pivot);ctx.globalAlpha=1;}
+ label('Ivory antler + cyan frost',180,910,16);label('Compact impact · 0.25 s',530,910,16);label('Frozen-status overlay',900,910,16);
+ label('Local +Y forward',180,942,13);label('Three frames, then blank',530,942,13);label('Gameplay controls duration',900,942,13);
+ requestAnimationFrame(draw);
+}
+document.getElementById('replay').addEventListener('click',()=>{started=performance.now();});repeat.addEventListener('change',()=>{started=performance.now();});
+Promise.all(['restraining-buck-source-v1.png','../HealthyGoose/healthy-goose-source-v1.png','../../Projectiles/BuckHorn/buck-horn-sheet-source-v1.png','../../Effects/BuckFreeze/buck-frozen-status-source-v1.png','../../../Assets/Art/Planets/UnionPrime/LaserPortrait.png'].map(load)).then(result=>{images=result;started=performance.now();requestAnimationFrame(draw);}).catch(error=>{document.getElementById('status').textContent=error.message;});
+</script>
+</html>

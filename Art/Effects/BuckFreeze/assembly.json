@@ -1,0 +1,24 @@
+{
+  "source": "Art/Effects/BuckFreeze/buck-frozen-status-source-v1.png",
+  "runtime_sprite": "Assets/Art/Effects/BuckFreeze/BuckFrozenStatus.png",
+  "visual_prefab": "Assets/Prefabs/Effects/BuckFrozenStatusVisual.prefab",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha16": [
+    108,
+    473,
+    1144,
+    1073
+  ],
+  "pixels_per_unit": 941.8181818181818,
+  "pivot": [
+    0.49920255183413076,
+    0.14433811802232854
+  ],
+  "visible_width_units": 1.1,
+  "renderer_alpha": 0.8,
+  "growth_direction": "+Y outward from tower base",
+  "duration": "Owned by gameplay; no fixed duration or automatic timer."
+}

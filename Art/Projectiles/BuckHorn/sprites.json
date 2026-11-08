@@ -1,0 +1,101 @@
+{
+  "source": "Art/Projectiles/BuckHorn/buck-horn-sheet-source-v1.png",
+  "runtime_sheet": "Assets/Art/Projectiles/BuckHorn/BuckHornSheet.png",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "pixels_per_unit": 881.25,
+  "flight_forward": "+Y",
+  "flight_visible_length_units": 0.48,
+  "projectile_prefab": "Assets/Prefabs/Projectiles/BuckHornProjectileVisual.prefab",
+  "impact_prefab": "Assets/Prefabs/Projectiles/BuckHornImpactVisual.prefab",
+  "clip": "Assets/Animations/Projectiles/BuckHorn/BuckHornImpact.anim",
+  "controller": "Assets/Animations/Projectiles/BuckHorn/BuckHornImpact.controller",
+  "impact_fps": 12,
+  "impact_duration_seconds": 0.25,
+  "impact_loop": false,
+  "impact_ends_with_empty_sprite": true,
+  "frames": [
+    {
+      "name": "BuckHornFlight",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        627,
+        627,
+        627
+      ],
+      "pivot": [
+        0.5151515151515151,
+        0.49681020733652315
+      ],
+      "visible_bounds_alpha16": [
+        212,
+        104,
+        434,
+        527
+      ]
+    },
+    {
+      "name": "BuckHornImpact01",
+      "file_id": 21300002,
+      "rect": [
+        627,
+        627,
+        627,
+        627
+      ],
+      "pivot": [
+        0.4904306220095694,
+        0.46012759170653905
+      ],
+      "visible_bounds_alpha16": [
+        212,
+        239,
+        403,
+        438
+      ]
+    },
+    {
+      "name": "BuckHornImpact02",
+      "file_id": 21300004,
+      "rect": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "pivot": [
+        0.49920255183413076,
+        0.5151515151515151
+      ],
+      "visible_bounds_alpha16": [
+        175,
+        180,
+        451,
+        428
+      ]
+    },
+    {
+      "name": "BuckHornImpact03",
+      "file_id": 21300006,
+      "rect": [
+        627,
+        0,
+        627,
+        627
+      ],
+      "pivot": [
+        0.4904306220095694,
+        0.5239234449760766
+      ],
+      "visible_bounds_alpha16": [
+        212,
+        233,
+        403,
+        364
+      ]
+    }
+  ]
+}
