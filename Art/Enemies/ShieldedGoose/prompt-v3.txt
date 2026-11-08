@@ -1,0 +1,10 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Edit target: Art/Enemies/ShieldedGoose/shield-source-v2.png
+Context reference only: Assets/Art/Enemies/BasicGoose3/BasicGoose3.png
+
+Use case: precise-object-edit. Asset type: transparent Unity pixel-art SPHERICAL ENERGY MEMBRANE, isolated.
+Input image 1 is the edit target, the previous cyan shield bubble with a flat-looking filled interior and overly thick perimeter. Input image 2 is ONLY context: the green goose UFO will be rendered behind the new shield, and must remain clearly readable.
+User request: replace flat fill with SPHERICAL SHADING so the shield reads as a rounded translucent glass energy bubble, and reduce the outline dramatically.
+Keep the existing centered oval's outer footprint, generous transparent padding and cyan palette. Draw the transparent spherical shield ALONE. The sphere should be mostly clear at its center with subtle see-through cyan/teal shading around its curved edges, a broad curved pale-cyan reflection following the UPPER-LEFT quadrant and a restrained deeper teal crescent on the lower-right side. Use 3-5 broad PIXEL-STEPPED shading bands following the sphere curvature. Highlights should wrap around the sphere, not fill its center. Keep center opacity around 15-25 percent, peripheral shading around 35-50 percent, and the sparse curved highlight at most 60 percent. Real partial alpha is essential: the pilot and whole UFO must be visible through this overlay.
+Remove the thick cyan and dark teal perimeter from the original. At most a very delicate one-logical-pixel contour; a separate thin rim sprite will provide the final edge. No thick dark inner ring, no flat opaque disk.
+Match coarse crisp pixel-art clusters, no smooth airbrush/photorealistic gradients, no detailed texture. True transparent exterior, truly partially transparent interior. Do NOT include the goose, ship, flame, backdrop, black fill, transparency checkerboard, particles, hexagon patterns, text or watermark. Single shield only.

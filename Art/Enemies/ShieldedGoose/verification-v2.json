@@ -1,0 +1,52 @@
+{
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "shield_mode": "RGBA",
+  "shield_canvas_pixels": [
+    1254,
+    1254
+  ],
+  "shield_alpha_extrema": [
+    0,
+    255
+  ],
+  "shield_center_alpha": 185,
+  "source_runtime_byte_equal": true,
+  "rim_source_runtime_byte_equal": true,
+  "membrane_renderer_alpha": 0.25,
+  "membrane_center_effective_alpha": 0.18137254901960784,
+  "body_samples_without_membrane_coverage": 0,
+  "body_sha256": "ebcc5f409533500ee5732439738b0698943b602fcb4ab07ae79d8337cacc3bce",
+  "body_texture_guid_reused": "82cebb2ca2a54f61840737cbe732dffe",
+  "body_opaque_samples_in_review": 669452,
+  "body_samples_outside_shield_hole": 0,
+  "shield_interior_closed_at_alpha_128": true,
+  "measurement_note": "Nearest-neighbor transform at body PPU; alpha >=128 defines silhouette. Subpixel/fringe coverage and camera rendering still need manual review.",
+  "remaining_review": [
+    "Unity import/material and sorting",
+    "Gameplay camera readability",
+    "Hook shield visibility to current HasShield, including pool reset",
+    "Inward orientation and poop spawn alignment"
+  ],
+  "checks": {
+    "source_runtime_bytes": true,
+    "whole_body_membrane_coverage": true,
+    "whole_body_inside_rim": true,
+    "real_alpha": true,
+    "translucent_center": true,
+    "approved_body_unchanged": true,
+    "approved_body_meta_unchanged": true,
+    "new_guids_unique": true,
+    "visual_components_only": true,
+    "internal_fileids_resolve": true,
+    "sprite_guids_resolve": true,
+    "body_and_shield_group_parentage": true,
+    "group_children": true,
+    "sorting_and_opacity": true,
+    "import_settings": true,
+    "projectile_references_exist": true,
+    "preview_references_exist": true,
+    "preview_opacity_matches_prefab": true
+  },
+  "all_checks_passed": true
+}

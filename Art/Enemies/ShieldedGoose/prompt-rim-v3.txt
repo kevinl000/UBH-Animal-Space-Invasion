@@ -1,0 +1,8 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Edit target: Art/Enemies/ShieldedGoose/shield-source-v1.png
+
+Use case: precise-object-edit. Asset type: transparent Unity pixel-art shield RIM, isolated.
+Input image is the edit target, a cyan oval energy shield outline. User request: make this shield outline MUCH THINNER.
+Keep the same outer oval footprint, centered placement, orientation, palette, generous transparent padding and chunky stair-stepped pixel style. Reduce the complete rim stroke including dark edge to about ONE QUARTER of its current thickness: a delicate single-pixel-width contour on an approximately 80x80 logical pixel grid, around 12-18 source pixels total on a 1254px square canvas. No fat dark inner or outer border. Use a narrow electric cyan contour with just a few tiny pale-cyan glints on the upper-left and lower-right arcs. Remove the thick dark teal bands; any dark edge must be extremely narrow.
+The inside is a completely empty true alpha-transparent hole; the outside is also fully transparent. ONE closed continuous thin outline only, no filled membrane in this asset.
+Do not include a UFO, animal, body, flame, background, opaque disk, checkerboard, text or watermark. No smooth glow, no thick tube, no 3D torus. This is an independently rendered narrow shield rim.

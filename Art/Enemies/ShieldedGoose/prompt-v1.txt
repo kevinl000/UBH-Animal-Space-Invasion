@@ -1,0 +1,12 @@
+Mode: built-in image_gen, reference-guided generation; transparent_background=true.
+Reference: Assets/Art/Enemies/BasicGoose3/BasicGoose3.png
+The green goose is reused unchanged; generate only its independent shield.
+
+Use case: stylized-concept.
+Asset type: one transparent PNG pixel-art energy shield overlay for a Unity 2D enemy.
+Input image 1 is ONLY a style and scale reference: the approved green Canada goose UFO. Do not redraw or include the goose, UFO, flame or any other object.
+Primary request: draw ONLY ONE cyan protective energy bubble perimeter, a complete closed near-circular oval viewed straight on. It will be composited around the entire UFO as a separate removable layer.
+Composition: centered single shield oval on a square canvas, approximately 88% of canvas width and 84% of canvas height, generous transparent outside padding. Completely EMPTY, genuinely transparent interior, at least 80% of the oval width unobstructed; no glass fill or tint over the pilot. The rim is narrow and chunky: roughly 2-3 coarse pixel blocks thick, readable at 160-pixel gameplay size.
+Style: match the reference's coarse pixel clusters and hard stair-stepped outline, approximately a 64 by 64 logical pixel grid. Crisp dark teal outer edging, saturated cyan main rim and a few restrained pale ice-cyan highlight blocks on the upper-left and lower-right arcs. The closed bubble must read as energy, not metal. Keep the outline mostly consistent; no floating particles.
+Palette: dark teal, electric cyan, pale cyan/ivory highlights; no green, purple, orange or red.
+Constraints: output the SHIELD ALONE, with real RGBA transparency both inside and outside. No UFO, animal, dome, ship, thruster, backdrop, black fill, painted checkerboard, texture, text, watermark, shield badge, hexagon mesh, streaks, broad glow, smooth gradients, vector curves or 3D shading. A single still shield; no sheet, no multiple variants.

@@ -1,0 +1,72 @@
+{
+  "asset": "Shielded Goose",
+  "mode": "built-in image_gen generation v1 and edit v2",
+  "shield_source": "shield-source-v2.png",
+  "rim_source": "shield-source-v1.png",
+  "prompt": "prompt-v2.txt",
+  "body_sprite": "Assets/Art/Enemies/BasicGoose3/BasicGoose3.png",
+  "body_policy": "Reuse the existing approved Basic Goose 3 texture and GUID unchanged; no duplicate or regenerated body.",
+  "shield_sprite": "Assets/Art/Enemies/ShieldedGoose/Shield.png",
+  "rim_sprite": "Assets/Art/Enemies/ShieldedGoose/ShieldRim.png",
+  "membrane_renderer_alpha": 0.25,
+  "membrane_center_effective_alpha": 0.18137254901960784,
+  "visual_prefab": "Assets/Prefabs/Enemies/ShieldedGooseVisual.prefab",
+  "body_pixels_per_unit": 516.838487972509,
+  "shield_pixels_per_unit": 368.884723523899,
+  "body_visible_width_world_units": 2.2734374999999982,
+  "shield_visible_width_world_units": 3.000937499999998,
+  "body_bounds_alpha_128": [
+    40,
+    156,
+    1215,
+    1147
+  ],
+  "shield_bounds_alpha_128": [
+    74,
+    129,
+    1181,
+    1123
+  ],
+  "shield_canvas_pixels": [
+    1254,
+    1254
+  ],
+  "shield_local_position": [
+    -0.0003880167791039612,
+    -0.05011446440927171,
+    0
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "local_scale": [
+    1,
+    1,
+    1
+  ],
+  "hierarchy": {
+    "ShieldedGooseVisual": [
+      "Body: SpriteRenderer, sorting order 0",
+      {
+        "Shield": [
+          "Membrane: SpriteRenderer, sorting order 1, alpha 0.25",
+          "Rim: SpriteRenderer, sorting order 2, alpha 1"
+        ]
+      }
+    ]
+  },
+  "pilot_facing": "-X",
+  "underside_facing": "-Y",
+  "future_gameplay_visual_child_rotation_z": 180,
+  "projectile_visual": "Assets/Prefabs/Projectiles/GoosePoopProjectileVisual.prefab",
+  "impact_visual": "Assets/Prefabs/Projectiles/GoosePoopImpactVisual.prefab",
+  "projectile_visual_child_rotation_z": 90,
+  "shield_state": "Static child enabled while shield is available; future gameplay must disable Shield when the first non-bypassing hit is blocked and re-enable on pooled initialization.",
+  "animation": "None required. Optional break animation is deferred.",
+  "texture_guid": "9ee593366efc4f2aae73463e238550a3",
+  "rim_guid": "e69f23de18bc42ffadcfab67efde4a7d",
+  "folder_guid": "1933b5433efc4e078a078c2d8784da0f",
+  "prefab_guid": "f5af601fcf0a4125b7c6ee7b91eb2958",
+  "scope": "Visual assets only. No runtime scripts, stats, colliders, data assignments or scene changes."
+}

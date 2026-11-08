@@ -1,0 +1,61 @@
+{
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "shield_mode": "RGBA",
+  "shield_canvas_pixels": [
+    1254,
+    1254
+  ],
+  "shield_alpha_extrema": [
+    0,
+    255
+  ],
+  "shield_center_alpha": 252,
+  "source_runtime_byte_equal": true,
+  "rim_source_runtime_byte_equal": true,
+  "membrane_renderer_alpha": 0.32,
+  "membrane_center_effective_alpha": 0.31623529411764706,
+  "body_samples_without_membrane_coverage": 0,
+  "body_sha256": "ebcc5f409533500ee5732439738b0698943b602fcb4ab07ae79d8337cacc3bce",
+  "body_texture_guid_reused": "82cebb2ca2a54f61840737cbe732dffe",
+  "body_opaque_samples_in_review": 669452,
+  "body_samples_outside_shield_hole": 0,
+  "body_samples_outside_fitted_sphere": 0,
+  "body_samples_overlapping_rim": 0,
+  "shield_interior_closed_at_alpha_128": false,
+  "measurement_note": "Nearest-neighbor transform at body PPU; alpha >=128 defines silhouette. Body containment uses the fitted circular envelope and actual rim overlap. Thin generated pixel-step joins are not flood-closed at alpha 128; inspect contour continuity through the intended gameplay camera.",
+  "remaining_review": [
+    "Unity import/material and sorting",
+    "Gameplay camera readability",
+    "Hook shield visibility to current HasShield, including pool reset",
+    "Inward orientation and poop spawn alignment"
+  ],
+  "top_rim_stroke_world_units_before": 0.23042428861788603,
+  "top_rim_stroke_world_units_after": 0.03244256756756755,
+  "top_rim_thickness_reduction_fraction": 0.8592050874403816,
+  "checks": {
+    "source_runtime_bytes": true,
+    "whole_body_membrane_coverage": true,
+    "whole_body_inside_rim": true,
+    "real_alpha": true,
+    "translucent_center": true,
+    "approved_body_unchanged": true,
+    "approved_body_meta_unchanged": true,
+    "new_guids_unique": true,
+    "visual_components_only": true,
+    "internal_fileids_resolve": true,
+    "sprite_guids_resolve": true,
+    "body_and_shield_group_parentage": true,
+    "group_children": true,
+    "sorting_and_opacity": true,
+    "import_settings": true,
+    "projectile_references_exist": true,
+    "preview_references_exist": true,
+    "preview_opacity_matches_prefab": true,
+    "asset_guids_preserved": true,
+    "rim_thinner": true,
+    "rim_round_visible_bounds": true,
+    "membrane_round_visible_bounds": true
+  },
+  "all_checks_passed": true
+}

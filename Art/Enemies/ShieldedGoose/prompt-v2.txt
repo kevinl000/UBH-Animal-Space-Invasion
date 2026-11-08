@@ -1,0 +1,12 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Edit target: Art/Enemies/ShieldedGoose/shield-source-v1.png
+Context/style reference only: Assets/Art/Enemies/BasicGoose3/BasicGoose3.png
+User revision: make the shield visibly cover the entire UFO body with transparency.
+
+Use case: precise-object-edit.
+Asset type: separate transparent PNG shield overlay for Unity pixel art.
+Input image 1 is the EDIT TARGET: the cyan pixel-art shield rim. Input image 2 is ONLY a context/style reference, the green goose UFO that will sit behind this shield. Do NOT include the goose or UFO in the output.
+Primary request: change the hollow ring into a TRANSLUCENT ENERGY BUBBLE. Add a very faint, see-through cyan energy membrane filling the entire interior of the existing cyan oval. The fill must have genuine partial alpha, approximately 15-20% opacity (alpha about 38-51 of 255), so the entire UFO body and pilot behind it remain clearly visible through the cyan tint. The background outside the oval stays fully transparent.
+Preserve the target shield's existing cyan stepped rim shape, proportions, size, placement, dark teal edging and pale cyan highlight blocks as closely as possible. Interior membrane may have just one or two wide, very faint pixel-stepped bands, but should mostly be flat clean translucent cyan, no opaque glare obscuring the pilot or hull.
+Pixel-art style: crisp coarse pixel blocks matching the reference, no smooth glow or airbrush.
+Constraints: output ONLY the cyan shield bubble, not a composite. No ship, animal, background, black interior, white interior, painted transparency checkerboard, stars, particles, hexagons, texture, text or watermark. The interior MUST NOT be an empty hole this time; it must contain visible low-opacity cyan pixels. Preserve true RGBA transparency and generous padding around the oval.

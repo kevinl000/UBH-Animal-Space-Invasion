@@ -1,0 +1,7 @@
+Mode: built-in image_gen edit; transparent_background=true.
+Edit target: Art/Enemies/ShieldedGoose/shield-rim-source-v3.png
+Refine thin-rim continuity and remove generated grain.
+
+Use case: precise-object-edit. Edit the provided thin cyan oval rim only.
+Clean the contour into a SOLID CONTINUOUS CLOSED pixel-art line of uniform approximately 20-24 source-pixel stroke width on this 1254px canvas (about two logical pixels). It must be clean and unbroken even at the diagonal stair-step joins. Remove all speckles, mottled texture, black pinholes, dark hairlines, ghost fringes and loose pixels. The current line is too fragile and noisy; retain its very slender appearance compared with the old thick rim, but give it enough solid thickness to survive small-size rendering.
+Preserve existing centered oval outer footprint, proportions and cyan palette. Use crisp flat cyan blocks and just 2-3 small pale cyan upper-left glints. Transparent empty interior and transparent exterior, no fill. No dark heavy border or glow. Not a torus. One closed energy bubble contour only. No UFO, animal, background, text, particles, watermark or checkerboard. True RGBA transparency.
