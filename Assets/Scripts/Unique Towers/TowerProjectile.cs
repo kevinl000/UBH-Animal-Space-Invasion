@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))] // Rigidbody2D is already required by GameEntity
+[RequireComponent(typeof(Collider2D))] // GameEntity handles Rigidbody2D
 public class TowerProjectile : GameEntity, IEnemyHitter
 {
     [Tooltip("Units per second.")]
@@ -18,7 +18,6 @@ public class TowerProjectile : GameEntity, IEnemyHitter
     private float lifeTimer;
     private Vector2 moveDirection;
 
-    /// <summary>Clean up when returned to the PoolManager.</summary>
     protected override void OnDespawned()
     {
         base.OnDespawned();
@@ -32,20 +31,20 @@ public class TowerProjectile : GameEntity, IEnemyHitter
         sourceTower = tower;
         target = enemyTarget;
 
-        // Copy stats from the tower so the projectile knows how hard to hit
+        // Copy stats from the tower
         Damage = tower.Damage;
         IgnoresShield = tower.IgnoresShield;
         CanHitStealth = tower.CanHitStealth;
 
         lifeTimer = maxLifeTime;
 
-        // Teleport to the cannon's barrel without sweeping physics
+        // Teleport to the spawn position (e.g., the tower's barrel)
         body.position = spawnPosition;
 
         // Initial rotation
         if (target != null)
         {
-            moveDirection = ((Vector2)target.transform.position - body.position).normalized;
+            moveDirection = ((Vector2)target.Body.position - body.position).normalized;
             FaceDirection(moveDirection);
         }
     }
@@ -61,14 +60,13 @@ public class TowerProjectile : GameEntity, IEnemyHitter
             return;
         }
 
-        // Homing: If the target is still alive, update the direction
+        // Homing logic: update direction if the target is still alive
         if (target != null && target.IsAlive)
         {
             moveDirection = (target.Body.position - body.position).normalized;
             FaceDirection(moveDirection);
         }
 
-        // Move forward kinematically
         body.MovePosition(body.position + moveDirection * speed * Time.fixedDeltaTime);
     }
 
@@ -78,18 +76,19 @@ public class TowerProjectile : GameEntity, IEnemyHitter
         body.MoveRotation(angle);
     }
 
-    /// <summary>
-    /// Triggered by BaseEnemyData when this projectile's collider hits it.
-    /// </summary>
+    // --- IEnemyHitter Implementation ---
+
+    /// <summary>Triggered by BaseEnemyData's OnTriggerEnter2D.</summary>
     public void OnHitEnemy(BaseEnemyData enemy)
     {
-        // Pass the event back to the tower in case it applies debuffs (like poison/slows)
-        if (sourceTower != null)
+        // 1. Let the tower know it hit something, in case the tower applies Poison/Slows
+        if (sourceTower != null && sourceTower.IsAlive)
         {
             sourceTower.OnHitEnemy(enemy);
         }
 
-        // The enemy script has already subtracted health at this point, so we just despawn.
+        // 2. The enemy's OnTriggerEnter2D has already subtracted the health at this point,
+        // so the projectile's only remaining job is to destroy itself.
         Despawn();
     }
 }

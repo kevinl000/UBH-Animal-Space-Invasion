@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &765310000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765310001}
+  m_Layer: 0
+  m_Name: ZoomViewport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &765310001
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765310000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3759173435214765833}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -220, y: -10}
+  m_SizeDelta: {x: -480, y: -220}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &112001956194290639
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,26 +774,6 @@ MonoBehaviour:
   visualMount: {fileID: 8082602274038105956}
   confirmSound: {fileID: 8300000, guid: ca2166be165645d4eb7d19f6755e8f25, type: 3}
   backSound: {fileID: 8300000, guid: 27046782df2ef894ba01a30c9e589d24, type: 3}
---- !u!114 &765310002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847687588275546992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3fc684bc7d84b219e80cb6578b07c24, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::PlanetPageZoom
-  page: {fileID: 6001083153621229607}
-  viewport: {fileID: 765310001}
-  spawnViewport: {fileID: 765310001}
-  minimumZoom: 0.5
-  maximumZoom: 1
-  startingZoom: 0.75
-  wheelSensitivity: 0.12
-  zoomSpeed: 12
 --- !u!225 &8721295191998505707
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -771,6 +786,26 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &765310002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847687588275546992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fc684bc7d84b219e80cb6578b07c24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PlanetaryDefense.Menu::PlanetPageZoom
+  page: {fileID: 6001083153621229607}
+  viewport: {fileID: 765310001}
+  spawnViewport: {fileID: 765310001}
+  minimumZoom: 0.5
+  maximumZoom: 1
+  startingZoom: 0.75
+  wheelSensitivity: 0.12
+  zoomSpeed: 12
 --- !u!1 &1195152183557199175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,41 +1792,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &765310000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 765310001}
-  m_Layer: 0
-  m_Name: ZoomViewport
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &765310001
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 765310000}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3759173435214765833}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -220, y: -10}
-  m_SizeDelta: {x: -480, y: -220}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2038046005166313876
 GameObject:
   m_ObjectHideFlags: 0
