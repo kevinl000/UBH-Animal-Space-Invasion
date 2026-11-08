@@ -69,8 +69,10 @@ public class PlanetPageController : MonoBehaviour
         towerName.text = tower.displayName;
         towerPortrait.sprite = tower.portrait;
         towerAvailability.text = card.Available ? "AVAILABLE AT THIS DESTINATION" : "LOCKED / UNLOCKS AT LEVEL " + tower.unlockLevel;
-        towerStats.text = "HP " + tower.health + "    COST $" + tower.cost + "\nFUEL " + tower.fuelRate
-            + " F/s    FOV " + tower.fieldOfView + "°\nDAMAGE " + tower.damage + "    " + tower.attackType;
+        string fuel = tower.fuelRate == "0" ? "FREE" : tower.fuelRate
+            + (tower.displayName == "Oil Rig" ? " F/s" : tower.displayName == "Gamma Radar" ? " F/pulse" : " F/shot");
+        towerStats.text = "HP " + tower.health + "    COST $" + tower.cost + "\nFUEL " + fuel
+            + "    FOV " + tower.fieldOfView + "°\nDAMAGE " + tower.damage + "    " + tower.attackType;
         towerDescription.text = tower.description;
     }
 

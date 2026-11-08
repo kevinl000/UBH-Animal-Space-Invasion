@@ -179,7 +179,6 @@ public class LevelManager : MonoBehaviour, IDamageable
     {
         foreach (BaseTowerData tower in BaseTowerData.Active)
         {
-            if (GameplayLoopController.Instance != null && tower.fuelIntake < 0) continue; // prepaid per tower during combat
             if (tower.fuelIntake >= 0)
             {
                 if (tower.IsDisabled) tower.SetDisabled(false);

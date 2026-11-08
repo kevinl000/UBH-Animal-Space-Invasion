@@ -14,6 +14,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     {
         base.Awake();
         Visual = GetComponent<CombatVisual>();
+        levelManager = FindAnyObjectByType<LevelManager>();
     }
 
     // --- The Scriptable Object ---
@@ -35,7 +36,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     protected float freezeTimer;
     protected float fuelTimer;
     private bool dead;
-    private float paidFuelRemaining;
+    private LevelManager levelManager;
 
     // --- Properties ---
     public float Health { get { return currentHealth; } }
@@ -49,6 +50,8 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     public virtual float ProjectileDamage { get { return damage; } }
     public bool IgnoresShield { get { return ignoresShield; } }
     public bool CanHitStealth { get { return canHitStealth; } }
+    // Used by the AI as a full-activity estimate, never as a resource deduction.
+    public float FuelPerSecondEstimate => fuelIntake >= 0 ? fuelIntake : fuelIntake / (fireRate > 0f ? fireRate : 1f);
 
     /// <summary>Call this when placing the tower.</summary>
     public virtual void Initialize(TowerData towerData, bool free = false)
@@ -69,7 +72,6 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         freezeTimer = 0f;
         fireTimer = fireRate;
         fuelTimer = 0f;
-        paidFuelRemaining = 0f;
         IsDisabled = false;
 
         fireTimer = fireRate > 0f ? Random.Range(0f, fireRate * 0.2f) : 0f;
@@ -92,19 +94,7 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         bool frozen = freezeTimer > 0f;
         if (frozen) freezeTimer = Mathf.Max(0f, freezeTimer - dt);
 
-        if (GameplayLoopController.Instance != null && fuelIntake < 0)
-        {
-            // Pay for a powered second before firing. A paid second stays usable at zero balance.
-            if (paidFuelRemaining <= 0f)
-            {
-                bool paid = GameplayLoopController.Instance.levelManager.TryConsumeFuel(-fuelIntake);
-                SetDisabled(!paid);
-                if (!paid) return;
-                paidFuelRemaining = 1f;
-            }
-            paidFuelRemaining -= dt;
-        }
-        else ConsumeFuel(dt);
+        GenerateFuel(dt);
 
         if (frozen) return;
 
@@ -113,25 +103,25 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
         Tick(dt);
     }
 
-    /// <summary>
-    /// Accumulates time and applies the Fuel Intake per second.
-    /// </summary>
-    protected virtual void ConsumeFuel(float dt)
+    /// <summary>Positive fuelIntake remains passive generation; weapons pay only when they fire.</summary>
+    protected virtual void GenerateFuel(float dt)
     {
-        if (fuelIntake == 0) return; // Free towers don't do anything here
-
+        if (fuelIntake <= 0) return;
         fuelTimer += dt;
         if (fuelTimer >= 1f)
         {
-            fuelTimer -= 1f; // Remove 1 second from the timer
-
-            // Tell the economy manager to add/subtract this fuel amount
+            fuelTimer -= 1f;
             TowerEvents.RaiseTowerFuelTick(fuelIntake);
-
-            // NOTE: If you want towers to stop firing when you run out of fuel,
-            // your EconomyManager could disable the tower, or you could check a 
-            // global GameManager.HasFuel boolean here before letting Tick() run.
         }
+    }
+
+    /// <summary>Charge once after finding a target, before creating a shot or damaging pulse.</summary>
+    protected bool TryConsumeShotFuel()
+    {
+        if (fuelIntake >= 0) return true;
+        if (levelManager != null && levelManager.TryConsumeFuel(-fuelIntake)) return true;
+        SetDisabled(true);
+        return false;
     }
 
     protected virtual void Tick(float dt)

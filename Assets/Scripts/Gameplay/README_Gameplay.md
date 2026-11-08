@@ -15,6 +15,16 @@ remain restricted. Existing art assets and GUIDs are preserved. The legacy
 prefab/data menu keeps assigned projectile overrides, and scene setup refuses
 to overwrite a scene with a configured gameplay loop.
 
+All planets now charge weapons once per shot rather than per second. The
+negative fuelIntake value is a shot cost; Gamma Radar pays per damaging pulse
+with a target. No target, cooldown, freezing, AoE recipients and later DOT ticks
+do not consume fuel. Radar and Bank are free; Oil Rig still generates fuel per
+second. Both runtime HUDs show these units. The AI's fuel-per-second snapshot
+is an estimate at full firing rate and does not deduct resources.
+
+Positioned pool spawns set the body and visible transform before activation and
+reset interpolation, avoiding a flash at the previous pooled/planet-centre pose.
+
 No Unity execution or Unity tests were performed for this integration. The
 historical test instructions below belong to the teammate's earlier foundation.
 

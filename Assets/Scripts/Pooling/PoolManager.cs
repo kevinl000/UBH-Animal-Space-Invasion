@@ -61,16 +61,27 @@ public class PoolManager : MonoBehaviour
         return (T)e;
     }
 
-    /// <summary>Same as Spawn(prefab, parent), then places the Rigidbody2D (world position, degrees).</summary>
+    /// <summary>Places the body and visible transform before activation (world position, degrees).</summary>
     public T Spawn<T>(T prefab, Transform parent, Vector2 position, float rotation) where T : GameEntity
     {
-        T e = Spawn(prefab, parent);
-        if (e != null && e.Body != null)
+        if (prefab == null) { Debug.LogWarning("[PoolManager] Spawn called with no prefab."); return null; }
+        GameEntity e = PoolFor(prefab).Get();
+        e.transform.SetParent(parent, false);
+        if (e.Body != null)
         {
+            // Discard the previous pooled pose instead of interpolating from the planet centre.
+            RigidbodyInterpolation2D interpolation = e.Body.interpolation;
+            e.Body.interpolation = RigidbodyInterpolation2D.None;
             e.Body.position = position;
             e.Body.rotation = rotation;
+            e.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, 0f, rotation));
+            e.Body.interpolation = interpolation;
         }
-        return e;
+        else e.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, 0f, rotation));
+        e.gameObject.SetActive(true);
+        e.NotifySpawned();
+        active.Add(e);
+        return (T)e;
     }
 
     /// <summary>Puts the entity back in its pool. Entities not made by the PoolManager are destroyed.</summary>

@@ -118,7 +118,9 @@ public class GameplayHUD : MonoBehaviour
         }
         if (selected != null)
             details.text = selected.name.ToUpperInvariant() + "  /  " + selected.attackType + "\nHP " + selected.maxHealth + "   DAMAGE " + selected.damage
-                + (selected.attackType == TowerAttackType.Dot ? "/s × 3s" : "") + "\nFUEL " + selected.fuelIntake + "/s   ARC " + selected.fov + "°";
+                + (selected.attackType == TowerAttackType.Dot ? "/s × 3s" : "") + "\nFUEL "
+                + (selected.fuelIntake == 0 ? "FREE" : selected.fuelIntake + (selected.fuelIntake > 0 ? "/s"
+                    : selected.kind == EnemyAI.TowerKind.GammaRadar ? "/pulse" : "/shot")) + "   ARC " + selected.fov + "°";
     }
 
     private string PhaseText()

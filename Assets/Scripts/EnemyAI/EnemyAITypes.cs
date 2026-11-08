@@ -59,7 +59,7 @@ namespace EnemyAI
     public class DefenseSnapshot
     {
         public List<TowerInfo> Towers = new List<TowerInfo>();
-        /// <summary>Net fuel change per second from all towers (Oil Rig +3, attackers negative).</summary>
+        /// <summary>Estimated net fuel/second at full activity (generation minus shot cost / attack interval).</summary>
         public float FuelPerSecond;
         public float Fuel;
         public float Money;

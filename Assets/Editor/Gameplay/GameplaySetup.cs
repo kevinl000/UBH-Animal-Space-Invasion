@@ -58,9 +58,9 @@ public static class GameplaySetup
         Row("Bomb",        25,  2, -1, 120, 1, 1.5f, TowerAttackType.AoE,    TowerKind.Bomb,       typeof(AoETower),        "Assets/Prefabs/Towers/BombTowerVisual.prefab", Color.white, "Bomb Shell"),
         Row("Sniper",      20,  2, -1, 120, 5, 2.5f, TowerAttackType.Single, TowerKind.Sniper,     typeof(ShootingTower),   null, new Color(0.55f, 0.75f, 1f), "Laser Bolt"),
         Row("Pest Trap",   20,  2, -2, 120, 1, 2.0f, TowerAttackType.Dot,    TowerKind.PestTrap,   typeof(PestTrapTower),   null, new Color(0.5f, 0.85f, 0.3f), "Sticky Goo", ignoresShield: true),
-        Row("Radar",       10,  5, -1,  90, 0, 0.5f, TowerAttackType.None,   TowerKind.Radar,      typeof(RadarTower),      null, new Color(0.3f, 0.9f, 0.9f), null, seesStealth: true),
+        Row("Radar",       10,  5,  0,  90, 0, 0.5f, TowerAttackType.None,   TowerKind.Radar,      typeof(RadarTower),      null, new Color(0.3f, 0.9f, 0.9f), null, seesStealth: true),
         Row("Oil Rig",     15,  5,  3,   0, 0, 1.0f, TowerAttackType.None,   TowerKind.OilRig,     typeof(ResourceTower),   null, new Color(0.25f, 0.25f, 0.25f), null),
-        Row("Bank",        15,  5, -1,   0, 0, 1.0f, TowerAttackType.None,   TowerKind.Bank,       typeof(ResourceTower),   null, new Color(1f, 0.85f, 0.2f), null),
+        Row("Bank",        15,  5,  0,   0, 0, 1.0f, TowerAttackType.None,   TowerKind.Bank,       typeof(ResourceTower),   null, new Color(1f, 0.85f, 0.2f), null),
         Row("Laser SMG",   30, 10, -3, 120, 2, 0.4f, TowerAttackType.Single, TowerKind.LaserSMG,   typeof(ShootingTower),   "Assets/Art/Planets/UnionPrime/LaserBase.png", new Color(1f, 0.7f, 0.7f), "Laser Bolt"),
         Row("Tesla Coil",  25, 15, -3, 120, 2, 1.2f, TowerAttackType.AoE,    TowerKind.TeslaCoil,  typeof(AoETower),        null, new Color(0.6f, 0.5f, 1f), "Spark"),
         Row("Gamma Radar", 20, 20, -5, 120, 1, 1.0f, TowerAttackType.AoE,    TowerKind.GammaRadar, typeof(RadarTower),      null, new Color(0.2f, 1f, 0.5f), null, seesStealth: true),
@@ -516,7 +516,7 @@ public static class GameplaySetup
         if (d.maxDifficulty <= 0) d.maxDifficulty = 120 + 40 * level;
         if (d.postBossDifficulty <= 0) d.postBossDifficulty = d.maxDifficulty / 2;
         if (d.money <= 0) d.money = 10;
-        if (d.fuel <= 0f) d.fuel = 150f;
+        if (d.fuel <= 0f) d.fuel = 50f;
         if (d.planetMaxHealth <= 0f) d.planetMaxHealth = 100f;
         if (d.planetRotationSpeed == 0f) d.planetRotationSpeed = 6f;
         if (d.enemyDataList == null) d.enemyDataList = new List<LevelEnemyEntry>();

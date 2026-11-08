@@ -16,15 +16,15 @@
 |Shielded Deer | 10 | 4 | 4 | 5 | Single | Enemy will fly towards planet and start orbiting. Periodically will stop and charge the planet. Will have a shield that negates the first incoming damage |
 
 # Towers
-| Unlock Level | Tower Name | HP | Cost | Fuel Intake (F/s) | FOV(Degrees) | Damage | Attack Type | Description |
+| Unlock Level | Tower Name | HP | Cost | Fuel Intake (F/shot; Gamma: F/pulse; Oil Rig: F/s) | FOV(Degrees) | Damage | Attack Type | Description |
 |--|--|--|--|--|--|--|--|--|
 | Tutorial | Laser | 25 | 1 | -1 | 120 | 2 | Single | Shoots laser projectiles |
 | Tutorial | Bomb | 25 | 2 | -1 | 120 | 1 | AOE | Shoots bombs |
 | Tutorial | Sniper | 20 | 2 | -1 | 120 | 5 | Single | Lower firerate. Higher Damage |
 | Tutorial | Pest Trap | 20 | 2 | -2 | 120 | 1/s | DOT | Shoots a sticky substance that slows enemies and deals damage over 3 seconds | 
-| 1 | Radar | 10 | 5 | -1 | 90 | 0 | N/A | Reveals stealth enemies |
+| 1 | Radar | 10 | 5 | 0 | 90 | 0 | N/A | Reveals stealth enemies |
 | 1 | Oil Rig | 15 | 5 | +3 | 0 | 0 | N/A | Generates fuel |
-| 1 | Bank | 15 | 5 | -1 | 0 | 0 | N/A | Generates generates $3/s |
+| 1 | Bank | 15 | 5 | 0 | 0 | 0 | N/A | Generates generates $3/s |
 | 2 | Laser SMG | 30 | 10 | -3 | 120 | 2 | Single | Shoots laser projectiles at a faster rate |
 | 3 | Tesla Coil | 25 | 15 | -3 | 120 | 2 | AOE | Fires electricity that damages grouped enemies |
 | 4 | Gamma Radar | 20 | 20 | -5 | 120 | 1 | AOE | Reveals stealth enemies while damaging all enemies within its range |

@@ -16,6 +16,7 @@ public class TowerData : ScriptableObject
     public float maxHealth = 1f;
     public float damage = 1f;
     public int cost;
+    [Tooltip("Negative = fuel cost per shot (Gamma Radar: per damaging pulse). Positive = fuel generated per second. Zero = free.")]
     public int fuelIntake;
     public float fireRate;
     [Tooltip("Field of view in degrees (README), centred on the tower's outward direction. 0 or 360+ = all around.")]

@@ -19,6 +19,13 @@ public class RadarTower : BaseTowerData
 
     protected override void Fire()
     {
+        if (isGammaRadar)
+        {
+            bool hasTarget = false;
+            foreach (BaseEnemyData enemy in BaseEnemyData.Active)
+                if (enemy.IsAlive && InSight(enemy)) { hasTarget = true; break; }
+            if (!hasTarget || !TryConsumeShotFuel()) return;
+        }
         if (Visual != null) Visual.Attack();
         // FireRate acts as the pulse interval (e.g., pulse every 0.5s)
         for (int i = BaseEnemyData.Active.Count - 1; i >= 0; i--)

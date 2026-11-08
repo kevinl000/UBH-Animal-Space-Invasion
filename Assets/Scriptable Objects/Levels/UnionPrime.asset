@@ -48,7 +48,7 @@ MonoBehaviour:
     endingBudget: 1
     isLevelBoss: 1
   money: 10
-  fuel: 150
+  fuel: 50
   planetMaxHealth: 100
   planetRotationSpeed: 6
   planetGravity: 0

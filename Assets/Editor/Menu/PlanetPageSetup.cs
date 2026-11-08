@@ -50,16 +50,16 @@ public static class PlanetPageSetup
 
     private static void CreateTowers()
     {
-        // README order: name, unlock, HP, cost, fuel/s, FOV, damage, attack type, description.
+        // README order: name, unlock, HP, cost, fuel/use (Oil Rig: fuel/s), FOV, damage, attack type, description.
         string[][] rows =
         {
             new[] { "Laser", "0", "25", "1", "-1", "120", "2", "Single", "Shoots laser projectiles." },
             new[] { "Bomb", "0", "25", "2", "-1", "120", "1", "AOE", "Shoots bombs." },
             new[] { "Sniper", "0", "20", "2", "-1", "120", "5", "Single", "Lower fire rate. Higher damage." },
             new[] { "Pest Trap", "0", "20", "2", "-2", "120", "1/s", "DOT", "Shoots a sticky substance that slows enemies and deals damage over 3 seconds." },
-            new[] { "Radar", "1", "10", "5", "-1", "90", "0", "N/A", "Reveals stealth enemies." },
+            new[] { "Radar", "1", "10", "5", "0", "90", "0", "N/A", "Reveals stealth enemies." },
             new[] { "Oil Rig", "1", "15", "5", "+3", "0", "0", "N/A", "Generates fuel." },
-            new[] { "Bank", "1", "15", "5", "-1", "0", "0", "N/A", "Generates $3/s." },
+            new[] { "Bank", "1", "15", "5", "0", "0", "0", "N/A", "Generates $3/s." },
             new[] { "Laser SMG", "2", "30", "10", "-3", "120", "2", "Single", "Shoots laser projectiles at a faster rate." },
             new[] { "Tesla Coil", "3", "25", "15", "-3", "120", "2", "AOE", "Fires electricity that damages grouped enemies." },
             new[] { "Gamma Radar", "4", "20", "20", "-5", "120", "1", "AOE", "Reveals stealth enemies while damaging all enemies within its range." },

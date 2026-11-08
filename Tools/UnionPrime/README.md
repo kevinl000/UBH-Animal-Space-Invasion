@@ -2,7 +2,7 @@
 
 Open `Assets/Scenes/UnionPrime.unity` in Unity 6000.6.7f1, or launch Union Prime
 through the existing destination selector. Press Play, choose a tower, click a
-socket to build, and press **Start Wave 1**. Keys 1–4 select the tutorial towers;
+socket to build, and press **Start Wave 1**. Keys 1Ã¢â‚¬â€œ4 select the tutorial towers;
 right-click a socket to sell during setup or a break. Escape opens/closes pause.
 The pixel-style quick build bar spans the bottom of the screen in one row,
 including moon sockets (M1, M2, ...). Hover a number to preview the selected
@@ -32,8 +32,8 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
   minibosses, four allowed tower types, starter slots, random final-boss pool,
   three-second entrance and next destination.
 - `Assets/Scriptable Objects/Levels/UnionPrime.asset`: 100 starting HP, 10 money,
-  150 fuel, radius 3.3 and clockwise rotation at 6 degrees/second. All existing
-  level data assets and new LevelData defaults start at 10 money / 150 fuel.
+  50 fuel, radius 3.3 and clockwise rotation at 6 degrees/second. All existing
+  level data assets and new LevelData defaults start at 10 money / 50 fuel.
 - `Assets/Scripts/Gameplay/GameplayLoopController.cs`: phase transitions,
   permissions, boss camera entrance and win/loss. Combat and input consult this
   controller; they do not keep competing wave or result clocks.
@@ -59,13 +59,17 @@ any time except the entrance, pause and results. Sell only during setup/breaks,
 for full cost, including the two starter Lasers. Starter Lasers cost nothing to
 initialize, but retain their normal data/cost/HP.
 
-Fuel and combat clocks stop outside Wave/Clear/BossFight. Consumers pay for a
-powered second before firing, retain the unused portion across breaks, and
-automatically recover on a later combat update after receiving fuel. HP and
+Fuel and combat clocks stop outside Wave/Clear/BossFight. Weapons pay their
+authored fuel cost once per shot, after finding a target and before the attack.
+Idle weapons, cooldowns, frozen weapons, and later projectile/AoE/DOT hits cost
+nothing extra. A weapon cannot fire without the entire shot cost, and recovers
+when a fuel reward makes the next shot affordable. Regular Radar and Bank are
+free; Gamma Radar pays once per damaging pulse with an enemy in range. Oil Rig
+still generates +3 fuel/second. This rule is shared across all planets. HP and
 resources otherwise persist across waves. No passive refill or health reset is
 added. Enemy kills now grant twice the authored fuelDrop, with shiny enemies
 retaining their additional 2x bonus. Money rewards are unchanged. Fuel shortage
-can still be decisive; the team must review the 150 starting fuel through play.
+can still be decisive; the team must review the 50 starting fuel through play.
 
 Boss death wins with surviving planet HP; zero planet HP takes precedence.
 Remaining hostiles and projectiles disappear without rewards on victory. Next
@@ -136,17 +140,24 @@ contacts, Animator playback, viewport readability or live UI interaction.
 ## Manual Unity review
 
 1. Open Union Prime directly and through the menu. Confirm 100 HP / 10 money /
-   150 fuel, two opposite Lasers, twelve sockets and only four available towers.
+   50 fuel, two opposite Lasers, twelve sockets and only four available towers.
    Confirm it starts at 1x, the planet rotates, and both starter Lasers follow
    their sockets before pressing Start. Build by clicking the planet and by
    socket number; each real tower must coincide with its ghost and stay mounted.
    Wait in setup: fuel must stay unchanged. Buy/sell; costs/refunds happen once.
+   Check initial placement and a sold/rebuilt pooled tower: neither should flash
+   at the planet centre before seating. Repeat with a moon socket.
 2. Start. Check 20 seconds of spawning, Shielded Goose, complete clearing, then
    exactly 15 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm no deer,
    stealth or basic variants 2/3; building works and selling is blocked in combat.
 3. Check weapon arcs and moving muzzles, projectile contacts, shield absorption
    and reset, Pest Trap's three-second DOT, nearby Bomb splash and effect reuse.
+   Confirm Laser/Bomb/Sniper spend 1 fuel per shot, Pest Trap spends 2, and an
+   idle or frozen weapon spends nothing. AoE hits and DOT ticks add no fuel cost.
    Exhaust fuel and obtain a drop: power must recover without a free firing burst.
+   On later planets, check SMG/Tesla spend 3 per shot, Ballistica 6, Gamma Radar
+   5 per damaging pulse, regular Radar/Bank work at zero fuel, and Oil Rig
+   still generates 3/second.
 4. At wave 3's boundary, confirm the paused battle and boss zoom/approach/return,
    including pausing/resuming mid-entrance. Across fresh runs review both bosses.
 5. Check victory, defeat and a near-simultaneous lethal exchange. Next Level is
@@ -163,5 +174,5 @@ contacts, Animator playback, viewport readability or live UI interaction.
    font readability, mouse/keyboard focus, small effects and repeated pooled
    shots. Check regular enemies are 50% larger (including after reuse), bosses
    keep their size, and normal/shiny kills give 2x/4x the authored fuelDrop.
-   Check the other levels start at 10 money / 150 fuel. Review later prefab
+   Check the other levels start at 10 money / 50 fuel. Review later prefab
    visuals separately without unlocking them here.

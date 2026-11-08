@@ -149,11 +149,11 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
                 t.Body.MovePosition(SlotPosition(i));
                 t.Body.MoveRotation(SlotRotation(i)); // sprite "up" points away from the planet (that's the FOV direction)
             }
-            if (!t.IsDisabled) fuel += t.fuelIntake;
+            if (!t.IsDisabled) fuel += t.FuelPerSecondEstimate;
         }
         if (moon != null)
             foreach (BaseTowerData t in moon.Towers())
-                if (!t.IsDisabled) fuel += t.fuelIntake;
+                if (!t.IsDisabled) fuel += t.FuelPerSecondEstimate;
         FuelPerSecond = fuel;
     }
 

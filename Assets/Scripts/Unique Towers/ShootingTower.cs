@@ -16,6 +16,8 @@ public class ShootingTower : BaseTowerData
     {
         BaseEnemyData target = FindClosestEnemy();
         if (target == null) return; // Nobody in range
+        if (data.projectilePrefab != null && PoolManager.Instance == null) return;
+        if (!TryConsumeShotFuel()) return;
         if (Visual != null) { Visual.Aim(target.Body.position); Visual.Attack(); }
         Vector3 origin = Visual != null && Visual.Muzzle != null ? Visual.Muzzle.position : transform.position;
 
