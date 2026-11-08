@@ -93,7 +93,15 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     protected virtual void Fire() { }
 
     // ---------------------------------------------------------------- interfaces
-
+    /// <summary>
+    /// Called by the TowerProjectile when it hits an enemy.
+    /// Override this in subclasses to apply debuffs (e.g., enemy.ApplySlow()).
+    /// </summary>
+    public virtual void OnHitEnemy(BaseEnemyData enemy)
+    {
+        // Default towers just deal raw damage (which is handled by the projectile itself),
+        // so this base method is intentionally empty.
+    }
     public float ReceiveDamage(float amount)
     {
         if (!IsAlive || amount <= 0f) return 0f;
