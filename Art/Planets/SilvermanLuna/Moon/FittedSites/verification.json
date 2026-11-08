@@ -1,0 +1,20 @@
+{
+  "scope": "offline rendered support and occlusion",
+  "sites": 4,
+  "foundation_samples_supported": 248,
+  "upper_base_pixels_hidden": 0,
+  "gun_pixels_hidden": 0,
+  "gun_pixels_checked": 7668,
+  "aiming_poses": [
+    -60,
+    0,
+    60
+  ],
+  "seating_floor_widths_at_20_pixels_outward": [
+    270,
+    282,
+    282,
+    270
+  ],
+  "maximum_width_difference_pixels": 12
+}
