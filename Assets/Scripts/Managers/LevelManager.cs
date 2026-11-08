@@ -6,6 +6,8 @@ public class LevelManager : MonoBehaviour, IDamageable
     [Header("Level Configuration")]
     [SerializeField] private LevelData levelData; // Assign your ScriptableObject here in the Inspector
 
+    public LevelData Level { get { return levelData; } }
+
     [Header("UI")]
     public Text hp;
     public Text money;
@@ -26,7 +28,8 @@ public class LevelManager : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        planetBody = GetComponent<Rigidbody2D>();
+        // keep the planet body assigned in the Inspector (the Level Manager object itself has no Rigidbody2D)
+        if (planetBody == null) planetBody = GetComponent<Rigidbody2D>();
 
         if (levelData != null)
         {
@@ -39,7 +42,8 @@ public class LevelManager : MonoBehaviour, IDamageable
             TotalFuel = Mathf.Max(0f, levelData.fuel);
 
             // Apply physical properties
-            planetBody.gravityScale = levelData.planetGravity;
+            if (planetBody != null) planetBody.gravityScale = levelData.planetGravity;
+            else Debug.LogWarning("[LevelManager] No planetBody: assign the planet's Rigidbody2D so it can rotate.");
         }
         else
         {
@@ -54,7 +58,7 @@ public class LevelManager : MonoBehaviour, IDamageable
     private void OnEnable()
     {
         EnemyEvents.Killed += ChangeResources;
-        TowerEvents.TowerBuilt += ChangeMoney;
+        TowerEvents.TowerBuilt += PayForTower;
         TowerEvents.TowerSold += ChangeMoney;
         TowerEvents.TowerFuelTick += ChangeFuel;
         TowerEvents.TowerMoneyTick += ChangeMoney; 
@@ -63,7 +67,7 @@ public class LevelManager : MonoBehaviour, IDamageable
     private void OnDisable()
     {
         EnemyEvents.Killed -= ChangeResources;
-        TowerEvents.TowerBuilt -= ChangeMoney;
+        TowerEvents.TowerBuilt -= PayForTower;
         TowerEvents.TowerSold -= ChangeMoney;
         TowerEvents.TowerFuelTick -= ChangeFuel;
         TowerEvents.TowerMoneyTick -= ChangeMoney;
@@ -74,7 +78,7 @@ public class LevelManager : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        if (currentHealth <= 0f || levelData == null) return;
+        if (currentHealth <= 0f || levelData == null || planetBody == null) return;
 
         // Use rotation speed and direction directly from LevelData
         float direction = levelData.isClockwise ? -1f : 1f;
@@ -82,6 +86,17 @@ public class LevelManager : MonoBehaviour, IDamageable
     }
 
     // ---------------------------------------------------------------- Resources
+
+    /// <summary>TowerBuilt sends the tower's cost: building spends it (it used to add it).</summary>
+    private void PayForTower(int cost)
+    {
+        ChangeMoney(-cost);
+    }
+
+    public bool CanAfford(int cost)
+    {
+        return TotalMoney >= cost;
+    }
 
     /// <summary>Positive amounts grant money; negative amounts spend it.</summary>
     public void ChangeMoney(int amount)
@@ -125,10 +140,12 @@ public class LevelManager : MonoBehaviour, IDamageable
 
     // ---------------------------------------------------------------- Damage / Game Over
 
+    /// <summary>Returns the damage actually dealt (the enemy AI learns from it).</summary>
     public float ReceiveDamage(float damage)
     {
-        if (float.IsNaN(damage) || float.IsInfinity(damage) || damage <= 0f) return damage;
+        if (float.IsNaN(damage) || float.IsInfinity(damage) || damage <= 0f || !IsAlive) return 0f;
 
+        float dealt = Mathf.Min(damage, currentHealth);
         currentHealth = Mathf.Max(0f, currentHealth - damage);
 
         // Keep the LevelData property in sync in case the Spawner/AI reads from it
@@ -136,12 +153,13 @@ public class LevelManager : MonoBehaviour, IDamageable
 
         RefreshResourceBar();
 
-        if (currentHealth <= 0f && GameManager.Instance != null)
+        if (currentHealth <= 0f)
         {
-            GameManager.Instance.GameOver();
+            dead = true;
+            if (GameManager.Instance != null) GameManager.Instance.GameOver();
         }
 
-        return currentHealth;
+        return dealt;
     }
 
     // ---------------------------------------------------------------- Power States

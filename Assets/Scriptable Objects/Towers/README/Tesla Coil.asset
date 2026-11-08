@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8f9c23a0ec52d449839f4131b73e0a, type: 3}
+  m_Name: Tesla Coil
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerData
+  maxHealth: 25
+  damage: 2
+  cost: 15
+  fuelIntake: -3
+  fireRate: 1.2
+  fov: 120
+  attackType: 1
+  range: 0
+  kind: 8
+  ignoresShield: 0
+  canHitStealth: 0
+  prefab: {fileID: 2636429097581706498, guid: 9e2813fa6e41fc448b3a0ad9fb202e26, type: 3}
+  projectilePrefab: {fileID: 8683651855735678777, guid: 25768662e8829d147a5cb6d8b6baead0, type: 3}

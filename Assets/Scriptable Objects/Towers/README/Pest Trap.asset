@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8f9c23a0ec52d449839f4131b73e0a, type: 3}
+  m_Name: Pest Trap
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerData
+  maxHealth: 20
+  damage: 1
+  cost: 2
+  fuelIntake: -2
+  fireRate: 2
+  fov: 120
+  attackType: 2
+  range: 0
+  kind: 3
+  ignoresShield: 1
+  canHitStealth: 0
+  prefab: {fileID: 7338946288663182503, guid: 129a3a6adf1d8284085ad75e21940aa3, type: 3}
+  projectilePrefab: {fileID: 2893859243348692509, guid: 262d580d962c51746b05298c84e88c29, type: 3}

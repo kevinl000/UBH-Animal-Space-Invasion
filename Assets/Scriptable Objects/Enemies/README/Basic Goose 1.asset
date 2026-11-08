@@ -29,5 +29,5 @@ MonoBehaviour:
   orbitDegreesPerSecond: 15
   attackInterval: 1.5
   aoeSpreadDegrees: 30
-  prefab: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  prefab: {fileID: 1870769295156874547, guid: 81ef13162fa3c884aacf9c72d01ebc68, type: 3}
+  projectilePrefab: {fileID: 5666207574694251952, guid: 8abe029aef08d424b826c566029137d4, type: 3}

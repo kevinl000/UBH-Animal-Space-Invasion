@@ -19,6 +19,13 @@ public class ShootingTower : BaseTowerData
 
             proj.Launch(this, target, transform.position);
         }
+        else
+        {
+            // no projectile prefab: hit instantly
+            if (IgnoresShield) target.TakeDamageIgnoringShield(ProjectileDamage);
+            else target.TakeDamage(ProjectileDamage);
+            OnHitEnemy(target);
+        }
     }
 
     protected BaseEnemyData FindClosestEnemy()
@@ -32,7 +39,7 @@ public class ShootingTower : BaseTowerData
 
             float dist = Vector2.Distance(transform.position, enemy.Body.position);
 
-            if (dist <= data.fov && dist < closestDist)
+            if (InSight(enemy) && dist < closestDist)
             {
                 closestDist = dist;
                 bestTarget = enemy;

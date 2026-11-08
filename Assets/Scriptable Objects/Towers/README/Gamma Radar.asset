@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8f9c23a0ec52d449839f4131b73e0a, type: 3}
+  m_Name: Gamma Radar
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerData
+  maxHealth: 20
+  damage: 1
+  cost: 20
+  fuelIntake: -5
+  fireRate: 1
+  fov: 120
+  attackType: 1
+  range: 0
+  kind: 9
+  ignoresShield: 0
+  canHitStealth: 1
+  prefab: {fileID: 8789867982909401009, guid: be88f45b34b4c14439729dc81eab528a, type: 3}
+  projectilePrefab: {fileID: 0}

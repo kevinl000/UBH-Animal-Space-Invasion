@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8f9c23a0ec52d449839f4131b73e0a, type: 3}
+  m_Name: Radar
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerData
+  maxHealth: 10
+  damage: 0
+  cost: 5
+  fuelIntake: -1
+  fireRate: 0.5
+  fov: 90
+  attackType: 3
+  range: 0
+  kind: 4
+  ignoresShield: 0
+  canHitStealth: 1
+  prefab: {fileID: 8963216111411813864, guid: c7ecb95fd0af76944b374a766de7c4aa, type: 3}
+  projectilePrefab: {fileID: 0}
