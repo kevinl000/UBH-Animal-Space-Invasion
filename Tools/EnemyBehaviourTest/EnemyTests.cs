@@ -103,7 +103,7 @@ static class EnemyTests
         MonoBehaviour.ClearAll();
         BaseEnemyData.Active.Clear();
         UnityEngine.Random.Rng = new System.Random(7);
-        UnityEngine.Debug.Log.Clear();
+        UnityEngine.Debug.Logs.Clear();
         pool = new PoolManager();
         Register(pool);
         planet = new SimplePlanetDefense { radius = 100f, slots = 12, rotationDegreesPerSecond = 0f, slot0Angle = 90f, planetMaxHealth = 100f };
@@ -115,12 +115,7 @@ static class EnemyTests
         Register(spawner);
     }
 
-    static void Register(MonoBehaviour mb)
-    {
-        typeof(UnityEngine.Object).GetField("Live", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-            .GetValue(null).GetType().GetMethod("Add").Invoke(typeof(UnityEngine.Object).GetField("Live", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static).GetValue(null), new object[] { mb });
-        typeof(MonoBehaviour).GetMethod("Call", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static).Invoke(null, new object[] { mb, "Awake" });
-    }
+    static void Register(MonoBehaviour mb) { MonoBehaviour.Register(mb); }
 
     static FakeTower Tower(int slot)
     {
@@ -189,7 +184,7 @@ static class EnemyTests
         // Shiny: double HP and drops
         NewWorld();
         int money = -1, fuel = -1;
-        Action<BaseEnemyData, int, int> onKill = (e, m, f) => { money = m; fuel = f; };
+        Action<int, int> onKill = (m, f) => { money = m; fuel = f; };
         EnemyEvents.Killed += onKill;
         var sh = Spawn("Basic Skunk 3", 90f, true);
         float shinyHp = sh.MaxHealth;
@@ -331,7 +326,7 @@ static class EnemyTests
         }
         catch (Exception ex) { error = ex.GetType().Name + ": " + ex.Message; }
         EnemyEvents.Spawned -= onSpawn; EnemyEvents.BossSpawned -= onBoss; EnemyEvents.BossWarning -= onWarn; EnemyEvents.LevelTimeUp -= onTimeUp;
-        var errs = UnityEngine.Debug.Log.Where(l => l.StartsWith("ERROR")).ToList();
+        var errs = UnityEngine.Debug.Logs.Where(l => l.StartsWith("ERROR")).ToList();
         int instances = MonoBehaviour.LiveCount<BaseEnemyData>();
         Check("Full 120s level through the spawner and the AI (README roster + boss)", error == null && spawned > 10 && bosses == 1 && warnings == 1 && timeUp == 1 && !overBudget && errs.Count == 0,
             (error ?? "no exceptions") + ", " + spawned + " enemies spawned, boss " + bosses + ", boss warning " + warnings + ", time-up " + timeUp

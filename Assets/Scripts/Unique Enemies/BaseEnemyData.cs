@@ -56,6 +56,8 @@ public class BaseEnemyData : GameEntity
     protected float attackTimer;
     private float slowTimer;
     private float slowFactor = 1f;
+    private float dotTimer;
+    private float dotPerSecond;
     private bool dead;
     private bool reported;
 
@@ -86,6 +88,8 @@ public class BaseEnemyData : GameEntity
         reported = false;
         slowTimer = 0f;
         slowFactor = 1f;
+        dotTimer = 0f;
+        dotPerSecond = 0f;
         IsInvulnerable = false;
 
         IsShiny = context.IsShiny;
@@ -119,6 +123,13 @@ public class BaseEnemyData : GameEntity
             slowTimer -= dt;
             dt *= slowFactor;
             if (slowTimer <= 0f) slowFactor = 1f;
+        }
+        if (dotTimer > 0f)
+        {
+            float step = Mathf.Min(dotTimer, Time.fixedDeltaTime); // real time, not slowed
+            dotTimer -= step;
+            TakeDamageIgnoringShield(dotPerSecond * step);
+            if (!IsAlive) return;
         }
         Tick(dt);
         Place();
@@ -276,6 +287,14 @@ public class BaseEnemyData : GameEntity
     {
         slowTimer = Mathf.Max(slowTimer, seconds);
         slowFactor = Mathf.Clamp01(factor);
+    }
+
+    /// <summary>Pest Trap: damagePerSecond for seconds, ignoring the shield. A new hit refreshes it (doesn't stack).</summary>
+    public void ApplyDamageOverTime(float damagePerSecond, float seconds)
+    {
+        if (!IsAlive || damagePerSecond <= 0f || seconds <= 0f) return;
+        dotPerSecond = Mathf.Max(dotPerSecond, damagePerSecond);
+        dotTimer = Mathf.Max(dotTimer, seconds);
     }
 
     public void RevealStealth()

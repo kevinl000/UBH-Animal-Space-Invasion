@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e186fe4a113ef4dd3a8474a33194dac1, type: 3}
+  m_Name: UnionPrime
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelData
+  startingDifficulty: 15
+  postBossDifficulty: 60
+  maxDifficulty: 120
+  maxTime: 150
+  enemyDataList:
+  - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
+    enemyInstances: []
+    startingBudget: 0.5
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+    enemyInstances: []
+    startingBudget: 0.5
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 0a77cf965f0ad944086aa439bf67d9ea, type: 2}
+    enemyInstances: []
+    startingBudget: 0.5
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 9d64b6600c3255b47ac2285e5484a139, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 1
+  money: 15
+  fuel: 30
+  planetMaxHealth: 100
+  planetRotationSpeed: 6
+  planetGravity: 0
+  planetRadius: 0
+  isClockwise: 0

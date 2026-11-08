@@ -1,4 +1,5 @@
 using UnityEngine;
+using EnemyAI;
 
 public enum TowerAttackType
 {
@@ -17,8 +18,15 @@ public class TowerData : ScriptableObject
     public int cost;
     public int fuelIntake;
     public float fireRate;
+    [Tooltip("Field of view in degrees (README), centred on the tower's outward direction. 0 or 360+ = all around.")]
     public float fov;
     public TowerAttackType attackType = TowerAttackType.Single;
+
+    [Header("Not in the README")]
+    [Tooltip("Targeting range in world units. 0 = unlimited (only the FOV limits it).")]
+    public float range;
+    [Tooltip("What the enemy AI sees this tower as (it aims at gaps in tower coverage).")]
+    public TowerKind kind;
 
     [Header("Abilities")]
     public bool ignoresShield;

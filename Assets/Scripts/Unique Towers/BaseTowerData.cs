@@ -36,6 +36,8 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
     // We keep these properties so the tower can pass them to its projectiles, 
     // but they are no longer tied to the IEnemyHitter interface.
     public float Damage { get { return damage; } }
+    /// <summary>What this tower's projectile deals on contact. Towers whose damage comes from OnHitEnemy (Pest Trap DoT) return 0.</summary>
+    public virtual float ProjectileDamage { get { return damage; } }
     public bool IgnoresShield { get { return ignoresShield; } }
     public bool CanHitStealth { get { return canHitStealth; } }
 
@@ -125,6 +127,19 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
     /// <summary>Hook for subclasses to define how they shoot.</summary>
     protected virtual void Fire() { }
+
+    /// <summary>
+    /// README FOV is an angle: the enemy must be within fov/2 degrees of the tower's outward direction (transform.up,
+    /// which LevelPlanetDefense points away from the planet). data.range limits the distance (0 = unlimited).
+    /// </summary>
+    public bool InSight(BaseEnemyData enemy)
+    {
+        if (enemy == null || enemy.Body == null) return false;
+        Vector2 toEnemy = enemy.Body.position - (Vector2)transform.position;
+        if (data != null && data.range > 0f && toEnemy.magnitude > data.range) return false;
+        if (fov <= 0f || fov >= 360f) return true;
+        return Vector2.Angle(transform.up, toEnemy) <= fov * 0.5f;
+    }
 
     // ---------------------------------------------------------------- interfaces
     /// <summary>

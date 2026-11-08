@@ -32,7 +32,7 @@ public class TowerProjectile : GameEntity, IEnemyHitter
         target = enemyTarget;
 
         // Copy stats from the tower
-        Damage = tower.Damage;
+        Damage = tower.ProjectileDamage;
         IgnoresShield = tower.IgnoresShield;
         CanHitStealth = tower.CanHitStealth;
 

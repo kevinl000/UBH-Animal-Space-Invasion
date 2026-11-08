@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8f9c23a0ec52d449839f4131b73e0a, type: 3}
+  m_Name: Laser SMG
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerData
+  maxHealth: 30
+  damage: 2
+  cost: 10
+  fuelIntake: -3
+  fireRate: 0.4
+  fov: 120
+  attackType: 0
+  range: 0
+  kind: 7
+  ignoresShield: 0
+  canHitStealth: 0
+  prefab: {fileID: 7130216713959157571, guid: ff34099282a9d0a4eb2151893dc3fae4, type: 3}
+  projectilePrefab: {fileID: 1476665959179124715, guid: 9d4ceae5395c25e47aa02685c22691e7, type: 3}

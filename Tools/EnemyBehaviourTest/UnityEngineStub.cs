@@ -30,7 +30,7 @@ namespace UnityEngine
             var mb = clone as MonoBehaviour;
             if (mb != null)
             {
-                mb.transform = new Transform { parent = parent };
+                mb.transform = new Transform { parent = parent, owner = mb };
                 mb.components = new Dictionary<Type, Component>(); // the clone gets its own Rigidbody2D / Collider2D
                 mb.inactive = false;
                 CopyListsDeep(clone); // fresh copies of runtime lists the prefab may hold
@@ -52,6 +52,21 @@ namespace UnityEngine
                 }
         }
 
+        public static T[] FindObjectsByType<T>(FindObjectsSortMode mode) where T : class
+        {
+            var list = new List<T>();
+            foreach (var o in Live) if (o is T && !o.destroyed) list.Add(o as T);
+            return list.ToArray();
+        }
+
+        public static T FindAnyObjectByType<T>() where T : class
+        {
+            foreach (var o in Live) if (o is T && !o.destroyed && !(o is MonoBehaviour && ((MonoBehaviour)o).inactive)) return o as T;
+            return null;
+        }
+
+        public static void DestroyImmediate(Object o) { Destroy(o); }
+
         public static void Destroy(Object o)
         {
             var mb = o as GameObject;
@@ -59,6 +74,7 @@ namespace UnityEngine
             if (ReferenceEquals(target, null) || target.destroyed) return;
             target.destroyed = true;
             Live.Remove(target);
+            if (target is MonoBehaviour && !((MonoBehaviour)target).inactive) MonoBehaviour.Call((MonoBehaviour)target, "OnDisable");
             if (target is MonoBehaviour) MonoBehaviour.Call((MonoBehaviour)target, "OnDestroy");
         }
     }
@@ -66,7 +82,16 @@ namespace UnityEngine
     public class GameObject : Object
     {
         internal Object owner;
+        public GameObject() { }
+        public GameObject(string n) { name = n; }
+        // compile-only members used by editor scripts (never called in the tests)
+        public Transform transform { get { var mb = owner as MonoBehaviour; return mb != null ? mb.transform : null; } }
+        public Component AddComponent(Type t) { return null; }
+        public T GetComponent<T>() { return default(T); }
+        public T[] GetComponentsInChildren<T>(bool includeInactive) { return new T[0]; }
+        public static GameObject Find(string n) { return null; }
         public bool activeSelf { get { var mb = owner as MonoBehaviour; return mb == null || !mb.inactive; } }
+        public T GetComponentInParent<T>() where T : class { return owner as T; }
         public T AddComponent<T>() where T : Component, new() { return ((MonoBehaviour)owner).GetComponent<T>(); }
         public void SetActive(bool value)
         {
@@ -77,8 +102,15 @@ namespace UnityEngine
         }
     }
 
-    public class Component { public MonoBehaviour owner; }
+    public class Component : Object
+    {
+        public MonoBehaviour owner;
+        public Transform transform { get { return owner != null ? owner.transform : null; } }
+        public T GetComponent<T>() where T : Component, new() { return owner != null ? owner.GetComponent<T>() : null; }
+        public T GetComponentInParent<T>() where T : class { return owner as T; }
+    }
 
+    public enum FindObjectsSortMode { None, InstanceID }
     public enum RigidbodyType2D { Dynamic, Kinematic, Static }
     public enum RigidbodyInterpolation2D { None, Interpolate, Extrapolate }
 
@@ -100,6 +132,9 @@ namespace UnityEngine
 
     public class Collider2D : Component
     {
+        public bool isTrigger;
+        /// <summary>Stub physics: every collider is a circle of this radius.</summary>
+        public float stubRadius = 0.25f;
         /// <summary>Test helper: something attached to this collider's object (e.g. a fake bullet implementing IEnemyHitter).</summary>
         public object attached;
         public T GetComponentInParent<T>() where T : class
@@ -107,6 +142,12 @@ namespace UnityEngine
             if (attached is T) return (T)attached;
             return owner as T;
         }
+    }
+
+    public class CircleCollider2D : Collider2D
+    {
+        public Vector2 offset;
+        public float radius { get { return stubRadius; } set { stubRadius = value; } }
     }
 
     public class Collision2D { public Collider2D collider; }
@@ -117,24 +158,76 @@ namespace UnityEngine
         public static T CreateInstance<T>() where T : ScriptableObject, new() { return new T(); }
     }
 
-    public class MonoBehaviour : Object
+    public class MonoBehaviour : Component
     {
-        public Transform transform = new Transform();
+        public new Transform transform = new Transform();
+        public MonoBehaviour() { transform.owner = this; }
         public GameObject gameObject { get { return new GameObject { owner = this }; } }
         internal bool inactive;
         internal Dictionary<Type, Component> components = new Dictionary<Type, Component>();
 
         /// <summary>Every behaviour in the stub has a Rigidbody2D and a Collider2D on its object.</summary>
-        public T GetComponent<T>() where T : Component, new()
+        public new T GetComponent<T>() where T : Component, new()
         {
             Component c;
-            if (!components.TryGetValue(typeof(T), out c))
+            Type key = typeof(Collider2D).IsAssignableFrom(typeof(T)) ? typeof(Collider2D) : typeof(T);
+            if (!components.TryGetValue(key, out c))
             {
                 if (typeof(T) != typeof(Rigidbody2D) && typeof(T) != typeof(Collider2D)) return null;
                 c = new T { owner = this };
-                components[typeof(T)] = c;
+                components[key] = c;
             }
-            return (T)c;
+            return c as T;
+        }
+
+        /// <summary>Test helper: give this object a circle collider (replaces the default one).</summary>
+        public CircleCollider2D AddCircle(float radius, bool trigger)
+        {
+            var c = new CircleCollider2D { owner = this, radius = radius, isTrigger = trigger };
+            components[typeof(Collider2D)] = c;
+            return c;
+        }
+
+        public bool enabled = true;
+
+        static readonly HashSet<long> touching = new HashSet<long>();
+        public static bool StubPhysics = false;
+
+        /// <summary>Stub 2D physics: OnTriggerEnter2D when two active bodies' circles start to overlap.</summary>
+        static void Physics()
+        {
+            var bodies = new List<MonoBehaviour>();
+            foreach (var o in Live)
+            {
+                var mb = o as MonoBehaviour;
+                if (mb == null || mb.destroyed || mb.inactive) continue;
+                Component rb, col;
+                if (mb.components.TryGetValue(typeof(Rigidbody2D), out rb) && mb.components.TryGetValue(typeof(Collider2D), out col)) bodies.Add(mb);
+            }
+            var now = new HashSet<long>();
+            for (int i = 0; i < bodies.Count; i++)
+                for (int j = i + 1; j < bodies.Count; j++)
+                {
+                    var a = bodies[i]; var b = bodies[j];
+                    var pa = ((Rigidbody2D)a.components[typeof(Rigidbody2D)]).position; var pb = ((Rigidbody2D)b.components[typeof(Rigidbody2D)]).position;
+                    var ca = (Collider2D)a.components[typeof(Collider2D)]; var cb = (Collider2D)b.components[typeof(Collider2D)];
+                    if (Vector2.Distance(pa, pb) > ca.stubRadius + cb.stubRadius) continue;
+                    long key = ((long)a.GetHashCode() << 32) ^ (uint)b.GetHashCode();
+                    now.Add(key);
+                    if (touching.Contains(key)) continue;
+                    if (!a.inactive && !b.inactive) Call(a, "OnTriggerEnter2D", cb);
+                    if (!a.inactive && !b.inactive) Call(b, "OnTriggerEnter2D", ca);
+                }
+            touching.Clear(); foreach (var k in now) touching.Add(k);
+        }
+
+        internal static void Call(MonoBehaviour mb, string method, object arg)
+        {
+            for (var t = mb.GetType(); t != null; t = t.BaseType)
+            {
+                var m = t.GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly);
+                if (m != null && m.GetParameters().Length == 1) { m.Invoke(mb, new[] { arg }); return; }
+            }
         }
 
         internal static void Call(MonoBehaviour mb, string method)
@@ -144,6 +237,14 @@ namespace UnityEngine
                 var m = t.GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly, null, Type.EmptyTypes, null);
                 if (m != null) { m.Invoke(mb, null); return; }
             }
+        }
+
+        /// <summary>Test helper: register an object made with new as live, run Awake and OnEnable.</summary>
+        public static void Register(MonoBehaviour mb)
+        {
+            Live.Add(mb);
+            Call(mb, "Awake");
+            Call(mb, "OnEnable");
         }
 
         /// <summary>Test helper: register a hand-made component as live and run Awake.</summary>
@@ -162,6 +263,7 @@ namespace UnityEngine
             Time.fixedDeltaTime = dt;
             foreach (var o in Live.ToArray())
                 if (!o.destroyed && o is MonoBehaviour && !((MonoBehaviour)o).inactive) Call((MonoBehaviour)o, "FixedUpdate");
+            if (StubPhysics) Physics();
             foreach (var o in Live.ToArray())
                 if (!o.destroyed && o is MonoBehaviour && !((MonoBehaviour)o).inactive) Call((MonoBehaviour)o, "Update");
         }
@@ -171,15 +273,42 @@ namespace UnityEngine
         public static void ClearAll() { foreach (var o in Live.ToArray()) Destroy(o); Live.Clear(); }
     }
 
-    /// <summary>Planet root at the origin, unrotated, scale 1, so local = world.</summary>
+    /// <summary>
+    /// Roots are unrotated with scale 1 and children don't inherit parent offsets in the stub, so world = local + root offset.
+    /// An object with a Rigidbody2D reports the body's pose (that's what Unity shows after the physics step).
+    /// </summary>
     public class Transform
     {
         public Transform parent;
         public Vector3 localPosition;
         public Quaternion localRotation;
-        public Vector3 eulerAngles { get { return new Vector3(0, 0, 0); } }
-        public Vector3 TransformPoint(Vector3 p) { return p; }
+        internal MonoBehaviour owner;
+        public Vector3 lossyScale = new Vector3(1, 1, 1);
+        public Vector3 localScale = new Vector3(1, 1, 1);
+        private Vector3 freePosition;
+        private float freeRotation;
+
+        Rigidbody2D Body { get { Component c; return owner != null && owner.components.TryGetValue(typeof(Rigidbody2D), out c) ? (Rigidbody2D)c : null; } }
+
+        public Vector3 position
+        {
+            get { var b = Body; return b != null ? (Vector3)b.position : freePosition; }
+            set { var b = Body; if (b != null) b.position = value; freePosition = value; }
+        }
+        public Vector3 eulerAngles
+        {
+            get { var b = Body; return new Vector3(0, 0, b != null ? b.rotation : freeRotation); }
+            set { var b = Body; if (b != null) b.rotation = value.z; freeRotation = value.z; }
+        }
+        public Vector3 up
+        {
+            get { float a = eulerAngles.z * Mathf.Deg2Rad; return new Vector3(-Mathf.Sin(a), Mathf.Cos(a), 0); }
+        }
+        public Vector3 TransformPoint(Vector3 p) { var o = position; return new Vector3(p.x + o.x, p.y + o.y, p.z); }
+        public Vector3 InverseTransformPoint(Vector3 p) { var o = position; return new Vector3(p.x - o.x, p.y - o.y, p.z); }
         public void SetParent(Transform p, bool worldPositionStays) { parent = p; }
+        public T GetComponent<T>() where T : Component, new() { return owner != null ? owner.GetComponent<T>() : null; }
+        public T[] GetComponents<T>() where T : Component, new() { var c = GetComponent<T>(); return c != null ? new[] { c } : new T[0]; }
     }
 
     public struct Vector2
@@ -190,6 +319,17 @@ namespace UnityEngine
         public static implicit operator Vector2(Vector3 v) { return new Vector2(v.x, v.y); }
         public static implicit operator Vector3(Vector2 v) { return new Vector3(v.x, v.y, 0); }
         public float magnitude { get { return (float)Math.Sqrt(x * x + y * y); } }
+        public Vector2 normalized { get { float m = magnitude; return m > 1e-6f ? new Vector2(x / m, y / m) : zero; } }
+        public static Vector2 operator +(Vector2 a, Vector2 b) { return new Vector2(a.x + b.x, a.y + b.y); }
+        public static Vector2 operator -(Vector2 a, Vector2 b) { return new Vector2(a.x - b.x, a.y - b.y); }
+        public static Vector2 operator *(Vector2 a, float f) { return new Vector2(a.x * f, a.y * f); }
+        public static float Distance(Vector2 a, Vector2 b) { return (a - b).magnitude; }
+        public static float Angle(Vector2 a, Vector2 b)
+        {
+            float d = a.magnitude * b.magnitude; if (d < 1e-6f) return 0f;
+            float c = (a.x * b.x + a.y * b.y) / d; c = c < -1 ? -1 : c > 1 ? 1 : c;
+            return (float)(Math.Acos(c) * 180.0 / Math.PI);
+        }
     }
 
     public struct Vector3
@@ -197,6 +337,8 @@ namespace UnityEngine
         public float x, y, z;
         public Vector3(float x, float y, float z) { this.x = x; this.y = y; this.z = z; }
         public static Vector3 operator -(Vector3 a, Vector3 b) { return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z); }
+        public static Vector3 operator *(Vector3 a, float f) { return new Vector3(a.x * f, a.y * f, a.z * f); }
+        public static Vector3 zero { get { return new Vector3(0, 0, 0); } }
         public float sqrMagnitude { get { return x * x + y * y + z * z; } }
         public float magnitude { get { return (float)Math.Sqrt(sqrMagnitude); } }
         public static Vector3 MoveTowards(Vector3 a, Vector3 b, float step)
@@ -221,6 +363,12 @@ namespace UnityEngine
         public static float Lerp(float a, float b, float t) { return a + (b - a) * Clamp01(t); }
         public static int RoundToInt(float f) { return (int)Math.Round(f); }
         public static int FloorToInt(float f) { return (int)Math.Floor(f); }
+        public const float Rad2Deg = (float)(180.0 / Math.PI);
+        public static float Atan2(float y, float x) { return (float)Math.Atan2(y, x); }
+        public static float Abs(float v) { return Math.Abs(v); }
+        public static float Sqrt(float v) { return (float)Math.Sqrt(v); }
+        public static int Clamp(int v, int lo, int hi) { return v < lo ? lo : v > hi ? hi : v; }
+        public static int Abs(int v) { return Math.Abs(v); }
         public static float DeltaAngle(float current, float target)
         {
             float d = (target - current) % 360f; if (d < 0) d += 360f;
@@ -228,7 +376,13 @@ namespace UnityEngine
         }
     }
 
-    public static class Time { public static float deltaTime; public static float fixedDeltaTime = 0.02f; }
+    public class Camera : MonoBehaviour
+    {
+        public static Camera main;
+        public Vector3 ScreenToWorldPoint(Vector3 p) { return new Vector3(p.x, p.y, 0); }
+    }
+
+    public static class Time { public static float deltaTime; public static float fixedDeltaTime = 0.02f; public static float timeScale = 1f; }
 
     public static class Random
     {
@@ -239,11 +393,13 @@ namespace UnityEngine
 
     public static class Debug
     {
-        public static readonly List<string> Log = new List<string>();
-        public static void LogWarning(string s) { Log.Add("WARN " + s); }
-        public static void LogError(string s) { Log.Add("ERROR " + s); }
+        public static readonly List<string> Logs = new List<string>();
+        public static void Log(string s) { Logs.Add("LOG " + s); }
+        public static void LogWarning(string s) { Logs.Add("WARN " + s); }
+        public static void LogError(string s) { Logs.Add("ERROR " + s); }
     }
 
+    public class SerializeField : Attribute { }
     public class HeaderAttribute : Attribute { public HeaderAttribute(string s) { } }
     public class TooltipAttribute : Attribute { public TooltipAttribute(string s) { } }
     public class CreateAssetMenuAttribute : Attribute { public string fileName, menuName; }
