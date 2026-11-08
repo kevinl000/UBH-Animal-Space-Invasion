@@ -1,0 +1,70 @@
+{
+  "base": {
+    "source": "base-source-v2.png",
+    "runtime": "Assets/Art/Towers/Bomb/BombBase.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 1500,
+    "ground_mount_top_left_pixels": [
+      582,
+      1204
+    ],
+    "socket_top_left_pixels": [
+      1091.5,
+      478.0
+    ],
+    "sha256": "8ac26001ecf2bf90296544b86bca1ea6ab8cdb4e5849c80c0b4b89be8bcd2f6b",
+    "guid": "791da94bc7e04c8aa782ac4bcfd7726a"
+  },
+  "cannon": {
+    "source": "cannon-source-v1.png",
+    "runtime": "Assets/Art/Towers/Bomb/BombCannon.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 2600,
+    "hinge_top_left_pixels": [
+      624.5,
+      980.5
+    ],
+    "muzzle_top_left_pixels": [
+      624.5,
+      126
+    ],
+    "sha256": "f89f88db35d89659fd6349d1be0787df465175706fd9a9dbe2043fb7a4f829f2",
+    "guid": "47c97f48d0e14493ac65c31fd2e6d49b"
+  },
+  "cannon_local_position": [
+    0.3396666666666667,
+    0.484
+  ],
+  "muzzle_local_position": [
+    0.0,
+    0.32865384615384613
+  ],
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "verification": {
+    "angles": 241,
+    "angle_step_degrees": 0.5,
+    "cannon_sample_stride_source_pixels": 4,
+    "alpha_threshold": 128,
+    "joint_exclusion_radius_world_units": 0.12,
+    "max_protected_overlap_samples": 0,
+    "min_joint_contact_samples": 8051,
+    "max_muzzle_ray_base_samples": 0,
+    "limitations": [
+      "Sampled image geometry, not a continuous collision proof.",
+      "Upper hinge/support overlap is intentionally allowed inside the joint exclusion.",
+      "Centerline ray does not establish projectile-width clearance.",
+      "Planet/socket seating and neighboring-tower clearance remain unverified.",
+      "No Unity validation or tests run."
+    ]
+  }
+}
