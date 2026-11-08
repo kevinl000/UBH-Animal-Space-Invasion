@@ -691,7 +691,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ecce2bdd7e4e23acfe81ad388fbfac, type: 3}
   m_Name:
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::UnionPrimeVisualTest
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::UnionPrimeVisualTest
   silhouette: {fileID: 0}
   rearGround: {fileID: 0}
   terrain: {fileID: 0}

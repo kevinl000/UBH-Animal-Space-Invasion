@@ -402,7 +402,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
   tower: {fileID: 0}
   button: {fileID: 4117020776068794158}
   portrait: {fileID: 8549300860975808647}
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!1 &7478098413367114746
 GameObject:

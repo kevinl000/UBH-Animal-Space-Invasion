@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e186fe4a113ef4dd3a8474a33194dac1, type: 3}
   m_Name: Level1
-  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelData
   maxDifficulty: 0
   maxTime: 0
   enemyDataList:
