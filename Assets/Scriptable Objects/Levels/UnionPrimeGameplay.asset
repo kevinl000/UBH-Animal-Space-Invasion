@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc56ef29c353f8d43861b1c4f53434da, type: 2}
   waves:
   - duration: 20
-    restDuration: 15
+    restDuration: 10
     costBudget: 30
     roster:
     - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
@@ -35,7 +35,7 @@ MonoBehaviour:
       isLevelBoss: 0
     miniboss: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
   - duration: 20
-    restDuration: 15
+    restDuration: 10
     costBudget: 50
     roster:
     - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}
@@ -55,7 +55,7 @@ MonoBehaviour:
       isLevelBoss: 0
     miniboss: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
   - duration: 20
-    restDuration: 15
+    restDuration: 10
     costBudget: 70
     roster:
     - enemy: {fileID: 11400000, guid: d53dea081e1cce2428e4abe50531a50e, type: 2}

@@ -28,7 +28,7 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
 ## Where to change gameplay
 
 - `Assets/Scriptable Objects/Levels/UnionPrimeGameplay.asset`: the three waves,
-  cost shares/budgets, 20-second spawn windows, 15-second breaks, spawn interval,
+  cost shares/budgets, 20-second spawn windows, 10-second breaks, spawn interval,
   minibosses, four allowed tower types, starter slots, random final-boss pool,
   three-second entrance and next destination.
 - `Assets/Scriptable Objects/Levels/UnionPrime.asset`: 100 starting HP, 10 money,
@@ -148,7 +148,7 @@ contacts, Animator playback, viewport readability or live UI interaction.
    Check initial placement and a sold/rebuilt pooled tower: neither should flash
    at the planet centre before seating. Repeat with a moon socket.
 2. Start. Check 20 seconds of spawning, Shielded Goose, complete clearing, then
-   exactly 15 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm no deer,
+   exactly 10 safe seconds. Repeat for wave 2/Shielded Skunk. Confirm no deer,
    stealth or basic variants 2/3; building works and selling is blocked in combat.
 3. Check weapon arcs and moving muzzles, projectile contacts, shield absorption
    and reset, Pest Trap's three-second DOT, nearby Bomb splash and effect reuse.

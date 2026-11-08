@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameplayWave
 {
     public float duration = 20f;
-    public float restDuration = 15f;
+    public float restDuration = 10f;
     public float costBudget;
     public LevelEnemyEntry[] roster;
     public EnemyData miniboss;

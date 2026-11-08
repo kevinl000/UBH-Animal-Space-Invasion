@@ -345,7 +345,7 @@ def prepare_config():
     fields += '  waves:\n'
     waves = [(30, [.5, .5], 'Shielded Goose'), (50, [.4, .4, .2], 'Shielded Skunk'), (70, [.3, .3, .2, .2], None)]
     for budget, shares, miniboss in waves:
-        fields += f'  - duration: 20\n    restDuration: 15\n    costBudget: {budget}\n    roster:\n'
+        fields += f'  - duration: 20\n    restDuration: 10\n    costBudget: {budget}\n    roster:\n'
         for name, share in zip(['Basic Goose 1', 'Basic Skunk 1', 'Shielded Goose', 'Shielded Skunk'], shares):
             fields += f'''    - enemy: {ref(DATA_FOLDER + 'Enemies/README/' + name + '.asset')}
       enemyInstances: []

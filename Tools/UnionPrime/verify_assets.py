@@ -88,7 +88,7 @@ def check():
     for n, wave in enumerate(waves):
         assert float(wave.splitlines()[0]) == 20
         assert f'costBudget: {[30, 50, 70][n]}' in wave
-        assert 'restDuration: 15' in wave
+        assert 'restDuration: 10' in wave
         roster = {reverse[g] for g in re.findall(r'    - enemy: \{fileID: \d+, guid: (\w+)', wave)}
         assert roster == expected_rosters[n], (n, roster)
     assert len(waves) == 3
