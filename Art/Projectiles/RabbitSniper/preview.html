@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rabbit sniper round — art review</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px; background: #111722; color: #eee8d8; font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 760px; margin: auto; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p, small { color: #bdc7d2; }
+  canvas { image-rendering: pixelated; }
+  #scene { display: block; width: 100%; border: 1px solid #526071; border-radius: 10px; background: #263142; }
+  .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 16px 0; }
+  input[type=range] { width: min(310px, 100%); accent-color: #9aa65c; }
+  button { padding: 8px 14px; border: 1px solid #768268; border-radius: 6px; background: #354333; color: #fff6d9; font: inherit; cursor: pointer; }
+  output { min-width: 54px; }
+  #frames { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 22px 0; }
+  figure { margin: 0; padding: 8px; background: #263142; border: 1px solid #465164; border-radius: 6px; text-align: center; }
+  figure canvas { display: block; width: 100%; }
+  figcaption { font-size: 13px; color: #d1d7d1; }
+</style>
+<main>
+  <h1>Scout sniper round</h1>
+  <p>A physical ivory/navy round with an olive band, a short warm muzzle flash and a small contact spark.</p>
+  <canvas id="scene" width="640" height="520" aria-label="Sniper tower and projectile art at the selected angle"></canvas>
+  <div class="controls"><label for="angle">Aim</label><input id="angle" type="range" min="-60" max="60" step="0.5" value="0"><output id="degrees">0°</output><button id="fire" disabled>Preview shot</button></div>
+  <small>The tower and effects use their documented pivots and relative sizes. Shot travel and timing here are an art demonstration; gameplay targeting, speed and pooling remain unconnected. Reload after replacing artwork if your browser caches it.</small>
+  <div id="frames"></div>
+  <small>Individual frames below are enlarged for inspection. Empty cells and the final blank animation keys are omitted.</small>
+</main>
+<script>
+const frames = [
+  {name:'Round', col:0, row:0, anchor:[112,229.5], bounds:[112,202,344,257]},
+  {name:'Muzzle 1', col:0, row:1, anchor:[154,213.5], bounds:[154,160,310,267]},
+  {name:'Muzzle 2', col:1, row:1, anchor:[163,209], bounds:[163,183,256,235]},
+  {name:'Impact 1', col:0, row:2, anchor:[220,193.5], bounds:[186,162,256,225]},
+  {name:'Impact 2', col:1, row:2, anchor:[208.5,193.5], bounds:[150,142,266,246]},
+  {name:'Impact 3', col:2, row:2, anchor:[201,194.5], bounds:[171,162,231,227]}
+];
+const density = 310, ppu = 2048, cell = 418;
+const canvas = document.querySelector('#scene'), ctx = canvas.getContext('2d');
+const slider = document.querySelector('#angle'), button = document.querySelector('#fire');
+let sheet, base, weapon, start = null;
+function loadImage(src) {
+  return new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = src; });
+}
+function sprite(index) {
+  const f = frames[index], scale = density / ppu;
+  ctx.drawImage(sheet, f.col*cell, f.row*cell, cell, cell, -f.anchor[0]*scale, -f.anchor[1]*scale, cell*scale, cell*scale);
+}
+function emission(index, distance) {
+  ctx.save(); ctx.translate(0, -distance*density); ctx.rotate(-Math.PI/2); sprite(index); ctx.restore();
+}
+function render(time = null) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = false;
+  ctx.save(); ctx.translate(230, 480);
+  ctx.drawImage(base, -582/1500*density, -1204/1500*density, 1254/1500*density, 1254/1500*density);
+  ctx.translate(0.3393333333333333*density, -0.48*density);
+  ctx.rotate(-Number(slider.value)*Math.PI/180);
+  ctx.drawImage(weapon, -626.5/1800*density, -1070.5/1800*density, 1254/1800*density, 1254/1800*density);
+  ctx.translate(0, -0.5625*density);
+  if (time !== null) {
+    if (time < 2/24) emission(time < 1/24 ? 1 : 2, 0);
+    if (time < 0.28) emission(0, (time/0.28)*(0.38-232/ppu));
+    const impactTime = time - 0.28;
+    if (impactTime >= 0 && impactTime < 3/18) emission(3+Math.floor(impactTime*18), 0.38);
+  }
+  ctx.restore();
+}
+function animate(timestamp) {
+  if (start === null) start = timestamp;
+  const seconds = (timestamp-start)/1000;
+  render(seconds);
+  if (seconds < 0.28+3/18) requestAnimationFrame(animate);
+  else { render(); start = null; button.disabled = false; slider.disabled = false; }
+}
+slider.addEventListener('input', () => { document.querySelector('#degrees').value = Number(slider.value).toFixed(1)+'°'; render(); });
+button.addEventListener('click', () => { button.disabled = true; slider.disabled = true; requestAnimationFrame(animate); });
+Promise.all([
+  loadImage('rabbit-sniper-sheet-source-v1.png'),
+  loadImage('../../Towers/Sniper/base-source-v2.png'),
+  loadImage('../../Towers/Sniper/weapon-source-v1.png')
+]).then(images => {
+  [sheet, base, weapon] = images;
+  for (const f of frames) {
+    const figure = document.createElement('figure'), sample = document.createElement('canvas');
+    sample.width = 320; sample.height = 180;
+    const c = sample.getContext('2d'), b = f.bounds;
+    c.imageSmoothingEnabled = false;
+    const width = b[2]-b[0], height = b[3]-b[1];
+    c.drawImage(sheet, f.col*cell+b[0], f.row*cell+b[1], width, height, (320-width)/2, (180-height)/2, width, height);
+    const label = document.createElement('figcaption'); label.textContent = f.name;
+    figure.append(sample, label); document.querySelector('#frames').append(figure);
+  }
+  render(); button.disabled = false;
+}).catch(() => { document.querySelector('p').textContent = 'Could not load the local source images. Keep this preview alongside its source sheet and the Sniper tower art folder.'; });
+</script>
+</html>

@@ -1,0 +1,270 @@
+{
+  "source": "rabbit-sniper-sheet-source-v1.png",
+  "source_sha256": "8cdf7e056b47bab255382aa8225f8436504d0b36c0994fdf663e9bd1d9fe1bdc",
+  "generation_mode": "built-in image_gen; reference-guided generation; real alpha",
+  "sheet": "Assets/Art/Projectiles/RabbitSniper/RabbitSniperSheet.png",
+  "sheet_guid": "c307ac5a134e44649410887157c18771",
+  "sheet_size": [
+    1254,
+    1254
+  ],
+  "pixels_per_unit": 2048,
+  "default_xy_scale": 1,
+  "projectile_forward": "+X",
+  "muzzle_forward": "+X",
+  "muzzle_attachment_local_z_degrees_on_sniper_marker": 90,
+  "frames": [
+    {
+      "name": "RabbitSniperFlight",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        836,
+        418,
+        418
+      ],
+      "pivot": [
+        0.2679425837320574,
+        0.4509569377990431
+      ],
+      "anchor_top_left_pixels": [
+        112,
+        229.5
+      ],
+      "anchor": "rear emission",
+      "visible_bounds_alpha16": [
+        112,
+        202,
+        344,
+        257
+      ],
+      "strong_bounds_alpha128": [
+        113,
+        203,
+        344,
+        257
+      ]
+    },
+    {
+      "name": "RabbitSniperMuzzle01",
+      "file_id": 21300002,
+      "rect": [
+        0,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.3684210526315789,
+        0.4892344497607656
+      ],
+      "anchor_top_left_pixels": [
+        154,
+        213.5
+      ],
+      "anchor": "rear emission",
+      "visible_bounds_alpha16": [
+        154,
+        160,
+        310,
+        267
+      ],
+      "strong_bounds_alpha128": [
+        155,
+        161,
+        309,
+        266
+      ]
+    },
+    {
+      "name": "RabbitSniperMuzzle02",
+      "file_id": 21300004,
+      "rect": [
+        418,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.38995215311004783,
+        0.5
+      ],
+      "anchor_top_left_pixels": [
+        163,
+        209
+      ],
+      "anchor": "rear emission",
+      "visible_bounds_alpha16": [
+        163,
+        183,
+        256,
+        235
+      ],
+      "strong_bounds_alpha128": [
+        164,
+        184,
+        255,
+        234
+      ]
+    },
+    {
+      "name": "RabbitSniperImpact01",
+      "file_id": 21300006,
+      "rect": [
+        0,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5263157894736842,
+        0.5370813397129186
+      ],
+      "anchor_top_left_pixels": [
+        220,
+        193.5
+      ],
+      "anchor": "contact center",
+      "visible_bounds_alpha16": [
+        186,
+        162,
+        256,
+        225
+      ],
+      "strong_bounds_alpha128": [
+        186,
+        163,
+        255,
+        224
+      ]
+    },
+    {
+      "name": "RabbitSniperImpact02",
+      "file_id": 21300008,
+      "rect": [
+        418,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4988038277511962,
+        0.5370813397129186
+      ],
+      "anchor_top_left_pixels": [
+        208.5,
+        193.5
+      ],
+      "anchor": "contact center",
+      "visible_bounds_alpha16": [
+        150,
+        142,
+        266,
+        246
+      ],
+      "strong_bounds_alpha128": [
+        151,
+        143,
+        266,
+        245
+      ]
+    },
+    {
+      "name": "RabbitSniperImpact03",
+      "file_id": 21300010,
+      "rect": [
+        836,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.48086124401913877,
+        0.534688995215311
+      ],
+      "anchor_top_left_pixels": [
+        201,
+        194.5
+      ],
+      "anchor": "contact center",
+      "visible_bounds_alpha16": [
+        171,
+        162,
+        231,
+        227
+      ],
+      "strong_bounds_alpha128": [
+        172,
+        163,
+        230,
+        226
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "name": "RabbitSniperMuzzle",
+      "fps": 24,
+      "loop": false,
+      "duration": 0.08333333333333333,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300002
+        },
+        {
+          "time": 0.041666666666666664,
+          "file_id": 21300004
+        },
+        {
+          "time": 0.08333333333333333,
+          "file_id": 0
+        }
+      ],
+      "clip_guid": "ad6856bbd62647a08fa7d71f5e67aef7",
+      "controller_guid": "9fb25aa11cba4c71958f487ade8d02f6"
+    },
+    {
+      "name": "RabbitSniperImpact",
+      "fps": 18,
+      "loop": false,
+      "duration": 0.16666666666666666,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300006
+        },
+        {
+          "time": 0.05555555555555555,
+          "file_id": 21300008
+        },
+        {
+          "time": 0.1111111111111111,
+          "file_id": 21300010
+        },
+        {
+          "time": 0.16666666666666666,
+          "file_id": 0
+        }
+      ],
+      "clip_guid": "858bc81ea1e64b0fb7734d99e79db113",
+      "controller_guid": "e0432f8fb40d4622881ec55f9b7dda89"
+    }
+  ],
+  "empty_cells_top_left_row_col": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "bounds_alpha_threshold": 16,
+  "gameplay_implemented": false
+}
