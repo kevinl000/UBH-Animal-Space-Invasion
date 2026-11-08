@@ -5,6 +5,9 @@ using UnityEngine.UI;
 // Scene-local presentation data; gameplay level definitions belong to the gameplay systems.
 public class LevelSelectDetails : MonoBehaviour
 {
+    // The hackathon submission ends at Davis Nova (level 2).
+    private const int LastPlayableLevel = 2;
+
     [Serializable]
     public class Destination
     {
@@ -25,6 +28,7 @@ public class LevelSelectDetails : MonoBehaviour
     public int SelectedIndex { get; private set; }
 
     public string SelectedSceneName => destinations[SelectedIndex].planet != null
+        && destinations[SelectedIndex].planet.level <= LastPlayableLevel
         ? destinations[SelectedIndex].planet.sceneName : null;
 
     public void ShowDestination(int index)
@@ -35,6 +39,7 @@ public class LevelSelectDetails : MonoBehaviour
         description.text = destination.description;
         bossName.text = string.IsNullOrWhiteSpace(destination.bossName) ? "Unknown" : destination.bossName;
         bossPreview.sprite = destination.bossSprite != null ? destination.bossSprite : unknownBoss;
-        playButton.interactable = destination.planet != null && !string.IsNullOrEmpty(destination.planet.sceneName);
+        playButton.interactable = !string.IsNullOrEmpty(SelectedSceneName);
+        playButton.GetComponentInChildren<Text>().text = playButton.interactable ? "PLAY" : "Coming soon";
     }
 }
