@@ -22,6 +22,7 @@ public class EnemySpawner : MonoBehaviour
     private GameplayWave currentWave;
     private float waveStart;
     private float nextWaveSpawn;
+    private float reinforcementCredit;
 
     [Tooltip("The level's PoolManager. Empty = PoolManager.Instance.")]
     public PoolManager pool;
@@ -158,6 +159,51 @@ public class EnemySpawner : MonoBehaviour
         SpawnModifiers mods = bridge.RollModifiers(entry, snapshot);
         BaseEnemyData enemy = Spawn(entry.enemy, mods.SpawnAngleDeg, mods.IsShiny, mods.Orbits, mods.Ticket, spawnDistance);
         if (enemy != null) bridge.RecordWaveSpawn(entry);
+        else bridge.ReportGone(mods.Ticket);
+    }
+
+    public void BeginBossReinforcements(float completedSpawnTime)
+    {
+        waveStart = completedSpawnTime;
+        nextWaveSpawn = 0f;
+        reinforcementCredit = 0f;
+        // Reset only the spending window; retain the roster, director and its learning.
+        bridge.BeginWave(currentWave, GameplayLoopController.Instance.config.bossReinforcementBudgetFraction);
+        Running = true;
+    }
+
+    public void TickBossReinforcements(float elapsed, float dt, float bossHealthFraction)
+    {
+        if (!Running || currentWave == null || !GameplayLoopController.CombatAllowed) return;
+        LevelGameplayConfig config = GameplayLoopController.Instance.config;
+        Elapsed = waveStart + elapsed;
+        float pressure = Mathf.InverseLerp(config.bossReinforcementStopHealth,
+            config.bossReinforcementTaperHealth, bossHealthFraction);
+        int alive = 0;
+        foreach (BaseEnemyData enemy in BaseEnemyData.Active)
+            if (enemy.IsAlive && enemy.data != null && !enemy.data.isBoss) alive++;
+        if (pressure <= 0f || alive >= config.bossReinforcementMaxAlive || bridge.WaveRemainingBudget <= 0f)
+        {
+            // Crowding or low boss HP must never bank a catch-up burst.
+            reinforcementCredit = 0f;
+            nextWaveSpawn = elapsed + config.spawnInterval;
+            return;
+        }
+        float rate = currentWave.costBudget / currentWave.duration * config.bossReinforcementRate;
+        reinforcementCredit = Mathf.Min(bridge.WaveRemainingBudget, reinforcementCredit + rate * pressure * dt);
+        if (elapsed < nextWaveSpawn) return;
+        nextWaveSpawn = elapsed + config.spawnInterval;
+        DefenseSnapshot snapshot = planet.BuildSnapshot();
+        bridge.Tick(Elapsed, snapshot);
+        LevelEnemyEntry entry = bridge.PickWaveEntry(bridge.WaveSpent + reinforcementCredit);
+        if (entry == null) return;
+        SpawnModifiers mods = bridge.RollModifiers(entry, snapshot);
+        BaseEnemyData spawned = Spawn(entry.enemy, mods.SpawnAngleDeg, mods.IsShiny, mods.Orbits, mods.Ticket, spawnDistance);
+        if (spawned != null)
+        {
+            reinforcementCredit = Mathf.Max(0f, reinforcementCredit - LevelData.EffectiveCost(entry.enemy));
+            bridge.RecordWaveSpawn(entry);
+        }
         else bridge.ReportGone(mods.Ticket);
     }
 

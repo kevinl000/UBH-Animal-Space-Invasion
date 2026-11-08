@@ -72,6 +72,8 @@ public class GameplayLoopController : MonoBehaviour
     {
         if (config == null || config.level == null || config.towers == null || config.towers.Length == 0 ||
             config.waves == null || config.waves.Length == 0 || config.finalBosses == null || config.finalBosses.Length == 0) return false;
+        if (config.spawnInterval <= 0f || config.bossReinforcementMaxAlive < 1
+            || config.bossReinforcementTaperHealth <= config.bossReinforcementStopHealth) return false;
         foreach (TowerData t in config.towers) if (t == null || t.prefab == null || t.projectilePrefab == null) return false;
         foreach (EnemyData b in config.finalBosses) if (b == null || b.prefab == null) return false;
         foreach (GameplayWave w in config.waves)
@@ -143,6 +145,10 @@ public class GameplayLoopController : MonoBehaviour
             case GameplayPhase.BossEntrance:
                 TickBossEntrance();
                 break;
+            case GameplayPhase.BossFight:
+                if (!bossKilled && FinalBoss != null && FinalBoss.IsAlive && FinalBoss.SpawnId == finalBossSpawnId)
+                    spawner.TickBossReinforcements(phaseElapsed, dt, FinalBoss.Health / FinalBoss.MaxHealth);
+                break;
         }
     }
 
@@ -182,6 +188,7 @@ public class GameplayLoopController : MonoBehaviour
         battleCamera.orthographicSize = homeSize;
         FinalBoss.CompleteEntrance();
         SetPhase(GameplayPhase.BossFight);
+        spawner.BeginBossReinforcements(spawnElapsed);
     }
 
     private void OnEnemyDied(BaseEnemyData enemy)

@@ -41,7 +41,7 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
 - `Assets/Scriptable Objects/Levels/UnionPrimeGameplay.asset`: the three waves,
   cost shares/budgets, 20-second spawn windows, 10-second breaks, spawn interval,
   minibosses, four allowed tower types, starter slots, random final-boss pool,
-  three-second entrance and next destination.
+  three-second entrance, final-boss reinforcement limits and next destination.
 - `Assets/Scriptable Objects/Levels/UnionPrime.asset`: 50 starting HP, 10 money,
   50 fuel, radius 3.3 and clockwise rotation at 6 degrees/second. All existing
   level data assets and new LevelData defaults start at 50 HP / 10 money / 50 fuel.
@@ -65,8 +65,26 @@ miniboss. These end encounters are outside the regular spawn budget.
 
 Normal spawns use the teammate's adaptive director and learning, constrained to
 that wave's roster. The budget is released linearly, recorded only on successful
-spawning, and not carried to the next wave. Normal spawning ends at 20 seconds;
-unspent budget is discarded. Learning survives between waves in the same run.
+spawning, and not carried to the next wave. Each normal wave window ends at
+20 seconds; unspent budget is discarded. Learning survives between waves and
+into the final boss fight in the same run.
+
+Final bosses receive limited reinforcements after their three-second paused
+entrance. The existing adaptive director uses the last wave's roster, shares,
+costs, modifiers, spawn angles and learning. An independent spending window
+caps the extra cost at 50% of that wave's budget: 35 for Union Prime. Budget
+releases at the last wave's normal rate (70 / 20 = 3.5 cost/second here) above
+50% boss HP, then tapers linearly to zero at 15% HP. At 32.5% HP it releases
+half as quickly. Attempts still happen at most once per configured spawn interval.
+
+New reinforcements wait while six regular enemies are alive, including
+leftovers from wave 3. Existing enemies are never removed to enforce this cap.
+Crowding and the low-HP cutoff discard unspent reinforcement credit and delay
+the next attempt; reopening space cannot release a queued burst. Already
+spawned enemies keep fighting. Boss death still wins with surviving planet HP.
+The first two wave-end encounters and their clear/break rules are unchanged.
+All five reinforcement settings are on LevelGameplayConfig for future planets.
+Set the reinforcement budget fraction to zero to disable this feature.
 
 The first two waves clear every enemy before the safe break begins. Projectiles
 and short effects are cleared at that boundary without resource drops. Build at
@@ -181,6 +199,12 @@ contacts, Animator playback, viewport readability or live UI interaction.
    Check the top-left 1x/2x control, pause/resume at 2x, and Retry returning to 1x.
    Pause/results must cover and block the controls. Open an older planet directly
    and confirm its Pause/Resume, speed, results and Retry use that planet.
+   During the final boss, verify regular spawns resume after the entrance using
+   wave 3's roster. New adds must wait at six regular enemies; opening a space
+   must not trigger a burst. Compare full HP, 32.5% HP and 15% HP: normal,
+   half-budget rate, then no new adds. Extra spawn cost must stay at or below 35.
+   Pause must stop this budget and Retry must reset it. Waves 1/2 still clear
+   completely and give their 10-second break.
 6. Inspect all four towers in the twelve sockets through the actual camera at
    16:9 and 4:3. Confirm the right panel and single bottom row do not overlap.
    Wheel/pinch in and out during setup and combat: enemies, towers, shots,

@@ -357,7 +357,10 @@ def prepare_config():
     fields += '  finalBosses:\n'
     for name in ['Healthy Goose', 'Healthy Skunk']:
         fields += '  - ' + ref(DATA_FOLDER + 'Enemies/README/' + name + '.asset') + '\n'
-    fields += '  starterSlots: 0000000006000000\n  spawnInterval: 1\n  bossEntranceDuration: 3\n  nextScene: CapenMajor\n'
+    fields += ('  starterSlots: 0000000006000000\n  spawnInterval: 1\n  bossEntranceDuration: 3\n'
+               '  bossReinforcementBudgetFraction: 0.5\n  bossReinforcementRate: 1\n'
+               '  bossReinforcementMaxAlive: 6\n  bossReinforcementTaperHealth: 0.5\n'
+               '  bossReinforcementStopHealth: 0.15\n  nextScene: CapenMajor\n')
     config = script(11400000, 0, 'Gameplay/LevelGameplayConfig', fields)
     write(DATA_FOLDER + 'Levels/UnionPrimeGameplay.asset', HEADER + config)
     guid(DATA_FOLDER + 'Levels/UnionPrimeGameplay.asset')

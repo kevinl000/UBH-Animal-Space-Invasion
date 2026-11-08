@@ -67,10 +67,14 @@ public class WaveDirectorBridge : MonoBehaviour
     private float pendingSince;
     private GameplayWave wave;
     private float waveSpent;
+    private float waveBudget;
+    public float WaveSpent => waveSpent;
+    public float WaveRemainingBudget => Mathf.Max(0f, waveBudget - waveSpent);
 
-    public void BeginWave(GameplayWave definition)
+    public void BeginWave(GameplayWave definition, float budgetFraction = 1f)
     {
         wave = definition;
+        waveBudget = definition.costBudget * Mathf.Clamp01(budgetFraction);
         waveSpent = 0f;
         pending = null;
     }
@@ -78,7 +82,7 @@ public class WaveDirectorBridge : MonoBehaviour
     public LevelEnemyEntry PickWaveEntry(float releasedBudget)
     {
         if (wave == null) return null;
-        float ceiling = wave.costBudget - waveSpent;
+        float ceiling = waveBudget - waveSpent;
         if (pending == null)
         {
             candidates.Clear();

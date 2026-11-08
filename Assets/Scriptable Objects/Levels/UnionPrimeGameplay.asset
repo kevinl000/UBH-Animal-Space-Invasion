@@ -85,4 +85,9 @@ MonoBehaviour:
   starterSlots: 0000000006000000
   spawnInterval: 1
   bossEntranceDuration: 3
+  bossReinforcementBudgetFraction: 0.5
+  bossReinforcementRate: 1
+  bossReinforcementMaxAlive: 6
+  bossReinforcementTaperHealth: 0.5
+  bossReinforcementStopHealth: 0.15
   nextScene: CapenMajor

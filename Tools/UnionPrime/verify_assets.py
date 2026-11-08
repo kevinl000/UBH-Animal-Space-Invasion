@@ -94,6 +94,10 @@ def check():
     assert len(waves) == 3
     assert 'starterSlots: 0000000006000000' in config
     assert 'nextScene: CapenMajor' in config
+    for field, value in {'bossReinforcementBudgetFraction': '0.5', 'bossReinforcementRate': '1',
+                         'bossReinforcementMaxAlive': '6', 'bossReinforcementTaperHealth': '0.5',
+                         'bossReinforcementStopHealth': '0.15'}.items():
+        assert f'  {field}: {value}\n' in config, f'Unexpected boss reinforcement tuning: {field}'
     scene = {i: b for _, i, b in docs(read('Assets/Scenes/UnionPrime.unity'))}
     placements = json.loads(read('Art/Planets/UnionPrime/polish.json'))['site_placements']
     for n, site in enumerate(placements):
