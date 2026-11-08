@@ -44,6 +44,16 @@ public class LevelManager : MonoBehaviour, IDamagable
         RefreshResourceBar();
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
 
     private void FixedUpdate()
     {
