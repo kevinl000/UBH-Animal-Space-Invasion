@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class BaseTowerData : GameEntity, IDamageable, IFreezable
 {
+    // Shared targeting boundary measured from the planet centre, in planet radii.
+    private const float AtmosphereRadius = 2.5f;
+
     // --- State ---
     public static readonly List<BaseTowerData> Active = new List<BaseTowerData>();
     public bool IsDisabled { get; private set; } // True when out of fuel or EMP'd
@@ -141,11 +144,13 @@ public class BaseTowerData : GameEntity, IDamageable, IFreezable
 
     /// <summary>
     /// README FOV is an angle: the enemy must be within fov/2 degrees of the tower's outward direction (transform.up,
-    /// which LevelPlanetDefense points away from the planet). data.range limits the distance (0 = unlimited).
+    /// which LevelPlanetDefense points away from the planet). Enemies must be inside the atmosphere;
+    /// data.range can further limit distance from the tower (0 = no additional limit).
     /// </summary>
     public bool InSight(BaseEnemyData enemy)
     {
         if (enemy == null || enemy.Body == null) return false;
+        if (enemy.Distance > AtmosphereRadius) return false;
         Vector2 toEnemy = enemy.Body.position - (Vector2)transform.position;
         if (data != null && data.range > 0f && toEnemy.magnitude > data.range) return false;
         if (fov <= 0f || fov >= 360f) return true;

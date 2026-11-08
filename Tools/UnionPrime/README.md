@@ -54,6 +54,10 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
   original HP; all eight boss types keep their HP. New/legacy enemy data without
   an authored HP value now defaults to 2 instead of 1. Shiny enemies retain their
   additional 2x HP multiplier. Enemy costs and rewards are unchanged.
+  All towers, including Sniper and Radar, only acquire targets within 2.5 planet
+  radii of the planet centre. This shared atmosphere boundary uses the enemy's
+  planet-relative distance, so it is independent of camera zoom. Existing firing
+  angles and any authored per-tower range still apply inside it.
   The teammate's existing attack intervals, ranges and
   0.8-world-unit Bomb/Tesla radii remain initial tuning values where the README
   does not specify them. `fireRate` means **seconds between shots**.
