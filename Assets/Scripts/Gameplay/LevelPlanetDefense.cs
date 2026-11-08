@@ -159,7 +159,7 @@ public class LevelPlanetDefense : MonoBehaviour, IPlanetDefense
 
     // ---------------------------------------------------------------- slots
 
-    private float SlotRotation(int slot)
+    public float SlotRotation(int slot)
     {
         return socketMounts.Length > 0 ? socketMounts[slot].eulerAngles.z : SlotAngle(slot) - 90f;
     }

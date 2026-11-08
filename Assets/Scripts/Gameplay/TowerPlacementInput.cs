@@ -109,7 +109,8 @@ public class TowerPlacementInput : MonoBehaviour
     private void LateUpdate()
     {
         if (quickPlacement == null && defense != null && Selected != null)
-            quickPlacement = new TowerPlacementPanel(transform, defense, moon, PlaceSelected);
+            quickPlacement = new TowerPlacementPanel(transform, defense, moon,
+                hud != null && hud.planetName != null ? hud.planetName.font : FindAnyObjectByType<GameplayHUD>()?.font, PlaceSelected);
         quickPlacement?.Refresh(CanBuild ? Selected : null);
     }
 

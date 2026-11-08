@@ -40,20 +40,21 @@ public class GameplayHUD : MonoBehaviour
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1600f, 900f);
         scaler.matchWidthOrHeight = 1f;
-        sidebar = Box("Tower panel", root.transform, new Vector2(0f, 0.5f), new Vector2(180f, 0f), new Vector2(360f, 900f), panel);
-        sidebar.anchorMin = new Vector2(0, 0);
-        sidebar.anchorMax = new Vector2(0, 1);
-        sidebar.sizeDelta = new Vector2(360f, 0);
-        Label("UNION PRIME", sidebar, new Vector2(0, -36), new Vector2(324, 42), 30, gold);
-        Label("CAMPUS DEFENSE / TUTORIAL", sidebar, new Vector2(0, -73), new Vector2(324, 32), 17, ink);
-        resources = Label("", sidebar, new Vector2(0, -132), new Vector2(324, 72), 24, ink);
-        phase = Label("", sidebar, new Vector2(0, -215), new Vector2(324, 72), 23, gold);
+        sidebar = Box("Tower panel", root.transform, new Vector2(1f, 0.5f), new Vector2(-180f, 0f), new Vector2(360f, 900f), panel);
+        sidebar.anchorMin = new Vector2(1, 0);
+        sidebar.anchorMax = new Vector2(1, 1);
+        sidebar.offsetMin = new Vector2(-360f, TowerPlacementPanel.Height);
+        sidebar.offsetMax = Vector2.zero;
+        Label("UNION PRIME", sidebar, new Vector2(0, -28), new Vector2(324, 38), 30, gold);
+        Label("CAMPUS DEFENSE / TUTORIAL", sidebar, new Vector2(0, -62), new Vector2(324, 28), 17, ink);
+        resources = Label("", sidebar, new Vector2(0, -114), new Vector2(324, 66), 24, ink);
+        phase = Label("", sidebar, new Vector2(0, -186), new Vector2(324, 66), 23, gold);
         cards = new Button[loop.config.towers.Length];
         for (int i = 0; i < cards.Length; i++)
         {
             int index = i;
             TowerData data = loop.config.towers[i];
-            cards[i] = Button(data.name + "  $" + data.cost, sidebar, new Vector2(0, -290 - i * 66), new Vector2(324, 58), () =>
+            cards[i] = Button(data.name + "  $" + data.cost, sidebar, new Vector2(0, -252 - i * 62), new Vector2(324, 54), () =>
             {
                 loop.placement.SelectTower(data);
                 PlayClick();
@@ -69,13 +70,13 @@ public class GameplayHUD : MonoBehaviour
                 label.rectTransform.offsetMin = new Vector2(55, 0);
             }
         }
-        details = Label("", sidebar, new Vector2(0, -583), new Vector2(324, 115), 19, ink);
-        loop.placement.message = Label("Click a socket to build.\nRight-click a tower to sell.", sidebar, new Vector2(0, -710), new Vector2(324, 100), 19, ink);
-        start = Button("START WAVE 1", sidebar, new Vector2(0, -810), new Vector2(324, 56), () => { PlayClick(); loop.StartGame(); });
+        details = Label("", sidebar, new Vector2(0, -536), new Vector2(324, 100), 19, ink);
+        loop.placement.message = Label("Click a socket to build.\nRight-click a tower to sell.", sidebar, new Vector2(0, -640), new Vector2(324, 84), 19, ink);
+        start = Button("START WAVE 1", sidebar, new Vector2(0, -738), new Vector2(324, 56), () => { PlayClick(); loop.StartGame(); });
         start.GetComponent<Image>().color = gold;
         start.GetComponentInChildren<Text>().color = panel;
-        boss = Label("", root.transform, new Vector2(180, -38), new Vector2(650, 40), 25, gold);
-        Button("PAUSE", root.transform, new Vector2(0, -90), new Vector2(160, 40), () => GameManager.Instance.PauseGame()).GetComponent<RectTransform>().anchoredPosition = new Vector2(180, -90);
+        boss = Label("", root.transform, new Vector2(-180, -38), new Vector2(650, 40), 25, gold);
+        Button("PAUSE", root.transform, new Vector2(-260, -90), new Vector2(160, 40), () => GameManager.Instance.PauseGame());
         FitCamera();
         EventSystem.current.SetSelectedGameObject(start.gameObject);
     }
@@ -135,9 +136,10 @@ public class GameplayHUD : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         screenWidth = Screen.width;
         screenHeight = Screen.height;
-        float left = Mathf.Clamp(360f * canvas.scaleFactor / Mathf.Max(1, screenWidth), 0f, 0.65f);
-        loop.battleCamera.rect = new Rect(left, 0, 1f - left, 1f);
-        float aspect = Mathf.Max(0.1f, screenWidth * (1f - left) / Mathf.Max(1, screenHeight));
+        float right = Mathf.Clamp(360f * canvas.scaleFactor / Mathf.Max(1, screenWidth), 0f, 0.65f);
+        float bottom = Mathf.Clamp(TowerPlacementPanel.Height * canvas.scaleFactor / Mathf.Max(1, screenHeight), 0f, 0.3f);
+        loop.battleCamera.rect = new Rect(0, bottom, 1f - right, 1f - bottom);
+        float aspect = Mathf.Max(0.1f, screenWidth * (1f - right) / Mathf.Max(1f, screenHeight * (1f - bottom)));
         loop.battleCamera.orthographicSize = Mathf.Max(8.7f, 8.7f / aspect);
         loop.battleCamera.transform.position = new Vector3(0, 0, -10);
     }

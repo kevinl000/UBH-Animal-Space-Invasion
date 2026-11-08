@@ -26,8 +26,8 @@ public class LevelData : ScriptableObject
 
     public List<LevelEnemyEntry> enemyDataList; // this level's spawn roster
 
-    public int money; // starting money
-    public float fuel; // starting fuel
+    public int money = 10; // starting money
+    public float fuel = 150f; // starting fuel
 
     public float planetMaxHealth;
     public float planetRotationSpeed;

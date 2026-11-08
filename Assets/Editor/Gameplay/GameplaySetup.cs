@@ -515,8 +515,8 @@ public static class GameplaySetup
         if (d.startingDifficulty <= 0) d.startingDifficulty = 15 + 5 * level;
         if (d.maxDifficulty <= 0) d.maxDifficulty = 120 + 40 * level;
         if (d.postBossDifficulty <= 0) d.postBossDifficulty = d.maxDifficulty / 2;
-        if (d.money <= 0) d.money = 15;
-        if (d.fuel <= 0f) d.fuel = 30f;
+        if (d.money <= 0) d.money = 10;
+        if (d.fuel <= 0f) d.fuel = 150f;
         if (d.planetMaxHealth <= 0f) d.planetMaxHealth = 100f;
         if (d.planetRotationSpeed == 0f) d.planetRotationSpeed = 6f;
         if (d.enemyDataList == null) d.enemyDataList = new List<LevelEnemyEntry>();

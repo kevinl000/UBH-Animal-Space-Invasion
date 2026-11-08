@@ -10,7 +10,7 @@ public class BattleSpeedButton : MonoBehaviour
 {
     public float fastSpeed = 2f;
     [Tooltip("Same layout as GameplayHUD: anchored at the top centre, 1600x900 reference.")]
-    public Vector2 position = new Vector2(360f, -90f);
+    public Vector2 position = new Vector2(-80f, -90f);
     public Vector2 size = new Vector2(120f, 40f);
 
     public float Speed { get; private set; }

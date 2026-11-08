@@ -325,7 +325,7 @@ def prepare_wrappers():
 def prepare_config():
     level_path = DATA_FOLDER + 'Levels/UnionPrime.asset'
     text = read(level_path)
-    for key, value in {'money': 15, 'fuel': 180, 'planetMaxHealth': 100, 'planetRadius': 3.3,
+    for key, value in {'money': 10, 'fuel': 150, 'planetMaxHealth': 100, 'planetRadius': 3.3,
                        'planetRotationSpeed': 6, 'isClockwise': 1, 'maxTime': 60}.items():
         text = setfield(text, key, str(value))
     # Prewarm/validation roster; actual wave permissions are exclusively in the configuration.

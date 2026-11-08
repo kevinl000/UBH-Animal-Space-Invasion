@@ -66,6 +66,7 @@ public class BaseEnemyData : GameEntity
     {
         base.Awake(); // Rigidbody2D: kinematic, no gravity (GameEntity)
         Visual = GetComponent<CombatVisual>();
+        if (Visual == null) Visual = gameObject.AddComponent<CombatVisual>();
         currentHealth = maxHealth;
         if (hitCollider == null) Debug.LogWarning("[BaseEnemyData] '" + name + "' has no Collider2D, so nothing can collide with it.");
     }
@@ -333,7 +334,7 @@ public class BaseEnemyData : GameEntity
 
         int mult = IsShiny ? 2 : 1; // README: shiny = double money / fuel
         int money = data != null ? data.moneyDrop * mult : 0;
-        int fuel = data != null ? data.fuelDrop * mult : 0;
+        int fuel = data != null ? data.fuelDrop * mult * 2 : 0;
         EnemyEvents.RaiseKilled(money, fuel);
 
         OnDeath();

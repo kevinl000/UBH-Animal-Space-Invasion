@@ -21,6 +21,8 @@ public class CombatVisual : MonoBehaviour
     private Color[] colors;
     private GameObject frost;
     private bool wasRevealed;
+    private Transform[] modelParts;
+    private Vector3[] modelScales;
 
     private void Awake()
     {
@@ -42,6 +44,17 @@ public class CombatVisual : MonoBehaviour
         renderers = GetComponentsInChildren<SpriteRenderer>(true);
         colors = new Color[renderers.Length];
         for (int i = 0; i < colors.Length; i++) colors[i] = renderers[i].color;
+        if (enemy != null)
+        {
+            // Cache authored scales once so pool reuse never compounds the size increase.
+            modelParts = new Transform[transform.childCount];
+            modelScales = new Vector3[modelParts.Length];
+            for (int i = 0; i < modelParts.Length; i++)
+            {
+                modelParts[i] = transform.GetChild(i);
+                modelScales[i] = modelParts[i].localScale;
+            }
+        }
         if (frozenVisual != null)
         {
             frost = Instantiate(frozenVisual, transform);
@@ -53,6 +66,14 @@ public class CombatVisual : MonoBehaviour
 
     public void ResetVisual()
     {
+        if (enemy != null)
+        {
+            float scale = enemy.data != null && enemy.data.isBoss ? 1f : 1.5f;
+            for (int i = 0; i < modelParts.Length; i++)
+                modelParts[i].localScale = modelScales[i] * scale;
+            if (Muzzle != null && Muzzle.parent == transform && emissionLocalPosition != Vector2.zero)
+                Muzzle.localPosition = emissionLocalPosition * scale;
+        }
         wasRevealed = false;
         if (weapon != null) weapon.localRotation = Quaternion.identity;
         if (shield != null) shield.gameObject.SetActive(enemy != null && enemy.HasShield);
