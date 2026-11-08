@@ -297,7 +297,7 @@ public class BaseEnemyData : GameEntity
         int mult = IsShiny ? 2 : 1; // README: shiny = double money / fuel
         int money = data != null ? data.moneyDrop * mult : 0;
         int fuel = data != null ? data.fuelDrop * mult : 0;
-        EnemyEvents.RaiseKilled(this, money, fuel);
+        EnemyEvents.RaiseKilled(money, fuel);
 
         OnDeath();
         Despawn();

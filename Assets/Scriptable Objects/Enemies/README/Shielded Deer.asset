@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 766fa307f1f474baabe35d759b026354, type: 3}
   m_Name: Shielded Deer
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::EnemyData
   cost: 22
   isBoss: 0
   maxHealth: 10

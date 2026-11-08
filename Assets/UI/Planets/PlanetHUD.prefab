@@ -358,7 +358,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!1 &524108096752645656
 GameObject:
@@ -709,7 +709,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fea5ac6074c84aaaa239e60d98471259, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::PlanetPageController
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::PlanetPageController
   planet: {fileID: 11400000, guid: 5131235c35ca54a45bbbf89794233884, type: 2}
   controls: {fileID: 8721295191998505707}
   planetName: {fileID: 4157196176578317557}
@@ -4435,7 +4435,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!1 &7555354792718651055
 GameObject:
@@ -5121,7 +5121,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!1 &8198856852097267462
 GameObject:
@@ -5522,7 +5522,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!224 &7582972893082208969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8911165823930083789, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -5702,7 +5702,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!224 &7993279714833419040 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8911165823930083789, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -5871,7 +5871,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!114 &2134360150431624947 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4117020776068794158, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6051,7 +6051,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!114 &2208844598795891234 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4117020776068794158, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6231,7 +6231,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!114 &1686252665710571350 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4117020776068794158, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6422,7 +6422,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!224 &5589410406593893800 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8911165823930083789, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6592,7 +6592,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!114 &8249623976125844019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4117020776068794158, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6772,7 +6772,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!114 &5977222032824836803 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4117020776068794158, guid: 8677cdd8e5c7d2c4ba180c19700d893d, type: 3}
@@ -6963,7 +6963,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!1001 &8218080434887777691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7143,7 +7143,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard
 --- !u!1001 &9070729818435542779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7323,4 +7323,4 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0087eb2b2c064d21bfd4f1a8bfcc168a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::TowerCard
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::TowerCard

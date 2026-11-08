@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [DisallowMultipleComponent]
-public class LevelManager : MonoBehaviour, IDamagable
+public class LevelManager : MonoBehaviour, IDamageable
 {
     public Text hp;
     public Text money;
@@ -46,14 +46,17 @@ public class LevelManager : MonoBehaviour, IDamagable
 
     private void OnEnable()
     {
-        
+        EnemyEvents.Killed += ChangeResources;
+        TowerEvents.TowerBuilt += ChangeMoney;
+        TowerEvents.TowerSold += ChangeMoney;
     }
 
     private void OnDisable()
     {
-        
+        EnemyEvents.Killed -= ChangeResources;
+        TowerEvents.TowerBuilt -= ChangeMoney;
+        TowerEvents.TowerSold -= ChangeMoney;
     }
-
 
     private void FixedUpdate()
     {
@@ -63,52 +66,33 @@ public class LevelManager : MonoBehaviour, IDamagable
         planetBody.MoveRotation(planetBody.rotation + direction * rotationSpeed * Time.fixedDeltaTime);
     }
 
-    // Attach to the planet's Rigidbody2D object, with a non-trigger Collider2D.
-    // This callback runs when contact begins, not every frame of continuing contact.
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!isActiveAndEnabled || currentHealth <= 0f) return;
-
-        // Also support a child collider attached to a tagged enemy Rigidbody2D.
-        bool isEnemy = collision.collider.CompareTag("Enemy") ||
-            (collision.rigidbody != null && collision.rigidbody.CompareTag("Enemy"));
-        if (!isEnemy) return;
-
-        var enemy = collision.collider.GetComponentInParent<IDamagable>();
-        if (enemy == null) return;
-
-        if (currentHealth <= 0f && GameManager.Instance != null)
-            GameManager.Instance.GameOver();
-    }
 
     /// <summary>Positive amounts grant money; negative amounts spend it. False means insufficient funds.</summary>
-    public bool ChangeMoney(int amount)
+    public void ChangeMoney(int amount)
     {
-        return ChangeResources(amount, 0f);
+        ChangeResources(amount, 0);
     }
 
     /// <summary>Positive amounts grant fuel; negative amounts consume it. False means insufficient fuel.</summary>
-    public bool ChangeFuel(float amount)
+    public void ChangeFuel(int amount)
     {
-        return ChangeResources(0, amount);
+        ChangeResources(0, amount);
     }
 
     /// <summary>
     /// Updates both resources together, or neither if either balance would become negative.
     /// Enemies and towers call this on their own schedule (including once per second).
     /// </summary>
-    public bool ChangeResources(int moneyChange, float fuelChange)
+    public void ChangeResources(int moneyChange, int fuelChange)
     {
         long nextMoney = (long)TotalMoney + moneyChange;
         float nextFuel = TotalFuel + fuelChange;
         if (nextMoney < 0 || nextMoney > int.MaxValue || nextFuel < 0f ||
             float.IsNaN(nextFuel) || float.IsInfinity(nextFuel))
-            return false;
-
+        { return; }//TODO tell the player they don't have enough resources to do that
         TotalMoney = (int)nextMoney;
         TotalFuel = nextFuel;
         RefreshResourceBar();
-        return true;
     }
 
     public void RefreshResourceBar()
@@ -130,11 +114,4 @@ public class LevelManager : MonoBehaviour, IDamagable
         }
         return currentHealth;
     }
-}
-
-// The enemy implementation can supply damage without managers referencing its assembly.
-public interface IDamagable
-{
-    bool IsAlive { get; }
-    float ReceiveDamage(float damage);
 }

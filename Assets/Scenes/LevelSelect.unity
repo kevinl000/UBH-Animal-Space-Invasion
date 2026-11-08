@@ -532,7 +532,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &135157820
 MonoBehaviour:
@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fbea8e85c3951c418fe2e75080a9ee8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuPageController
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuPageController
   confirmSound: {fileID: 8300000, guid: ca2166be165645d4eb7d19f6755e8f25, type: 3}
   backSound: {fileID: 8300000, guid: 27046782df2ef894ba01a30c9e589d24, type: 3}
   firstButton: {fileID: 2144109586}
@@ -1477,7 +1477,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &384897937
 MonoBehaviour:
@@ -3223,7 +3223,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &679173321
 MonoBehaviour:
@@ -3775,7 +3775,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &870272591
 MonoBehaviour:
@@ -4212,7 +4212,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &997512905
 MonoBehaviour:
@@ -4648,7 +4648,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &1451937635
 MonoBehaviour:
@@ -4924,7 +4924,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9123e8c614fc0f40b5b3030e2e3e514, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::LevelSelectDetails
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelSelectDetails
   destinations:
   - landmarkAndLevel: Student Union / Tutorial
     description: A market and guild world at the heart of the campus constellation.
@@ -5674,7 +5674,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &1913672397
 MonoBehaviour:
@@ -5958,7 +5958,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!1 &1998309436
 GameObject:
@@ -6592,7 +6592,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73582cd6b96663b4d90125cc6dce74f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: PlanetaryDefense.Menu::MenuButtonFeedback
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::MenuButtonFeedback
   selectSound: {fileID: 8300000, guid: 29435042789113b44b475e69bd93a3f6, type: 3}
 --- !u!114 &2144109588
 MonoBehaviour:

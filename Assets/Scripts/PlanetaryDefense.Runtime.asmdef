@@ -1,0 +1,7 @@
+{
+    "name": "PlanetaryDefense.Runtime",
+    "references": [
+        "Unity.InputSystem",
+        "Unity.ugui"
+    ]
+}
