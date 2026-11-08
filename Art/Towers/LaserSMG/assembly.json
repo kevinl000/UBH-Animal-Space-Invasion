@@ -1,0 +1,99 @@
+{
+  "base": {
+    "source": "base-source-v3.png",
+    "runtime": "Assets/Art/Towers/LaserSMG/LaserSMGBase.png",
+    "size": [
+      1278,
+      1230
+    ],
+    "pixels_per_unit": 1000,
+    "sha256": "0227474c68fbb64d5fb862168f53059e1bfe0172f85c139e5b8213cd61a837ab",
+    "guid": "d974db0027074a4dbe14195e4d916e54",
+    "ground_mount_top_left_pixels": [
+      598,
+      1101
+    ],
+    "socket_top_left_pixels": [
+      903,
+      604
+    ],
+    "operator_screen_bounds_top_left_pixels": [
+      687,
+      682,
+      813,
+      792
+    ]
+  },
+  "weapon": {
+    "source": "weapon-source-v1.png",
+    "runtime": "Assets/Art/Towers/LaserSMG/LaserSMGWeapon.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 3000,
+    "sha256": "84695bea79cde8359126c9cd948ca8a70e02fa4a7bf25e873c0af4731f73817a",
+    "guid": "96538d94de5240ccacdb4ec100d3d9d8",
+    "hinge_top_left_pixels": [
+      627,
+      1011
+    ],
+    "muzzle_top_left_pixels": [
+      627,
+      201
+    ]
+  },
+  "cannon_local_position": [
+    0.305,
+    0.497
+  ],
+  "muzzle_local_position": [
+    0,
+    0.27
+  ],
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "joint_exclusion_radius_world_units": 0.09,
+  "prefab": "Assets/Prefabs/Towers/LaserSMGTowerVisual.prefab",
+  "prefab_guid": "2ef698ed0815435dbf1da0000384f60a",
+  "muzzle_note": "Outer top silhouette edge on the centered bore axis; the cyan emitter is inset in the front face.",
+  "generation_mode": "built-in image_gen; reference-guided headset/base and SMG weapon edits, plus targeted v2 monitor-clearance edit; source PNG bytes preserved in runtime; targeted v3 expression edit matching Sniper",
+  "reference_inputs": [
+    {
+      "path": "Art/Towers/Laser/Redesign/Sweep/base-generated-v2.png",
+      "sha256": "5c752cc25835538c4899eac2915c03a32fc30f77c0526b2bd1af38935d5145ea"
+    },
+    {
+      "path": "Art/Towers/Laser/Redesign/Sweep/gun-generated-v2.png",
+      "sha256": "d75093ad32f190f96cc2b40b8d685f0828190169dfb5478bf42131c431d0cf0b"
+    }
+  ],
+  "verification": {
+    "angles": 241,
+    "angle_step_degrees": 0.5,
+    "weapon_sample_stride_source_pixels": 4,
+    "alpha_threshold": 128,
+    "joint_exclusion_radius_world_units": 0.09,
+    "max_protected_overlap_samples": 0,
+    "min_joint_contact_samples": 5909,
+    "max_muzzle_ray_base_samples": 0,
+    "ray_length_world_units": 2,
+    "limitations": [
+      "Sampled raster geometry, not a continuous collision proof.",
+      "Only the joint and upper support are excluded; the operator screen is always protected.",
+      "A clear centerline does not establish arbitrary projectile-width clearance.",
+      "Planet seating, neighbors and final camera readability remain unverified.",
+      "No Unity validation or tests run."
+    ]
+  },
+  "expression_revision": {
+    "date": "2026-11-08",
+    "prompt": "base-expression.prompt-v3.txt",
+    "reference": "Art/Towers/Sniper/base-source-v2.png",
+    "description": "Focused eyes/brows, small square nose and tiny coral mouth matching other tower operators.",
+    "mode": "built-in image_gen; targeted reference-guided facial expression edit; original source retained"
+  }
+}

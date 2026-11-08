@@ -1,4 +1,25 @@
-# Compact Laser: working sweep design
+# Laser sweep assembly
+
+**Current revision, 2026-11-08:** use [the main Laser handoff](../../README.md),
+[assembly.json](assembly.json) and [preview.html](preview.html). Current sources
+are **base-generated-v5.png** (focused expression and lower fixed cyan screen) and
+**gun-generated-v3.png** (single laser cannon). Exports keep their 70x72/24x33
+canvases and original ground/hinge coordinates; the muzzle is now **(14.5, 0)**,
+or local **(0.025, 0.28)** from the hinge at 100 PPU. Existing Unity sprite
+paths/GUIDs are preserved, and `LaserTowerVisual.prefab` supplies a visual rig.
+
+The v5 expression edit matches the Sniper operator's focused eyes/brows, small
+square nose and tiny coral mouth. Its prompt is
+[base-expression.prompt-v5.txt](base-expression.prompt-v5.txt). The v3 source
+with the lowered screen remains preserved. Current portrait: **portrait-v3.png**.
+
+The rebuild script now reads the current manifest's uniform export transforms.
+Its refreshed checks cover 241 gun/base poses, a conservative 7-pixel projectile
+corridor and the historical twelve-site terrain study. These remain sampled
+offline checks; no Unity validation was run. See the main handoff for current
+import/attachment details and the limits of the older terrain placement study.
+
+## Historical 2026-11-05 notes (superseded source and muzzle details)
 
 2026-11-05: the user accepted this compact sweep design ("lets go with this for
 now") and requested removal of unused versions. This is the retained assembly.

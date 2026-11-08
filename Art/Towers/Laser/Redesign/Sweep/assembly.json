@@ -1,0 +1,141 @@
+{
+  "base": {
+    "source": "base-generated-v5.png",
+    "source_sha256": "868f0f23e8e6b14452ce739576167b7817314cbb3a148deb2fd23726d9fb58a5",
+    "sprite": "base-sprite.png",
+    "size": [
+      70,
+      72
+    ],
+    "pixels_per_unit": 100,
+    "export": {
+      "uniform_scale": 0.09703504043126684,
+      "source_anchor_top_left_pixels": [
+        250,
+        359
+      ],
+      "destination_anchor_top_left_pixels": [
+        0,
+        0
+      ],
+      "source_bounds_alpha128": [
+        250,
+        359,
+        969,
+        1102
+      ]
+    },
+    "runtime": "Assets/Art/Planets/UnionPrime/LaserBase.png",
+    "guid": "0c8924ea89a048feb58dd1d402d014e6",
+    "ground_mount_top_left_pixels": [
+      34,
+      71
+    ],
+    "socket_top_left_pixels": [
+      64,
+      24
+    ],
+    "operator_screen_bounds_top_left_pixels": [
+      39,
+      31,
+      55,
+      46
+    ],
+    "sprite_sha256": "be62d10958e078fc43c22995be6215369e1eb0bf4978e2d67246099f877c61ec"
+  },
+  "weapon": {
+    "source": "gun-generated-v3.png",
+    "source_sha256": "54c347f5285ca3483c6cc1fe6005c5ca4410c52d23ee4a1dabaf8ad0adc6bed1",
+    "sprite": "gun-sprite.png",
+    "size": [
+      24,
+      33
+    ],
+    "pixels_per_unit": 100,
+    "export": {
+      "uniform_scale": 0.032825322391559206,
+      "source_anchor_top_left_pixels": [
+        626.5,
+        1011
+      ],
+      "destination_anchor_top_left_pixels": [
+        12,
+        28
+      ],
+      "source_bounds_alpha128": [
+        451,
+        158,
+        926,
+        1150
+      ]
+    },
+    "runtime": "Assets/Art/Planets/UnionPrime/LaserGun.png",
+    "guid": "847ed1acf4a94fa9b34f694e2f4fa78c",
+    "hinge_top_left_pixels": [
+      12,
+      28
+    ],
+    "muzzle_top_left_pixels": [
+      14.5,
+      0
+    ],
+    "sprite_sha256": "2ac060c5fde457ec343ccf2110f04b2846b9d864dd71433de40fce120fb15f75"
+  },
+  "cannon_local_position": [
+    0.3,
+    0.47
+  ],
+  "muzzle_local_position": [
+    0.025,
+    0.28
+  ],
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "legacy_sprite_pivots": "centered; preserved for existing consumers",
+  "generation_mode": "built-in image_gen: targeted base-screen edit and new reference-guided cannon; uniform nearest-neighbor export; no repainting",
+  "portrait": {
+    "source": "portrait-v3.png",
+    "runtime": "Assets/Art/Planets/UnionPrime/LaserPortrait.png",
+    "sha256": "757fe1bf73988912ab20ecc628593de30a7f499fc338e0f430f84d75dda11836"
+  },
+  "prefab": {
+    "path": "Assets/Prefabs/Towers/LaserTowerVisual.prefab",
+    "guid": "b9147274199541b5ad39d6b6393d6d55",
+    "base_renderer_local_position": [
+      0.01,
+      0.35
+    ],
+    "gun_renderer_local_position": [
+      0,
+      0.115
+    ]
+  },
+  "verification": {
+    "sampled_angles": 241,
+    "angle_step_degrees": 0.5,
+    "alpha_threshold": 128,
+    "allowed_joint_overlap_radius_pixels": 12,
+    "max_opaque_overlap_outside_joint_pixels": 0,
+    "max_muzzle_ray_overlap_with_base_pixels": 0,
+    "projectile_corridor_width_pixels": 7,
+    "max_projectile_corridor_overlap_with_base_pixels": 0,
+    "minimum_joint_contact_pixels": 92,
+    "neutral_assembled_bounds": [
+      64,
+      100,
+      138,
+      176
+    ]
+  },
+  "expression_revision": {
+    "date": "2026-11-08",
+    "prompt": "base-expression.prompt-v5.txt",
+    "reference": "Art/Towers/Sniper/base-source-v2.png",
+    "description": "Focused eyes/brows, small square nose and tiny coral mouth matching other tower operators.",
+    "mode": "built-in image_gen; targeted reference-guided facial expression edit; original source retained",
+    "edit_target": "base-generated-v3.png"
+  }
+}

@@ -1,11 +1,11 @@
 {
-  "status": "user accepted compact split design; verified offline sweep; not imported into Unity",
+  "status": "screen-equipped base and revised laser cannon; offline sweep; Unity validation not run",
   "source_sha256": {
-    "Art/Towers/Laser/Redesign/Sweep/base-generated.png": "258a3c6bdc0702974618c50306220f80e4b8798682b01500874beb6a41bd8c43",
-    "Art/Towers/Laser/Redesign/Sweep/gun-generated.png": "d9ded8ab883f898df2a8f6bde1018c5a38110c534254dd1106b855cdea7f8f92",
+    "Art/Towers/Laser/Redesign/Sweep/base-generated-v5.png": "868f0f23e8e6b14452ce739576167b7817314cbb3a148deb2fd23726d9fb58a5",
+    "Art/Towers/Laser/Redesign/Sweep/gun-generated-v3.png": "54c347f5285ca3483c6cc1fe6005c5ca4410c52d23ee4a1dabaf8ad0adc6bed1",
     "Art/Towers/Laser/Redesign/Sweep/site-mounts.json": "aa030daab1d7a506d752735d3422b73c7109fe19c97811bc2a31922c1e2220da",
-    "Art/Planets/UnionPrime/Composition/planet-assembled.png": "391d560bf1cde14a7ee4083252aca34679b9214984476f00eb7df1a3995ec4b0",
-    "Art/Planets/UnionPrime/Circular/terrain-circular.png": "b9111f71035b2bcc76de428e8e8f00940c6913606fe888518051649e24395584"
+    "Art/Planets/UnionPrime/planet-empty.png": "286d69ec657dfc23b2f72df79f1d664572b32149acb29f069b1b42be5954d443",
+    "Art/Planets/UnionPrime/terrain.png": "b5b9db4a39f6ceb24171821e5c1add8e1c109b5b1be5e4255e56812ac9be1be3"
   },
   "coordinates": "pixel edges from top-left; positive study angles clockwise from local outward",
   "base": {
@@ -14,10 +14,10 @@
       72
     ],
     "source_crop": [
-      249,
-      360,
-      967,
-      1097
+      250,
+      359,
+      969,
+      1102
     ],
     "mount": [
       34,
@@ -34,18 +34,18 @@
       33
     ],
     "source_crop": [
-      259,
-      309,
-      863,
-      1152
+      451,
+      158,
+      926,
+      1150
     ],
     "hinge": [
       12,
       28
     ],
     "muzzle": [
-      12,
-      3
+      14.5,
+      0
     ]
   },
   "aim_limits_degrees": [
@@ -223,11 +223,13 @@
     "allowed_joint_overlap_radius_pixels": 12,
     "max_opaque_overlap_outside_joint_pixels": 0,
     "max_muzzle_ray_overlap_with_base_pixels": 0,
-    "minimum_joint_contact_pixels": 115,
+    "projectile_corridor_width_pixels": 7,
+    "max_projectile_corridor_overlap_with_base_pixels": 0,
+    "minimum_joint_contact_pixels": 92,
     "neutral_assembled_bounds": [
       64,
       100,
-      140,
+      138,
       176
     ]
   },

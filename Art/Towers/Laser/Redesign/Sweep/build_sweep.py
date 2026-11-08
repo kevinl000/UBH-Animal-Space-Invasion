@@ -16,7 +16,7 @@ NEAREST = Image.Resampling.NEAREST
 BASE_HINGE = (64, 24)
 BASE_MOUNT = (34, 71)
 BARREL_HINGE = (12, 28)
-MUZZLE = (12, 3)
+MUZZLE = (14.5, 0)
 ORIGIN = (128, 128)
 ANGLES = (-60, -30, 0, 30, 60)
 OUTWARD_MOUNT_OFFSET = 16
@@ -26,12 +26,16 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def pack(filename, width):
-    source = Image.open(HERE / filename).convert("RGBA")
-    bounds = source.getchannel("A").point(lambda a: 255 if a >= 128 else 0).getbbox()
-    crop = source.crop(bounds)
-    sprite = crop.resize((width, round(crop.height * width / crop.width)), NEAREST)
-    return sprite, list(bounds)
+def pack(part):
+    source = Image.open(HERE / part["source"]).convert("RGBA")
+    export = part["export"]
+    scale = export["uniform_scale"]
+    sx, sy = export["source_anchor_top_left_pixels"]
+    dx, dy = export["destination_anchor_top_left_pixels"]
+    # Uniform nearest-neighbor scaling and translation only; never repaint art.
+    sprite = source.transform(tuple(part["size"]), Image.Transform.AFFINE,
+                              (1/scale, 0, sx-dx/scale, 0, 1/scale, sy-dy/scale), NEAREST)
+    return sprite, export["source_bounds_alpha128"]
 
 
 def canvas():
@@ -53,13 +57,14 @@ def turn(im, clockwise):
 
 
 def main():
+    setup = json.loads((HERE / "assembly.json").read_text())
     planet_path = ROOT / "Art/Planets/UnionPrime/planet-empty.png"
     terrain_path = ROOT / "Art/Planets/UnionPrime/terrain.png"
-    inputs = [HERE / "base-generated.png", HERE / "gun-generated.png",
+    inputs = [HERE / setup["base"]["source"], HERE / setup["weapon"]["source"],
               HERE / "site-mounts.json", planet_path, terrain_path]
     hashes = {path.relative_to(ROOT).as_posix(): digest(path) for path in inputs}
-    base, base_crop = pack("base-generated.png", 70)
-    barrel, barrel_crop = pack("gun-generated.png", 24)
+    base, base_crop = pack(setup["base"])
+    barrel, barrel_crop = pack(setup["weapon"])
     assert base.size == (70, 72) and barrel.size == (24, 33)
     base.save(HERE / "base-sprite.png")
     barrel.save(HERE / "gun-sprite.png")
@@ -78,19 +83,30 @@ def main():
     ImageDraw.Draw(protected).ellipse((116, 116, 140, 140), fill=0)
     overlaps = {}
     shot_overlaps = {}
+    wide_shot_overlaps = {}
     joint_contacts = {}
     muzzle_ray = Image.new("L", base_layer.size)
     muzzle_on_canvas = tuple(o + m - h for o, m, h in zip(ORIGIN, MUZZLE, BARREL_HINGE))
     ImageDraw.Draw(muzzle_ray).line((muzzle_on_canvas[0], 0, *muzzle_on_canvas), fill=255, width=1)
+    # Seven logical pixels conservatively cover the current ~5.2-pixel bolt width.
+    wide_muzzle_ray = Image.new("L", base_layer.size)
+    ImageDraw.Draw(wide_muzzle_ray).line((muzzle_on_canvas[0], 0, *muzzle_on_canvas), fill=255, width=7)
     solid_base = base_layer.getchannel("A").point(lambda a: 255 if a >= 128 else 0)
+    # The operator screen remains protected even near the allowed joint region.
+    x0, y0, x1, y1 = setup["base"]["operator_screen_bounds_top_left_pixels"]
+    screen_box = (ORIGIN[0]-BASE_HINGE[0]+x0, ORIGIN[1]-BASE_HINGE[1]+y0,
+                  ORIGIN[0]-BASE_HINGE[0]+x1, ORIGIN[1]-BASE_HINGE[1]+y1)
+    protected.paste(solid_base.crop(screen_box), screen_box)
     for step in range(-120, 121):
         angle = step / 2
         moving = turn(weapon_layer, angle).getchannel("A").point(lambda a: 255 if a >= 128 else 0)
         overlaps[angle] = ImageChops.multiply(protected, moving).histogram()[255]
         shot_overlaps[angle] = ImageChops.multiply(solid_base, turn(muzzle_ray, angle)).histogram()[255]
+        wide_shot_overlaps[angle] = ImageChops.multiply(solid_base, turn(wide_muzzle_ray, angle)).histogram()[255]
         joint_contacts[angle] = ImageChops.multiply(solid_base, moving).histogram()[255]
     assert max(overlaps.values()) == 0, ("body overlap", max(overlaps.values()))
     assert max(shot_overlaps.values()) == 0, ("muzzle ray overlap", max(shot_overlaps.values()))
+    assert max(wide_shot_overlaps.values()) == 0, ("full bolt corridor overlap", max(wide_shot_overlaps.values()))
     assert min(joint_contacts.values()) > 0, "A detached weapon pose was found"
 
     bounds = (57, 91, 168, 184)
@@ -174,7 +190,7 @@ def main():
         draw.text((i*640+12, 10), f"All sites {angle:+d} degrees | offline 640 px canvas", fill="white")
     page.save(HERE / "page-scale-sweep.png")
     manifest = {
-        "status": "user accepted compact split design; verified offline sweep; not imported into Unity",
+        "status": "screen-equipped base and revised laser cannon; offline sweep; Unity validation not run",
         "source_sha256": hashes,
         "coordinates": "pixel edges from top-left; positive study angles clockwise from local outward",
         "base": {"size": list(base.size), "source_crop": base_crop,
@@ -189,6 +205,8 @@ def main():
                    "allowed_joint_overlap_radius_pixels": 12,
                    "max_opaque_overlap_outside_joint_pixels": max(overlaps.values()),
                    "max_muzzle_ray_overlap_with_base_pixels": max(shot_overlaps.values()),
+                   "projectile_corridor_width_pixels": 7,
+                   "max_projectile_corridor_overlap_with_base_pixels": max(wide_shot_overlaps.values()),
                    "minimum_joint_contact_pixels": min(joint_contacts.values()),
                    "neutral_assembled_bounds": list(assembly(0).getbbox())},
         "limitations": ["Offline raster sampling is not Unity collision or gameplay validation.",
