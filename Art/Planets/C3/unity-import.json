@@ -1,0 +1,54 @@
+{
+  "status": "Approved C3 artwork integrated into existing visual prefab.",
+  "images": {
+    "grillTerrain": {
+      "guid": "d1d69fb723814fd9a6c204bab6e3fce5",
+      "source": "Art/Planets/C3/FittedSites/grill-terrain-background.png",
+      "target": "Assets/Art/Planets/C3/GrillTerrain.png",
+      "sha256": "70feb6998340d5a3143861885ce7bcd9c2bcdb3e1365646b256768818fc3c99c"
+    },
+    "grillSocketFronts": {
+      "guid": "139b514cf95543e296f339631fee84aa",
+      "source": "Art/Planets/C3/FittedSites/grill-socket-fronts.png",
+      "target": "Assets/Art/Planets/C3/GrillSocketFronts.png",
+      "sha256": "c067ad0fec6367d00279f04e12e836fa9bcc63df3ad789aa84511992a42861c8"
+    },
+    "saladTerrain": {
+      "guid": "0e3a6e5c98624e54952c73e188bb6cec",
+      "source": "Art/Planets/C3/FittedSites/salad-terrain-background.png",
+      "target": "Assets/Art/Planets/C3/SaladTerrain.png",
+      "sha256": "ebfeb181e84a14b5f9e25433f7067e9e146037b2ab688dacb49459f86c683c1b"
+    },
+    "saladSocketFronts": {
+      "guid": "ab4809b7151c4b8dac584429c410707f",
+      "source": "Art/Planets/C3/FittedSites/salad-socket-fronts.png",
+      "target": "Assets/Art/Planets/C3/SaladSocketFronts.png",
+      "sha256": "9db6bddb669b8c87957db32a393cd0842281d12e150d3d04c3c8d45bf33a20f8"
+    },
+    "bakeryTerrain": {
+      "guid": "f29379c03c494d51aff0fbbd7e5d21de",
+      "source": "Art/Planets/C3/FittedSites/bakery-terrain-background.png",
+      "target": "Assets/Art/Planets/C3/BakeryTerrain.png",
+      "sha256": "2044e6183f80f724d68ba962d7ace202106330bf34fa9e231f0cb8c4c15f3a93"
+    },
+    "bakerySocketFronts": {
+      "guid": "d9831356f80d4e0ebd6b52fb215b3049",
+      "source": "Art/Planets/C3/FittedSites/bakery-socket-fronts.png",
+      "target": "Assets/Art/Planets/C3/BakerySocketFronts.png",
+      "sha256": "1a477f5d12c60a332a5547495093099231a8d19e7b5f8b82566f0c738db36016"
+    }
+  },
+  "prefab": "Assets/UI/Planets/C3Visual.prefab",
+  "canvas_width_per_planet": 240,
+  "tower_scale": 3.125,
+  "tower_base_display_size": [
+    41.866028708133975,
+    43.0622009569378
+  ],
+  "orbit_radius": 180.0,
+  "spacing_relative_to_approved_review": 0.7524,
+  "clockwise_orbit_degrees_per_second": 4,
+  "clockwise_spin_degrees_per_second": 10,
+  "socket_count": 18,
+  "note": "Visual/free Laser sandbox only; no gameplay balance or shared scene edits."
+}

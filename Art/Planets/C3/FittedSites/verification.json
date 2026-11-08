@@ -1,0 +1,47 @@
+{
+  "scope": "Offline rendered contacts and lip occlusion; not Unity validation.",
+  "planets": [
+    {
+      "theme": "grill",
+      "sites": 6,
+      "foundation_contacts_supported": 372,
+      "upper_base_pixels_hidden": 0,
+      "gun_pixels_hidden": 0,
+      "gun_pixels_checked": 11502,
+      "aiming_poses": [
+        -60,
+        0,
+        60
+      ]
+    },
+    {
+      "theme": "salad",
+      "sites": 6,
+      "foundation_contacts_supported": 372,
+      "upper_base_pixels_hidden": 0,
+      "gun_pixels_hidden": 0,
+      "gun_pixels_checked": 11502,
+      "aiming_poses": [
+        -60,
+        0,
+        60
+      ]
+    },
+    {
+      "theme": "bakery",
+      "sites": 6,
+      "foundation_contacts_supported": 372,
+      "upper_base_pixels_hidden": 0,
+      "gun_pixels_hidden": 0,
+      "gun_pixels_checked": 11502,
+      "aiming_poses": [
+        -60,
+        0,
+        60
+      ]
+    }
+  ],
+  "total_sites": 18,
+  "foundation_contacts_supported": 1116,
+  "conservative_preview_envelope_clearance_pixels": 61.88124476496125
+}

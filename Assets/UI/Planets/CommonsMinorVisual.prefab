@@ -1,5 +1,44 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5353438425906219901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 151243226318504134}
+  - component: {fileID: 746212930054721001}
+  m_Layer: 0
+  m_Name: CommonsMinorVisual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &151243226318504134
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353438425906219901}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2275033562023057916}
+  - {fileID: 900000000000010001}
+  - {fileID: 900000000000020001}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 900, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2945820775897371873
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +51,7 @@ GameObject:
   - component: {fileID: 3566527239471902834}
   - component: {fileID: 5563255122975793516}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +74,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 428.57142857142856, y: 428.57142857142856}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3566527239471902834
 CanvasRenderer:
@@ -55,17 +94,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.60784316, g: 0.7176471, b: 0.85490197, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ea4ce466be282fd4e9ae445e13db054c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0603b2a1ec3643e18d578f00b6338cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -75,7 +114,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5353438425906219901
+--- !u!1 &900000000000010000
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,31 +122,155 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 151243226318504134}
+  - component: {fileID: 900000000000010001}
   m_Layer: 0
-  m_Name: CommonsMinorVisual
+  m_Name: PlacedLasers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &151243226318504134
+--- !u!224 &900000000000010001
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5353438425906219901}
+  m_GameObject: {fileID: 900000000000010000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3417634996582365, y: 0.3417634996582365, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2275033562023057916}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 151243226318504134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 600}
+  m_SizeDelta: {x: 1254, y: 1254}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &900000000000020000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900000000000020001}
+  - component: {fileID: 900000000000020002}
+  - component: {fileID: 900000000000020003}
+  m_Layer: 0
+  m_Name: SocketFronts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &900000000000020001
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000020000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 151243226318504134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 428.57142857142856, y: 428.57142857142856}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &900000000000020002
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000020000}
+  m_CullTransparentMesh: 1
+--- !u!114 &900000000000020003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000020000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: fab407931a1949c2bd30ca6d76dd3e53, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &746212930054721001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353438425906219901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ecce2bdd7e4e23acfe81ad388fbfac, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: PlanetaryDefense.Menu::UnionPrimeVisualTest
+  silhouette: {fileID: 0}
+  rearGround: {fileID: 0}
+  terrain: {fileID: 0}
+  foreground: {fileID: 0}
+  laserBase: {fileID: 21300000, guid: 0c8924ea89a048feb58dd1d402d014e6, type: 3}
+  laserGun: {fileID: 21300000, guid: 847ed1acf4a94fa9b34f694e2f4fa78c, type: 3}
+  laserPortrait: {fileID: 21300000, guid: 9238f1ac9e7146a8802f48e35aa02593, type: 3}
+  laser: {fileID: 11400000, guid: 2b4cd92d87b1e3a48acc6589d3da6738, type: 2}
+  facades: []
+  sites:
+  - number: 1
+    mount: {x: 627.0, y: 366.75}
+    clockwiseAngle: 0
+  - number: 2
+    mount: {x: 881.0648990940516, y: 465.92172942406177}
+    clockwiseAngle: 36
+  - number: 3
+    mount: {x: 992.25, y: 697.0}
+    clockwiseAngle: 90
+  - number: 4
+    mount: {x: 868.5701749774984, y: 981.5701749774985}
+    clockwiseAngle: 135
+  - number: 5
+    mount: {x: 627.0, y: 1083.5}
+    clockwiseAngle: 180
+  - number: 6
+    mount: {x: 382.25304832720497, y: 981.746951672795}
+    clockwiseAngle: 225
+  - number: 7
+    mount: {x: 260.75, y: 697.0}
+    clockwiseAngle: 270
+  - number: 8
+    mount: {x: 370.9351009059484, y: 465.92172942406177}
+    clockwiseAngle: 324
+  preparedTowerLayer: {fileID: 900000000000010001}
+  sourceSize: {x: 1254, y: 1254}
+  towerScale: 1.75
+  siteLabel: socket

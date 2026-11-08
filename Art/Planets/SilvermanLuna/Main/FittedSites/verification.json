@@ -1,0 +1,19 @@
+{
+  "scope": "offline rendered support and rim occlusion",
+  "sites": 12,
+  "foundation_samples_supported": 744,
+  "upper_base_pixels_hidden": 0,
+  "gun_pixels_hidden": 0,
+  "gun_pixels_checked": 23004,
+  "aiming_poses": [
+    -60,
+    0,
+    60
+  ],
+  "globe_ground_seam_samples": 14760,
+  "ground_inner_radius_range": [
+    389,
+    391
+  ],
+  "refined_main_source_sha256": "2eee0be6c9704e09058fc5d833296eadc1ea6b4606422e3c74f6a641517dc5cb"
+}

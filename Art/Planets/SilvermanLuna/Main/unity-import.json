@@ -1,0 +1,42 @@
+{
+  "images": {
+    "Globe": {
+      "guid": "c4b985085872498fa12669143b6eb067",
+      "source": "Art/Planets/SilvermanLuna/Main/FittedSites/globe.png",
+      "sha256": "a1162db14c751765857fc1ef5a310b3ab0eb2601c00ce91326f3e706dc8ff5ff"
+    },
+    "Terrain": {
+      "guid": "b386bc45a5df4777b34f2c351f745031",
+      "source": "Art/Planets/SilvermanLuna/Main/FittedSites/terrain-background.png",
+      "sha256": "5b4f848e292113ae90b2c28448080fc55bce5d4664e172d4559c333da77d5d33"
+    },
+    "SocketFronts": {
+      "guid": "0da78241cdc440ff95fa644358af20b2",
+      "source": "Art/Planets/SilvermanLuna/Main/FittedSites/socket-fronts.png",
+      "sha256": "cb08168596063b479c806704941a112d59ee2ccaf417db4111c2e5877852503d"
+    },
+    "MoonTerrain": {
+      "guid": "69a62396aede44d6adc821c5fe2e78ca",
+      "source": "Art/Planets/SilvermanLuna/Moon/FittedSites/terrain-background.png",
+      "sha256": "efa4888f81d43b5f6dc41a49010a5ac71a694c815ca77e546676c42f5b27d86c"
+    },
+    "MoonSocketFronts": {
+      "guid": "1be999c5119648c881be834c1bd19dcf",
+      "source": "Art/Planets/SilvermanLuna/Moon/FittedSites/socket-fronts.png",
+      "sha256": "83296de7689642af7247d1d2adc2f737ea767641c021a226502c3765a4bd87dd"
+    }
+  },
+  "prefab": "Assets/UI/Planets/SilvermanLunaVisual.prefab",
+  "main_sites": 12,
+  "main_canvas_width": 600,
+  "main_tower_scale": 1.25,
+  "moon_sites": 4,
+  "moon_canvas_width": 180,
+  "moon_position": [
+    385,
+    190
+  ],
+  "moon_tower_scale": 4.166666666666667,
+  "orbit_and_rotation_configured": false,
+  "note": "Uses existing free Laser placement. No gameplay scripts or scene changes."
+}

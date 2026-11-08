@@ -1,0 +1,13 @@
+{
+  "scope": "offline rendered foundation and occlusion checks",
+  "sites": 8,
+  "foundation_samples_supported": 496,
+  "upper_base_pixels_hidden": 0,
+  "gun_pixels_hidden": 0,
+  "gun_pixels_checked": 15336,
+  "aiming_poses": [
+    -60,
+    0,
+    60
+  ]
+}
