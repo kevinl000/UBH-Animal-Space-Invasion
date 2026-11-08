@@ -31,9 +31,9 @@ scene-setup menu on Union Prime.** Its guard leaves configured scenes alone.
   cost shares/budgets, 20-second spawn windows, 10-second breaks, spawn interval,
   minibosses, four allowed tower types, starter slots, random final-boss pool,
   three-second entrance and next destination.
-- `Assets/Scriptable Objects/Levels/UnionPrime.asset`: 100 starting HP, 10 money,
+- `Assets/Scriptable Objects/Levels/UnionPrime.asset`: 50 starting HP, 10 money,
   50 fuel, radius 3.3 and clockwise rotation at 6 degrees/second. All existing
-  level data assets and new LevelData defaults start at 10 money / 50 fuel.
+  level data assets and new LevelData defaults start at 50 HP / 10 money / 50 fuel.
 - `Assets/Scripts/Gameplay/GameplayLoopController.cs`: phase transitions,
   permissions, boss camera entrance and win/loss. Combat and input consult this
   controller; they do not keep competing wave or result clocks.
@@ -139,7 +139,7 @@ contacts, Animator playback, viewport readability or live UI interaction.
 
 ## Manual Unity review
 
-1. Open Union Prime directly and through the menu. Confirm 100 HP / 10 money /
+1. Open Union Prime directly and through the menu. Confirm 50 HP / 10 money /
    50 fuel, two opposite Lasers, twelve sockets and only four available towers.
    Confirm it starts at 1x, the planet rotates, and both starter Lasers follow
    their sockets before pressing Start. Build by clicking the planet and by

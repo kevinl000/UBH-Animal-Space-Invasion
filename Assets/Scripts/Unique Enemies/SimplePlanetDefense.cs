@@ -21,7 +21,7 @@ public class SimplePlanetDefense : MonoBehaviour, IPlanetDefense
     [Tooltip("Angle of slot 0 before any rotation.")]
     public float slot0Angle = 90f;
     [Tooltip("Planet HP. If a LevelData is assigned, its planetMaxHealth is used instead.")]
-    public float planetMaxHealth = 100f;
+    public float planetMaxHealth = 50f;
     public LevelData level;
 
     public float PlanetHealth { get; private set; }

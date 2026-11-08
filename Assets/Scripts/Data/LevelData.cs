@@ -29,7 +29,7 @@ public class LevelData : ScriptableObject
     public int money = 10; // starting money
     public float fuel = 50f; // starting fuel
 
-    public float planetMaxHealth;
+    public float planetMaxHealth = 50f;
     public float planetRotationSpeed;
     public float planetGravity;
     public float planetRadius;

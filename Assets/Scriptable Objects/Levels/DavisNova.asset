@@ -59,7 +59,7 @@ MonoBehaviour:
     isLevelBoss: 1
   money: 10
   fuel: 50
-  planetMaxHealth: 100
+  planetMaxHealth: 50
   planetRotationSpeed: 6
   planetGravity: 0
   planetRadius: 0
