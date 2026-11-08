@@ -6,7 +6,7 @@ Open [preview.html](preview.html) locally to aim or play the **120-degree sweep,
 
 ## Attack intent and scope
 
-The user confirmed a **localized electric burst that damages every enemy in the affected area**, aimed within the 120-degree sweep. There is no fixed recipient count or capped chain. The whole 120-degree aiming sector is not the burst footprint. Burst radius, range, cadence and electricity projectile/impact artwork remain undecided; no numeric area is inferred from the FOV.
+The user confirmed a **localized electric burst that damages every enemy in the affected area**, aimed within the 120-degree sweep. There is no fixed recipient count or capped chain. The whole 120-degree aiming sector is not the burst footprint. Burst radius, range and cadence remain undecided; no numeric area is inferred from the FOV. The separate [Tesla output assets](../../Projectiles/RabbitTesla/README.md) now provide a traveling electric bolt, electrode flash and localized burst. Open their [interactive preview](../../Projectiles/RabbitTesla/preview.html) to review a shot; gameplay remains unconnected.
 
 The main README row lists unlock level 3, HP 25, cost 15, fuel -3/s, FOV 120 degrees, damage 2 and AoE. This is twice Bomb's listed damage of 1; a larger radius or faster fire rate is not assumed. These assets add no gameplay data or implementation.
 

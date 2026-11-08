@@ -1,0 +1,14 @@
+Generation mode: built-in image_gen; targeted edit of rabbit-tesla-sheet-source-v1.png.
+
+Use case: precise-object-edit, game sprite sheet correction.
+Edit target: supplied Tesla electricity sheet. Keep its cyan/ivory/teal palette and the same 8 sprite roles and cell ordering. Correct the framing and alpha so it can be sliced; remove all the noisy glow/haze and simplify into clean stepped pixel clusters.
+CRITICAL OUTPUT: square 1254x1254 REAL TRANSPARENT PNG. Invisible 3x3 grid, each cell exactly418x418. No art may approach within50px of any cell edge. The bottom-left burst is currently oversized and clipped: shrink it to fit ENTIRELY inside the bottom-left cell, centered209,1045, maximum diameter270px. It must not cross x418 or y1254. Keep every other sprite equally contained, not cropped.
+Top-left/top-middle: compact jagged white-cyan right-facing electricity packets, each MAXIMUM200x80px centered209,209 and627,209. No long beam or huge halo.
+Top-right: tiny right-facing electrode flash MAX85x60px centered1045,209.
+Middle-left: smaller flash MAX50x40px centered209,627.
+Middle-middle: small ignition star MAX75x75px centered627,627.
+Middle-right: electrical burst intermediate MAX200x200px centered1045,627.
+Bottom-left: electrical burst peak MAX270x270px centered209,1045, entirely within cell. Broken jagged roughly circular lightning ring with LARGE TRANSPARENT GAPS and a TOTALLY TRANSPARENT CENTER at least120px across.
+Bottom-middle: sparse fading cyan ring fragments MAX270x270px centered627,1045.
+Bottom-right: EMPTY transparent.
+Make all energy graphics clean chunky hard-edged pixel art, with crisp ivory-white core and cyan/teal outline on REAL alpha. Remove all dust, stippling, hazy cyan backdrop, glow spray, soft halos and any translucent interior fill. BOTH ring-burst frames must have EMPTY TRANSPARENT CENTERS. Think sparse disconnected lightning segments, not a filled cloud. Transparent background and gutters. No black background, grid, labels, text, new subjects or extra frames.

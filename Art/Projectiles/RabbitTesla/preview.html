@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tesla electricity - art preview</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px; background: #111722; color: #eee8d8; font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 960px; margin: auto; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p, small { color: #bdc7d2; }
+  canvas { image-rendering: pixelated; }
+  #scene { display: block; width: 100%; background: #263142; border: 1px solid #526071; border-radius: 10px; }
+  .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 16px 0; }
+  input[type=range] { width: min(240px, 100%); accent-color: #38dfe5; }
+  button { padding: 8px 14px; border: 1px solid #55b5b8; border-radius: 6px; background: #24474c; color: #efffff; font: inherit; cursor: pointer; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  output { min-width: 54px; font-variant-numeric: tabular-nums; }
+  #frames { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 22px 0; }
+  figure { margin: 0; padding: 8px; background: #263142; border: 1px solid #465164; border-radius: 6px; text-align: center; }
+  figure canvas { display: block; width: 100%; }
+  figcaption { font-size: 13px; color: #d1d7d1; }
+  small { display: block; }
+</style>
+<main>
+  <h1>Tesla electricity</h1>
+  <p>A crackling electric bolt, a tiny electrode flash and a short localized AoE burst. Every target marker inside the preview radius flashes on impact.</p>
+  <canvas id="scene" width="960" height="700" aria-label="Tesla Coil aiming and localized electrical burst preview"></canvas>
+  <div class="controls">
+    <label for="angle">Aim</label><input id="angle" type="range" min="-60" max="60" step="0.5" value="0"><output id="degrees">0°</output>
+    <button id="fire" type="button" disabled>Preview shot</button>
+    <label><input id="repeat" type="checkbox"> Repeat</label>
+  </div>
+  <div class="controls">
+    <label for="radius">Preview radius</label><input id="radius" type="range" min="0.25" max="0.8" step="0.05" value="0.55"><output id="radius-value">0.55</output>
+    <label><input id="guides" type="checkbox"> Show radius and emission guides</label>
+    <span id="hit-count" aria-live="polite"></span>
+  </div>
+  <small>The radius, target markers, travel distance and timing here are illustrative. They do not configure gameplay. The 120° sweep is the aiming arc; the burst affects a localized area at the hit point. No stun, persistent field or fixed target count is implied.</small>
+  <div id="frames"></div>
+  <small>Frames are enlarged for inspection. Unity clips animate only sprites; gameplay must handle movement, firing, damage, replay and cleanup.</small>
+</main>
+<script id="asset-data" type="application/json">{"frames":[{"name":"RabbitTeslaFlight01","file_id":21300000,"rect":[0,836,418,418],"pivot":[0.215311004784689,0.4736842105263158],"anchor_top_left_pixels":[90,220],"anchor":"rear emission","visible_bounds_alpha16":[90,162,360,276],"strong_bounds_alpha128":[91,162,359,275]},{"name":"RabbitTeslaFlight02","file_id":21300002,"rect":[418,836,418,418],"pivot":[0.1674641148325359,0.4736842105263158],"anchor_top_left_pixels":[70,220],"anchor":"rear emission","visible_bounds_alpha16":[70,160,349,281],"strong_bounds_alpha128":[71,161,348,280]},{"name":"RabbitTeslaMuzzle01","file_id":21300004,"rect":[836,836,418,418],"pivot":[0.3181818181818182,0.47846889952153115],"anchor_top_left_pixels":[133,218],"anchor":"rear emission","visible_bounds_alpha16":[133,176,247,260],"strong_bounds_alpha128":[134,177,246,260]},{"name":"RabbitTeslaMuzzle02","file_id":21300006,"rect":[0,418,418,418],"pivot":[0.3803827751196172,0.5155502392344498],"anchor_top_left_pixels":[159,202.5],"anchor":"rear emission","visible_bounds_alpha16":[159,173,235,232],"strong_bounds_alpha128":[160,174,234,231]},{"name":"RabbitTeslaBurst01","file_id":21300008,"rect":[418,418,418,418],"pivot":[0.4988038277511962,0.5107655502392344],"anchor_top_left_pixels":[208.5,204.5],"anchor":"blast center","visible_bounds_alpha16":[159,157,258,252],"strong_bounds_alpha128":[160,158,257,251],"max_radius_pixels_alpha16":67.20863039818622},{"name":"RabbitTeslaBurst02","file_id":21300010,"rect":[836,418,418,418],"pivot":[0.45095693779904306,0.5263157894736843],"anchor_top_left_pixels":[188.5,198],"anchor":"blast center","visible_bounds_alpha16":[48,73,329,323],"strong_bounds_alpha128":[49,73,328,323],"max_radius_pixels_alpha16":148.99748320022053},{"name":"RabbitTeslaBurst03","file_id":21300012,"rect":[0,0,418,418],"pivot":[0.5167464114832536,0.5741626794258373],"anchor_top_left_pixels":[216,178],"anchor":"blast center","visible_bounds_alpha16":[54,18,378,338],"strong_bounds_alpha128":[55,18,377,337],"max_radius_pixels_alpha16":180.98204330816912},{"name":"RabbitTeslaBurst04","file_id":21300014,"rect":[418,0,418,418],"pivot":[0.4820574162679426,0.562200956937799],"anchor_top_left_pixels":[201.5,183],"anchor":"blast center","visible_bounds_alpha16":[53,46,350,320],"strong_bounds_alpha128":[54,47,349,319],"max_radius_pixels_alpha16":158.06406928837433}],"pixels_per_unit":1024,"sheet_size":[1254,1254],"scales":{"Flight":0.25,"Muzzle":0.35,"Burst":5.658019885742879},"tower":{"base":{"source":"base-source-v1.png","runtime":"Assets/Art/Towers/TeslaCoil/TeslaCoilBase.png","pixels_per_unit":1500,"ground_mount_top_left_pixels":[582,1204],"socket_top_left_pixels":[1091.5,478],"operator_screen_bounds_top_left_pixels":[745,555,955,780],"size":[1254,1254],"sha256":"d0c1eb3dee7f58bd8e914451a58a8f27d4c4bf2dc8307700fd75c0bd76749a19","guid":"6d366f4454c448f3ae266b3013afaf97"},"weapon":{"source":"emitter-source-v1.png","runtime":"Assets/Art/Towers/TeslaCoil/TeslaCoilEmitter.png","pixels_per_unit":2200,"hinge_top_left_pixels":[626.5,1064],"muzzle_top_left_pixels":[626.5,88],"size":[1254,1254],"sha256":"499f66f1192c7c869b2463a5397853fab89b9cb4a89b7b7de6f9d048625e1ada","guid":"8db024c6c96f48208e490169c0e00ab2"},"aim_limits_local_z_degrees":[-60,60],"firing_axis":"+Y","joint_exclusion_radius_world_units":0.12,"generation_mode":"built-in image_gen; reference-guided new v1 base and emitter; selected PNG bytes preserved in runtime","attack_intent":{"aim_sweep_degrees_total":120,"damage":2,"behavior":"Localized electric burst damages every eligible enemy inside its affected area; not the entire aiming sector and not a capped chain.","radius":null,"gameplay_implemented_by_these_assets":false,"effect_art_included":false},"cannon_local_position":[0.3396666666666667,0.484],"muzzle_local_position":[0.0,0.44363636363636366],"prefab":"Assets/Prefabs/Towers/TeslaCoilTowerVisual.prefab","prefab_guid":"754bbb7679ee4e418ec18ad1d51b3639","verification":{"angles":241,"angle_step_degrees":0.5,"weapon_sample_stride_source_pixels":4,"alpha_threshold":128,"joint_exclusion_radius_world_units":0.12,"max_protected_overlap_samples":0,"min_joint_contact_samples":5611,"max_muzzle_ray_base_samples":0,"ray_length_world_units":2,"limitations":["Sampled raster geometry, not a continuous collision proof.","Only the joint and upper support are excluded; the operator screen is always protected.","A clear centerline does not establish arbitrary projectile-width clearance.","Planet seating, neighbors and final camera readability remain unverified.","No Unity validation or tests run."],"native_prefab_and_import_references":"passed","new_asset_guid_uniqueness":"passed","preview_local_image_references":"passed","preview_javascript_syntax":"passed node --check; browser rendering not exercised"}}}</script>
+<script>
+const data = JSON.parse(document.querySelector('#asset-data').textContent);
+const canvas = document.querySelector('#scene'), ctx = canvas.getContext('2d');
+const slider = document.querySelector('#angle'), radiusSlider = document.querySelector('#radius');
+const fire = document.querySelector('#fire'), repeat = document.querySelector('#repeat');
+const guides = document.querySelector('#guides');
+const density = 210, origin = [420, 660], travel = 1.1, flightTime = 0.32;
+const targets = [[0, 0], [-0.2, 0.05], [0.28, -0.18], [-0.4, -0.25], [0.51, 0.12], [-0.63, 0.28], [0.75, -0.1]];
+let images, started = null, ready = false, phase = 'idle';
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = src;
+  });
+}
+function drawPart(image, part, anchor) {
+  const scale = density / part.pixels_per_unit;
+  ctx.drawImage(image, -anchor[0]*scale, -anchor[1]*scale, part.size[0]*scale, part.size[1]*scale);
+}
+function sprite(index, scale) {
+  const frame = data.frames[index], [x,y,w,h] = frame.rect, [ax,ay] = frame.anchor_top_left_pixels;
+  const factor = density / data.pixels_per_unit * scale;
+  ctx.drawImage(images[0], x, data.sheet_size[1]-y-h, w, h, -ax*factor, -ay*factor, w*factor, h*factor);
+}
+function currentGeometry() {
+  const tower = data.tower, angle = Number(slider.value)*Math.PI/180;
+  const pivot = [origin[0]+tower.cannon_local_position[0]*density, origin[1]-tower.cannon_local_position[1]*density];
+  const distance = tower.muzzle_local_position[1];
+  const tip = [pivot[0]-Math.sin(angle)*distance*density, pivot[1]-Math.cos(angle)*distance*density];
+  const target = [tip[0]-Math.sin(angle)*travel*density, tip[1]-Math.cos(angle)*travel*density];
+  return { angle, pivot, tip, target };
+}
+function render(time = null) {
+  const geometry = currentGeometry(), radius = Number(radiusSlider.value);
+  const impact = time === null ? -1 : time-flightTime;
+  const activeBurst = impact >= 0 && impact < 0.25;
+  phase = time === null ? 'idle' : time < flightTime ? 'flight' : activeBurst ? 'burst' : 'after';
+  ctx.clearRect(0,0,canvas.width,canvas.height); ctx.imageSmoothingEnabled = false;
+  ctx.save(); ctx.translate(...origin); drawPart(images[1], data.tower.base, data.tower.base.ground_mount_top_left_pixels); ctx.restore();
+  ctx.save(); ctx.translate(...geometry.pivot); ctx.rotate(-geometry.angle);
+  drawPart(images[2], data.tower.weapon, data.tower.weapon.hinge_top_left_pixels); ctx.restore();
+  if (guides.checked) {
+    ctx.save(); ctx.strokeStyle = '#78dfe777'; ctx.lineWidth = 1; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.arc(...geometry.target, radius*density, 0, Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(...geometry.tip); ctx.lineTo(...geometry.target); ctx.stroke(); ctx.restore();
+  }
+  let hitCount = 0;
+  targets.forEach(([x,y], index) => {
+    const included = Math.hypot(x,y) <= radius; if (included) hitCount++;
+    const hit = activeBurst && included;
+    ctx.save(); ctx.translate(geometry.target[0]+x*density, geometry.target[1]+y*density);
+    ctx.strokeStyle = hit ? '#e8ffff' : '#8798af'; ctx.fillStyle = hit ? '#3bd9e4' : '#354357'; ctx.lineWidth = hit ? 3 : 1;
+    ctx.beginPath(); ctx.arc(0,0,index===0 ? 10 : 8,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    if (hit) {
+      ctx.beginPath(); ctx.moveTo(-4,-3); ctx.lineTo(1,-3); ctx.lineTo(-2,2); ctx.lineTo(4,2); ctx.stroke();
+    }
+    ctx.restore();
+  });
+  document.querySelector('#hit-count').textContent = `${hitCount} of ${targets.length} markers inside preview radius`;
+  if (time !== null && time < 2/24) {
+    ctx.save(); ctx.translate(...geometry.tip); ctx.rotate(-geometry.angle-Math.PI/2);
+    sprite(time < 1/24 ? 2 : 3, data.scales.Muzzle); ctx.restore();
+  }
+  if (time !== null && time < flightTime) {
+    const frame = Math.floor(time*12)%2;
+    const bodyLength = Math.max(...data.frames.slice(0,2).map(f => (f.visible_bounds_alpha16[2]-f.anchor_top_left_pixels[0])/data.pixels_per_unit*data.scales.Flight));
+    const distance = time/flightTime*(travel-bodyLength);
+    ctx.save(); ctx.translate(geometry.tip[0]-Math.sin(geometry.angle)*distance*density, geometry.tip[1]-Math.cos(geometry.angle)*distance*density);
+    ctx.rotate(-geometry.angle-Math.PI/2); sprite(frame, data.scales.Flight); ctx.restore();
+  }
+  if (activeBurst) {
+    ctx.save(); ctx.translate(...geometry.target); sprite(4+Math.floor(impact*16), radius*data.scales.Burst); ctx.restore();
+  }
+}
+function setBusy(busy) { fire.disabled = busy; slider.disabled = busy; radiusSlider.disabled = busy; }
+function animate(timestamp) {
+  if (started === null) started = timestamp;
+  const time = (timestamp-started)/1000;
+  render(time);
+  if (time < flightTime+0.25+0.35) requestAnimationFrame(animate);
+  else {
+    started = null; render(); setBusy(false);
+    if (repeat.checked) startShot();
+  }
+}
+function startShot() { if (!ready || fire.disabled) return; setBusy(true); requestAnimationFrame(animate); }
+fire.addEventListener('click', startShot);
+repeat.addEventListener('change', () => { if (repeat.checked) startShot(); });
+slider.addEventListener('input', () => { document.querySelector('#degrees').value = `${Number(slider.value).toFixed(1)}°`; if (ready) render(); });
+radiusSlider.addEventListener('input', () => { document.querySelector('#radius-value').value = Number(radiusSlider.value).toFixed(2); if (ready) render(); });
+guides.addEventListener('change', () => { if (ready && !fire.disabled) render(); });
+const params = new URLSearchParams(location.search);
+if (params.has('angle')) slider.value = Math.max(-60, Math.min(60, Number(params.get('angle')) || 0));
+if (params.has('radius')) radiusSlider.value = Math.max(0.25, Math.min(0.8, Number(params.get('radius')) || 0.55));
+document.querySelector('#degrees').value = `${Number(slider.value).toFixed(1)}°`;
+document.querySelector('#radius-value').value = Number(radiusSlider.value).toFixed(2);
+Promise.all([
+  loadImage('rabbit-tesla-sheet-source-v2.png'),
+  loadImage('../../Towers/TeslaCoil/base-source-v1.png'),
+  loadImage('../../Towers/TeslaCoil/emitter-source-v1.png')
+]).then(loaded => {
+  images = loaded;
+  data.frames.forEach(frame => {
+    const figure = document.createElement('figure'), sample = document.createElement('canvas'), caption = document.createElement('figcaption');
+    sample.width = 320; sample.height = 320;
+    const c = sample.getContext('2d'), [x,y,w,h] = frame.rect, b = frame.visible_bounds_alpha16;
+    c.imageSmoothingEnabled = false;
+    const width = b[2]-b[0], height = b[3]-b[1], scale = Math.min(1, 290/width, 290/height);
+    c.drawImage(images[0], x+b[0], data.sheet_size[1]-y-h+b[1], width,height,(320-width*scale)/2,(320-height*scale)/2,width*scale,height*scale);
+    caption.textContent = frame.name.replace('RabbitTesla', '');
+    figure.append(sample,caption); document.querySelector('#frames').append(figure);
+  });
+  ready = true; render(); fire.disabled = false;
+  const still = Number(params.get('t'));
+  if (params.has('t') && Number.isFinite(still)) render(Math.max(0,still));
+}).catch(error => {
+  document.querySelector('p').textContent = 'Could not load local sprites. Keep this preview with the source sheet and Tesla Coil art folder.';
+  console.error(error);
+});
+</script>
+</html>

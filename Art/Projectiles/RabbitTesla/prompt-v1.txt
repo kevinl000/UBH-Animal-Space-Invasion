@@ -1,0 +1,17 @@
+Generation mode: built-in image_gen; reference-guided new sheet generation, real alpha requested.
+Reference: Art/Towers/TeslaCoil/emitter-source-v1.png (palette/pixel style only).
+
+Use case: game-asset. Asset type: transparent pixel-art sprite sheet for Unity 2D tower defense.
+Primary request: Tesla Coil tower output: a traveling cyan-white crackling electric bolt, a tiny electrode flash, and a localized radius-AoE electrical burst. Input image 1 is the approved Tesla coil emitter: STYLE/PALETTE REFERENCE ONLY; do not redraw the machine. Match its cyan, pale ivory-white energy and coarse chunky pixel clusters.
+Canvas/composition: exactly square 1254x1254 PNG with REAL ALPHA TRANSPARENCY, an invisible regular 3x3 grid of 418x418 cells. No grid lines or cell labels. Every sprite fully inside its cell with at least 42 pixels of clean transparent gutter. Stable approximately 8-source-pixel steps/blocks, crisp hard pixel edges, broad flat energy colors, no blur/bloom/antialias-looking fog.
+Cell layout, row-major top-left:
+TOP LEFT: electric flight frame A. Compact horizontal lightning packet pointing RIGHT (+X), about 200 pixels long and 70 pixels tall, centered near (209,209) within cell. A jagged stepped white core inside cyan outline, two short forked branches. Clearly an electric zigzag packet, NOT a straight laser bar, arrow icon, orb or continuous beam.
+TOP MIDDLE: flight frame B, same size, center, forward direction and rear starting point. Slightly different jagged fork arrangement creates a two-frame crackle pulse without changing trajectory.
+TOP RIGHT: electrode flash A. Tiny right-facing cyan-white crackling spurt, about 85x60 pixels, rear/emission origin at cell (170,209), extending right. NOT a large explosion.
+MIDDLE LEFT: electrode flash B. Same rear origin at (170,209), reduced to about 50x40 pixels.
+MIDDLE MIDDLE: burst frame 1. Small compact white/cyan four-pronged electrical ignition spark at exact cell center (209,209), about 75x75 pixels.
+MIDDLE RIGHT: burst frame 2. Expanding jagged electric ring centered at (209,209), about 210x210 pixels, uneven white/cyan lightning segments with big transparent gaps and an OPEN TRANSPARENT CENTER. Four or five restrained branches point outward. No solid filled disk.
+BOTTOM LEFT: burst frame 3. Peak radius-AoE burst, centered at (209,209), about 290x290 pixels. Broken roughly circular crown of stepped cyan-white lightning arcs, many large transparent gaps, OPEN TRANSPARENT CENTER. Broad visible angular arcs rather than many dust particles. Not a perfect radius indicator, not a 120-degree cone.
+BOTTOM MIDDLE: burst frame 4. Ring breaks into a few sparse cyan angular fragments at the SAME outer radius and same center as frame 3. Fragments are dimmer teal/cyan; a few white highlights. Mostly transparent, no dense cloud.
+BOTTOM RIGHT: completely EMPTY transparent.
+Constraints: only eight individual sprites in the specified cells. No tower, rabbit, ships, scenery, surface, cast shadow, smoke, fire, orange, purple, labels, text, watermark, border, painted checkerboard, chain connections, fixed multiple target icons, huge global arcs or sustained electrical field. No stun/freeze/status-effect symbols. The AoE is a brief localized pulse, not persistent damage-over-time.
