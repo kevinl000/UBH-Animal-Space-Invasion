@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Rigidbody2D))]
 [DisallowMultipleComponent]
 public class LevelManager : MonoBehaviour, IDamageable
 {
@@ -33,11 +32,10 @@ public class LevelManager : MonoBehaviour, IDamageable
     public bool IsAlive { get { return !dead && currentHealth > 0f; } }
 
 
-    private Rigidbody2D planetBody;
+    public Rigidbody2D planetBody;
 
     private void Awake()
     {
-        planetBody = GetComponent<Rigidbody2D>();
         currentHealth = Mathf.Max(0f, startingHP);
         TotalMoney = Mathf.Max(0, startingMoney);
         TotalFuel = Mathf.Max(0f, startingFuel);
