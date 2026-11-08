@@ -30,6 +30,8 @@ public class BaseEnemyData : GameEntity
     public float speed;
     public float damage;
 
+    public float PlanetCollisionDamage => damage;
+
     protected float currentHealth;
 
     /// <summary>All living enemies, for towers to pick targets from (use IsTargetable).</summary>

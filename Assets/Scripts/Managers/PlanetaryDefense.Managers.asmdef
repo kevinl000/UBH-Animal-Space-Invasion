@@ -1,0 +1,4 @@
+{
+    "name": "PlanetaryDefense.Managers",
+    "references": ["Unity.ugui"]
+}
