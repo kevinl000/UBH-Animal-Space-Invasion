@@ -1,0 +1,10 @@
+Generation mode: built-in image_gen; new sprite using approved reference.
+Reference: C:\UBH-Animal-Space-Invasion\Art\Enemies\BasicSkunk1\basic-skunk-1-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: a single production-ready transparent pixel-art enemy sprite for a Unity 2D planetary tower-defense game.
+Input image 1 is the approved BASIC SKUNK style and identity reference, NOT an asset to overwrite.
+Create HEALTHY SKUNK, the tutorial boss evolution of this reference: one noticeably stockier black-and-ivory skunk with a broader rounded body, bigger raised curled tail and broad unmistakable white tail stripe, piloting a substantial charcoal/navy UFO under blue glass. Skunk faces LEFT. Its face, ears, white forehead stripe and tail remain legible. Give the saucer a visibly deeper, thicker charcoal/navy metal hull and wide substantial rim, preserving six mint-green running lights. A distinctly wider rectangular EMPTY central bomb outlet points directly DOWN and is flanked by two small mint/cyan thrusters, one each side, which leave the central downward drop path clear. Outlet must be visibly open and unobstructed, no bomb or gas cloud drawn into sprite. Use the same simple coarse pixel-art language as the reference: large square pixel clusters, stepped dark outlines, restrained block shading, crisp hard edges, very readable when small, no tiny greebles. Differentiate boss through animal bulk, larger tail and thicker hull silhouette.
+Composition: exactly ONE complete UFO with one skunk, centered on square transparent canvas, full silhouette including both small thrusters and bomb outlet, about 88-90% canvas width with generous transparent margins, upright side/front three-quarter view matching reference. Pilot faces local -X, outlet points local -Y.
+Real alpha-transparent background. No scenery, no floor, no shadow under sprite, no text, no border, no logo, no health bar, no extra sprites, no projectile, no crown, no medals, no armor costume, no shiny/golden hull. Static sprite only. Preserve reference coarse pixel size and charcoal/blue/mint palette. Do not draw checkerboard transparency.

@@ -1,0 +1,92 @@
+{
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "checks": [
+    "HealthyGoose: source/runtime bytes identical",
+    "HealthyGoose: real alpha transparency",
+    "HealthyGoose: visible silhouette has transparent margins",
+    "HealthyGoose: filterMode: 0",
+    "HealthyGoose: spriteMode: 1",
+    "HealthyGoose: textureType: 8",
+    "HealthyGoose: enableMipMap: 0",
+    "HealthyGoose: textureCompression: 0",
+    "HealthyGoose: nPOTScale: 0",
+    "HealthyGoose: alphaIsTransparency: 1",
+    "HealthyGoose: spriteMeshType: 0",
+    "HealthyGoose: visual scale 1.5",
+    "HealthyGoose: measured visible width is 1.5 times basic enemy",
+    "HealthyGooseVisual.prefab: visual-only GameObject, Transform, SpriteRenderer",
+    "HealthyGooseVisual.prefab: texture GUID resolves uniquely",
+    "HealthyGooseVisual.prefab: unique asset GUID",
+    "HealthyGoose.png: unique asset GUID",
+    "HealthyGooseProjectileVisual.prefab: visual-only GameObject, Transform, SpriteRenderer",
+    "HealthyGooseProjectileVisual.prefab: texture GUID resolves uniquely",
+    "HealthyGooseProjectileVisual.prefab: unique asset GUID",
+    "HealthyGoose.png: unique asset GUID",
+    "HealthyGoose: projectile differs only in name and scale",
+    "HealthySkunk: source/runtime bytes identical",
+    "HealthySkunk: real alpha transparency",
+    "HealthySkunk: visible silhouette has transparent margins",
+    "HealthySkunk: filterMode: 0",
+    "HealthySkunk: spriteMode: 1",
+    "HealthySkunk: textureType: 8",
+    "HealthySkunk: enableMipMap: 0",
+    "HealthySkunk: textureCompression: 0",
+    "HealthySkunk: nPOTScale: 0",
+    "HealthySkunk: alphaIsTransparency: 1",
+    "HealthySkunk: spriteMeshType: 0",
+    "HealthySkunk: visual scale 1.5",
+    "HealthySkunk: measured visible width is 1.5 times basic enemy",
+    "HealthySkunkVisual.prefab: visual-only GameObject, Transform, SpriteRenderer",
+    "HealthySkunkVisual.prefab: texture GUID resolves uniquely",
+    "HealthySkunkVisual.prefab: unique asset GUID",
+    "HealthySkunk.png: unique asset GUID",
+    "HealthySkunkProjectileVisual.prefab: visual-only GameObject, Transform, SpriteRenderer",
+    "HealthySkunkProjectileVisual.prefab: texture GUID resolves uniquely",
+    "HealthySkunkProjectileVisual.prefab: unique asset GUID",
+    "HealthySkunk.png: unique asset GUID",
+    "HealthySkunk: projectile differs only in name and scale",
+    "Preview local reference exists: ../../../Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png",
+    "Preview local reference exists: comparison.png",
+    "Preview local reference exists: ../HealthyGoose/README.md",
+    "Preview local reference exists: ../HealthySkunk/README.md",
+    "Preview local reference exists: ../BasicSkunk1/basic-skunk-1-source-v1.png",
+    "Preview local reference exists: ../HealthySkunk/healthy-skunk-source-v1.png",
+    "Preview local reference exists: ../HealthyGoose/healthy-goose-source-v1.png",
+    "Preview local reference exists: ../BasicGoose1/basic-goose-1-source-v1.png",
+    "Preview local reference exists: ../../../Assets/Art/Projectiles/GoosePoop/GoosePoopSheet.png",
+    "Preview JavaScript syntax passes node --check"
+  ],
+  "bosses": [
+    {
+      "name": "HealthyGoose",
+      "sha256": "5c3a792db2f0dcdb9c3ec1525557761fb3c5e81d23093751208beb1007f66b12",
+      "visible_bounds_alpha16": [
+        26,
+        82,
+        1228,
+        1225
+      ],
+      "boss_visible_width_units": 3.41015625000224,
+      "faint_edge_alpha_preserved": true
+    },
+    {
+      "name": "HealthySkunk",
+      "sha256": "ec86a284888575c9a2b027fe9f8204f08612812e6bd5c0436dd5d08478849fbc",
+      "visible_bounds_alpha16": [
+        21,
+        103,
+        1233,
+        1149
+      ],
+      "boss_visible_width_units": 3.4306640624991194,
+      "faint_edge_alpha_preserved": true
+    }
+  ],
+  "limitations": [
+    "No Unity import, rendering or gameplay verification.",
+    "Browser preview links and JavaScript syntax checked; interactive browser execution not checked.",
+    "Tiny generated alpha values below 16/255 touch an edge; originals preserved, visible silhouette is not clipped.",
+    "Runtime hookup and shiny variants remain separate work."
+  ]
+}

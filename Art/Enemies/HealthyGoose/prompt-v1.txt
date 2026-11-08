@@ -1,0 +1,10 @@
+Generation mode: built-in image_gen; new sprite using approved reference.
+Reference: C:\UBH-Animal-Space-Invasion\Art\Enemies\BasicGoose1\basic-goose-1-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: a single production-ready transparent pixel-art enemy sprite for a Unity 2D planetary tower-defense game.
+Input image 1 is the approved BASIC GOOSE style and identity reference, NOT an asset to overwrite.
+Create HEALTHY GOOSE, the tutorial boss evolution of this reference: one clearly plump, broad-chested Canada goose piloting a substantial blue UFO under a slightly taller blue glass dome. Goose faces LEFT, with black head and long black neck, ivory cheek patch, brown wings, and a prominently rounded ivory chest/belly. The body must look visibly fuller than the reference, still recognizable as the same animal family. Give the saucer a visibly thicker/deeper blue metal lower hull and sturdy broad rim, preserving orange running lights and a small centered orange underside thruster. Use the same simple coarse pixel-art language as the reference: large square pixel clusters, stepped dark navy outlines, restrained block shading, crisp hard edges, very readable when small, no tiny greebles. The boss should differ through animal bulk and hull silhouette, not decorative weapons.
+Composition: exactly ONE complete UFO with one goose, centered on square transparent canvas, full silhouette including small thruster, about 88-90% canvas width with generous transparent margins, upright side/front three-quarter view matching reference. Pilot faces local -X, underside points local -Y.
+Real alpha-transparent background. No scenery, no floor, no shadow under the sprite, no text, no border, no logo, no health bar, no extra sprites, no projectile, no crown, no medals, no armor costume, no shiny/golden hull. Static sprite only. Preserve the reference's coarse pixel size and blue/orange palette. Do not draw checkerboard transparency.

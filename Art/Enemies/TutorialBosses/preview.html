@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tutorial boss artwork</title>
+<style>
+  :root { color-scheme:dark; font:16px/1.5 system-ui,sans-serif; background:#0c1424; color:#e6edfa }
+  body { max-width:1100px; margin:32px auto; padding:0 20px }
+  h1 { font-size:28px; margin-bottom:6px } p { color:#b7c9e4 }
+  .controls { display:flex; flex-wrap:wrap; gap:24px; padding:18px; background:#19263c; border-radius:12px }
+  label { display:flex; align-items:center; flex-wrap:wrap; gap:10px } output { min-width:3em; color:#a4e6ff }
+  canvas { width:100%; height:auto; display:block; background:#0c1424; border:1px solid #263853; border-radius:12px; margin:20px 0 }
+  a { color:#a4e6ff } .note { font-size:14px }
+</style>
+<h1>Tutorial bosses</h1>
+<p>Fuller animals, thicker UFO hulls. Compare each boss with its basic enemy at the same world scale.</p>
+<div class="controls">
+  <label>Boss width <input id="boss" type="range" min="1" max="1.9" step=".05" value="1.5"><output id="bossValue">1.50×</output></label>
+  <label>Projectile size <input id="shot" type="range" min="1" max="1.8" step=".05" value="1.3"><output id="shotValue">1.30×</output></label>
+  <label><input id="small" type="checkbox">Small camera view</label>
+  <button id="reset" type="button">Reset</button>
+</div>
+<canvas id="view" width="1100" height="900" aria-label="Basic Goose and Skunk beside their larger tutorial bosses and projectile comparisons"></canvas>
+<p class="note">Defaults match the visual prefabs. Sliders preview size only; they do not save Unity changes. Projectile artwork is reused; the normal impact effects retain their sizes. Final readability and placement need review through the gameplay camera.</p>
+<p><a href="comparison.png">Static comparison</a> · <a href="../HealthyGoose/README.md">Goose handoff</a> · <a href="../HealthySkunk/README.md">Skunk handoff</a></p>
+<script>
+const rows = [
+  {title:'Goose', basic:'../BasicGoose1/basic-goose-1-source-v1.png', boss:'../HealthyGoose/healthy-goose-source-v1.png', ppu:528.2749140893471,
+   sheet:'../../../Assets/Art/Projectiles/GoosePoop/GoosePoopSheet.png', rect:[0,0,627,627], shotPpu:1024, pivot:[.532695374800638,.4401913875598086]},
+  {title:'Skunk', basic:'../BasicSkunk1/basic-skunk-1-source-v1.png', boss:'../HealthySkunk/healthy-skunk-source-v1.png', ppu:529.0520922288642,
+   sheet:'../../../Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png', rect:[0,0,418,418], shotPpu:512, pivot:[.5311004784688995,.39832535885167464]}
+];
+const view=document.getElementById('view'), ctx=view.getContext('2d');
+const boss=document.getElementById('boss'), shot=document.getElementById('shot'), small=document.getElementById('small');
+const load=src=>new Promise((resolve,reject)=>{const img=new Image(); img.onload=()=>resolve(img); img.onerror=()=>reject(new Error('Could not load '+src)); img.src=src;});
+function sprite(img,x,y,ppu,scale,zoom){const w=img.width/ppu*scale*zoom,h=img.height/ppu*scale*zoom;ctx.drawImage(img,x-w/2,y-h/2,w,h);}
+function projectile(row,x,y,scale,zoom){const [sx,sy,sw,sh]=row.rect,w=sw/row.shotPpu*scale*zoom,h=sh/row.shotPpu*scale*zoom;ctx.drawImage(row.images[2],sx,sy,sw,sh,x-w*row.pivot[0],y-h*(1-row.pivot[1]),w,h);}
+function text(value,x,y,size=18,color='#c5d8f4'){ctx.fillStyle=color;ctx.font=size+'px system-ui';ctx.textAlign='center';ctx.fillText(value,x,y);}
+function draw(){
+  ctx.clearRect(0,0,view.width,view.height);ctx.imageSmoothingEnabled=false;
+  const zoom=small.checked?45:85,b=Number(boss.value),s=Number(shot.value);
+  document.getElementById('bossValue').value=b.toFixed(2)+'×';document.getElementById('shotValue').value=s.toFixed(2)+'×';
+  for(const [i,row] of rows.entries()){
+    const y=205+i*425;
+    sprite(row.images[0],250,y,512,1,zoom);sprite(row.images[1],760,y,row.ppu,b,zoom);
+    text('Basic '+row.title+' · 1×',250,y+155);text('Healthy '+row.title+' · '+b.toFixed(2)+'×',760,y+155);
+    projectile(row,250,y+200,1,zoom);projectile(row,760,y+200,s,zoom);
+    text('Projectile 1×',250,y+240,14);text('Reused projectile '+s.toFixed(2)+'×',760,y+240,14);
+  }
+}
+Promise.all(rows.map(async row=>{row.images=await Promise.all([row.basic,row.boss,row.sheet].map(load));})).then(()=>{
+  [boss,shot,small].forEach(input=>input.addEventListener('input',draw));
+  document.getElementById('reset').addEventListener('click',()=>{boss.value=1.5;shot.value=1.3;small.checked=false;draw();});draw();
+}).catch(error=>{text(error.message,550,120,18,'#ffb7aa');});
+</script>
+</html>

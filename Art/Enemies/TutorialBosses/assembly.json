@@ -1,0 +1,66 @@
+{
+  "generation_mode": "built-in image_gen, reference-guided new sprites",
+  "boss_visible_width_multiplier": 1.5,
+  "projectile_visual_scale": 1.3,
+  "bounds_alpha_threshold": 128,
+  "bosses": [
+    {
+      "name": "HealthyGoose",
+      "source": "Art/Enemies/HealthyGoose/healthy-goose-source-v1.png",
+      "runtime": "Assets/Art/Enemies/HealthyGoose/HealthyGoose.png",
+      "reference": "Assets/Art/Enemies/BasicGoose1/BasicGoose1.png",
+      "canvas_pixels": [
+        1254,
+        1254
+      ],
+      "visible_bounds": [
+        27,
+        82,
+        1228,
+        1225
+      ],
+      "pixels_per_unit": 528.2749140893471,
+      "visual_scale": 1.5,
+      "normal_visible_width_units": 2.2734375,
+      "boss_visible_width_units": 3.410156249999999,
+      "visual_prefab": "Assets/Prefabs/Enemies/HealthyGooseVisual.prefab",
+      "projectile_prefab": "Assets/Prefabs/Projectiles/HealthyGooseProjectileVisual.prefab",
+      "projectile_art": "GoosePoop",
+      "pilot_facing": "-X",
+      "underside_facing": "-Y",
+      "pivot": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "name": "HealthySkunk",
+      "source": "Art/Enemies/HealthySkunk/healthy-skunk-source-v1.png",
+      "runtime": "Assets/Art/Enemies/HealthySkunk/HealthySkunk.png",
+      "reference": "Assets/Art/Enemies/BasicSkunk1/BasicSkunk1.png",
+      "canvas_pixels": [
+        1254,
+        1254
+      ],
+      "visible_bounds": [
+        22,
+        104,
+        1232,
+        1148
+      ],
+      "pixels_per_unit": 529.0520922288642,
+      "visual_scale": 1.5,
+      "normal_visible_width_units": 2.287109375,
+      "boss_visible_width_units": 3.4306640625,
+      "visual_prefab": "Assets/Prefabs/Enemies/HealthySkunkVisual.prefab",
+      "projectile_prefab": "Assets/Prefabs/Projectiles/HealthySkunkProjectileVisual.prefab",
+      "projectile_art": "SkunkBomb",
+      "pilot_facing": "-X",
+      "underside_facing": "-Y",
+      "pivot": [
+        0.5,
+        0.5
+      ]
+    }
+  ]
+}
