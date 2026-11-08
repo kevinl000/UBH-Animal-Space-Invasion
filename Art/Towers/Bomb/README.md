@@ -2,6 +2,8 @@
 
 The Bomber Rabbit wears a brown jacket and amber goggles, with its ears exposed. Ivory/navy machinery and amber accents keep it related to the Laser tower. The rabbit, controls, seat and chassis stay fixed; a single wide-bore cannon rotates on a separate right-hand hinge through **local Z -60 to +60 degrees**, covering a 120-degree aiming arc relative to local outward/up.
 
+Screen revision (2026-11-08): **base-source-v3.png** is current. It adds a small amber monitor on the stationary diagonal support below the moving cannon, facing the rabbit. The joystick remains. Cannon artwork, pivots, PPU, existing sprite metadata/GUIDs and prefab transforms are unchanged.
+
 Open `preview.html` in a browser to move the aim slider or play the sweep. This preview renders the exact source sprites using the same pivots, scales and offsets as the Unity prefab. It also provides optional pivot and firing-line markers. Browser positive angles are converted to Unity's counterclockwise Z convention.
 
 ## Unity assembly
@@ -10,7 +12,7 @@ Open `preview.html` in a browser to move the aim slider or play the sweep. This 
 
 ```text
 BombTowerVisual             ground mounting origin
-  Base                     stationary rabbit, chassis and hinge support
+  Base                     stationary rabbit, chassis, hinge support and screen
   CannonPivot              rotate only this Transform for aiming
     Muzzle                 firing reference, local +Y points out of the bore
 ```
@@ -36,13 +38,13 @@ The separate PPU values normalize independently generated source images to a sim
 
 ## Artwork provenance
 
-Built-in image generation created `base-source-v1.png` and `cannon-source-v1.png` using the approved Laser portrait as the family/style reference. The full firing-line review found that the initial base's socket was too low for left-limit shots to clear the ears. A targeted image-generation edit raised and reinforced that support; **`base-source-v2.png` is the current base**. Its rabbit and chassis remain visually consistent, but pixel-identical preservation through generation is not claimed. The original v1 base is retained as source history and is not imported into Unity.
+Built-in image generation created `base-source-v1.png` and `cannon-source-v1.png` using the approved Laser portrait as the family/style reference. The full firing-line review found that the initial base's socket was too low for left-limit shots to clear the ears. A targeted image-generation edit raised and reinforced that support in v2. The new **`base-source-v3.png`** is a targeted edit of that v2 base adding the amber monitor. Its rabbit and chassis remain visually consistent, but pixel-identical preservation through generation is not claimed. Original v1/v2 bases remain as source history and are not imported into Unity.
 
-Exact prompts: `base.prompt-v1.txt`, `cannon.prompt-v1.txt` and `base-raised-hinge.prompt-v2.txt`. The two runtime PNGs are byte-identical copies of the selected sources. No existing Laser art, scenes, planet/socket prefabs, TowerData or gameplay code was changed. The Bomb tower's eventual attack damages enemies inside a blast radius; this work adds no projectile, explosion artwork, radius value, damage logic, recoil or firing hookup.
+Exact prompts: `base.prompt-v1.txt`, `cannon.prompt-v1.txt`, `base-raised-hinge.prompt-v2.txt` and `base-screen.prompt-v3.txt`. Runtime PNGs are byte-identical copies of current base v3 and cannon v1. This tower revision changes no scenes, planet/socket prefabs, TowerData or gameplay code. Separate shell, flash and explosion visual assets already exist in [RabbitBomb](../../Projectiles/RabbitBomb/README.md); attack-radius logic, recoil and firing hookup remain separate work.
 
 ## Verification and manual review
 
-Offline geometry sampling checked **241 angles at 0.5-degree intervals** across the full arc, using alpha >=128 and cannon samples every four source pixels. Every sampled pose retained hinge contact, with zero sampled cannon/base overlap outside a 0.12-unit joint region around the hinge and zero sampled base intersections along the muzzle's outward centerline. That exclusion covers the intended breech overlap with the socket and upper support; it does not include the rabbit or lower chassis. Results and source hashes are recorded in `assembly.json`; detailed local samples are in `.git/menu-work/bomb-tower/geometry-samples.json`.
+Offline geometry sampling checked **241 angles at 0.5-degree intervals** again with the screen-equipped base, using alpha >=128 and cannon samples every four source pixels. Every sampled pose retained hinge contact, with zero sampled cannon/base overlap outside a 0.12-unit joint region and zero sampled base intersections along the muzzle's outward centerline. The screen's conservative bounds in `assembly.json` stay protected even near that region; the exclusion covers only the intended breech/socket and upper support, not the rabbit or lower chassis. Results and source hashes are in the manifest; detailed samples are local at `.git/menu-work/bomb-tower/geometry-samples.json`. Run `python Art/Towers/Bomb/verify_assembly.py` with Pillow to recheck and rebuild the five-angle `sweep-review.png`.
 
 These are sampled image checks, not a continuous collision proof. A clear centerline does not establish clearance for a bomb of arbitrary width. No Unity tests or Unity validation runs were performed, per `AGENTS.md`.
 

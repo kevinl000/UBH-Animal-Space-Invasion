@@ -1,6 +1,6 @@
 {
   "base": {
-    "source": "base-source-v2.png",
+    "source": "base-source-v3.png",
     "runtime": "Assets/Art/Towers/Bomb/BombBase.png",
     "size": [
       1254,
@@ -15,8 +15,14 @@
       1091.5,
       478.0
     ],
-    "sha256": "8ac26001ecf2bf90296544b86bca1ea6ab8cdb4e5849c80c0b4b89be8bcd2f6b",
-    "guid": "791da94bc7e04c8aa782ac4bcfd7726a"
+    "sha256": "54a774cc39a667fd0877db71888e912d7b45f61b3e6296b6686aeb75c8c73b31",
+    "guid": "791da94bc7e04c8aa782ac4bcfd7726a",
+    "operator_screen_bounds_top_left_pixels": [
+      745,
+      555,
+      935,
+      780
+    ]
   },
   "cannon": {
     "source": "cannon-source-v1.png",
@@ -53,18 +59,21 @@
   "verification": {
     "angles": 241,
     "angle_step_degrees": 0.5,
-    "cannon_sample_stride_source_pixels": 4,
+    "weapon_sample_stride_source_pixels": 4,
     "alpha_threshold": 128,
     "joint_exclusion_radius_world_units": 0.12,
     "max_protected_overlap_samples": 0,
-    "min_joint_contact_samples": 8051,
+    "min_joint_contact_samples": 8046,
     "max_muzzle_ray_base_samples": 0,
+    "ray_length_world_units": 2,
     "limitations": [
-      "Sampled image geometry, not a continuous collision proof.",
-      "Upper hinge/support overlap is intentionally allowed inside the joint exclusion.",
-      "Centerline ray does not establish projectile-width clearance.",
-      "Planet/socket seating and neighboring-tower clearance remain unverified.",
+      "Sampled raster geometry, not a continuous collision proof.",
+      "Only the joint and upper support are excluded; the operator screen is always protected.",
+      "A clear centerline does not establish arbitrary projectile-width clearance.",
+      "Planet seating, neighbors and final camera readability remain unverified.",
       "No Unity validation or tests run."
     ]
-  }
+  },
+  "joint_exclusion_radius_world_units": 0.12,
+  "generation_mode": "built-in image_gen; targeted v3 screen edit of existing v2 base; runtime source bytes preserved"
 }
