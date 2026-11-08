@@ -1,26 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[DisallowMultipleComponent]
 public class LevelManager : MonoBehaviour, IDamageable
 {
+    [Header("Level Configuration")]
+    [SerializeField] private LevelData levelData; // Assign your ScriptableObject here in the Inspector
+
+    [Header("UI")]
     public Text hp;
     public Text money;
     public Text fuel;
     public Text time;
     public Text wave;
-
-
-    [Header("Starting resources")]
-    [SerializeField, Min(0f)] private float startingHP = 100f;
-    [SerializeField, Min(0)] private int startingMoney;
-    [SerializeField, Min(0f)] private float startingFuel;
-
-    [Header("Planet rotation")]
-    [Tooltip("Degrees per second. Freeze Rigidbody2D position, but leave rotation unfrozen.")]
-    [SerializeField, Min(0f)] private float rotationSpeed = 10f;
-    [SerializeField] private bool clockwise = true;
 
     public float PlanetHP { get { return currentHealth; } }
     public int TotalMoney { get; private set; }
@@ -29,26 +20,44 @@ public class LevelManager : MonoBehaviour, IDamageable
     private float currentHealth;
     private bool dead;
 
-
     public bool IsAlive { get { return !dead && currentHealth > 0f; } }
 
-
-    private Rigidbody2D planetBody;
+    public Rigidbody2D planetBody;
 
     private void Awake()
     {
         planetBody = GetComponent<Rigidbody2D>();
-        currentHealth = Mathf.Max(0f, startingHP);
-        TotalMoney = Mathf.Max(0, startingMoney);
-        TotalFuel = Mathf.Max(0f, startingFuel);
+
+        if (levelData != null)
+        {
+            // Reset the ScriptableObject's runtime values (SpentBudget, etc.) for a fresh run
+            levelData.Init();
+
+            // Pull starting values from the assigned LevelData
+            currentHealth = Mathf.Max(0f, levelData.planetMaxHealth);
+            TotalMoney = Mathf.Max(0, levelData.money);
+            TotalFuel = Mathf.Max(0f, levelData.fuel);
+
+            // Apply physical properties
+            planetBody.gravityScale = levelData.planetGravity;
+        }
+        else
+        {
+            Debug.LogError("[LevelManager] No LevelData assigned in the inspector!");
+        }
+
         RefreshResourceBar();
     }
+
+    // ---------------------------------------------------------------- Events
 
     private void OnEnable()
     {
         EnemyEvents.Killed += ChangeResources;
         TowerEvents.TowerBuilt += ChangeMoney;
         TowerEvents.TowerSold += ChangeMoney;
+        TowerEvents.TowerFuelTick += ChangeFuel;
+        TowerEvents.TowerMoneyTick += ChangeMoney; 
     }
 
     private void OnDisable()
@@ -56,40 +65,52 @@ public class LevelManager : MonoBehaviour, IDamageable
         EnemyEvents.Killed -= ChangeResources;
         TowerEvents.TowerBuilt -= ChangeMoney;
         TowerEvents.TowerSold -= ChangeMoney;
+        TowerEvents.TowerFuelTick -= ChangeFuel;
+        TowerEvents.TowerMoneyTick -= ChangeMoney;
     }
+
+
+    // ---------------------------------------------------------------- Core Loop
 
     private void FixedUpdate()
     {
-        if (currentHealth <= 0f) return;
+        if (currentHealth <= 0f || levelData == null) return;
 
-        float direction = clockwise ? -1f : 1f;
-        planetBody.MoveRotation(planetBody.rotation + direction * rotationSpeed * Time.fixedDeltaTime);
+        // Use rotation speed and direction directly from LevelData
+        float direction = levelData.isClockwise ? -1f : 1f;
+        planetBody.MoveRotation(planetBody.rotation + direction * levelData.planetRotationSpeed * Time.fixedDeltaTime);
     }
 
+    // ---------------------------------------------------------------- Resources
 
-    /// <summary>Positive amounts grant money; negative amounts spend it. False means insufficient funds.</summary>
+    /// <summary>Positive amounts grant money; negative amounts spend it.</summary>
     public void ChangeMoney(int amount)
     {
         ChangeResources(amount, 0);
     }
 
-    /// <summary>Positive amounts grant fuel; negative amounts consume it. False means insufficient fuel.</summary>
+    /// <summary>Positive amounts grant fuel; negative amounts consume it.</summary>
     public void ChangeFuel(int amount)
     {
         ChangeResources(0, amount);
+        UpdateTowerPowerStates();
     }
 
     /// <summary>
     /// Updates both resources together, or neither if either balance would become negative.
-    /// Enemies and towers call this on their own schedule (including once per second).
     /// </summary>
     public void ChangeResources(int moneyChange, int fuelChange)
     {
         long nextMoney = (long)TotalMoney + moneyChange;
         float nextFuel = TotalFuel + fuelChange;
+
         if (nextMoney < 0 || nextMoney > int.MaxValue || nextFuel < 0f ||
             float.IsNaN(nextFuel) || float.IsInfinity(nextFuel))
-        { return; }//TODO tell the player they don't have enough resources to do that
+        {
+            // TODO tell the player they don't have enough resources to do that
+            return;
+        }
+
         TotalMoney = (int)nextMoney;
         TotalFuel = nextFuel;
         RefreshResourceBar();
@@ -102,16 +123,49 @@ public class LevelManager : MonoBehaviour, IDamageable
         if (fuel != null) fuel.text = $"FUEL {TotalFuel:0.##}";
     }
 
+    // ---------------------------------------------------------------- Damage / Game Over
+
     public float ReceiveDamage(float damage)
     {
         if (float.IsNaN(damage) || float.IsInfinity(damage) || damage <= 0f) return damage;
 
         currentHealth = Mathf.Max(0f, currentHealth - damage);
+
+        // Keep the LevelData property in sync in case the Spawner/AI reads from it
+        if (levelData != null) levelData.PlanetHealth = currentHealth;
+
         RefreshResourceBar();
+
         if (currentHealth <= 0f && GameManager.Instance != null)
         {
             GameManager.Instance.GameOver();
         }
+
         return currentHealth;
+    }
+
+    // ---------------------------------------------------------------- Power States
+
+    private void UpdateTowerPowerStates()
+    {
+        foreach (BaseTowerData tower in BaseTowerData.Active)
+        {
+            if (tower.fuelIntake >= 0)
+            {
+                if (tower.IsDisabled) tower.SetDisabled(false);
+                continue;
+            }
+
+            int requiredFuel = Mathf.Abs(tower.fuelIntake);
+
+            if (TotalFuel >= requiredFuel)
+            {
+                if (tower.IsDisabled) tower.SetDisabled(false);
+            }
+            else
+            {
+                if (!tower.IsDisabled) tower.SetDisabled(true);
+            }
+        }
     }
 }
