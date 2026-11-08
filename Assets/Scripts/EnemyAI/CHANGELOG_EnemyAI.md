@@ -143,3 +143,11 @@ bridge.ReportGone(ticket);             // once, when it dies or despawns
 - Numbers (rule factors, learning speed, wait time) are first guesses. Tune them in `WaveDirectorSettings`, `EnemyLearnerSettings` and the bridge Inspector after playtesting.
 
 Full usage: `README_EnemyAI.md`.
+
+## Update 7: test report v1.3 (no algorithm change)
+- **Statistics:** every condition now uses the same seeds 0-199 (common random numbers), 200 runs for both the abstract and the combat model. Comparisons are judged by the 95% CI of the per-seed difference (bootstrap 10,000 + t), not by overlapping CIs; non-significant results are called "trend".
+- **Regression:** the unchanged v1.2 suite re-run on the latest main gives identical numbers, and all 20 edge cases pass.
+- **Team data (R1):** `Integ.cs` now checks every LevelData and every wave config (`UnionPrimeGameplay`, `CapenMajorGameplay`) and runs them through the bridge in level mode and wave mode. All scene assets pass (spawns > 0, within budget and >= 95% used, no NaN, names resolved); only the unused placeholder `Level1.asset` fails (budget 0, cost 0, unknown name). The name map is in the README.
+- **Stealth geese (R4):** fixed-share runs, ±50% sensitivity, allocation by pattern with the learner's beliefs, and a 2x / 4x / no-cap learning experiment (simulation-only patched learner; the game's file is unchanged). Conclusions are in the report.
+- **Fuel:** the combat model can now also use the game's per-shot fuel (since 2026-11-08); both models are reported, the main tables keep the v1.2 model.
+

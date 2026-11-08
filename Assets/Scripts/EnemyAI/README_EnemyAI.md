@@ -28,6 +28,19 @@ The total cost of spawned enemies never goes above `LevelData.GetTotalBudget(tim
 3. In each LevelData asset, `startingBudget` / `endingBudget` per enemy are now the **designer's starting guess** for the cost share. The AI moves away from it as it learns. Share 0 = that enemy never appears in this level. If every share is 0, all roster enemies start equal.
 4. Put `WaveDirectorBridge` on the spawner object and assign `level`.
 
+### Name map (game asset → AI kind)
+Checked against every LevelData and wave config in the repo (simulation report v1.3, R1):
+
+| EnemyData asset | AI kind | Family the AI learns |
+|---|---|---|
+| Basic Goose 1 / 2 / 3, Shielded Goose | BasicGoose1 / 2 / 3, ShieldedGoose | Geese |
+| Stealth Goose | StealthGoose | Stealth geese |
+| Basic Skunk 1 / 2 / 3, Shielded Skunk | BasicSkunk1 / 2 / 3, ShieldedSkunk | Skunks |
+| Basic Deer, Shielded Deer | BasicDeer, ShieldedDeer | Deer |
+| Healthy Goose, Healthy Skunk, Mother Goose, Mother Skunk, Restraining Buck, Sneaky Healthy Goose, Animal Ship, Endangered Deer | same name without spaces | bosses (not learned) |
+
+`Level1.asset` still uses the old placeholders (`EasyEnemy`, cost 0, budget 0); no scene uses it, and it spawns nothing.
+
 ## Calling it from the spawner
 ```csharp
 level.Init();

@@ -7,6 +7,9 @@ using EnemyAI;
 static class Edge
 {
     static int pass, fail;
+    public static int Passed { get { return pass; } }
+    public static int Failed { get { return fail; } }
+    public static readonly List<Tuple<string, bool>> Cases = new List<Tuple<string, bool>>();
 
     static void Check(string name, Func<string> body)
     {
@@ -17,6 +20,7 @@ static class Edge
         catch (Exception ex) { detail = "EXCEPTION " + ex.GetType().Name + ": " + ex.Message; ok = false; }
         if (sw.ElapsedMilliseconds > 2000) { ok = false; detail += " (too slow: " + sw.ElapsedMilliseconds + "ms, possible infinite loop)"; }
         if (ok) pass++; else fail++;
+        Cases.Add(Tuple.Create(name, ok));
         Console.WriteLine((ok ? "PASS " : "FAIL ") + name + " -> " + detail);
     }
 
