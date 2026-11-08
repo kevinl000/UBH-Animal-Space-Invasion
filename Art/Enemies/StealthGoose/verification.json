@@ -1,0 +1,79 @@
+{
+  "checks": {
+    "source_runtime_byte_identical": true,
+    "rgba_real_alpha_and_near_opaque_subject": true,
+    "transparent_margins": true,
+    "visible_width_matches_basic_goose_1": true,
+    "single_point_clamp_full_rect_no_mips_compression_resize": true,
+    "visual_components_only": true,
+    "identity_transform_and_full_alpha": true,
+    "sprite_reference": true,
+    "new_assets_have_metadata": true,
+    "new_guid_uniqueness": true,
+    "existing_projectile_impact_marker_present": true,
+    "all_three_marker_frames_enclose_ship_with_8_percent_padding": true,
+    "preview_all_local_references_exist": true,
+    "preview_javascript_syntax": true
+  },
+  "source_runtime_sha256": "d9c8ea85c81149d6969e312fc7cad2a26918fa63209b618c36f1d694903ee372",
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "fully_transparent_pixels": 897461,
+  "visible_pixels_with_alpha_at_least_250_fraction": 0.9892628348357992,
+  "alpha_note": "Original generated alpha retained. Ship pixels are predominantly alpha 253/254; faint stealth opacity is applied separately, not baked into the PNG.",
+  "visible_bounds_alpha_128": [
+    44,
+    159,
+    1209,
+    1146
+  ],
+  "marker_fit": [
+    {
+      "frame": "RadarReveal01",
+      "edge_extent_to_enemy_half_size": [
+        1.3896061141584999,
+        1.3896061141584999,
+        1.0915508021390374,
+        1.0915508021390374
+      ]
+    },
+    {
+      "frame": "RadarReveal02",
+      "edge_extent_to_enemy_half_size": [
+        1.4678937825617957,
+        1.4678937825617957,
+        1.1550802139037435,
+        1.1550802139037435
+      ]
+    },
+    {
+      "frame": "RadarReveal03",
+      "edge_extent_to_enemy_half_size": [
+        1.384713134883294,
+        1.384713134883294,
+        1.08,
+        1.08
+      ]
+    }
+  ],
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "browser_checks": {
+    "checks": {
+      "all_images_loaded": true,
+      "initial_faint_state": true,
+      "click_reveals_and_starts_marker": true,
+      "permanent_after_marker": true,
+      "repeat_scan_does_not_repeat_marker": true,
+      "small_size_control": true,
+      "light_background_control": true,
+      "reset_restores_stealth_and_clears_effects": true,
+      "opacity_control": true,
+      "no_image_errors": true
+    }
+  },
+  "remaining": "Manual Unity camera/import/material/sorting review and separately scoped gameplay state binding, detection, firing and pooling hookup.",
+  "browser_review_artifacts": ".git/menu-work/stealth-goose/preview-browser.png and stealthed/newly-revealed/revealed-after-marker.png"
+}

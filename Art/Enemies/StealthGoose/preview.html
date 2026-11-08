@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stealth Goose - Radar reveal</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101628;color:#e6ebf6;font:16px/1.5 system-ui,sans-serif}
+main{max-width:1020px;margin:auto;padding:24px 20px}h1{margin:0;font-size:27px}p{color:#b6c3db;max-width:860px}
+canvas{display:block;width:100%;height:auto;background:#101829;border:1px solid #38465d;border-radius:10px;image-rendering:pixelated}
+body[data-bg="light"] canvas{background:#dbe5ed}body[data-bg="grid"] canvas{background-color:#26334a;background-image:conic-gradient(#38465a 25%,transparent 0 50%,#38465a 0 75%,transparent 0);background-size:24px 24px}
+.controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:18px 0}label{display:flex;gap:8px;align-items:center}
+button,select{background:#234245;border:1px solid #47877e;border-radius:6px;color:#e0fff5;padding:9px 13px;font:inherit}button{cursor:pointer}input{accent-color:#80cdbb}a{color:#a7ead5}.note{font-size:14px}#error{color:#ffbdab}
+</style>
+<main>
+<h1>Stealth Goose</h1>
+<p>Charcoal hull, smoky violet glass and dim cyan lights. The goose stays faintly visible before detection. Radar reveals it permanently; the mint marker clears after a brief flash.</p>
+<div class="controls">
+  <button id="scan">Reveal with Radar</button><button id="reset">Reset demo stealth</button>
+  <label>Goose width <input id="size" type="range" min="80" max="240" step="20" value="160"><output id="sizeValue">160 px</output></label>
+  <label>Background <select id="background"><option value="dark">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+</div>
+<canvas id="view" width="960" height="620" aria-label="Basic Goose comparison and interactive permanent Radar reveal" aria-describedby="state"></canvas>
+<p id="state" role="status">Stealthed: faint to the player, hidden from ordinary towers.</p>
+<div class="controls"><label>Faint opacity <input id="opacity" type="range" min="0.08" max="0.4" step="0.01" value="0.18"><output id="opacityValue">18%</output></label></div>
+<p class="note">Size and opacity controls are preview settings. The radar tower is shown at a separate diagram scale. Each click plays the existing 0.36-second dish pulse; only a newly revealed enemy receives the 0.24-second marker. It stays visible after that marker ends. No scan interval or detection distance is defined here.</p>
+<p class="note">One static sprite at matched visible width; reuse the existing single-target poop and hit splat. This page demonstrates the art direction. Unity gameplay state binding, detection and firing hookup remain separate work.</p>
+<p><a href="README.md">Setup and manual checks</a> &middot; <a href="assembly.json">Assembly settings</a> &middot; <a href="prompt-v1.txt">Saved generation prompt</a></p>
+<p id="error" role="alert"></p>
+</main>
+<script>
+const reference=new Image(),stealth=new Image(),tower=new Image(),consoleSheet=new Image(),effects=new Image();
+reference.src='../../../Assets/Art/Enemies/BasicGoose1/BasicGoose1.png';
+stealth.src='../../../Assets/Art/Enemies/StealthGoose/StealthGoose.png';
+tower.src='../../Towers/Radar/tower-source-v1.png';
+consoleSheet.src='../../Towers/Radar/status-sheet-source-v1.png';
+effects.src='../../Effects/RadarReveal/radar-reveal-sheet-source-v1.png';
+const images=[reference,stealth,tower,consoleSheet,effects],ctx=document.querySelector('#view').getContext('2d');
+const size=document.querySelector('#size'),opacity=document.querySelector('#opacity'),state=document.querySelector('#state');
+const scanAnchors=[[223.5,404.5],[206.5,417.5],[200,430]],markerAnchors=[[218,209.5],[209,209],[201.5,209.5]];
+const worldWidth=2.2734375,enemyPpu=512.4398625429553,markerScale=7.7867177996832755;
+let revealed=false,pulseAt=-Infinity,markerAt=-Infinity;
+function updateState(){state.textContent=revealed?'Revealed: fully visible and stays visible.':'Stealthed: faint to the player, hidden from ordinary towers.';}
+function scan(now){pulseAt=now;if(!revealed){revealed=true;markerAt=now;}updateState();}
+document.querySelector('#scan').onclick=()=>scan(performance.now());
+document.querySelector('#reset').onclick=()=>{revealed=false;pulseAt=markerAt=-Infinity;updateState();};
+size.oninput=()=>{document.querySelector('#sizeValue').textContent=`${size.value} px`;};
+opacity.oninput=()=>{document.querySelector('#opacityValue').textContent=`${Math.round(Number(opacity.value)*100)}%`;};
+document.querySelector('#background').onchange=e=>{document.body.dataset.bg=e.target.value;};
+for(const img of images)img.onerror=()=>{document.querySelector('#error').textContent='A local image could not load. Keep this page in Art/Enemies/StealthGoose and preserve the linked reference folders.';};
+function centered(img,cx,cy,center,r){ctx.drawImage(img,cx-center[0]*r,cy-center[1]*r,img.naturalWidth*r,img.naturalHeight*r);}
+function effect(row,i,anchor,x,y,r){ctx.drawImage(effects,i*418,row*418,418,row===0?500:418,x-anchor[0]*r,y-anchor[1]*r,418*r,(row===0?500:418)*r);}
+function draw(now){
+  if(images.every(img=>img.complete&&img.naturalWidth)){
+    ctx.clearRect(0,0,960,620);ctx.imageSmoothingEnabled=false;
+    const width=Number(size.value),pixelsPerWorld=width/worldWidth;
+    const light=document.body.dataset.bg==='light';ctx.fillStyle=light?'#223342':'#c4d5e8';ctx.font='20px system-ui';
+    ctx.fillText('Basic Goose 1',100,55);ctx.fillText('Stealth Goose',590,55);
+    centered(reference,240,205,[626,653.5],pixelsPerWorld/512);
+    ctx.globalAlpha=revealed?1:Number(opacity.value);
+    centered(stealth,700,205,[626.5,652.5],pixelsPerWorld/enemyPpu);ctx.globalAlpha=1;
+    const towerRatio=.15,tx=700-878*towerRatio,ty=425-154*towerRatio;
+    ctx.drawImage(tower,tx,ty,1254*towerRatio,1254*towerRatio);
+    const s=[0,1,2,1,0][[300,500,700,900,1200].findIndex(limit=>now%1200<limit)],cr=towerRatio*1400/2300;
+    ctx.drawImage(consoleSheet,s*418,0,418,418,tx+638*towerRatio-[220,209.5,198][s]*cr,ty+746*towerRatio-297*cr,418*cr,418*cr);
+    const scanAge=now-pulseAt,markerAge=now-markerAt;
+    if(scanAge>=0&&scanAge<360){const i=Math.floor(scanAge/120);effect(0,i,scanAnchors[i],700,425,210/700);}
+    if(markerAge>=0&&markerAge<240){const i=Math.floor(markerAge/80);effect(1,i,markerAnchors[i],700,205,pixelsPerWorld/700*markerScale);}
+    ctx.fillStyle=light?'#254946':'#a7ead5';ctx.font='16px system-ui';
+    ctx.fillText('Original blue UFO',100,330);ctx.fillText(revealed?'Revealed permanently':'Stealthed / faint',590,330);
+    ctx.font='14px system-ui';ctx.fillText('Fixed Radar dish - existing visual',545,590);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</html>

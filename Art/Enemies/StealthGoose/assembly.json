@@ -1,0 +1,66 @@
+{
+  "asset": "Stealth Goose",
+  "mode": "built-in image_gen edit",
+  "source": "stealth-goose-source-v1.png",
+  "prompt": "prompt-v1.txt",
+  "edit_target": "Assets/Art/Enemies/BasicGoose1/BasicGoose1.png",
+  "runtime_sprite": "Assets/Art/Enemies/StealthGoose/StealthGoose.png",
+  "visual_prefab": "Assets/Prefabs/Enemies/StealthGooseVisual.prefab",
+  "palette": "Charcoal/slate hull, smoky desaturated violet dome, dim cyan lamps and thruster; natural Canada goose.",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha_128": [
+    44,
+    159,
+    1209,
+    1146
+  ],
+  "visible_center_top_left_pixels": [
+    626.5,
+    652.5
+  ],
+  "pixels_per_unit": 512.4398625429553,
+  "reference_pixels_per_unit": 512,
+  "visible_width_world_units": 2.2734375,
+  "visible_height_world_units": 1.9260796673819742,
+  "transform_scale": [
+    1,
+    1,
+    1
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "pilot_facing": "-X",
+  "underside_facing": "-Y",
+  "gameplay_visual_child_rotation_z": 180,
+  "stealth_visual": {
+    "approved": "Faintly visible to player before detection; fully visible permanently afterward.",
+    "suggested_renderer_alpha_before_reveal": 0.18,
+    "renderer_alpha_after_reveal": 1,
+    "standalone_prefab_renderer_alpha": 1,
+    "note": "0.18 is an initial art-preview value for camera review. Gameplay binding and pooled reset are not implemented; source alpha is unchanged."
+  },
+  "radar_marker": {
+    "existing_prefab": "Assets/Prefabs/Effects/RadarRevealMarkerVisual.prefab",
+    "uniform_scale_for_this_visual_at_scale_1": 7.7867177996832755,
+    "position_relative_to_visual_root": [
+      -0.0009757242489270387,
+      -0.04976193669527897,
+      0
+    ],
+    "duration_seconds": 0.24,
+    "note": "Fit overrides the existing marker prefab scale 1.75 on a future instance only; shared prefab unchanged. Fit encloses all visible bounds with at least 8% padding at alpha thresholds 128 (enemy) and 16 (marker). Apply in visual-local space; review final camera/sorting."
+  },
+  "projectile_visual": "Assets/Prefabs/Projectiles/GoosePoopProjectileVisual.prefab",
+  "impact_visual": "Assets/Prefabs/Projectiles/GoosePoopImpactVisual.prefab",
+  "projectile_visual_child_rotation_z": 90,
+  "texture_guid": "6d57cc6c6cbe417eb224cb426858ca9d",
+  "folder_guid": "fb2f5548e2bf49f08c49e080a5cf0f78",
+  "prefab_guid": "6ecd8c42c58c41afa68a4ecd96b485d9",
+  "scope": "Visual assets and browser demonstration only; no gameplay data/scripts/scenes or shared effects modified.",
+  "gameplay_implemented": false
+}
