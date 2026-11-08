@@ -14,6 +14,9 @@ public class GameplayWave
 [CreateAssetMenu(menuName = "Planetary Defense/Gameplay Configuration")]
 public class LevelGameplayConfig : ScriptableObject
 {
+    public string displayName = "Union Prime";
+    public string stageLabel = "CAMPUS DEFENSE / TUTORIAL";
+    public string nextPlanetName = "Capen Major";
     public LevelData level;
     public TowerData[] towers;
     public GameplayWave[] waves;

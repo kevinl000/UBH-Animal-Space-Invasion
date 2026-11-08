@@ -28,6 +28,17 @@ reset interpolation, avoiding a flash at the previous pooled/planet-centre pose.
 No Unity execution or Unity tests were performed for this integration. The
 historical test instructions below belong to the teammate's earlier foundation.
 
+## Capen Major integration (2026-11-08)
+
+Capen Major now uses the same configured loop and world-space combat, with its
+eight existing art layers and sixteen authored sockets. Its own configuration
+starts at 75 HP, uses Basic Goose 2 / Basic Skunk 2 as common enemies, adds shields
+and Basic Goose 3, and ends with Mother Goose. No variant-1 enemy is permitted.
+The shared HUD takes the planet title and next destination from the configuration;
+Union Prime retains its existing labels and Capen victory continues to Davis Nova.
+See `Tools/CapenMajor/README.md` for exact budgets, Mother Goose's unrestricted
+flocks, generator ownership, offline checks and the manual verification checklist.
+
 ## Legacy setup for other scenes
 
 How a level scene is put together so towers, enemies, the enemy AI and the LevelManager work as one game.

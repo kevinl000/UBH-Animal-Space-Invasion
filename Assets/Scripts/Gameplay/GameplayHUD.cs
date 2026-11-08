@@ -20,6 +20,7 @@ public class GameplayHUD : MonoBehaviour
     private RectTransform sidebar;
     private int screenWidth, screenHeight;
     private float nextRefresh;
+    private string planetTitle;
     private readonly Color ink = new Color32(232, 241, 255, 255);
     private readonly Color panel = new Color32(22, 36, 59, 255);
     private readonly Color gold = new Color32(238, 185, 77, 255);
@@ -31,7 +32,8 @@ public class GameplayHUD : MonoBehaviour
             var events = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
         }
-        var root = new GameObject("Union Prime HUD", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        planetTitle = loop.config.displayName.ToUpperInvariant();
+        var root = new GameObject(loop.config.displayName + " HUD", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         root.transform.SetParent(transform, false);
         canvas = root.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -46,8 +48,8 @@ public class GameplayHUD : MonoBehaviour
         sidebar.anchorMax = new Vector2(1, 1);
         sidebar.offsetMin = new Vector2(-360f, TowerPlacementPanel.Height);
         sidebar.offsetMax = Vector2.zero;
-        Label("UNION PRIME", sidebar, new Vector2(0, -28), new Vector2(324, 38), 30, gold);
-        Label("CAMPUS DEFENSE / TUTORIAL", sidebar, new Vector2(0, -62), new Vector2(324, 28), 17, ink);
+        Label(planetTitle, sidebar, new Vector2(0, -28), new Vector2(324, 38), 30, gold);
+        Label(loop.config.stageLabel, sidebar, new Vector2(0, -62), new Vector2(324, 28), 17, ink);
         resources = Label("", sidebar, new Vector2(0, -114), new Vector2(324, 66), 24, ink);
         phase = Label("", sidebar, new Vector2(0, -186), new Vector2(324, 66), 23, gold);
         cards = new Button[loop.config.towers.Length];
@@ -133,8 +135,8 @@ public class GameplayHUD : MonoBehaviour
             case GameplayLoopController.GameplayPhase.Clear: return "MINIBOSS / CLEAR THE SKY\n" + BaseEnemyData.Active.Count + " enemies remaining";
             case GameplayLoopController.GameplayPhase.Break: return "BUILD & SELL / FULL REFUND\nNext wave: " + Mathf.CeilToInt(loop.Remaining) + "s";
             case GameplayLoopController.GameplayPhase.BossEntrance: return "FINAL BOSS INCOMING";
-            case GameplayLoopController.GameplayPhase.BossFight: return "FINAL BOSS\nDefend Union Prime!";
-            default: return "UNION PRIME";
+            case GameplayLoopController.GameplayPhase.BossFight: return "FINAL BOSS\nDefend " + loop.config.displayName + "!";
+            default: return planetTitle;
         }
     }
 
@@ -187,9 +189,9 @@ public class GameplayHUD : MonoBehaviour
         shade.anchorMin = Vector2.zero; shade.anchorMax = Vector2.one; shade.offsetMin = shade.offsetMax = Vector2.zero;
         modal = shade.gameObject;
         RectTransform window = Box("Result", shade, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(540, 410), panel);
-        Label(title == "VICTORY" ? "UNION PRIME DEFENDED!" : title, window, new Vector2(0, -65), new Vector2(500, 60), 32, gold);
+        Label(title == "VICTORY" ? planetTitle + " DEFENDED!" : title, window, new Vector2(0, -65), new Vector2(500, 60), 32, gold);
         bool won = title == "VICTORY";
-        Button primary = Button(won ? "NEXT LEVEL  →  CAPEN MAJOR" : title == "PAUSED" ? "RESUME" : "RETRY", window,
+        Button primary = Button(won ? "NEXT LEVEL  →  " + loop.config.nextPlanetName.ToUpperInvariant() : title == "PAUSED" ? "RESUME" : "RETRY", window,
             new Vector2(0, -170), new Vector2(450, 64), () =>
             {
                 PlayClick();

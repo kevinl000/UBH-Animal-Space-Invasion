@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e186fe4a113ef4dd3a8474a33194dac1, type: 3}
+  m_Name: CapenMajor
+  m_EditorClassIdentifier: PlanetaryDefense.Runtime::LevelData
+  startingDifficulty: 15
+  postBossDifficulty: 60
+  maxDifficulty: 120
+  maxTime: 60
+  enemyDataList:
+  - enemy: {fileID: 11400000, guid: 19978a9f20f9a3a41aed65181488ce81, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 35f37c7ed9c4add41847cad182e58d27, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 997aa4ecad1275d42aae23606e57e070, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: 6ca6934d8920fb7479680203e716664c, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: a8a0753c1c170304db06bbc0b9720497, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 0
+  - enemy: {fileID: 11400000, guid: b8a76ce6ece2a7243b298b2a54461dcc, type: 2}
+    enemyInstances: []
+    startingBudget: 1
+    endingBudget: 1
+    isLevelBoss: 1
+  money: 10
+  fuel: 50
+  planetMaxHealth: 75
+  planetRotationSpeed: 6
+  planetGravity: 0
+  planetRadius: 4.9
+  isClockwise: 1
