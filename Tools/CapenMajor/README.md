@@ -65,6 +65,9 @@ Manual review by the team (no Unity execution/tests performed by Codex):
 2. Build at upper, side and lower sockets; check foundation seating/occlusion,
    hover ghosts, quick build, zoom, rotation and no placement flash. Check pause
    and 2x speed without moving the HUD.
+   During setup and the BUILD & SELL countdown, right-click the tower artwork
+   (including its upper weapon) or foundation: it should disappear and refund its
+   full cost once. Repeat during combat: selling must remain blocked.
 3. Play all waves. Confirm only the documented types, Goose 3 from Wave 2,
    wave-end shields, full clearing and exactly 10-second breaks. Assess the new
    budgets with several additional towers; difficulty is not empirically tuned.

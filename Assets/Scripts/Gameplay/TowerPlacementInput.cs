@@ -9,7 +9,7 @@ using UnityEngine.UI;
 ///  - Pick a tower: click its card in the HUD (PlanetPageController's selected card), or press 1-9 / 0.
 ///  - Choose a numbered socket in the quick placement panel to build without tracking the planet.
 ///  - Left click near the planet's edge: build it in the closest slot (money is checked).
-///  - Right click near a tower: sell it (half the cost back).
+///  - Right click a tower: sell it during setup/breaks for a full refund (legacy levels refund half).
 /// </summary>
 public class TowerPlacementInput : MonoBehaviour
 {
@@ -37,6 +37,7 @@ public class TowerPlacementInput : MonoBehaviour
 
     private string lastCardName;
     private readonly List<RaycastResult> uiHits = new List<RaycastResult>();
+    private readonly List<SpriteRenderer> towerSprites = new List<SpriteRenderer>();
     private PointerEventData pointerData;
     private EventSystem pointerEvents;
 
@@ -76,7 +77,7 @@ public class TowerPlacementInput : MonoBehaviour
         bool right = mouse.rightButton.wasPressedThisFrame;
         if (!left && !right) return;
 
-        if (!TryGetHoveredSlot(mouse.position.ReadValue(), out int slot, out bool onMoon)) return;
+        if (!TryGetHoveredSlot(mouse.position.ReadValue(), out int slot, out bool onMoon, right)) return;
 
         if (right)
         {
@@ -102,12 +103,14 @@ public class TowerPlacementInput : MonoBehaviour
     }
 
     // Shared by clicking and previewing, so the ghost always uses a placeable socket.
-    private bool TryGetHoveredSlot(Vector2 screen, out int slot, out bool onMoon)
+    private bool TryGetHoveredSlot(Vector2 screen, out int slot, out bool onMoon, bool includeTowerArt = false)
     {
         slot = -1;
         onMoon = false;
         if (defense == null || cam == null || !cam.pixelRect.Contains(screen) || OverControls(screen)) return false;
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z));
+        // Selling targets the visible tower, which can extend beyond the socket's build hit area.
+        if (includeTowerArt && TryGetTowerAt(world, out slot, out onMoon)) return true;
         // The moon first: it can overlap the main planet's screen area.
         if (moon != null && moon.TryGetSlotAt(world, out slot))
         {
@@ -122,6 +125,36 @@ public class TowerPlacementInput : MonoBehaviour
         if (defense.socketMounts.Length > 0 && Vector2.Distance(world, defense.SlotPosition(nearest)) > 0.7f) return false;
         slot = nearest;
         return true;
+    }
+
+    private bool TryGetTowerAt(Vector3 world, out int slot, out bool onMoon)
+    {
+        slot = -1;
+        onMoon = false;
+        float closest = float.PositiveInfinity;
+        int count = defense.SlotCount + (moon != null ? moon.SlotCount : 0);
+        for (int i = 0; i < count; i++)
+        {
+            bool isMoon = i >= defense.SlotCount;
+            int candidate = isMoon ? i - defense.SlotCount : i;
+            BaseTowerData tower = isMoon ? moon.TowerIn(candidate) : defense.TowerIn(candidate);
+            if (tower == null) continue;
+            tower.GetComponentsInChildren<SpriteRenderer>(false, towerSprites);
+            foreach (SpriteRenderer renderer in towerSprites)
+            {
+                if (!renderer.enabled || renderer.sprite == null) continue;
+                Bounds bounds = renderer.bounds;
+                Vector3 point = world;
+                point.z = bounds.center.z;
+                if (!bounds.Contains(point)) continue;
+                float distance = ((Vector2)(world - tower.transform.position)).sqrMagnitude;
+                if (distance >= closest) continue;
+                closest = distance;
+                slot = candidate;
+                onMoon = isMoon;
+            }
+        }
+        return slot >= 0;
     }
 
     private void OnDisable()
