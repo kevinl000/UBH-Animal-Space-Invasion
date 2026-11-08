@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class BaseEnemyData : MonoBehaviour
+public class BaseEnemyData : MonoBehaviour, IPlanetCollisionDamage
 {
     public EnemyData data;
     public float maxHealth;
     public float speed;
     public float damage;
+
+    public float PlanetCollisionDamage => damage;
 
     protected float currentHealth;
 
