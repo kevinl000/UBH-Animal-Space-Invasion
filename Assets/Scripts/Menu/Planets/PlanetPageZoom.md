@@ -2,14 +2,14 @@
 
 The existing PlanetPageZoom controller handles both world-space gameplay and
 older overlay planet pages. Mouse wheel up / two-finger spread zooms in; wheel
-down / pinch zooms out. Defaults remain 0.5-1.0, starting at 0.75, with unscaled
-smoothing and the existing wheel sensitivity.
+down / pinch zooms out. Limits are 0.625-0.875, starting at 0.75: half the previous
+travel in each direction. Smoothing and wheel sensitivity are unchanged.
 
 Union Prime receives the controller from GameplayBootstrap. GameplayHUD passes
 its fitted camera size to the controller, including after a viewport resize.
 Camera zoom scales the planet, towers, enemies, projectiles, effects and socket
-ghosts together. The overlay HUD stays fixed. World physics, ranges, movement,
-spawn distances and parent hierarchies do not change.
+ghosts together. The overlay HUD stays fixed. World physics, ranges, movement
+speeds and parent hierarchies do not change.
 
 The older destination pages retain the controller on PlanetHUD.prefab.
 Their PlanetVisual art still uses its authored scale multiplied by zoom. In a
@@ -29,12 +29,26 @@ ZoomViewport (overlay pages). HUD buttons and scrolling controls reject zoom.
 The wheel over the roster scrolls the roster. Both pinch fingers must start
 and remain in the playfield. Stars authored on the overlay HUD stay fixed.
 
-## Existing overlay spawn helper
+## Incoming enemy border
+
+EnemySpawner uses TryGetSpawnDistance to intersect the director's chosen angle
+with the playfield rectangle at maximum zoom-out. Union Prime uses its fitted
+camera viewport, excluding the right roster and bottom build bar. Older overlay
+planets use spawnViewport, projected into gameplay space at minimum zoom.
+Changing the player's zoom does not move the entry border. Resizing the viewport
+recalculates it for new spawns; existing enemies keep their positions.
+
+BaseEnemyData includes the scaled ship/shield bounds as clearance, then resets
+the pooled body's interpolation at its entry position. Regular enemies,
+reinforcements and encounters enter from offscreen. Summoned/released minions
+keep their parent-relative distance. Scenes without a gameplay zoom camera
+retain the configured planet-radii spawnDistance fallback.
+
+## Existing overlay art helper
 
 MaximumViewBounds and GetSpawnPosition remain available for overlay visual
-authoring. They return PlanetVisual local coordinates at minimum zoom. Current
-runtime EnemySpawner uses its configured world-space planet-radii distances;
-it does not use this historical overlay spawn helper.
+authoring. They return PlanetVisual local coordinates at minimum zoom; runtime
+spawning uses the world-space distance helper above.
 
 ## Manual verification
 
@@ -49,6 +63,10 @@ Do not launch Unity or run Unity test suites through Codex. Team review:
    the camera must return to the chosen zoom after the entrance.
 3. Resize between 16:9 and 4:3 while zoomed. Verify the chosen zoom is retained,
    the right sidebar and bottom row stay fixed, and placement still aligns.
+   At maximum zoom-out, check incoming ships enter through all four edges with
+   no popup, including after pool reuse and when reinforcements resume. Zoom in
+   and back out while ships approach; their positions must not jump. Confirm
+   summoned minions still emerge beside their parent ship.
 4. Open an older gameplay planet. Verify its overlay art and combat sprites
    zoom together with no drifting, changed orbit radius or tower seating.
    Check Silverman's moon and its towers separately.

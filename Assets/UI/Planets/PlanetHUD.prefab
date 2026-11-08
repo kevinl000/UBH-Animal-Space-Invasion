@@ -801,8 +801,8 @@ MonoBehaviour:
   page: {fileID: 6001083153621229607}
   viewport: {fileID: 765310001}
   spawnViewport: {fileID: 765310001}
-  minimumZoom: 0.5
-  maximumZoom: 1
+  minimumZoom: 0.625
+  maximumZoom: 0.875
   startingZoom: 0.75
   wheelSensitivity: 0.12
   zoomSpeed: 12

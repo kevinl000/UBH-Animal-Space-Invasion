@@ -10,6 +10,7 @@ public class EnemySpawnContext
     public int Ticket;                    // AI learning ticket (0 = not tracked)
     public float AngleDegrees;
     public float SpawnDistance = 4f;      // planet radii
+    public bool SpawnAtViewBorder;
     public bool IsShiny;
     public bool Orbits;
 }
@@ -61,12 +62,14 @@ public class BaseEnemyData : GameEntity
     private float dotPerSecond;
     private bool dead;
     private bool reported;
+    private SpriteRenderer[] spawnRenderers;
 
     protected override void Awake()
     {
         base.Awake(); // Rigidbody2D: kinematic, no gravity (GameEntity)
         Visual = GetComponent<CombatVisual>();
         if (Visual == null) Visual = gameObject.AddComponent<CombatVisual>();
+        spawnRenderers = GetComponentsInChildren<SpriteRenderer>(true);
         currentHealth = maxHealth;
         if (hitCollider == null) Debug.LogWarning("[BaseEnemyData] '" + name + "' has no Collider2D, so nothing can collide with it.");
     }
@@ -108,9 +111,21 @@ public class BaseEnemyData : GameEntity
         attackTimer = data != null ? Random.Range(0f, data.attackInterval) : 1f; // don't all fire on the same frame
 
         if (!Active.Contains(this)) Active.Add(this);
-        Teleport();
         OnInitialized();
         if (Visual != null) Visual.ResetVisual();
+        if (context.SpawnAtViewBorder && context.Spawner != null && planet != null)
+        {
+            // Include the scaled model and shield, even when reusing a pooled enemy.
+            float clearance = 0f;
+            foreach (SpriteRenderer renderer in spawnRenderers)
+            {
+                if (renderer == null || renderer.sprite == null) continue;
+                Bounds bounds = renderer.bounds;
+                clearance = Mathf.Max(clearance, Vector2.Distance(bounds.center, transform.position) + bounds.extents.magnitude);
+            }
+            Distance = context.Spawner.GetEntryDistance(AngleDegrees, clearance, Distance);
+        }
+        Teleport();
         EnemyEvents.RaiseSpawned(this);
     }
 
@@ -410,8 +425,15 @@ public class BaseEnemyData : GameEntity
     protected void Teleport()
     {
         if (planet == null) return;
-        body.position = TargetPosition();
-        body.rotation = TargetRotation();
+        // Reset interpolation so pool reuse cannot flash at the previous position.
+        RigidbodyInterpolation2D interpolation = body.interpolation;
+        body.interpolation = RigidbodyInterpolation2D.None;
+        Vector2 position = TargetPosition();
+        float rotation = TargetRotation();
+        body.position = position;
+        body.rotation = rotation;
+        transform.SetPositionAndRotation(position, Quaternion.Euler(0f, 0f, rotation));
+        body.interpolation = interpolation;
         body.linearVelocity = Vector2.zero;
         body.angularVelocity = 0f;
     }

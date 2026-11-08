@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
     public WaveDirectorBridge bridge;
     [Tooltip("Any component that implements IPlanetDefense (SimplePlanetDefense works out of the box).")]
     public MonoBehaviour planetDefense;
-    [Tooltip("Where enemies appear, in planet radii from the centre.")]
+    [Tooltip("Fallback spawn distance in planet radii when no gameplay zoom view is available.")]
     public float spawnDistance = 4f;
     [Tooltip("Seconds between spawn attempts (one enemy at most per attempt).")]
     public float spawnInterval = 0.5f;
@@ -35,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
     private IPlanetDefense planet;
     private float nextSpawn;
     private bool timeUpRaised;
+    private PlanetPageZoom spawnView;
 
     private PoolManager Pool { get { return pool != null ? pool : PoolManager.Instance; } }
 
@@ -49,6 +50,7 @@ public class EnemySpawner : MonoBehaviour
         if (planet == null) { Debug.LogError("[EnemySpawner] planetDefense must implement IPlanetDefense."); return; }
         if (level == null) { Debug.LogError("[EnemySpawner] No LevelData assigned."); return; }
         if (Pool == null) { Debug.LogError("[EnemySpawner] No PoolManager in the scene. Add one (there should be exactly one per level)."); return; }
+        spawnView = FindAnyObjectByType<PlanetPageZoom>();
 
         if (!externallyControlled) level.Init();
         BaseEnemyData.Active.RemoveAll(e => e == null); // static list can outlive a play session in the editor
@@ -100,7 +102,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>Creates one enemy. Returns null if the EnemyData has no prefab.</summary>
-    public BaseEnemyData Spawn(EnemyData data, float angleDegrees, bool shiny, bool orbits, int ticket, float distance)
+    public BaseEnemyData Spawn(EnemyData data, float angleDegrees, bool shiny, bool orbits, int ticket, float distance, bool atViewBorder = true)
     {
         if (data == null) return null;
         if (data.prefab == null)
@@ -122,10 +124,18 @@ public class EnemySpawner : MonoBehaviour
             Ticket = ticket,
             AngleDegrees = angleDegrees,
             SpawnDistance = distance,
+            SpawnAtViewBorder = atViewBorder,
             IsShiny = shiny,
             Orbits = orbits,
         });
         return enemy;
+    }
+
+    public float GetEntryDistance(float angleDegrees, float clearance, float fallback)
+    {
+        float distance;
+        return spawnView != null && spawnView.TryGetSpawnDistance(planet.Root, planet.Radius, angleDegrees, clearance, out distance)
+            ? distance : fallback;
     }
 
     /// <summary>For bosses summoning or releasing other enemies. Not tracked by the AI's learning.</summary>
@@ -133,7 +143,7 @@ public class EnemySpawner : MonoBehaviour
     {
         bool shiny = Random.value < (data != null && data.isBoss ? 0.01f : 0.05f); // README shiny chances
         bool orbits = data != null && data.movement != EnemyMovement.StopAndShoot;
-        return Spawn(data, angleDegrees, shiny, orbits, 0, distance);
+        return Spawn(data, angleDegrees, shiny, orbits, 0, distance, false);
     }
 
     public void BeginWave(GameplayWave wave, float completedSpawnTime)

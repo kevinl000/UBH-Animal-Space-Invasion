@@ -15,8 +15,8 @@ public class PlanetPageZoom : MonoBehaviour
     public RectTransform viewport;
     [Tooltip("Border used for spawning. Normally the usable playfield; can be the canvas for a full-screen border.")]
     public RectTransform spawnViewport;
-    [Min(0.01f)] public float minimumZoom = 0.5f;
-    [Min(0.01f)] public float maximumZoom = 1f;
+    [Min(0.01f)] public float minimumZoom = 0.625f;
+    [Min(0.01f)] public float maximumZoom = 0.875f;
     [Min(0.01f)] public float startingZoom = 0.75f;
     [Min(0.01f)] public float wheelSensitivity = 0.12f;
     [Min(0.01f)] public float zoomSpeed = 12f;
@@ -200,6 +200,56 @@ public class PlanetPageZoom : MonoBehaviour
     {
         firstTouchId = secondTouchId = -1;
         previousPinchDistance = 0;
+    }
+
+    // Intersect the director's incoming ray with the maximum zoom-out rectangle.
+    // Return planet radii, so approach/orbit movement keeps its existing units.
+    public bool TryGetSpawnDistance(Transform planetRoot, float planetRadius, float angleDegrees,
+        float clearance, out float distance)
+    {
+        distance = 0f;
+        if (battleCamera == null || !battleCamera.orthographic || fittedCameraSize <= 0f || planetRadius <= 0f)
+            return false;
+
+        Vector2 origin = planetRoot.position;
+        Rect bounds;
+        if (page != null)
+        {
+            if (spawnViewport == null) return false;
+            spawnViewport.GetWorldCorners(corners);
+            Camera uiCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            Vector2 min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+            Vector2 max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+            foreach (Vector3 corner in corners)
+            {
+                Vector2 screen = RectTransformUtility.WorldToScreenPoint(uiCamera, corner);
+                Vector2 world = battleCamera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -battleCamera.transform.position.z));
+                world = origin + (world - origin) * (CurrentZoom / minimumZoom);
+                min = Vector2.Min(min, world);
+                max = Vector2.Max(max, world);
+            }
+            bounds = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+        }
+        else
+        {
+            float height = fittedCameraSize * startingZoom / minimumZoom;
+            float width = height * battleCamera.aspect;
+            Vector2 center = battleCamera.transform.position;
+            bounds = Rect.MinMaxRect(center.x - width, center.y - height, center.x + width, center.y + height);
+        }
+
+        float margin = Mathf.Max(0f, clearance) + 0.05f;
+        bounds.xMin -= margin;
+        bounds.xMax += margin;
+        bounds.yMin -= margin;
+        bounds.yMax += margin;
+        Vector2 direction = planetRoot.TransformVector(PlanetMath.ToLocal(angleDegrees, 1f, planetRadius));
+        float xDistance = Mathf.Abs(direction.x) < 0.00001f ? float.PositiveInfinity
+            : ((direction.x > 0f ? bounds.xMax : bounds.xMin) - origin.x) / direction.x;
+        float yDistance = Mathf.Abs(direction.y) < 0.00001f ? float.PositiveInfinity
+            : ((direction.y > 0f ? bounds.yMax : bounds.yMin) - origin.y) / direction.y;
+        distance = Mathf.Min(xDistance, yDistance);
+        return distance > 0f && !float.IsInfinity(distance);
     }
 
     // Local coordinates in page.visualMount at maximum zoom-out. Changing zoom does

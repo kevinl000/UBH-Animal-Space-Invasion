@@ -40,6 +40,7 @@ public class GameplayHUD : MonoBehaviour
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1600f, 900f);
         scaler.matchWidthOrHeight = 1f;
+        BuildStars();
         sidebar = Box("Tower panel", root.transform, new Vector2(1f, 0.5f), new Vector2(-180f, 0f), new Vector2(360f, 900f), panel);
         sidebar.anchorMin = new Vector2(1, 0);
         sidebar.anchorMax = new Vector2(1, 1);
@@ -151,6 +152,30 @@ public class GameplayHUD : MonoBehaviour
         if (zoom != null) zoom.SetFittedCameraSize(fittedSize);
         else loop.battleCamera.orthographicSize = fittedSize;
         loop.battleCamera.transform.position = new Vector3(0, 0, -10);
+    }
+
+    private void BuildStars()
+    {
+        // Reuse the old PlanetHUD's fixed pixel stars, behind the world sprites.
+        var sky = new GameObject("Stars", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
+        sky.transform.SetParent(transform, false);
+        Canvas backdrop = sky.GetComponent<Canvas>();
+        backdrop.renderMode = RenderMode.ScreenSpaceCamera;
+        backdrop.worldCamera = loop.battleCamera;
+        backdrop.planeDistance = 50f;
+        backdrop.sortingOrder = -100;
+        CanvasScaler scaler = sky.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1600f, 900f);
+        scaler.matchWidthOrHeight = 1f;
+        for (int i = 0; i < 32; i++)
+        {
+            float size = i % 4 == 0 ? 4f : 2f;
+            RectTransform star = Box("Star" + i, sky.transform,
+                new Vector2((i * 211 % 1600 + 36) / 1672f, (i * 137 % 880 + 30) / 941f),
+                Vector2.zero, new Vector2(size, size), new Color32(61, 82, 112, 255));
+            star.GetComponent<Image>().raycastTarget = false;
+        }
     }
 
     private void ShowModal(string title)
