@@ -1,0 +1,82 @@
+{
+  "base": {
+    "source": "base-source-v2.png",
+    "runtime": "Assets/Art/Towers/PestTrap/PestTrapBase.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 1500,
+    "ground_mount_top_left_pixels": [
+      600,
+      1204
+    ],
+    "socket_top_left_pixels": [
+      1090,
+      480
+    ],
+    "guid": "dcc0d15f131c4b7c9b8ee33dd24a0867",
+    "sha256": "67ea93fcf2272cb36be7be45835b5ef129ae5a2980ec477022a2c00f9613d407",
+    "operator_screen_bounds_top_left_pixels": [
+      780,
+      620,
+      980,
+      790
+    ]
+  },
+  "weapon": {
+    "source": "launcher-source-v1.png",
+    "runtime": "Assets/Art/Towers/PestTrap/PestTrapLauncher.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 2100,
+    "hinge_top_left_pixels": [
+      627,
+      1021.5
+    ],
+    "muzzle_top_left_pixels": [
+      627,
+      216
+    ],
+    "guid": "81ba162cf7d34a38beb6cdc7279b5107",
+    "sha256": "1db831745e470b1dd545039d1ec30c9ddaeb6e46628d02aec6b6a0f95b419d10"
+  },
+  "weapon_local_position": [
+    0.32666666666666666,
+    0.4826666666666667
+  ],
+  "muzzle_local_position": [
+    0.0,
+    0.38357142857142856
+  ],
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "joint_exclusion_radius_world_units": 0.115,
+  "prefab": "Assets/Prefabs/Towers/PestTrapTowerVisual.prefab",
+  "prefab_guid": "b98e704584c0409b86bfd2ceb01c901f",
+  "muzzle_note": "Marker lies on the outer top edge of the nozzle lip; its dark opening is drawn inset in the front face.",
+  "verification": {
+    "angles": 241,
+    "angle_step_degrees": 0.5,
+    "weapon_sample_stride_source_pixels": 4,
+    "alpha_threshold": 128,
+    "joint_exclusion_radius_world_units": 0.115,
+    "max_protected_overlap_samples": 0,
+    "min_joint_contact_samples": 4770,
+    "max_muzzle_ray_base_samples": 0,
+    "ray_length_world_units": 2,
+    "limitations": [
+      "Sampled raster geometry, not a continuous collision proof.",
+      "Only the joint and upper support are excluded; the operator screen is always protected.",
+      "A clear centerline does not establish arbitrary projectile-width clearance.",
+      "Planet seating, neighbors and final camera readability remain unverified.",
+      "No Unity validation or tests run."
+    ]
+  },
+  "generation_mode": "built-in image_gen; reference-guided v1 generation and targeted base-screen v2 edit; selected source PNG bytes preserved in runtime"
+}

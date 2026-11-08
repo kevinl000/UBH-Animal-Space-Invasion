@@ -1,0 +1,79 @@
+{
+  "base": {
+    "source": "base-source-v2.png",
+    "runtime": "Assets/Art/Towers/Sniper/SniperBase.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 1500,
+    "sha256": "56f1d2ab0432d1553d02d5f75b5e7da0ede9fad7fe799e7222c10f72d9d772c7",
+    "guid": "66889a42cf4641a6ac35f91f71615df6",
+    "ground_mount_top_left_pixels": [
+      582,
+      1204
+    ],
+    "socket_top_left_pixels": [
+      1091,
+      484
+    ],
+    "operator_screen_bounds_top_left_pixels": [
+      820,
+      600,
+      1000,
+      775
+    ]
+  },
+  "weapon": {
+    "source": "weapon-source-v1.png",
+    "runtime": "Assets/Art/Towers/Sniper/SniperWeapon.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "pixels_per_unit": 1800,
+    "sha256": "7b961acc14e9bccd48a8b43058200ad085c17909883e4a2c05ce9ead532e7c28",
+    "guid": "cb231c0c3786402281e2d9459fa50884",
+    "hinge_top_left_pixels": [
+      626.5,
+      1070.5
+    ],
+    "muzzle_top_left_pixels": [
+      626.5,
+      58
+    ]
+  },
+  "cannon_local_position": [
+    0.3393333333333333,
+    0.48
+  ],
+  "muzzle_local_position": [
+    0,
+    0.5625
+  ],
+  "aim_limits_local_z_degrees": [
+    -60,
+    60
+  ],
+  "firing_axis": "+Y",
+  "joint_exclusion_radius_world_units": 0.12,
+  "generation_mode": "built-in image_gen; reference-guided v1 generation and targeted base-screen v2 edit; selected source PNG bytes preserved in runtime",
+  "verification": {
+    "angles": 241,
+    "angle_step_degrees": 0.5,
+    "weapon_sample_stride_source_pixels": 4,
+    "alpha_threshold": 128,
+    "joint_exclusion_radius_world_units": 0.12,
+    "max_protected_overlap_samples": 0,
+    "min_joint_contact_samples": 4040,
+    "max_muzzle_ray_base_samples": 0,
+    "ray_length_world_units": 2,
+    "limitations": [
+      "Sampled raster geometry, not a continuous collision proof.",
+      "Only the joint and upper support are excluded; the operator screen is always protected.",
+      "A clear centerline does not establish arbitrary projectile-width clearance.",
+      "Planet seating, neighbors and final camera readability remain unverified.",
+      "No Unity validation or tests run."
+    ]
+  }
+}
