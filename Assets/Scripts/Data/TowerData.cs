@@ -20,9 +20,13 @@ public class TowerData : ScriptableObject
     public float fov;
     public TowerAttackType attackType = TowerAttackType.Single;
 
+    [Header("Abilities")]
+    public bool ignoresShield;
+    public bool canHitStealth;
+
     [Header("Prefabs")]
     [Tooltip("Prefab with a BaseTowerData-derived component.")]
     public BaseTowerData prefab;
     [Tooltip("Optional. Without it, attacks hit instantly.")]
-    public TowerProjectile projectilePrefab;
+    public TowerProjectile projectilePrefab; // Assuming you have a TowerProjectile class
 }
