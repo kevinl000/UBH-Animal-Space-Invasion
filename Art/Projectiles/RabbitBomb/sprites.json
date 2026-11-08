@@ -1,0 +1,293 @@
+{
+  "sheet": "Assets/Art/Projectiles/RabbitBomb/RabbitBombSheet.png",
+  "pixels_per_unit": 1024,
+  "frames": [
+    {
+      "name": "RabbitBombFlight",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        836,
+        418,
+        418
+      ],
+      "pivot": [
+        0.31100478468899523,
+        0.4880382775119617
+      ],
+      "visible_bounds_alpha16": [
+        129,
+        161,
+        306,
+        267
+      ],
+      "strong_bounds_alpha128": [
+        130,
+        162,
+        305,
+        266
+      ],
+      "radius_pixels_alpha16": 0,
+      "anchor": "rear emission"
+    },
+    {
+      "name": "RabbitBombMuzzle01",
+      "file_id": 21300002,
+      "rect": [
+        418,
+        836,
+        418,
+        418
+      ],
+      "pivot": [
+        0.3373205741626794,
+        0.49282296650717705
+      ],
+      "visible_bounds_alpha16": [
+        140,
+        163,
+        293,
+        260
+      ],
+      "strong_bounds_alpha128": [
+        141,
+        165,
+        292,
+        259
+      ],
+      "radius_pixels_alpha16": 0,
+      "anchor": "rear emission"
+    },
+    {
+      "name": "RabbitBombMuzzle02",
+      "file_id": 21300004,
+      "rect": [
+        0,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.43301435406698563,
+        0.5119617224880383
+      ],
+      "visible_bounds_alpha16": [
+        180,
+        181,
+        258,
+        226
+      ],
+      "strong_bounds_alpha128": [
+        181,
+        182,
+        257,
+        226
+      ],
+      "radius_pixels_alpha16": 0,
+      "anchor": "rear emission"
+    },
+    {
+      "name": "RabbitBombExplosion01",
+      "file_id": 21300006,
+      "rect": [
+        418,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5035885167464115,
+        0.5179425837320575
+      ],
+      "visible_bounds_alpha16": [
+        157,
+        148,
+        264,
+        255
+      ],
+      "strong_bounds_alpha128": [
+        158,
+        149,
+        263,
+        254
+      ],
+      "radius_pixels_alpha16": 55.362442142665635,
+      "anchor": "blast center"
+    },
+    {
+      "name": "RabbitBombExplosion02",
+      "file_id": 21300008,
+      "rect": [
+        836,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5023923444976076,
+        0.5167464114832536
+      ],
+      "visible_bounds_alpha16": [
+        115,
+        112,
+        305,
+        293
+      ],
+      "strong_bounds_alpha128": [
+        116,
+        112,
+        304,
+        292
+      ],
+      "radius_pixels_alpha16": 97.62427976686948,
+      "anchor": "blast center"
+    },
+    {
+      "name": "RabbitBombExplosion03",
+      "file_id": 21300010,
+      "rect": [
+        0,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5059808612440191,
+        0.5287081339712918
+      ],
+      "visible_bounds_alpha16": [
+        64,
+        52,
+        359,
+        341
+      ],
+      "strong_bounds_alpha128": [
+        65,
+        53,
+        358,
+        341
+      ],
+      "radius_pixels_alpha16": 152.58194519667128,
+      "anchor": "blast center"
+    },
+    {
+      "name": "RabbitBombExplosion04",
+      "file_id": 21300012,
+      "rect": [
+        418,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.49760765550239233,
+        0.5299043062200957
+      ],
+      "visible_bounds_alpha16": [
+        84,
+        77,
+        333,
+        316
+      ],
+      "strong_bounds_alpha128": [
+        84,
+        78,
+        332,
+        315
+      ],
+      "radius_pixels_alpha16": 133.49625462910936,
+      "anchor": "blast center"
+    },
+    {
+      "name": "RabbitBombExplosion05",
+      "file_id": 21300014,
+      "rect": [
+        836,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4820574162679426,
+        0.5203349282296651
+      ],
+      "visible_bounds_alpha16": [
+        107,
+        104,
+        295,
+        297
+      ],
+      "strong_bounds_alpha128": [
+        108,
+        105,
+        295,
+        296
+      ],
+      "radius_pixels_alpha16": 106.45186705737011,
+      "anchor": "blast center"
+    }
+  ],
+  "animations": [
+    {
+      "name": "RabbitBombMuzzle",
+      "fps": 24,
+      "duration": 0.08333333333333333,
+      "loop": false,
+      "default_xy_scale": 0.65,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300002
+        },
+        {
+          "time": 0.041666666666666664,
+          "file_id": 21300004
+        },
+        {
+          "time": 0.08333333333333333,
+          "file_id": 0
+        }
+      ]
+    },
+    {
+      "name": "RabbitBombExplosion",
+      "fps": 18,
+      "duration": 0.2777777777777778,
+      "loop": false,
+      "default_xy_scale": 6.711147892891979,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300006
+        },
+        {
+          "time": 0.05555555555555555,
+          "file_id": 21300008
+        },
+        {
+          "time": 0.1111111111111111,
+          "file_id": 21300010
+        },
+        {
+          "time": 0.16666666666666666,
+          "file_id": 21300012
+        },
+        {
+          "time": 0.2222222222222222,
+          "file_id": 21300014
+        },
+        {
+          "time": 0.2777777777777778,
+          "file_id": 0
+        }
+      ]
+    }
+  ],
+  "projectile_xy_scale": 0.65,
+  "projectile_forward": "+X",
+  "muzzle_forward": "+X",
+  "explosion_radius_pixels_alpha16": 152.58194519667128,
+  "explosion_default_reference_radius_world": 1,
+  "explosion_absolute_uniform_xy_scale_formula": "effectRadius * 1024 / explosion_radius_pixels_alpha16; assumes unit-scale world parent",
+  "radius_is_cosmetic_measurement_not_damage_logic": true
+}
