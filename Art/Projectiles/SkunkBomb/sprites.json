@@ -1,0 +1,214 @@
+{
+  "sheet": "Assets/Art/Projectiles/SkunkBomb/SkunkBombSheet.png",
+  "pixels_per_unit": 512,
+  "bounds_alpha_threshold": 16,
+  "flight_forward": "+Y",
+  "gas_growth_direction": "+Y outward from surface",
+  "frames": [
+    {
+      "name": "SkunkBombFlight",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        836,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5311004784688995,
+        0.39832535885167464
+      ],
+      "visible_bounds_in_cell": [
+        159,
+        159,
+        285,
+        344
+      ],
+      "anchor": "center"
+    },
+    {
+      "name": "SkunkBombBurst01",
+      "file_id": 21300002,
+      "rect": [
+        0,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5239234449760766,
+        0.0717703349282297
+      ],
+      "visible_bounds_in_cell": [
+        143,
+        280,
+        295,
+        388
+      ],
+      "anchor": "bottom contact"
+    },
+    {
+      "name": "SkunkBombBurst02",
+      "file_id": 21300004,
+      "rect": [
+        418,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.48444976076555024,
+        0.0717703349282297
+      ],
+      "visible_bounds_in_cell": [
+        29,
+        184,
+        376,
+        388
+      ],
+      "anchor": "bottom contact"
+    },
+    {
+      "name": "SkunkBombBurst03",
+      "file_id": 21300006,
+      "rect": [
+        836,
+        418,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4892344497607656,
+        0.0717703349282297
+      ],
+      "visible_bounds_in_cell": [
+        58,
+        195,
+        351,
+        388
+      ],
+      "anchor": "bottom contact"
+    },
+    {
+      "name": "SkunkBombHitPuff01",
+      "file_id": 21300008,
+      "rect": [
+        0,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.5191387559808612,
+        0.19617224880382778
+      ],
+      "visible_bounds_in_cell": [
+        172,
+        270,
+        262,
+        336
+      ],
+      "anchor": "bottom contact"
+    },
+    {
+      "name": "SkunkBombHitPuff02",
+      "file_id": 21300010,
+      "rect": [
+        418,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4880382775119617,
+        0.19617224880382778
+      ],
+      "visible_bounds_in_cell": [
+        136,
+        242,
+        272,
+        336
+      ],
+      "anchor": "bottom contact"
+    },
+    {
+      "name": "SkunkBombHitPuff03",
+      "file_id": 21300012,
+      "rect": [
+        836,
+        0,
+        418,
+        418
+      ],
+      "pivot": [
+        0.4868421052631579,
+        0.19617224880382778
+      ],
+      "visible_bounds_in_cell": [
+        146,
+        245,
+        261,
+        336
+      ],
+      "anchor": "bottom contact"
+    }
+  ],
+  "animations": [
+    {
+      "name": "SkunkBombBurst",
+      "state": "Burst",
+      "fps": 12,
+      "loop": false,
+      "duration_seconds": 0.25,
+      "prefab_scale": 2,
+      "renderer_alpha": 0.75,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300002
+        },
+        {
+          "time": 0.08333333333333333,
+          "file_id": 21300004
+        },
+        {
+          "time": 0.16666666666666666,
+          "file_id": 21300006
+        },
+        {
+          "time": 0.25,
+          "file_id": 0
+        }
+      ]
+    },
+    {
+      "name": "SkunkBombHitPuff",
+      "state": "HitPuff",
+      "fps": 12,
+      "loop": false,
+      "duration_seconds": 0.25,
+      "prefab_scale": 1,
+      "renderer_alpha": 0.75,
+      "keys": [
+        {
+          "time": 0.0,
+          "file_id": 21300008
+        },
+        {
+          "time": 0.08333333333333333,
+          "file_id": 21300010
+        },
+        {
+          "time": 0.16666666666666666,
+          "file_id": 21300012
+        },
+        {
+          "time": 0.25,
+          "file_id": 0
+        }
+      ]
+    }
+  ],
+  "damage_rule": "Existing GetTargetsNear(angleDegrees, spreadDegrees); current spread 30 degrees per side. No world-radius parameter or guaranteed adjacent-slot hit.",
+  "visual_placement": "Central burst at impact; optional hit puffs only on additional actual damage recipients. Gameplay hookup not implemented."
+}
