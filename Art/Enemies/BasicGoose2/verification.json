@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "source_runtime_byte_identical": true,
+    "rgba_with_real_transparency": true,
+    "visible_width_matches_reference": true,
+    "asset_guids_preserved_and_unique": true,
+    "prefab_sprite_reference": true,
+    "visual_components_only": true,
+    "point_clamp_no_mips_no_compression": true,
+    "no_resize_by_importer": true,
+    "previous_version_preserved": true,
+    "preview_references_exist": true
+  },
+  "source_runtime_sha256": "e01658f877dc5367aa92d36ccfcb1deb8b73b164923b4fdf61e9213dc4905c5c",
+  "visible_bounds_threshold": 128,
+  "alpha_extrema": [
+    0,
+    255
+  ],
+  "fully_transparent_pixels": 893835,
+  "note": "v2 strengthens the hull hue and recolors the dome for tier readability; original generated pixels retained.",
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "remaining": "Manual gameplay-camera readability and Unity import review."
+}

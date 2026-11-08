@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basic Goose 2 · Hue comparison</title>
+<style>
+  :root { color-scheme: dark; font: 16px/1.5 system-ui, sans-serif; --size: 160; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #101628; color: #e6ebf6; }
+  main { max-width: 1000px; margin: auto; padding: 32px 20px; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p { color: #b6c3db; max-width: 760px; }
+  .controls { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin: 24px 0; }
+  label { display: flex; align-items: center; gap: 10px; }
+  select { padding: 6px; background: #202d45; color: inherit; border: 1px solid #5c6c8a; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  article { border: 1px solid #38445d; border-radius: 12px; overflow: hidden; }
+  h2 { font-size: 18px; margin: 16px; }
+  .stage { background-color: #0b1020; min-height: 440px; display: grid; place-items: center; overflow: auto; }
+  .stage img { width: calc(var(--size) * 1px); max-width: none; height: auto; image-rendering: pixelated; }
+  .stage .tier2 { width: calc(var(--size) * 0.9931740614334471px); }
+  .caption { margin: 14px 16px; }
+  body[data-bg="light"] .stage { background-color: #dbe5ed; }
+  body[data-bg="grid"] .stage { background-color: #26334a; background-image: conic-gradient(#38465a 25%, transparent 0 50%, #38465a 0 75%, transparent 0); background-size: 24px 24px; }
+  .note { font-size: 14px; }
+  @media (max-width: 650px) { .cards { grid-template-columns: 1fr; } }
+</style>
+<main>
+  <h1>Basic Goose 2</h1>
+  <p>A magenta-purple hull and lavender dome distinguish the tougher goose at small sizes. The familiar pilot and orange accents remain.</p>
+  <div class="controls">
+    <label>Size <input id="size" type="range" min="80" max="400" step="20" value="160"><output id="value">160 px</output></label>
+    <label>Background <select id="background"><option value="dark">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+  </div>
+  <div class="cards">
+    <article>
+      <h2>Basic Goose 1</h2>
+      <div class="stage"><img src="../../../Assets/Art/Enemies/BasicGoose1/BasicGoose1.png" alt="Original goose in a blue saucer"></div>
+      <p class="caption">Blue hull · 1 HP</p>
+    </article>
+    <article>
+      <h2>Basic Goose 2</h2>
+      <div class="stage"><img class="tier2" src="../../../Assets/Art/Enemies/BasicGoose2/BasicGoose2.png?v=2" alt="Same goose in a magenta-purple saucer with a lavender dome"></div>
+      <p class="caption">Purple hull + lavender dome · 2 HP</p>
+    </article>
+  </div>
+  <p class="note">Images follow their Unity import scales so visible widths match. Try 80–160 px to review small-size readability. Both tiers use the existing single-target poop visuals. HP labels describe the existing data; this preview adds no gameplay.</p>
+</main>
+<script>
+  const size = document.getElementById('size');
+  size.addEventListener('input', () => {
+    document.documentElement.style.setProperty('--size', size.value);
+    document.getElementById('value').textContent = `${size.value} px`;
+  });
+  document.getElementById('background').addEventListener('change', event => {
+    document.body.dataset.bg = event.target.value;
+  });
+</script>
+</html>

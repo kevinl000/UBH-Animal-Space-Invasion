@@ -1,0 +1,10 @@
+Generation mode: built-in image_gen edit; transparent_background=true.
+Edit target: Assets/Art/Enemies/BasicGoose1/BasicGoose1.png
+
+Use case: precise-object-edit.
+Asset type: transparent Unity 2D pixel-art enemy sprite, Basic Goose 2.
+Input image 1 is the approved Basic Goose 1 sprite and is the edit target.
+Primary request: create a subtle higher-HP color variant of EXACTLY this same goose-piloted UFO. Change ONLY the blue METAL SAUCER HULL below the dome to a slightly more violet/indigo hue: medium periwinkle-violet lit plates, deep indigo-violet shadows. The shift should be distinguishable alongside the blue original at small gameplay size, but remain a closely related cool palette. Keep the orange/yellow lights, orange trim and thruster flame unchanged. Keep the entire BLUE glass dome unchanged. Keep the Canada goose entirely unchanged: same black head and neck, ivory cheek and chest, brown wing, beak, pose, expression and left-facing direction.
+Composition/framing: preserve the original square canvas, subject placement, original visible saucer width, silhouette, proportions, pixel clusters, stepped outlines, blue dome highlights, transparent margin and all geometry. One isolated static sprite, same as input. Genuine alpha-transparent background.
+Style: preserve the reference pixel art exactly, no added detail or smoother shading.
+Constraints: this is only a HUE variant, not a new enemy design. No thicker hull, larger goose, new armor, shield, badge, number, costume, extra lights, extra weapon, projectile, trail, text, watermark, background or checkerboard. Do not recolor the goose, blue dome, yellow/orange lights or flame. Preserve input composition and all shapes; recolor the metal hull only.

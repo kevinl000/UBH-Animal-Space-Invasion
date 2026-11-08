@@ -1,0 +1,10 @@
+Generation mode: built-in image_gen edit; transparent_background=true.
+Edit target: Art/Enemies/BasicGoose2/basic-goose-2-source-v1.png
+
+Use case: precise-object-edit.
+Asset type: transparent Unity pixel-art enemy sprite, Basic Goose 2 color revision v2.
+Input image 1 is the edit target, the previous Basic Goose 2. Its subtle blue-violet hull was rejected because the tier distinction was not noticeable.
+Primary request: a conspicuously different but still recognizable color variant of this SAME Canada-goose UFO. Recolor the entire metal saucer hull to saturated warm MAGENTA-PURPLE, with plum shadows, rich orchid midtones and pink-lilac highlighted plates. It must read as PURPLE/PINK rather than blue at 80-120 pixels wide. Also recolor the entire blue glass dome to transparent-looking LAVENDER/PURPLE glass, with pale lilac rim and white highlights, saturated violet glass behind the goose. No blue or cyan plates or glass should remain. Use darker purple for the glass directly behind the head so the black/ivory goose stays readable.
+Keep the Canada goose exactly the same natural colors, black neck, ivory cheek and breast, brown wings, silhouette, pose, left-facing direction and expression. Keep orange/gold lamps, orange hull trim and orange/yellow thruster flame unchanged for family resemblance. Maintain exactly the original ship silhouette, stepped black outlines, pixel grid, pixel clusters, proportions, square canvas, subject position and transparent padding. Color changes only, same hull thickness and same dome outline.
+Scene/backdrop: actual alpha transparency; no background or fake checkerboard.
+Constraints: one isolated static sprite, no new geometry, armor, weapons, badge, number, text, costume, projectile, particles, scene or watermark. Preserve shapes and pixel-art medium. The strongest purple color change must cover BOTH dome and saucer so it is obvious at small gameplay scale.

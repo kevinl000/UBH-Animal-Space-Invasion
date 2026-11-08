@@ -1,0 +1,49 @@
+{
+  "asset": "Basic Goose 2",
+  "mode": "built-in image_gen edit",
+  "source": "basic-goose-2-source-v2.png",
+  "prompt": "prompt-v2.txt",
+  "edit_target": "Art/Enemies/BasicGoose2/basic-goose-2-source-v1.png",
+  "runtime_sprite": "Assets/Art/Enemies/BasicGoose2/BasicGoose2.png",
+  "visual_prefab": "Assets/Prefabs/Enemies/BasicGoose2Visual.prefab",
+  "palette": "Saturated magenta-purple hull and lavender/violet dome; natural goose and orange accents retained visually.",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "visible_bounds_alpha_128": [
+    41,
+    157,
+    1213,
+    1146
+  ],
+  "reference_visible_bounds_alpha_128": [
+    44,
+    161,
+    1208,
+    1146
+  ],
+  "pixels_per_unit": 515.5189003436426,
+  "reference_pixels_per_unit": 512,
+  "visible_width_world_units": 2.2734375,
+  "transform_scale": [
+    1,
+    1,
+    1
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "pilot_facing": "-X",
+  "underside_facing": "-Y",
+  "gameplay_visual_child_rotation_z": 180,
+  "projectile_visual": "Assets/Prefabs/Projectiles/GoosePoopProjectileVisual.prefab",
+  "impact_visual": "Assets/Prefabs/Projectiles/GoosePoopImpactVisual.prefab",
+  "projectile_visual_child_rotation_z": 90,
+  "texture_guid": "96437e27bd6448e69dbc81ca058dfe83",
+  "folder_guid": "bf7551bec77844fc9fb3c3c4529fc7f0",
+  "prefab_guid": "df4d40da07704e6999a96a433e23820b",
+  "scope": "Visual assets only; no gameplay or progression changes.",
+  "superseded_source": "basic-goose-2-source-v1.png"
+}
