@@ -53,24 +53,29 @@ public class GameplayHUD : MonoBehaviour
         resources = Label("", sidebar, new Vector2(0, -114), new Vector2(324, 66), 24, ink);
         phase = Label("", sidebar, new Vector2(0, -186), new Vector2(324, 66), 23, gold);
         cards = new Button[loop.config.towers.Length];
+        bool compactCards = cards.Length > 4;
         for (int i = 0; i < cards.Length; i++)
         {
             int index = i;
             TowerData data = loop.config.towers[i];
-            cards[i] = Button(data.name + "  $" + data.cost, sidebar, new Vector2(0, -252 - i * 62), new Vector2(324, 54), () =>
+            Vector2 position = compactCards ? new Vector2(i % 2 == 0 ? -83 : 83, -252 - i / 2 * 62) : new Vector2(0, -252 - i * 62);
+            Vector2 size = new Vector2(compactCards ? 158 : 324, 54);
+            cards[i] = Button(data.name + (compactCards ? "\n$" : "  $") + data.cost, sidebar, position, size, () =>
             {
                 loop.placement.SelectTower(data);
                 PlayClick();
             });
+            if (compactCards) cards[i].GetComponentInChildren<Text>().fontSize = 18;
             if (towerPortraits != null && i < towerPortraits.Length && towerPortraits[i] != null)
             {
-                var portrait = Box("Portrait", cards[i].transform, new Vector2(0f, 0.5f), new Vector2(30, 0), new Vector2(50, 50), Color.white);
+                float portraitSize = compactCards ? 38 : 50;
+                var portrait = Box("Portrait", cards[i].transform, new Vector2(0f, 0.5f), new Vector2(compactCards ? 23 : 30, 0), new Vector2(portraitSize, portraitSize), Color.white);
                 Image image = portrait.GetComponent<Image>();
                 image.sprite = towerPortraits[index];
                 image.preserveAspect = true;
                 image.raycastTarget = false;
                 var label = cards[i].GetComponentInChildren<Text>();
-                label.rectTransform.offsetMin = new Vector2(55, 0);
+                label.rectTransform.offsetMin = new Vector2(compactCards ? 45 : 55, 0);
             }
         }
         details = Label("", sidebar, new Vector2(0, -536), new Vector2(324, 100), 19, ink);
@@ -120,10 +125,17 @@ public class GameplayHUD : MonoBehaviour
             cards[i].GetComponent<Image>().color = loop.config.towers[i] == selected ? new Color32(65, 99, 137, 255) : new Color32(38, 58, 84, 255);
         }
         if (selected != null)
-            details.text = selected.name.ToUpperInvariant() + "  /  " + selected.attackType + "\nHP " + selected.maxHealth + "   DAMAGE " + selected.damage
-                + (selected.attackType == TowerAttackType.Dot ? "/s × 3s" : "") + "\nFUEL "
+        {
+            string stats = "HP " + selected.maxHealth;
+            if (selected.kind == EnemyAI.TowerKind.Radar) stats += "\nREVEALS STEALTH ENEMIES";
+            else if (selected.fuelIntake > 0) stats += "\nGENERATES +" + selected.fuelIntake + " FUEL/s";
+            else if (selected.prefab is ResourceTower resource)
+                stats += "\nGENERATES $" + (resource.generationAmount / (selected.fireRate > 0 ? selected.fireRate : 1f)).ToString("0.##") + "/s";
+            else stats += "   DAMAGE " + selected.damage + (selected.attackType == TowerAttackType.Dot ? "/s × 3s" : "");
+            details.text = selected.name.ToUpperInvariant() + "  /  " + (selected.attackType == TowerAttackType.None ? "SUPPORT" : selected.attackType.ToString()) + "\n" + stats + "\nFUEL "
                 + (selected.fuelIntake == 0 ? "FREE" : selected.fuelIntake + (selected.fuelIntake > 0 ? "/s"
                     : selected.kind == EnemyAI.TowerKind.GammaRadar ? "/pulse" : "/shot")) + "   ARC " + selected.fov + "°";
+        }
     }
 
     private string PhaseText()

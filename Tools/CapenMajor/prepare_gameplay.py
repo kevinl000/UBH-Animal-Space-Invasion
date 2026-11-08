@@ -14,6 +14,8 @@ from prepare_assets import HEADER, ROOT, doc, docs, gameobject, guid, read, ref,
 LEVEL = 'Assets/Scriptable Objects/Levels/CapenMajor.asset'
 CONFIG = 'Assets/Scriptable Objects/Levels/CapenMajorGameplay.asset'
 ENEMIES = 'Assets/Scriptable Objects/Enemies/README/'
+TOWERS = ['Laser', 'Bomb', 'Sniper', 'Pest Trap', 'Radar', 'Oil Rig', 'Bank']
+SUPPORT_PORTRAITS = ['Radar/RadarTower.png', 'OilRig/OilRigTower.png', 'Bank/BankTower.png']
 WAVES = [
     (65, [('Basic Goose 2', .45), ('Basic Skunk 2', .35), ('Shielded Goose', .2)], 'Shielded Goose'),
     (85, [('Basic Goose 2', .3), ('Basic Skunk 2', .3), ('Basic Goose 3', .2),
@@ -40,10 +42,10 @@ def prepare_config():
         level = setfield(level, key, value)
     write(LEVEL, level)
     guid(LEVEL)
-    tutorial = read('Assets/Scriptable Objects/Levels/UnionPrimeGameplay.asset')
     fields = ('  displayName: Capen Major\n  stageLabel: CAMPUS DEFENSE / LEVEL 1\n'
               '  nextPlanetName: Davis Nova\n  level: ' + ref(LEVEL) + '\n  towers:\n')
-    fields += tutorial.split('  towers:\n')[1].split('  waves:\n')[0] + '  waves:\n'
+    fields += ''.join('  - ' + ref('Assets/Scriptable Objects/Towers/README/' + name + '.asset') + '\n' for name in TOWERS)
+    fields += '  waves:\n'
     for budget, roster, miniboss in WAVES:
         fields += f'  - duration: 20\n    restDuration: 10\n    costBudget: {budget}\n    roster:\n'
         fields += ''.join(entry(name, share, '    ') for name, share in roster)
@@ -77,6 +79,11 @@ def prepare_scene():
             body = setfield(setfield(body, 'slots', '16'), 'radius', '4.9')
             body = body.split('  socketMounts:\n')[0] + '  socketMounts:\n'
             body += ''.join(f'  - {{fileID: {4001 + n * 10}}}\n' for n in range(16))
+        if i == 1007:
+            body = body.split('  towers:\n')[0] + '  towers:\n'
+            body += ''.join('  - ' + ref('Assets/Scriptable Objects/Towers/README/' + name + '.asset') + '\n' for name in TOWERS)
+        if i == 1009:
+            body += ''.join('  - ' + ref('Assets/Art/Towers/' + image, 21300000, 3) + '\n' for image in SUPPORT_PORTRAITS)
         out += doc(c, i, body)
     layout = json.loads(read('Art/Planets/CapenMajor/assembly.json'))
     imported = json.loads(read('Art/Planets/CapenMajor/unity-import.json'))

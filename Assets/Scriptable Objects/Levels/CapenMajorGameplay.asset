@@ -21,6 +21,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c2d7e4c58c466c944bae49ae1de52d8e, type: 2}
   - {fileID: 11400000, guid: f7b526bce9bf7b44fb620a7af83907dd, type: 2}
   - {fileID: 11400000, guid: dc56ef29c353f8d43861b1c4f53434da, type: 2}
+  - {fileID: 11400000, guid: f7fad4de12728cc4aa189a65b9b00f6e, type: 2}
+  - {fileID: 11400000, guid: 8d495ed7f45390e4997296e0fe6dfa55, type: 2}
+  - {fileID: 11400000, guid: ebecf12a9381a7a4491356aa21cbbbb6, type: 2}
   waves:
   - duration: 20
     restDuration: 10

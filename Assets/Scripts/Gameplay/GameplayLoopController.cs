@@ -74,7 +74,8 @@ public class GameplayLoopController : MonoBehaviour
             config.waves == null || config.waves.Length == 0 || config.finalBosses == null || config.finalBosses.Length == 0) return false;
         if (config.spawnInterval <= 0f || config.bossReinforcementMaxAlive < 1
             || config.bossReinforcementTaperHealth <= config.bossReinforcementStopHealth) return false;
-        foreach (TowerData t in config.towers) if (t == null || t.prefab == null || t.projectilePrefab == null) return false;
+        foreach (TowerData t in config.towers)
+            if (t == null || t.prefab == null || (t.attackType != TowerAttackType.None && t.projectilePrefab == null)) return false;
         foreach (EnemyData b in config.finalBosses) if (b == null || b.prefab == null) return false;
         foreach (GameplayWave w in config.waves)
         {

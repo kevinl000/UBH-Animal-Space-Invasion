@@ -7,7 +7,21 @@ prefab, import metadata and scene GUID are preserved; the legacy canvas demo and
 its free-placement sandbox are replaced in this gameplay scene only.
 
 Starting HP is **75**, money **10**, fuel **50**, with two free Lasers at opposite
-sockets (1 and 9). Laser, Bomb, Sniper and Pest Trap remain the available towers.
+sockets (1 and 9). Laser, Bomb, Sniper and Pest Trap are joined by Radar, Oil Rig
+and Bank. The seven cards use two columns in the right sidebar, with portraits
+and selected support effects shown in the details panel. Hotkeys 1–7 select them
+in that order; all seven work with socket hover and quick build.
+
+| Support tower | HP | Cost | Fuel | Effect |
+| --- | --- | --- | --- | --- |
+| Radar | 10 | 5 | Free | Reveals stealth enemies in its 90-degree arc |
+| Oil Rig | 15 | 5 | +3/s | Generates fuel |
+| Bank | 15 | 5 | Free | Generates $3/s |
+
+Support towers use their existing projectile-free runtime behavior and generate
+or scan only during combat. Union Prime keeps its four tower options and original
+single-column layout. Support unlocks do not add stealth enemies to Capen's roster.
+
 Shots consume fuel, kills give the existing doubled fuel rewards. Setup, clear,
 full-refund safe breaks, pause, speed, zoom, socket/quick-build ghosts and results
 use the shared runtime. All three spawn windows last 20 seconds, with 10-second
@@ -44,6 +58,10 @@ Manual review by the team (no Unity execution/tests performed by Codex):
 
 1. Open Capen Major directly and through Union Prime's victory button. Confirm
    Capen labels, 75 HP, starting resources, two opposite Lasers and sixteen slots.
+   Confirm all seven build cards fit without overlapping details or Start. Select
+   Radar/Oil Rig/Bank by card and keys 5/6/7, then build with socket/quick build.
+   In combat, check Radar's scan, Oil Rig's +3 fuel/s and Bank's $3/s; check that
+   income stops in setup, breaks and pause. Radar and Bank consume no fuel.
 2. Build at upper, side and lower sockets; check foundation seating/occlusion,
    hover ghosts, quick build, zoom, rotation and no placement flash. Check pause
    and 2x speed without moving the HUD.

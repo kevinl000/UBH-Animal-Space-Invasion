@@ -57,6 +57,14 @@ def check():
     assert '  nextPlanetName: Davis Nova\n' in config
     assert '  nextScene: DavisNova\n' in config
     assert '  starterSlots: 0000000008000000\n' in config
+    towers = ['Laser', 'Bomb', 'Sniper', 'Pest Trap', 'Radar', 'Oil Rig', 'Bank']
+    tower_guids = [guid('Assets/Scriptable Objects/Towers/README/' + name + '.asset') for name in towers]
+    assert re.findall(r'guid: (\w+)', config.split('  towers:\n')[1].split('  waves:\n')[0]) == tower_guids
+    for name, hp, fuel, arc in [('Radar', 10, 0, 90), ('Oil Rig', 15, 3, 0), ('Bank', 15, 0, 0)]:
+        tower = read('Assets/Scriptable Objects/Towers/README/' + name + '.asset')
+        for key, value in [('maxHealth', hp), ('cost', 5), ('fuelIntake', fuel), ('fov', arc), ('damage', 0), ('attackType', 3)]:
+            assert float(re.search(r'^  ' + key + r': (.*)$', tower, re.M)[1]) == value
+        assert '  projectilePrefab: {fileID: 0}\n' in tower
     final = config.split('  finalBosses:\n')[1].split('  starterSlots:')[0]
     assert re.findall(r'guid: (\w+)', final) == [guid(ENEMIES + 'Mother Goose.asset')]
     waves = re.split(r'^  - duration:', config.split('  waves:\n')[1].split('  finalBosses:')[0], flags=re.M)[1:]
@@ -82,6 +90,10 @@ def check():
     assert '  startOnAwake: 0\n' in by_id[1006][1]
     assert '  planetBody: {fileID: 2002}\n' in by_id[1002][1]
     assert '  planet: {fileID: 2001}\n' in by_id[1004][1]
+    assert re.findall(r'guid: (\w+)', by_id[1007][1].split('  towers:\n')[1]) == tower_guids
+    assert len(re.findall(r'guid: (\w+)', by_id[1009][1].split('  towerPortraits:\n')[1])) == 7
+    assert '  generationAmount: 3\n' in read('Assets/Prefabs/Gameplay/Towers/Bank.prefab')
+    assert '  generationAmount: 0\n' in read('Assets/Prefabs/Gameplay/Towers/Oil Rig.prefab')
     layout = json.loads(read('Art/Planets/CapenMajor/assembly.json'))
     cx, cy = layout['planet_center']
     assert '  slots: 16\n' in by_id[1004][1]
@@ -106,7 +118,7 @@ def check():
     assert '    path: Assets/Scenes/CapenMajor.unity' in read('ProjectSettings/EditorBuildSettings.asset')
     assert '    path: Assets/Scenes/DavisNova.unity' in read('ProjectSettings/EditorBuildSettings.asset')
     print(json.dumps(dict(serialized_assets_checked=3, references_checked=reference_count,
-                          waves_checked=3, authored_sockets_checked=16, unchanged_art_layers=8,
+                          waves_checked=3, available_towers_checked=7, authored_sockets_checked=16, unchanged_art_layers=8,
                           boss='Mother Goose', unity_launched=False), indent=2))
 
 
