@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar tower · fixed dish</title>
+<style>
+  body{margin:0;background:#111725;color:#e7efe9;font:16px system-ui;text-align:center}
+  main{max-width:760px;margin:30px auto;padding:0 18px}
+  h1{font-size:25px;margin-bottom:8px}p{line-height:1.5;color:#bfcbd1}
+  canvas{width:min(100%,580px);height:auto;background:#182034;image-rendering:pixelated;border-radius:12px}
+  button,select{background:#23364a;color:#d8fff0;border:1px solid #408e84;padding:9px 16px;border-radius:6px;margin:6px}
+  #small canvas{width:96px;border-radius:0}small{display:block;color:#9db4bd;margin:12px}
+</style>
+<main>
+  <h1>Radar tower</h1>
+  <p>Fixed outward-facing dish · teal communications rabbit · animated console</p>
+  <canvas id="view" width="1254" height="1254" aria-label="Radar tower animated console preview"></canvas>
+  <div><button id="toggle">Pause</button><label>Frame <select id="frame"><option value="0">Dim</option><option value="1">Active</option><option value="2">Contact</option></select></label></div>
+  <div id="small"><canvas id="thumbnail" width="1254" height="1254" aria-label="96 pixel readability preview"></canvas></div>
+  <small>96 px canvas preview above. Final camera size needs review in Unity.</small>
+  <p>Intended detection: 90° total, ±45° from local +Y. No dish sweep.<br>Sector overlay and gameplay hookup are separate work.</p>
+  <p id="error" role="status"></p>
+</main>
+<script>
+const tower=new Image(),status=new Image();
+tower.src='tower-source-v1.png'; status.src='status-sheet-source-v1.png';
+const ctx=document.querySelector('#view').getContext('2d');
+const small=document.querySelector('#thumbnail').getContext('2d');
+const selection=document.querySelector('#frame');
+const centers=[220,209.5,198], sequence=[0,1,2,1,0], boundaries=[300,500,700,900,1200];
+let playing=true,origin=performance.now();
+document.querySelector('#toggle').onclick=()=>{playing=!playing;origin=performance.now();document.querySelector('#toggle').textContent=playing?'Pause':'Play';};
+selection.onchange=()=>{playing=false;document.querySelector('#toggle').textContent='Play';};
+for(const img of [tower,status])img.onerror=()=>{document.querySelector('#error').textContent='Could not load the local source PNGs. Keep this file beside the Radar source images.';};
+function draw(now){
+  if(tower.complete&&tower.naturalWidth&&status.complete&&status.naturalWidth){
+    let index=Number(selection.value);
+    if(playing){index=sequence[boundaries.findIndex(limit=>(now-origin)%1200<limit)];selection.value=String(index);}
+    ctx.clearRect(0,0,1254,1254);ctx.imageSmoothingEnabled=false;ctx.drawImage(tower,0,0);
+    const ratio=1400/2300;
+    ctx.drawImage(status,index*418,0,418,418,638-centers[index]*ratio,746-297*ratio,418*ratio,418*ratio);
+    small.clearRect(0,0,1254,1254);small.drawImage(ctx.canvas,0,0);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</html>

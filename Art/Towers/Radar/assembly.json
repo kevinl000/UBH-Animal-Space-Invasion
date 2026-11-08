@@ -1,0 +1,147 @@
+{
+  "tower": {
+    "source": "tower-source-v1.png",
+    "runtime": "Assets/Art/Towers/Radar/RadarTower.png",
+    "guid": "ccb49a91f4914fcaa52972fde05d96c4",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "b45edcef8239cff085c884480bbffb2055aeefccc9b2f6ef977d3f898541c702",
+    "pixels_per_unit": 1400,
+    "ground_mount_top_left_pixels": [
+      611,
+      1171
+    ],
+    "bounds_alpha16": [
+      105,
+      154,
+      1161,
+      1172
+    ]
+  },
+  "status": {
+    "source": "status-sheet-source-v1.png",
+    "runtime": "Assets/Art/Towers/Radar/RadarStatusSheet.png",
+    "guid": "bc3561f33d3a4494a6d538469006675b",
+    "sha256": "542a9420e8a7389f24695db6c5458bc4ba0780f4e2e099453d86f174376c74aa",
+    "pixels_per_unit": 2300,
+    "frames": [
+      {
+        "name": "RadarStatus01",
+        "file_id": 21300000,
+        "rect": [
+          0,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.5263157894736842,
+          0.2894736842105263
+        ],
+        "visible_bounds_in_cell": [
+          88,
+          184,
+          352,
+          297
+        ]
+      },
+      {
+        "name": "RadarStatus02",
+        "file_id": 21300002,
+        "rect": [
+          418,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.5011961722488039,
+          0.2894736842105263
+        ],
+        "visible_bounds_in_cell": [
+          78,
+          184,
+          341,
+          297
+        ]
+      },
+      {
+        "name": "RadarStatus03",
+        "file_id": 21300004,
+        "rect": [
+          836,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.47368421052631576,
+          0.2894736842105263
+        ],
+        "visible_bounds_in_cell": [
+          66,
+          184,
+          330,
+          297
+        ]
+      }
+    ],
+    "anchor_on_tower_top_left_pixels": [
+      638,
+      746
+    ],
+    "local_position": [
+      0.019285714285714285,
+      0.30357142857142855
+    ],
+    "animation_sequence": [
+      [
+        0,
+        0
+      ],
+      [
+        0.3,
+        1
+      ],
+      [
+        0.5,
+        2
+      ],
+      [
+        0.7,
+        1
+      ],
+      [
+        0.9,
+        0
+      ],
+      [
+        1.2,
+        0
+      ]
+    ],
+    "loop_seconds": 1.2
+  },
+  "prefab": {
+    "path": "Assets/Prefabs/Towers/RadarTowerVisual.prefab",
+    "guid": "179e858be16b476c872ea85c3cbb0deb"
+  },
+  "clip": {
+    "path": "Assets/Animations/Towers/Radar/RadarConsoleIdle.anim",
+    "guid": "3edc437261ee439289fde5f3543076a3"
+  },
+  "controller": {
+    "path": "Assets/Animations/Towers/Radar/RadarConsoleIdle.controller",
+    "guid": "2235ad2eba3849c19cd6a1098a3bbbe0"
+  },
+  "detection_axis": "+Y",
+  "intended_sector_degrees": 90,
+  "intended_sector_limits_from_outward_degrees": [
+    -45,
+    45
+  ],
+  "dish_motion": "fixed",
+  "gameplay_implemented": false
+}
