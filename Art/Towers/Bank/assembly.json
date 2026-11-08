@@ -1,0 +1,157 @@
+{
+  "tower": {
+    "source": "tower-source-v1.png",
+    "runtime": "Assets/Art/Towers/Bank/BankTower.png",
+    "guid": "3aef67f9c6704390980eb7cc93dbf090",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "497513b372c25e01b2f1a5cbbac6ba4f34ad1b9fdd99f7e8948dd4a17ffab74e",
+    "pixels_per_unit": 1340,
+    "ground_mount_top_left_pixels": [
+      610,
+      1169
+    ],
+    "bounds_alpha16": [
+      104,
+      205,
+      1111,
+      1170
+    ]
+  },
+  "status": {
+    "source": "status-sheet-source-v1.png",
+    "runtime": "Assets/Art/Towers/Bank/BankCoinSheet.png",
+    "guid": "bf254c431a2b420e9cdca8b2709859e4",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "e89b545118488a541e6bb075108cc3089fa444d88e924755603337d735368634",
+    "pixels_per_unit": 2730,
+    "frames": [
+      {
+        "name": "BankCoin01",
+        "label": "Dim",
+        "file_id": 21300000,
+        "rect": [
+          0,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.5167464114832536,
+          0.35167464114832536
+        ],
+        "visible_bounds_in_cell": [
+          68,
+          175,
+          364,
+          271
+        ]
+      },
+      {
+        "name": "BankCoin02",
+        "label": "Active",
+        "file_id": 21300002,
+        "rect": [
+          418,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.5,
+          0.35167464114832536
+        ],
+        "visible_bounds_in_cell": [
+          61,
+          175,
+          357,
+          271
+        ]
+      },
+      {
+        "name": "BankCoin03",
+        "label": "Bright",
+        "file_id": 21300004,
+        "rect": [
+          836,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.4820574162679426,
+          0.35167464114832536
+        ],
+        "visible_bounds_in_cell": [
+          53,
+          175,
+          350,
+          271
+        ]
+      }
+    ],
+    "anchor_on_tower_top_left_pixels": [
+      620,
+      736
+    ],
+    "screen_interior_top_left_pixels": [
+      540,
+      675,
+      700,
+      740
+    ],
+    "local_position": [
+      0.007462686567164179,
+      0.32313432835820893
+    ],
+    "animation_sequence": [
+      [
+        0,
+        0
+      ],
+      [
+        0.35,
+        1
+      ],
+      [
+        0.7,
+        2
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "loop_seconds": 1
+  },
+  "clip": {
+    "path": "Assets/Animations/Towers/Bank/BankCoinIdle.anim",
+    "guid": "a79010996a444759bed8c8a59a193c6e"
+  },
+  "controller": {
+    "path": "Assets/Animations/Towers/Bank/BankCoinIdle.controller",
+    "guid": "f567c301e4ac4342add4dfb36ac202d1"
+  },
+  "prefab": {
+    "path": "Assets/Prefabs/Towers/BankTowerVisual.prefab",
+    "guid": "914dcc7c7bb747948c98d29831bdab88"
+  },
+  "new_metadata": [
+    "Assets/Art/Towers/Bank.meta",
+    "Assets/Animations/Towers/Bank.meta",
+    "Assets/Art/Towers/Bank/BankTower.png.meta",
+    "Assets/Art/Towers/Bank/BankCoinSheet.png.meta",
+    "Assets/Animations/Towers/Bank/BankCoinIdle.anim.meta",
+    "Assets/Animations/Towers/Bank/BankCoinIdle.controller.meta",
+    "Assets/Prefabs/Towers/BankTowerVisual.prefab.meta"
+  ],
+  "gameplay_implemented": false,
+  "outward_axis": "+Y",
+  "machinery_motion": "fixed",
+  "animation_role": "Decorative money production activity; not synchronized to economy ticks or disabled state."
+}

@@ -1,0 +1,9 @@
+Generation mode: built-in image_gen, reference-guided new generation, transparent_background=true.
+Style reference: Art/Towers/Bank/tower-source-v1.png.
+
+Use case: stylized-concept.
+Asset type: three-frame alpha-transparent pixel-art coin activity display sheet for the supplied Bank tower.
+Reference image supplies palette/pixel style only; do NOT reproduce rabbit, bank, safe or monitor.
+Square 1254x1254 canvas divided INVISIBLY into 3x3 equal 418x418 cells. EXACTLY THREE display graphics, one in each TOP ROW CELL; remaining six cells fully alpha transparent. Each graphic is a horizontal row of THREE small FACE-ON GOLD COIN ICONS, total width approximately 270 pixels, height approximately 95 pixels. Three distinct ROUND coins with chunky pixel-stepped silhouettes, small dark ochre rims and one simple vertical embossed mark at center. Clear transparent gaps. Same three coin shapes, positions and scale in every cell. Coarse crisp pixel clusters matching reference, limited flat gold/ochre colors.
+Animation left to right: first cell all three coins dim bronze/ochre; second cell all three coins warm bright gold; third cell all three coins pale bright gold with a small solid ivory highlight on each. This is a simple illumination pulse, NOT rotation, stacking, flying money, or realistic coins. Keep stable geometry and baseline, only brightness/highlight changes.
+Center each row of three coins at same relative position within its cell. Transparent gutters at least 60 pixels around each graphic. No screen background, border, panel, text, lettering, numbers, currency signs, captions, grid, particles, bloom, shadows or gradients. NOTHING opaque except the nine coin icons across the three top-row cells. True alpha transparency.

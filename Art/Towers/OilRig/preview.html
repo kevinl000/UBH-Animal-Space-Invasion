@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oil Rig tower · fuel production</title>
+<style>
+  body{margin:0;background:#111725;color:#f3eee1;font:16px system-ui;text-align:center}
+  main{max-width:760px;margin:30px auto;padding:0 18px}
+  h1{font-size:25px;margin-bottom:8px}p{line-height:1.5;color:#c7c6be}
+  canvas{width:min(100%,580px);height:auto;background:#182034;image-rendering:pixelated;border-radius:12px}
+  button,select{background:#343043;color:#ffe4a3;border:1px solid #9b793b;padding:9px 16px;border-radius:6px;margin:6px}
+  #small canvas{width:96px;border-radius:0}small{display:block;color:#b8b2a1;margin:12px}
+  a{color:#f1ce7d}
+</style>
+<main>
+  <h1>Oil Rig tower</h1>
+  <p>Hard-hat rabbit · compact fuel extractor · one-second fuel gauge loop</p>
+  <canvas id="view" width="1254" height="1254" aria-label="Oil Rig animated fuel gauge preview"></canvas>
+  <div><button id="toggle">Pause</button><label>Gauge <select id="frame"><option value="0">Low</option><option value="1">Filling</option><option value="2">Complete</option></select></label></div>
+  <div id="small"><canvas id="thumbnail" width="1254" height="1254" aria-label="96 pixel readability preview"></canvas></div>
+  <small>96 px canvas preview. Final camera size needs review in Unity.</small>
+  <p>Static rabbit and machinery. Three separate gauge sprites repeat every second.<br>The gauge shows production activity; it is not wired to the fuel economy.</p>
+  <p><a href="README.md">Setup and handoff notes</a></p>
+  <p id="error" role="status"></p>
+</main>
+<script>
+const tower=new Image(),status=new Image();
+tower.src='tower-source-v1.png';status.src='status-sheet-source-v1.png';
+const ctx=document.querySelector('#view').getContext('2d');
+const small=document.querySelector('#thumbnail').getContext('2d');
+const selection=document.querySelector('#frame');
+const centers=[212,208.5,205.5],ratio=1400/3170;
+let playing=true,origin=performance.now(),elapsed=0;
+document.querySelector('#toggle').onclick=()=>{
+  if(playing)elapsed=(performance.now()-origin)%1000;
+  else origin=performance.now()-elapsed;
+  playing=!playing;
+  document.querySelector('#toggle').textContent=playing?'Pause':'Play';
+};
+selection.onchange=()=>{
+  playing=false;elapsed=[0,350,700][Number(selection.value)];
+  document.querySelector('#toggle').textContent='Play';
+};
+for(const img of [tower,status])img.onerror=()=>{
+  document.querySelector('#error').textContent='Could not load source PNGs. Keep this file beside the Oil Rig source images.';
+};
+function draw(now){
+  if(tower.complete&&tower.naturalWidth&&status.complete&&status.naturalWidth){
+    let index=Number(selection.value);
+    if(playing){const t=(now-origin)%1000;index=t<350?0:t<700?1:2;selection.value=String(index);}
+    ctx.clearRect(0,0,1254,1254);ctx.imageSmoothingEnabled=false;ctx.drawImage(tower,0,0);
+    ctx.drawImage(status,index*418,0,418,418,617-centers[index]*ratio,738-294*ratio,418*ratio,418*ratio);
+    small.clearRect(0,0,1254,1254);small.imageSmoothingEnabled=false;small.drawImage(ctx.canvas,0,0);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</html>

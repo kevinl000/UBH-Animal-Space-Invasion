@@ -1,0 +1,157 @@
+{
+  "tower": {
+    "source": "tower-source-v1.png",
+    "runtime": "Assets/Art/Towers/OilRig/OilRigTower.png",
+    "guid": "f4045f172c90408f8d28fdd6b9dfe7c0",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "d890f007878f89a1219dc5e0be43eb78a2371634918c1922646843372a84b0d8",
+    "pixels_per_unit": 1400,
+    "ground_mount_top_left_pixels": [
+      611,
+      1171
+    ],
+    "bounds_alpha16": [
+      104,
+      206,
+      1163,
+      1172
+    ]
+  },
+  "status": {
+    "source": "status-sheet-source-v1.png",
+    "runtime": "Assets/Art/Towers/OilRig/OilRigFuelSheet.png",
+    "guid": "9e582579b6b1434a810c681e1f539a0e",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "c27b76c13b39959ee976ef11ea0e1b72a93ac53fd7fbf02a01375e9f43650e04",
+    "pixels_per_unit": 3170,
+    "frames": [
+      {
+        "name": "OilRigFuel01",
+        "label": "Low",
+        "file_id": 21300000,
+        "rect": [
+          0,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.507177033492823,
+          0.2966507177033493
+        ],
+        "visible_bounds_in_cell": [
+          47,
+          180,
+          377,
+          294
+        ]
+      },
+      {
+        "name": "OilRigFuel02",
+        "label": "Filling",
+        "file_id": 21300002,
+        "rect": [
+          418,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.4988038277511962,
+          0.2966507177033493
+        ],
+        "visible_bounds_in_cell": [
+          44,
+          180,
+          373,
+          294
+        ]
+      },
+      {
+        "name": "OilRigFuel03",
+        "label": "Complete",
+        "file_id": 21300004,
+        "rect": [
+          836,
+          836,
+          418,
+          418
+        ],
+        "pivot": [
+          0.4916267942583732,
+          0.2966507177033493
+        ],
+        "visible_bounds_in_cell": [
+          41,
+          180,
+          370,
+          294
+        ]
+      }
+    ],
+    "anchor_on_tower_top_left_pixels": [
+      617,
+      738
+    ],
+    "screen_interior_top_left_pixels": [
+      540,
+      675,
+      695,
+      740
+    ],
+    "local_position": [
+      0.004285714285714286,
+      0.3092857142857143
+    ],
+    "animation_sequence": [
+      [
+        0,
+        0
+      ],
+      [
+        0.35,
+        1
+      ],
+      [
+        0.7,
+        2
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "loop_seconds": 1
+  },
+  "clip": {
+    "path": "Assets/Animations/Towers/OilRig/OilRigFuelIdle.anim",
+    "guid": "c8d136860d504cf7839d0f1ebf64ba6f"
+  },
+  "controller": {
+    "path": "Assets/Animations/Towers/OilRig/OilRigFuelIdle.controller",
+    "guid": "65d64257365a42029ad08f227a1bea22"
+  },
+  "prefab": {
+    "path": "Assets/Prefabs/Towers/OilRigTowerVisual.prefab",
+    "guid": "bc6e159fa2b147858071edd4380b9c3f"
+  },
+  "new_metadata": [
+    "Assets/Art/Towers/OilRig.meta",
+    "Assets/Animations/Towers/OilRig.meta",
+    "Assets/Art/Towers/OilRig/OilRigTower.png.meta",
+    "Assets/Art/Towers/OilRig/OilRigFuelSheet.png.meta",
+    "Assets/Animations/Towers/OilRig/OilRigFuelIdle.anim.meta",
+    "Assets/Animations/Towers/OilRig/OilRigFuelIdle.controller.meta",
+    "Assets/Prefabs/Towers/OilRigTowerVisual.prefab.meta"
+  ],
+  "gameplay_implemented": false,
+  "outward_axis": "+Y",
+  "machinery_motion": "fixed",
+  "animation_role": "Decorative fuel production activity; not synchronized to economy ticks or disabled state."
+}

@@ -1,0 +1,11 @@
+Generation mode: built-in image_gen, reference-guided new generation, transparent_background=true.
+Style reference: Art/Towers/OilRig/tower-source-v1.png.
+
+Use case: stylized-concept.
+Asset type: three-frame transparent pixel-art fuel activity gauge sheet for Unity.
+Use supplied Oil Rig tower as STYLE/COLOR reference only. Do not reproduce tower. Make square 1254x1254 transparent image divided INVISIBLY into 3x3 equal 418x418 cells. EXACTLY THREE small horizontal fuel gauge graphics, ONE centered in each of the THREE TOP ROW CELLS; all lower six cells entirely alpha transparent. No grid/captions.
+Each gauge is a 270-pixel-wide by approximately 90-pixel-high simple horizontal strip with THREE equal upright rectangular segments separated by clear transparent gaps. All three segments exist in every frame, same exact shape and positions, flat coarse chunky pixel clusters. No containing border, no background panel, no monitor frame, no text or numbers, no decorative particles, no glow or gradients. ONLY the segments' pixels opaque. Color family warm amber/yellow and muted ochre, matching the industrial Oil Rig hard hat. Navy outline around each segment is acceptable but keep each block readable.
+Top left frame: first/left segment bright amber, other two dim dark ochre.
+Top middle frame: first and second segments bright amber, last dim dark ochre.
+Top right frame: all three segments bright pale golden yellow, modest solid highlight for completion.
+This three-state meter repeats every second to show fuel production activity. Keep identical bounding width and height and positioning in each cell, align bottom edges. Transparent gutters with at least 60 pixels margin around graphics in each cell. Actual alpha transparency everywhere else. Coarse 8-bit-like crisp hard pixel edges. No rabbit, machinery, droplets, detached effects, labels, symbols, frame borders or additional graphics.
