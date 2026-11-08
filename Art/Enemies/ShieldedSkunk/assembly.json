@@ -1,0 +1,72 @@
+{
+  "asset": "Shielded Skunk",
+  "mode": "Reuse approved sprites and shield settings; no image generation or texture copies.",
+  "body_sprite": "Assets/Art/Enemies/BasicSkunk3/BasicSkunk3.png",
+  "body_guid": "84138d8c0b274ede905858648d3299ab",
+  "shield_sprite": "Assets/Art/Enemies/ShieldedGoose/Shield.png",
+  "rim_sprite": "Assets/Art/Enemies/ShieldedGoose/ShieldRim.png",
+  "shield_guid": "9ee593366efc4f2aae73463e238550a3",
+  "rim_guid": "e69f23de18bc42ffadcfab67efde4a7d",
+  "shield_reference": "Art/Enemies/ShieldedGoose/assembly.json",
+  "shield_prompts": [
+    "Art/Enemies/ShieldedGoose/prompt-v3.txt",
+    "Art/Enemies/ShieldedGoose/prompt-rim-v3.txt"
+  ],
+  "visual_prefab": "Assets/Prefabs/Enemies/ShieldedSkunkVisual.prefab",
+  "prefab_guid": "ac14e5f97d82452b858c1470e361b10a",
+  "body_pixels_per_unit": 512.4372331340735,
+  "body_visible_bounds_alpha_128": [
+    41,
+    157,
+    1213,
+    1026
+  ],
+  "body_visible_width_world_units": 2.2871093749999996,
+  "body_transform_scale": [
+    1,
+    1,
+    1
+  ],
+  "shield_group_position": [
+    0.0,
+    0.06927677714377133,
+    0
+  ],
+  "shield_group_scale": [
+    1.006013745704468,
+    1.006013745704468,
+    1
+  ],
+  "shield_visible_diameter_world_units": 3.0189843749999996,
+  "shield_pixels_per_unit": 339.8937831927525,
+  "membrane_renderer_alpha": 0.32,
+  "membrane_center_effective_alpha": 0.31623529411764706,
+  "rim_local_scale": [
+    1,
+    1.1027027027027028,
+    1
+  ],
+  "membrane_local_scale": [
+    1.058091286307054,
+    1.069182389937107,
+    1
+  ],
+  "rim_local_position": [
+    -0.0,
+    -0.0016221283783783773,
+    0
+  ],
+  "membrane_local_position": [
+    -0.0,
+    0.03774764150943393,
+    0
+  ],
+  "pilot_facing": "-X",
+  "bomb_outlet_facing": "-Y",
+  "future_gameplay_visual_child_rotation_z": 180,
+  "projectile_visual": "Assets/Prefabs/Projectiles/SkunkBombProjectileVisual.prefab",
+  "burst_visual": "Assets/Prefabs/Projectiles/SkunkBombBurstVisual.prefab",
+  "hit_puff_visual": "Assets/Prefabs/Projectiles/SkunkBombHitPuffVisual.prefab",
+  "projectile_visual_child_rotation_z": 0,
+  "scope": "Visual-only prefab and preview. No runtime scripts, data, stats, scenes, texture edits or new animations."
+}

@@ -1,0 +1,35 @@
+{
+  "unity_launched": false,
+  "unity_tests_run": false,
+  "new_image_generation": false,
+  "body_opaque_samples": 660960,
+  "body_samples_outside_fitted_sphere": 0,
+  "body_samples_overlapping_rim": 0,
+  "body_samples_without_membrane_coverage": 0,
+  "body_sha256": "9a1820a9bdce75cd5df88175c153c31828b8ea558f3030d015598d6d1a95d636",
+  "measurement_note": "Nearest-neighbor prefab transform rendering at body PPU, alpha >=128 silhouette. Inherited thin rim pixel-step joins still need camera review.",
+  "checks": {
+    "whole_body_inside_fitted_sphere": true,
+    "no_body_rim_overlap": true,
+    "whole_body_membrane_coverage": true,
+    "existing_assets_unmodified": true,
+    "visual_components_only": true,
+    "internal_fileids_resolve": true,
+    "shield_children_unchanged": true,
+    "body_sprite_reference": true,
+    "sorting_and_opacity_match_goose": true,
+    "new_prefab_guid_unique": true,
+    "shared_sprite_guids_resolve": true,
+    "bomb_effect_references_exist": true,
+    "preview_references_exist": true,
+    "preview_uses_shared_shield_textures": true,
+    "no_new_texture_copies": true
+  },
+  "all_checks_passed": true,
+  "manual_review": [
+    "Unity import/material/sorting and camera readability",
+    "Toggle Shield group and inspect pilot, tail, thrusters and bomb outlet",
+    "Later gameplay hookup: block ordinary first hit, preserve shield on bypassing hits, restore on pooling",
+    "Later gameplay hookup: inward rotation, outlet spawn alignment and angular AoE recipients"
+  ]
+}

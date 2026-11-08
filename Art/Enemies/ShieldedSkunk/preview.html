@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shielded Skunk · Transparent shield</title>
+<style>
+  :root { color-scheme: dark; font: 16px/1.5 system-ui, sans-serif; --size: 160; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #101628; color: #e6ebf6; }
+  main { max-width: 1100px; margin: auto; padding: 32px 20px; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p { color: #b6c3db; max-width: 820px; }
+  .controls { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin: 24px 0; }
+  label { display: flex; align-items: center; gap: 10px; }
+  select, button { padding: 8px 12px; background: #202d45; color: inherit; border: 1px solid #5c6c8a; border-radius: 6px; font: inherit; }
+  button { cursor: pointer; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #00dce5; outline-offset: 3px; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  article { border: 1px solid #38445d; border-radius: 12px; overflow: hidden; }
+  h2 { font-size: 18px; margin: 16px; }
+  .stage { background: #0b1020; min-height: 480px; display: grid; place-items: center; overflow: auto; }
+  .assembly { width: calc(var(--size) * 1px); height: calc(var(--size) * 1px); position: relative; }
+  .sprite { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(var(--size) * var(--ratio) * 1px); height: calc(var(--size) * var(--ratio-y, var(--ratio)) * 1px); image-rendering: pixelated; }
+  .shield { left: calc(50% + var(--dx) * 1px); top: calc(50% + var(--dy) * 1px); }
+  .membrane { opacity: 0.32; }
+  .spent .shield { display: none; }
+  .caption { margin: 14px 16px; }
+  body[data-bg="light"] .stage { background: #dbe5ed; }
+  body[data-bg="grid"] .stage { background-color: #26334a; background-image: conic-gradient(#38465a 25%, transparent 0 50%, #38465a 0 75%, transparent 0); background-size: 24px 24px; }
+  .note { font-size: 14px; }
+  @media (max-width: 850px) { .cards { grid-template-columns: 1fr; } }
+</style>
+<main>
+  <h1>Shielded Skunk</h1>
+  <p>The approved crimson skunk inside a round transparent shield. A fine cyan outline, curved upper-left reflection and deeper lower-right shading give the bubble volume while keeping the pilot and whole UFO visible.</p>
+  <div class="controls">
+    <label>UFO width <input id="size" type="range" min="80" max="320" step="20" value="160"><output id="value">160 px</output></label>
+    <label>Background <select id="background"><option value="dark">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+    <button id="hit" type="button">Preview blocked hit</button>
+  </div>
+  <div class="cards">
+    <article>
+      <h2>Original crimson body</h2>
+      <div class="stage"><div class="assembly">
+        <img class="sprite body" src="../../../Assets/Art/Enemies/BasicSkunk3/BasicSkunk3.png" alt="Approved crimson skunk UFO without its shield">
+      </div></div>
+      <p class="caption">Existing Basic Skunk 3 artwork, reused unchanged.</p>
+    </article>
+    <article>
+      <h2 id="shield-state" aria-live="polite">Shield available</h2>
+      <div class="stage"><div class="assembly" id="shielded">
+        <img class="sprite body" src="../../../Assets/Art/Enemies/BasicSkunk3/BasicSkunk3.png" alt="Crimson skunk UFO">
+        <img class="sprite shield membrane" src="../../../Assets/Art/Enemies/ShieldedGoose/Shield.png?v=3" alt="" aria-hidden="true">
+        <img class="sprite shield rim" src="../../../Assets/Art/Enemies/ShieldedGoose/ShieldRim.png?v=3" alt="" aria-hidden="true">
+      </div></div>
+      <p class="caption">8 HP plus a shield that blocks the first ordinary hit. Spherical pixel shading, a much thinner outline, and approximately 32% opacity at the center.</p>
+    </article>
+  </div>
+  <p class="note">The button previews visibility only. Gameplay hookup still needs to hide both shield layers when the shield breaks and restore them on pooled initialization. No flight or break animation is required. Existing skunk bomb, burst and hit-puff artwork is reused.</p>
+  <p class="note"><a href="README.md">Setup notes</a> · <a href="contact-review.png">80 / 160 / 240 px review</a> · <a href="../ShieldedGoose/prompt-v3.txt">Shading prompt</a> · <a href="../ShieldedGoose/prompt-rim-v3.txt">Thin rim prompt</a></p>
+</main>
+<script>
+  const setup = {"bodyWidth": 2.2871093749999996, "bodyPPU": 512.4372331340735, "shieldPPU": 339.8937831927525, "canvas": 1254, "x": 0.0, "y": 0.06927677714377133, "rimScale": [1.006013745704468, 1.1093340763443864], "membraneScale": [1.064454378235018, 1.075612180941884], "rimOffset": [-0.0, -0.001631883445945946], "membraneOffset": [-0.0, 0.03797464622641509]};
+  document.querySelectorAll('.body').forEach(img => img.style.setProperty('--ratio', setup.canvas / setup.bodyPPU / setup.bodyWidth));
+  document.querySelectorAll('.shield').forEach(img => {
+    const scale = img.classList.contains('rim') ? setup.rimScale : setup.membraneScale;
+    img.style.setProperty('--ratio', setup.canvas * scale[0] / setup.shieldPPU / setup.bodyWidth);
+    img.style.setProperty('--ratio-y', setup.canvas * scale[1] / setup.shieldPPU / setup.bodyWidth);
+  });
+  const size = document.getElementById('size');
+  function updateSize() {
+    document.documentElement.style.setProperty('--size', size.value);
+    document.querySelectorAll('.shield').forEach(img => {
+      const offset = img.classList.contains('rim') ? setup.rimOffset : setup.membraneOffset;
+      img.style.setProperty('--dx', (setup.x + offset[0]) / setup.bodyWidth * Number(size.value));
+      img.style.setProperty('--dy', -(setup.y + offset[1]) / setup.bodyWidth * Number(size.value));
+    });
+    document.getElementById('value').textContent = `${size.value} px`;
+  }
+  size.addEventListener('input', updateSize);
+  updateSize();
+  document.getElementById('background').addEventListener('change', event => document.body.dataset.bg = event.target.value);
+  document.getElementById('hit').addEventListener('click', event => {
+    const spent = document.getElementById('shielded').classList.toggle('spent');
+    document.getElementById('shield-state').textContent = spent ? 'Shield spent · body unchanged' : 'Shield available';
+    event.target.textContent = spent ? 'Restore shield' : 'Preview blocked hit';
+  });
+</script>
+</html>
