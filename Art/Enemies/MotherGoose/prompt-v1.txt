@@ -1,0 +1,14 @@
+Mode: built-in image_gen, reference-guided new asset
+References:
+- Art/Enemies/HealthyGoose/healthy-goose-source-v1.png
+- Art/Enemies/BasicGoose3/basic-goose-3-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: one production-ready transparent pixel-art boss sprite for Unity 2D planetary tower defense.
+Input image 1: Healthy Goose, reference for animal identity, coarse pixel style, substantial boss hull. Input image 2: Basic Goose 3, reference for the existing flock family only. Create a NEW Mother Goose commander sprite, do not overwrite either reference.
+Subject: one Canada goose in a broad CREAM-AND-TEAL command UFO under a BLUE glass dome. Goose faces LEFT with upright black head and neck, ivory cheek patch, natural brown feathers, full ivory chest and rounded body. Her near brown wing is slightly raised in a readable calling/commanding gesture, contained under the dome, with no human hands or clothes. Distinct from Healthy Goose's resting pose. Broad low command saucer with warm ivory/cream hull panels, dark teal structural bands, deep navy stepped outlines and a restrained row of cyan/teal running lights. Palette clearly cream/teal/blue, NOT green and NOT gold. Rounded sturdy thicker hull without a gun or bomb outlet. Two small teal underside thrusters.
+Defining communications feature: one small, simple dark-teal antenna with a round cyan tip mounted OUTSIDE the dome at the RIGHT rim of the saucer, rises alongside the right side of the dome; keep it short and clearly separated from glass highlights. No broadcast waves baked into this sprite; a separate effect will attach to its tip later.
+Composition: ONE complete upright UFO, centered on a square transparent canvas with transparent padding all around, complete antenna, hull and short thruster flames fully inside frame. The main saucer rim occupies about 85% of the canvas width. Match the references' upright three-quarter/side frontal projection and simple silhouette, pilot local -X and underside local -Y.
+Style: chunky coarse pixel art, large square pixel clusters, stepped dark outlines, simple block shading, crisp hard edges, same visual family as references; readable at small gameplay size. No smooth vector rendering, no realistic 3D, no thin intricate mechanical details.
+Real alpha-transparent background. No text, scenery, floor, drop shadow, watermark, health bar, projectile, gun, bomb outlet, carrier hatch, extra geese, crown, medals, costume or surrounding effects. Static sprite only.

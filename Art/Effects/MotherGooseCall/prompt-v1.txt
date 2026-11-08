@@ -1,0 +1,13 @@
+Mode: built-in image_gen, reference-guided new sprite sheet
+Reference: Art/Enemies/MotherGoose/mother-goose-source-v1.png
+Transparent background: true
+
+Use case: stylized-concept.
+Asset type: transparent 2D pixel-art animation sprite sheet, three frames of a brief communications broadcast effect for a Unity game.
+Reference image: Mother Goose boss, palette and coarse square-pixel style ONLY. Do NOT draw the goose, UFO or antenna. We only need a small separate turquoise/cyan radio-signal effect to place centered on her antenna tip.
+Layout: square transparent canvas with a STRICT 2-column by 2-row grid of FOUR equal square cells, no borders or gridlines. Top-left is frame 1, top-right is frame 2, bottom-left is frame 3. Bottom-right is completely transparent/empty. Three frames only, each centered EXACTLY at its own cell center, with ample transparent margins, same pixel scale in every cell.
+Frame 1 top-left: one small thin cyan stepped circular signal ring, radius about 10% of cell width, hollow center.
+Frame 2 top-right: two concentric stepped circular teal/cyan signal rings, outer radius about 22% of cell width, hollow transparent interior.
+Frame 3 bottom-left: three larger concentric stepped circular teal signal rings, outer radius about 34% of cell width, with restrained gaps and a slightly dimmer outer ring to suggest dissipation. Keep the effect light and open, no filled disc, no central dot.
+Style: deliberately coarse crisp square pixel clusters and hard stepped edges matching reference, sparse mint highlights, teal/cyan palette. Thin bands of a few large pixels; not smooth circles, not a vector icon, no blur/glow, no tiny noise or sparkles, no colored background. These are small RADIO SIGNAL rings, not a damaging blast, shockwave or magical portal.
+Real alpha transparency in the background, all interiors, margins and fourth cell. No text, numbers, captions, gridlines, scenery, characters, UFOs, antenna, bright central flash, symbols, checkerboard texture or shadows. Preserve clear expanding size progression across the 3 cells without shifting their common center.

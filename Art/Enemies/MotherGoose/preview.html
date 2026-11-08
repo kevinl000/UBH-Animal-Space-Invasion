@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mother Goose — Level 1 boss</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color-scheme:dark;color:#e6edf6;background:#0b1423}body{max-width:1100px;margin:28px auto;padding:0 20px}h1{margin-bottom:4px;font-size:28px}p{color:#b8c9dc}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:20px;background:#1b293d;border-radius:12px;padding:16px}label{display:flex;align-items:center;gap:8px}button,select{padding:7px 12px;border:1px solid #476177;border-radius:6px;background:#22364b;color:#eaf9ff}canvas{display:block;width:100%;height:auto;border:1px solid #2b4258;border-radius:12px;margin:18px 0}a{color:#a8e5e3}.note{font-size:14px}#status{color:#ffb5a8}
+</style>
+<h1>Mother Goose</h1>
+<p>Level 1 flock commander · cream-and-teal UFO · calls in Basic Goose 3 · no direct attack.</p>
+<div class="controls">
+<button id="call" type="button">Replay call</button>
+<label><input id="repeat" type="checkbox" checked> Repeat effect preview</label>
+<label>Camera size <input id="zoom" type="range" min="45" max="115" value="85"></label>
+<label>Background <select id="background"><option value="space">Space</option><option value="light">Light</option><option value="grid">Transparency grid</option></select></label>
+<label><input id="marker" type="checkbox"> Antenna marker</label>
+</div>
+<p id="status" role="status"></p>
+<canvas id="view" width="1100" height="750" aria-label="Mother Goose boss with its broadcast animation beside Healthy Goose and Basic Goose 3 size references"></canvas>
+<p class="note">Boss width is 1.5× Basic Goose 3. The call is a separate three-frame sprite effect; repeating here is for review. No flock count or spawn timing is simulated. Camera size changes only this preview.</p>
+<p><a href="README.md">Asset handoff</a> · <a href="comparison.png">Static comparison</a> · <a href="assembly.json">Assembly notes</a> · <a href="../../Effects/MotherGooseCall/README.md">Broadcast effect</a></p>
+<script id="assembly" type="application/json">{"name": "Mother Goose", "level": 1, "generation_mode": "built-in image_gen, reference-guided new sprites", "source": "Art/Enemies/MotherGoose/mother-goose-source-v1.png", "runtime_sprite": "Assets/Art/Enemies/MotherGoose/MotherGoose.png", "visual_prefab": "Assets/Prefabs/Enemies/MotherGooseVisual.prefab", "canvas_pixels": [1254, 1254], "visible_bounds_alpha128": [23, 81, 1232, 1207], "pixels_per_unit": 531.7938144329897, "visual_scale": 1.5, "visible_width_world_units": 3.41015625, "basic_goose_3_ppu": 516.8384879725086, "healthy_goose_ppu": 528.2749140893471, "pilot_facing": "-X", "underside_facing": "-Y", "gameplay_visual_child_rotation_z": 180, "antenna_tip_source_pixel_top_left": [1076, 447], "call_origin_local": [0.8443121898263026, 0.338477047146402], "call": {"source": "Art/Effects/MotherGooseCall/mother-goose-call-sheet-source-v1.png", "runtime_sheet": "Assets/Art/Effects/MotherGooseCall/MotherGooseCallSheet.png", "prefab": "Assets/Prefabs/Effects/MotherGooseCallVisual.prefab", "clip": "Assets/Animations/Effects/MotherGooseCall/MotherGooseCall.anim", "controller": "Assets/Animations/Effects/MotherGooseCall/MotherGooseCall.controller", "canvas_pixels": [1254, 1254], "pixels_per_unit": 497.22222222222223, "fps": 8, "duration_seconds": 0.375, "loop": false, "maximum_visible_width_local": 0.72, "maximum_visible_width_at_boss_scale": 1.08, "frames": [{"name": "MotherGooseCall01", "file_id": 21300000, "rect": [0, 627, 627, 627], "pivot": [0.5191387559808612, 0.4609250398724083], "visible_bounds_alpha16": [270, 283, 381, 393]}, {"name": "MotherGooseCall02", "file_id": 21300002, "rect": [627, 627, 627, 627], "pivot": [0.4920255183413078, 0.46172248803827753], "visible_bounds_alpha16": [181, 206, 436, 469]}, {"name": "MotherGooseCall03", "file_id": 21300004, "rect": [0, 0, 627, 627], "pivot": [0.5199362041467305, 0.5031897926634769], "visible_bounds_alpha16": [147, 133, 505, 490]}], "ends_with_empty_sprite": true}, "scope": "Visual assets only; flock behavior, data, scenes and shiny variants unchanged."}</script>
+<script>
+const data=JSON.parse(document.getElementById('assembly').textContent);
+const canvas=document.getElementById('view'),ctx=canvas.getContext('2d');
+const zoom=document.getElementById('zoom'),background=document.getElementById('background'),repeat=document.getElementById('repeat'),marker=document.getElementById('marker');
+const load=src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('Could not load '+src));img.src=src;});
+let images,started=performance.now();
+function label(value,x,y,size=18){ctx.fillStyle=background.value==='light'?'#203e49':'#c7dae5';ctx.textAlign='center';ctx.font=size+'px system-ui';ctx.fillText(value,x,y);}
+function sprite(img,x,y,ppu,scale,z){const w=img.width/ppu*scale*z,h=img.height/ppu*scale*z;ctx.drawImage(img,x-w/2,y-h/2,w,h);}
+function draw(now){
+ const z=Number(zoom.value),light=background.value==='light';ctx.fillStyle=light?'#e1e9e8':'#0c1424';ctx.fillRect(0,0,1100,750);
+ if(background.value==='grid'){for(let y=0;y<750;y+=24)for(let x=0;x<1100;x+=24){ctx.fillStyle=(x/24+y/24)%2?'#273c4b':'#1c2c39';ctx.fillRect(x,y,24,24);}}
+ ctx.imageSmoothingEnabled=false;
+ const x=385,y=290; sprite(images[0],x,y,data.pixels_per_unit,1.5,z);
+ const ax=x+data.call_origin_local[0]*1.5*z,ay=y-data.call_origin_local[1]*1.5*z;
+ let elapsed=(now-started)/1000;if(repeat.checked)elapsed%=2;
+ const frame=Math.floor(elapsed*data.call.fps);
+ if(frame>=0&&frame<data.call.frames.length){const f=data.call.frames[frame],w=f.rect[2]/data.call.pixels_per_unit*1.5*z,h=f.rect[3]/data.call.pixels_per_unit*1.5*z;
+ ctx.drawImage(images[3],f.rect[0],data.call.canvas_pixels[1]-f.rect[1]-f.rect[3],f.rect[2],f.rect[3],ax-w*f.pivot[0],ay-h*(1-f.pivot[1]),w,h);}
+ if(marker.checked){ctx.strokeStyle='#ff6a84';ctx.beginPath();ctx.moveTo(ax-7,ay);ctx.lineTo(ax+7,ay);ctx.moveTo(ax,ay-7);ctx.lineTo(ax,ay+7);ctx.stroke();}
+ label('Mother Goose · 1.5×',385,520);label('Flock commander · separate antenna call',385,548,14);
+ sprite(images[1],850,210,data.healthy_goose_ppu,1.5,z);label('Healthy Goose · 1.5×',850,440,16);
+ sprite(images[2],850,575,data.basic_goose_3_ppu,1,z);label('Basic Goose 3 · 1×',850,720,16);
+ requestAnimationFrame(draw);
+}
+document.getElementById('call').addEventListener('click',()=>{started=performance.now();});
+repeat.addEventListener('change',()=>{started=performance.now();});
+Promise.all(['mother-goose-source-v1.png','../HealthyGoose/healthy-goose-source-v1.png','../BasicGoose3/basic-goose-3-source-v1.png','../../Effects/MotherGooseCall/mother-goose-call-sheet-source-v1.png'].map(load)).then(result=>{images=result;started=performance.now();requestAnimationFrame(draw);}).catch(error=>{document.getElementById('status').textContent=error.message;});
+</script>
+</html>

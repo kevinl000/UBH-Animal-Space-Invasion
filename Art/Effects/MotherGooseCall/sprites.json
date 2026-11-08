@@ -1,0 +1,80 @@
+{
+  "source": "Art/Effects/MotherGooseCall/mother-goose-call-sheet-source-v1.png",
+  "runtime_sheet": "Assets/Art/Effects/MotherGooseCall/MotherGooseCallSheet.png",
+  "prefab": "Assets/Prefabs/Effects/MotherGooseCallVisual.prefab",
+  "clip": "Assets/Animations/Effects/MotherGooseCall/MotherGooseCall.anim",
+  "controller": "Assets/Animations/Effects/MotherGooseCall/MotherGooseCall.controller",
+  "canvas_pixels": [
+    1254,
+    1254
+  ],
+  "pixels_per_unit": 497.22222222222223,
+  "fps": 8,
+  "duration_seconds": 0.375,
+  "loop": false,
+  "maximum_visible_width_local": 0.72,
+  "maximum_visible_width_at_boss_scale": 1.08,
+  "frames": [
+    {
+      "name": "MotherGooseCall01",
+      "file_id": 21300000,
+      "rect": [
+        0,
+        627,
+        627,
+        627
+      ],
+      "pivot": [
+        0.5191387559808612,
+        0.4609250398724083
+      ],
+      "visible_bounds_alpha16": [
+        270,
+        283,
+        381,
+        393
+      ]
+    },
+    {
+      "name": "MotherGooseCall02",
+      "file_id": 21300002,
+      "rect": [
+        627,
+        627,
+        627,
+        627
+      ],
+      "pivot": [
+        0.4920255183413078,
+        0.46172248803827753
+      ],
+      "visible_bounds_alpha16": [
+        181,
+        206,
+        436,
+        469
+      ]
+    },
+    {
+      "name": "MotherGooseCall03",
+      "file_id": 21300004,
+      "rect": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "pivot": [
+        0.5199362041467305,
+        0.5031897926634769
+      ],
+      "visible_bounds_alpha16": [
+        147,
+        133,
+        505,
+        490
+      ]
+    }
+  ],
+  "ends_with_empty_sprite": true
+}
